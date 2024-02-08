@@ -1,39 +1,26 @@
 import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import joi from "joi";
+import cors from "cors";
+import { validateEnvVars } from "./envSchema";
+import { addRoutes } from "./routes";
 
 const app = express();
 dotenv.config();
 
-interface EnvVars {
-  PORT: number;
-  HOST: string;
-}
+// Export so other files can use type-checked envss
+const envVars = validateEnvVars();
+export { envVars };
 
-const envSchema = joi.object<EnvVars, true>({
-  PORT: joi.number().positive().default(8000),
-  HOST: joi.string().default("localhost"),
-}).unknown()
-
-// Validate and get typescript type
-const {error, value: envVars} = envSchema.validate(process.env);
-
-if (error) {
-  throw new Error(`Env Vars validation error: ${error.message}`);
-}
-
-// So we can see the requests in the console
+// Use "morgan" we can see the requests in the console
 app.use(morgan("dev"));
 
-// declare a route with a response
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// So we can accept json in the body of requests
+app.use(express.json());
+app.use(cors());
 
-// start the server
+addRoutes(app);
+
 app.listen(process.env.PORT, () => {
-  console.log(
-    `Server running : http://${envVars.HOST}:${envVars.PORT}`,
-  );
+  console.log(`Server running : http://${envVars.HOST}:${envVars.PORT}`);
 });
