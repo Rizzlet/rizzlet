@@ -1,8 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
+import morgan from "morgan";
 
 const app = express();
 dotenv.config();
+
+// So we can see the requests in the console
+app.use(morgan("dev"));
 
 // declare a route with a response
 app.get("/", (req, res) => {
