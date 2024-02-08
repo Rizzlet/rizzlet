@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "start": "nodemon src/index.ts -w .env -w src/",
     "pretty": "prettier --write .",
     "lint": "eslint --ignore-path .eslintignore src"
   },
@@ -27,6 +27,7 @@
   "dependencies": {
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
+    "joi": "^17.12.1",
     "mongoose": "^8.1.1",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.3"
