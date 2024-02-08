@@ -4,6 +4,12 @@ import morgan from "morgan";
 import cors from "cors";
 import { validateEnvVars } from "./envSchema";
 import { addRoutes } from "./routes";
+import swaggerUi from "swagger-ui-express";
+import fs from "fs";
+import yaml from "yaml";
+
+const file = fs.readFileSync("./swagger.yaml", "utf8");
+const swaggerDocument = yaml.parse(file);
 
 const app = express();
 dotenv.config();
@@ -18,6 +24,8 @@ app.use(morgan("dev"));
 // So we can accept json in the body of requests
 app.use(express.json());
 app.use(cors());
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 addRoutes(app);
 
