@@ -2,6 +2,8 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
+  "target": "ES2022",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",

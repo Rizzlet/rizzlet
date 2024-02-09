@@ -36,6 +36,8 @@ paths:
                   value: '"Hello Dylan!"'
         "422":
           description: Validation exception
+        "500":
+          description: Server Exception
   /question:
     post:
       tags:
@@ -61,6 +63,8 @@ paths:
                     type: integer
         "422":
           description: Validation exception
+        "500":
+          description: Server Exception
 components:
   schemas:
     Question:

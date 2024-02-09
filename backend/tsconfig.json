@@ -1,15 +1,16 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ES2022",
     "esModuleInterop": true,
-    "target": "es6",
+    "lib": ["ES2022"],
+    "target": "ES2022",
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
-    "alwaysStrict": true, 
+    "alwaysStrict": true,
     "allowUnreachableCode": false,
-    "noImplicitAny": true, 
+    "noImplicitAny": true,
     "strictNullChecks": true,
 
     // Linter Checks
