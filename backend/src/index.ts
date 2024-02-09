@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request } from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
@@ -19,7 +19,13 @@ dotenv.config();
 await getConnection();
 
 // Use "morgan" we can see the requests in the console
-app.use(morgan("dev"));
+// Also we don't want to bloat the logs with
+// the requests for the api-docs
+app.use(
+  morgan("dev", {
+    skip: (req: Request) => req.baseUrl.includes("api-docs"),
+  }),
+);
 
 // So we can accept json in the body of requests
 app.use(express.json());
