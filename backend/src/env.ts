@@ -1,4 +1,5 @@
 import joi from "joi";
+import dotenv from "dotenv";
 
 type EnvVars = {
   PORT: number;
@@ -14,7 +15,11 @@ const envSchema = joi
   })
   .unknown();
 
+dotenv.config();
+
 const { error, value: envVars } = envSchema.validate(process.env);
+
+console.log(envVars);
 
 if (error) {
   throw new Error(`Env Vars validation error: ${error.message}`);
