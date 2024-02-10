@@ -23,13 +23,18 @@ await getConnection();
 // the requests for the api-docs
 app.use(
   morgan("dev", {
-    skip: (req: Request) => req.baseUrl.includes("api-docs"),
+    skip: (req: Request) => req.url.includes("api-docs"),
   }),
 );
 
 // So we can accept json in the body of requests
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: envVars.FRONTEND_BASE_URL,
+  }),
+);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
