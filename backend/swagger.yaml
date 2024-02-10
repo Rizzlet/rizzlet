@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: Rizzlet
+  description: This is a competitive, interactive study tool!
+  version: 0.1.0
+servers:
+  - url: http://localhost:8000/api/
+tags:
+  - name: Questions
+paths:
+  /hello:
+    post:
+      tags:
+        - Sample
+      summary: Say hello!
+      operationId: hello
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+            example:
+              name: "Dylan"
+
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Hello Dylan:
+                  value: '"Hello Dylan!"'
+        "422":
+          description: Validation exception
+        "500":
+          description: Server Exception
+  /question:
+    post:
+      tags:
+        - Questions
+      summary: Add a question
+      description: Add a given question to the database
+      operationId: addQuestion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        "422":
+          description: Validation exception
+        "500":
+          description: Server Exception
+components:
+  schemas:
+    Question:
+      required:
+        - question
+        - answer
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - true/false
+        question:
+          type: string
+        answer:
+          type: boolean
