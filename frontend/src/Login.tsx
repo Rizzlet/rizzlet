@@ -6,11 +6,38 @@ import {
 } from "@react-oauth/google";
 import axios from "axios";
 import GoogleButton from "react-google-button";
+import { useAuth } from "./AuthContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+type BackendLoginResponse = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  id: string;
+  sub: string;
+};
+
+const DEFAULT_ROUTE_AFTER_LOGIN = "/";
 
 export default function LoginPage() {
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const locationToGoTo =
+      new URLSearchParams(window.location.search).get("from") ||
+      DEFAULT_ROUTE_AFTER_LOGIN;
+
+    if (auth.isLoggedIn) {
+      navigate(locationToGoTo, { replace: true });
+    }
+  }, [auth.isLoggedIn, navigate]);
+
   const handleSuccess = (credentialResponse: CodeResponse) => {
     const authorizationCode = credentialResponse.code;
 
+    // Set the token in local storage so we can persist reload
     axios
       .post(
         new URL("/api/auth/google", process.env.REACT_APP_BACKEND_URL!).href,
@@ -18,7 +45,13 @@ export default function LoginPage() {
         { withCredentials: true }
       )
       .then((response) => {
+        const data = response.data as BackendLoginResponse;
+
         console.log("Logged in!", response.data);
+        auth.setIsLoggedIn(true);
+
+        auth.setAuthUserFullName(`${data.firstName} ${data.lastName}`);
+        localStorage.setItem("fullName", `${data.firstName} ${data.lastName}`);
       })
       .catch((error) => {
         console.error("Unable to contact backend for log in", error);
