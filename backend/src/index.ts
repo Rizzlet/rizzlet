@@ -23,7 +23,7 @@ await getConnection();
 // the requests for the api-docs
 app.use(
   morgan("dev", {
-    skip: (req: Request) => req.baseUrl.includes("api-docs"),
+    skip: (req: Request) => req.url.includes("api-docs"),
   }),
 );
 
