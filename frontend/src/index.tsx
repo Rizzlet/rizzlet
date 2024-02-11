@@ -5,6 +5,8 @@ import App from "./App";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import Login from "./Login";
+import { AuthProvider } from "./AuthContext";
+import { AuthGuard } from "./AuthenticationGuard";
 
 const router = createBrowserRouter([
   {
@@ -15,15 +17,25 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  {
+    path: "/protected",
+    element: (
+      <AuthGuard>
+        <App />
+      </AuthGuard>
+    ),
+  },
 ]);
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement,
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
-      <RouterProvider router={router} />
-    </GoogleOAuthProvider>
-  </React.StrictMode>,
+    <AuthProvider>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
+        <RouterProvider router={router} />
+      </GoogleOAuthProvider>
+    </AuthProvider>
+  </React.StrictMode>
 );
