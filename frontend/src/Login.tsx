@@ -1,11 +1,5 @@
-import {
-  CodeResponse,
-  GoogleLogin,
-  useGoogleLogin,
-  useGoogleOneTapLogin,
-} from "@react-oauth/google";
+import { CodeResponse, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import GoogleButton from "react-google-button";
 import { useAuth } from "./AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";

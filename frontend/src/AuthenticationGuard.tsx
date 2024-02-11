@@ -1,6 +1,5 @@
 import {
   createSearchParams,
-  redirect,
   useLocation,
   useNavigate,
 } from "react-router-dom";
