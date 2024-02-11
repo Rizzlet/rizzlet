@@ -3,12 +3,17 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import ClassSearch from "./ClassSearch";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
   },
+  {
+    path: "/classSearch",
+    element: <ClassSearch />,
+  }
 ]);
 
 const root = ReactDOM.createRoot(
@@ -19,3 +24,5 @@ root.render(
     <RouterProvider router={router} />
   </React.StrictMode>,
 );
+
+

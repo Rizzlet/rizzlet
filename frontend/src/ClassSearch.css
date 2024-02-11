@@ -1,0 +1,29 @@
+.class-search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh; /* Adjust height as needed */
+  padding-top: 20px; /* Add top padding */
+}
+
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  background-color: #4caf50; /* Green background */
+  padding: 20px; /* Adjust padding as needed */
+  width: 80%; /* Adjust width as a percentage or use specific values like pixels */
+  max-width: 600px; /* Optional: Add a max-width to limit the width further */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.heading-container {
+  text-align: center; /* Center align the text horizontally */
+}
+
+.heading {
+  color: #ffffff; /* White text color */
+  font-size: 24px; /* Adjust font size */
+}
