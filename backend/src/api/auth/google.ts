@@ -4,6 +4,7 @@ import joi from "joi";
 import jwt from "jsonwebtoken";
 import { envVars } from "../../env.js";
 import { getIdCreateOrUpdate } from "../../models/user.js";
+import { ClientTokenData } from "./sharedAuth.js";
 
 type GoogleAuthBody = {
   authorizationCode: string;
@@ -44,12 +45,12 @@ export async function googleAuthHandler(req: Request, res: Response) {
     res.status(500).send("Auth Error");
     return;
   }
-  
+
   const user = {
     firstName: data.given_name,
     lastName: data.family_name,
     email: data.email,
-    sub: data.sub,
+    sub: data.sub!,
   };
 
   // We assume that the sub field always exists on google tokens
@@ -68,10 +69,11 @@ export async function googleAuthHandler(req: Request, res: Response) {
     return;
   }
 
-  // sign new token
-  const token = jwt.sign({ ...user, id: results }, envVars.JWT_SECRET);
+  const tokenData: ClientTokenData = { ...user, id: results };
 
-  res.cookie("token", token);
+  const encodedToken = jwt.sign(tokenData, envVars.JWT_SECRET);
 
-  res.json({ ...user, id: results });
+  res.cookie("token", encodedToken);
+
+  res.json(tokenData);
 }

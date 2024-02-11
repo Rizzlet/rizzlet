@@ -18,12 +18,12 @@ const router = createBrowserRouter([
 ]);
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById("root") as HTMLElement,
 );
 root.render(
   <React.StrictMode>
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}>
       <RouterProvider router={router} />
     </GoogleOAuthProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
