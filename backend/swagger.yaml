@@ -73,7 +73,7 @@ paths:
       operationId: authGoogle
       requestBody:
         content:
-          application/json":
+          application/json:
             schema:
               type: object
               properties:
