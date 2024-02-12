@@ -1,8 +1,4 @@
-import {
-  createSearchParams,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import { useEffect } from "react";
 
