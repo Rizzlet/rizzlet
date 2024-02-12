@@ -5,6 +5,7 @@ import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import yaml from "yaml";
+import cookieParser from "cookie-parser";
 import { envVars } from "./env.js";
 import { addRoutes } from "./routes.js";
 import { getConnection } from "./models/db.js";
@@ -26,6 +27,8 @@ app.use(
     skip: (req: Request) => req.originalUrl.includes("/api-docs"),
   }),
 );
+
+app.use(cookieParser());
 
 // So we can accept json in the body of requests
 app.use(express.json());
