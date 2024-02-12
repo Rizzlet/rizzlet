@@ -34,7 +34,7 @@ export async function googleAuthHandler(req: Request, res: Response) {
 
   if (!id_token) {
     console.error("Auth failure from google");
-    res.status(500).send("Auth Error");
+    res.status(400).send("Auth Error");
     return;
   }
 
@@ -75,5 +75,5 @@ export async function googleAuthHandler(req: Request, res: Response) {
 
   res.cookie("token", encodedToken);
 
-  res.json(tokenData);
+  res.status(200).json(tokenData);
 }
