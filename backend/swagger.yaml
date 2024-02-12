@@ -8,12 +8,12 @@ servers:
 tags:
   - name: Questions
 paths:
-  /hello:
+  /class:
     post:
       tags:
         - Sample
-      summary: Say hello!
-      operationId: hello
+      summary: Add a class!
+      operationId: class
       requestBody:
         content:
           application/json:
@@ -23,7 +23,7 @@ paths:
                 name:
                   type: string
             example:
-              name: "Dylan"
+              name: "CSC 308"
 
         required: true
       responses:
@@ -32,8 +32,8 @@ paths:
           content:
             text/plain; charset=utf-8:
               examples:
-                Hello Dylan:
-                  value: '"Hello Dylan!"'
+                Class CSC 430:
+                  value: '"Class CSC 308!"'
         "422":
           description: Validation exception
         "500":
