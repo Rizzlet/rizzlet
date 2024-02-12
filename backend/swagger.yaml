@@ -65,7 +65,7 @@ paths:
           description: Validation exception
         "500":
           description: Server Exception
-  /api/auth/google:
+  /auth/google:
     post:
       tags:
         - Auth
