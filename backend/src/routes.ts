@@ -1,7 +1,7 @@
 import { Application } from "express";
 
-import { helloWorldHandler } from "./api/helloWorld.js";
+import { submitQuestionHandler } from "./api/questions.js";
 
 export function addRoutes(app: Application) {
-  app.post("/api/hello", helloWorldHandler);
+  app.post("/api/questions", submitQuestionHandler);
 }
