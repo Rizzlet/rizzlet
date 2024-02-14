@@ -7,6 +7,7 @@ servers:
   - url: http://localhost:8000/api/
 tags:
   - name: Questions
+  - name: Auth
 paths:
   /hello:
     post:
@@ -23,8 +24,7 @@ paths:
                 name:
                   type: string
             example:
-              name: "Dylan"
-
+              name: Dylan
         required: true
       responses:
         "200":
@@ -65,6 +65,46 @@ paths:
           description: Validation exception
         "500":
           description: Server Exception
+  /auth/google:
+    post:
+      tags:
+        - Auth
+      description: Try to login with google's auth code
+      operationId: authGoogle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                authorizationCode:
+                  type: string
+        required: true
+      responses:
+        "200":
+          description: Auth Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  email:
+                    type: string
+                  id:
+                    type: string
+                  sub:
+                    type: string
+        "400":
+          description: Auth code validation error
+        "422":
+          description: Validation exception
+        "500":
+          description: Server exception
+
 components:
   schemas:
     Question:
