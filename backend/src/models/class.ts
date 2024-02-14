@@ -18,3 +18,5 @@ export async function newClass(name: string) {
 
   await newClass.save();
 }
+
+

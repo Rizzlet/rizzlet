@@ -22,3 +22,4 @@ export async function classHandler(req: Request, res: Response) {
 
   res.send(`Class ${body.name}!`);
 }
+ 
