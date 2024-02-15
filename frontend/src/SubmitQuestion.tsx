@@ -1,52 +1,8 @@
-import React, { useState, MouseEventHandler, ChangeEventHandler  } from 'react';
+import React, { useState} from 'react';
 
-export function QuestionForm() {
-  const [question, setQuestion] = useState('');
-
-  const handleQuestionChange = (event: any) => {
-    setQuestion(event.target.value);
-  };
-
-  const submitQuestionToDatabase = async (data: any) => {
-    try {
-      const response = await fetch('mongodb+srv://rizzlet:fojNiA7LemTpxKTA@cluster0.7qnrqcu.mongodb.net/?retryWrites=true&w=majority', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        console.log('Question successfully submitted and stored in the database.');
-      } else {
-        console.error('Failed to submit question. Server returned:', response.status, response.statusText);
-      }
-    } catch (error) {
-      console.error('An error occurred while submitting the question');
-    }
-  };
-
-  const handleSubmit = async () => {
-    try {
-      // Call the function or API to submit the question to the database
-      await submitQuestionToDatabase({ text: question });
-    } catch (error) {
-      console.error('Error submitting question to the database');
-    }
-  };
-
-  return (
-    <div>
-      <Title />
-      <SelectQuestion />
-      <InputQuestion onChange={handleQuestionChange} value={question} />
-      {/* Add other components like TrueAndFalseButtons if needed */}
-      <TrueAndFalseButtons onChange={handleQuestionChange} value={question}/>
-      <Buttons onSubmit={handleSubmit} />
-    </div>
-  );
-}
+// function SubmitQuestion(props) {
+//   return (any);
+// }
 
 export function Title() {
   return (
@@ -71,29 +27,22 @@ export function SelectQuestion() {
   );
 }
 
-interface InputQuestionProps {
-  onChange: ChangeEventHandler<HTMLTextAreaElement>;
-  value: string;
-}
+// type InputQuestionProps = {
+//   onChange: ChangeEventHandler<HTMLTextAreaElement>;
+//   value: string;
+// }
 
 // question box
-export function InputQuestion({ onChange, value }: InputQuestionProps) {
+export function InputQuestion() {
   return (
-    <div className="mt-20">
-      {/* formating: 5 pixels either side */}
-      <div className="px-5">
+    <div className="mt-20 px-5">
         {/* message */}
         <label htmlFor="message" className="block mb-2 text-2xl font-medium text-gray-900 dark:text-black">Question</label>
         {/* textbox has blue border when clicked on*/}
-        <textarea id="message" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type Your Question Here..."
-          onChange={onChange}
-          value={value}
+        <textarea id="message" 
+        rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Type Your Question Here..."
         ></textarea>
       </div>
-    </div>
-    // <div className="w-72">
-    //   <Input label="Question" variant="standard" size="md" crossOrigin="" />
-    // </div>
   );
 }
 
@@ -105,15 +54,14 @@ export function TrueAndFalseButtons() {
       <button
           type="button"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          onChange={onChange}
-          value={value}
+
         >  
           True
         </button>
         <button
           type="button"
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          onClick={onSubmit}
+
         >
           False
         </button>
@@ -122,18 +70,17 @@ export function TrueAndFalseButtons() {
   );
 }
 
-interface ButtonsProps {
-  onSubmit: MouseEventHandler<HTMLButtonElement>;
-}
+// interface ButtonsProps {
+//   onSubmit: MouseEventHandler<HTMLButtonElement>;
+// }
 
 // true and false buttons, submit button
-export function Buttons({onSubmit}: ButtonsProps) {
+export function Buttons() {
   return (
     <div>
       <div className="absolute right-0 mt-20 gap-20 px-20 ">
         <button
-            type="button"
-            onClick={onSubmit}
+            type="submit"
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
           >
             Submit
