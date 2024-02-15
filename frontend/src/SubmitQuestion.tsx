@@ -1,8 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent} from 'react';
-
-// function SubmitQuestion(props) {
-//   return (any);
-// }
+import React, {ChangeEvent} from 'react';
 
 export function Title() {
   return (
@@ -44,11 +40,33 @@ export function InputQuestion({ onFieldChange }: { onFieldChange: (event: Change
   );
 }
 
+// submit and close 
+export function Buttons() {
+  return (
+    <div>
+      <div className="absolute right-0 mt-20 gap-20 px-20 ">
+        <button
+            type="submit"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            className="text-gray-500 bg-blue-700 hover:bg-gray-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-gray-200 dark:hover:bg-blue-300 focus:outline-none dark:focus:ring-blue-500"
+          >
+            Close
+          </button>
+      </div>
+    </div>
+  );
+}
 
+// true and false buttons
 export function TrueAndFalseButtons({ onTrueFalseButtonClick }: { onTrueFalseButtonClick: (value: boolean) => void }) {
   return (
     <div>
-      <div className = "mt-20 grid grid-cols-2 gap-20 px-20 flex aspect-w-5 aspect-h-5 ">
+      <div className = "mt-20 grid grid-cols-2 gap-20 px-20 aspect-w-5 aspect-h-5 ">
       <button
           type="button"
           id="answer"
@@ -70,23 +88,3 @@ export function TrueAndFalseButtons({ onTrueFalseButtonClick }: { onTrueFalseBut
   );
 }
 
-export function Buttons() {
-  return (
-    <div>
-      <div className="absolute right-0 mt-20 gap-20 px-20 ">
-        <button
-            type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-          >
-            Submit
-          </button>
-          <button
-            type="button"
-            className="text-gray-500 bg-blue-700 hover:bg-gray-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-gray-200 dark:hover:bg-blue-300 focus:outline-none dark:focus:ring-blue-500"
-          >
-            Close
-          </button>
-      </div>
-    </div>
-  );
-}
