@@ -1,5 +1,5 @@
-import QuestionGrid from "./Components/grid";
+import Renderer from "./Components/questionRender"
 
 export default function App() {
-  return <QuestionGrid></QuestionGrid>;
+  return <Renderer></Renderer>
 }
