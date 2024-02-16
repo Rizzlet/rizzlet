@@ -1,20 +1,7 @@
-import React, { useState, useEffect} from "react";
+import React from "react";
 import "./ClassSearch.css"; 
 
 const ClassSearch: React.FC = () => {
-  const [classList, setClassList] = useState<string[]>([]);
-
-  useEffect(() => {
-    fetch("/api/class")
-      .then(response => response.json())
-      .then(data => {
-        // Assuming data is an array of class objects with a 'name' property
-        const classNames = data.map((classObject: any) => classObject.name);
-        console.log(classNames); // Print classNames to the console
-        setClassList(classNames);
-      })
-      .catch(error => console.error("Error fetching class data:", error));
-  }, []);
 
   return (
     <div>
@@ -27,11 +14,8 @@ const ClassSearch: React.FC = () => {
       <div className="dropdown-container">
         <div className="dropdown-title">Classes</div>
         <select className="dropdown">
-          {classList.map(className => (
-            <option key={className} value={className}>
-              {className}
-            </option>
-          ))}
+          <option>CSC 308</option>
+          <option>CSC 309</option>
         </select>
       </div>
 
