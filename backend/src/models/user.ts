@@ -22,6 +22,8 @@ export const userSchema = new mongoose.Schema({
   },
 });
 
+export const User = mongoose.model("User", userSchema);
+
 /* Returns the id of the user or null if the user couldn't be created */
 export async function getIdCreateOrUpdate(
   firstName: string,
@@ -48,3 +50,4 @@ export async function getIdCreateOrUpdate(
 
   return results.id;
 }
+

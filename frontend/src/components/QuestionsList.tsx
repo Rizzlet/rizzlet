@@ -49,7 +49,7 @@ function QuestionsList() {
 
   return (
     <div>
-      <h2>Questions</h2>
+      <h2>Questions:</h2>
       <ul>
         {questions.map((question) => (
           <QuestionItem key={question._id} question={question} />
