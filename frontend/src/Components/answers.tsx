@@ -3,7 +3,7 @@ function IndividualAnswer(props: any){
    * @param indvidualOption: The actual individual answer passed down
    * @param _hidden: Passed down from answers, will hide question if not selected
  */
-  return (<div className = {`${props._hidden} transition delay-1000 hover:bg-red-600`}>
+  return (<div className = {`${props._hidden} hover:bg-red-600`}>
     <h1>{props.individualOption.answer}</h1>
   </div>);
 
@@ -23,8 +23,8 @@ export default function Answers<T extends IAnswer>(props: T){
  */
 
   const enum answerVariant{
-    hidden = "hidden",
-    visible = "visible" 
+    hidden = "hidden animate-answer-visibility-off",
+    visible = "visible animate-answer-visibility-on" 
   }
 
   const answerElements = props.answerOptions.map((option) => {return <IndividualAnswer individualOption={option} _hidden={`${(props.hidden === "visible") ? answerVariant.visible : answerVariant.hidden}`}></IndividualAnswer>;})
