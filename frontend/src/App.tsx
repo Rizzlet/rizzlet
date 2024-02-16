@@ -1,5 +1,5 @@
-import Renderer from "./Components/questionRender"
+import FlashcardField from "./Components/questionRender"
 
 export default function App() {
-  return <Renderer></Renderer>
+  return <FlashcardField></FlashcardField>
 }
