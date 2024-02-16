@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Flashcard from "./flashcards";
 import axios from "axios";
 
-export let currentCardPosition: Number = 2;
+export let currentCardPosition: number = 2;
 
 interface Question {
   _id: string;
@@ -23,7 +23,7 @@ async function fetchQuestions(): Promise<Question[]> {
   }
 }
 
-export default function Renderer(){
+export default function FlashcardField(){
 
   // function mapQuestions(questionArray: Question[]){
   //   return questionArray.map((question, index) => {return <Flashcard position={index} question={question}></Flashcard>});
@@ -42,8 +42,11 @@ export default function Renderer(){
   // }, [])
   
   const test = ["hi", "yep", "hihi"];
-  const yep = test.map((question, index) => {return <Flashcard position={index} question={question}></Flashcard>})
+
+  const list_of_flashcards = test.map((question, index) => {return <Flashcard originalPosition={index} maxPosition = {test.length - 1} question={question}></Flashcard>})
 
   
-  return <div className="flex justify-center h-dvh w-dvw items-center bg-gradient-to-br from-violet-500 to-fuchsia-500 m-0 p-0">{yep}</div>;
+  return (<div className="flex justify-center h-dvh w-dvw items-center bg-gradient-to-br from-violet-500 to-fuchsia-500 m-0 p-0">
+    {list_of_flashcards}
+  </div>);
 }
