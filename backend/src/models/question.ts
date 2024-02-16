@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import { getConnection } from "./db.js";
 
-
 export const questionSchema = new mongoose.Schema({
   type: {
     type: String,
@@ -11,6 +10,7 @@ export const questionSchema = new mongoose.Schema({
   createdBy: {
     type: mongoose.Types.ObjectId,
     required: true,
+    ref: "User",
   },
   question: {
     type: String,
@@ -22,3 +22,5 @@ export const questionSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+export const Question = mongoose.model("Question", questionSchema);
