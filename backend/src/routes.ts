@@ -1,4 +1,7 @@
 import { Application } from "express";
+
+import FetchAllHandler from "./api/questions";
+
 import passport from "passport";
 import { envVars } from "./env.js";
 import OAuth2Strategy from "passport-oauth2";
@@ -31,6 +34,6 @@ export function addRoutes(app: Application) {
   app.post("/api/auth/google", googleAuthHandler);
   app.post("/api/auth/logout", logoutHandler);
   app.post("/api/questions", submitQuestionHandler);
-  app.post("/api/hello", helloWorldHandler);
+  app.get("/api/questions", FetchAllHandler);
   app.post("/api/class", classHandler);
 }
