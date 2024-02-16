@@ -18,7 +18,7 @@ export default {
         "hover-selected-question": {'0%': {transform: 'translateY(0px)'}, '50%': {transform: 'translateY(10px)'}, '100%': {transform: 'translateY(-5px)'}},
         "answer-visibility-on": {'0%': {opacity: '0', visbility: "hidden"}, '100%': {opacity: '100%', visbility: "visible"}},
         "answer-visibility-off": {'0%': {opacity: '100%', visbility: "visible"}, '100%': {opacity: '0', visbility: "hidden"}}
-      }
+      },
 
       colors: {
         primary: {

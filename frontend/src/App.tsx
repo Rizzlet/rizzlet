@@ -1,9 +1,7 @@
 
 import FlashcardField from "./Components/questionRender"
-
-
 import React from "react";
-import QuestionsList from "./components/QuestionsList";
+import QuestionsList from "./Components/QuestionsList";
 
 export default function App() {
   return (
