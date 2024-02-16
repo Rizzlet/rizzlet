@@ -5,6 +5,10 @@ type EnvVars = {
   PORT: number;
   HOST: string;
   DB_URL: string;
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
+  FRONTEND_BASE_URL: string;
+  JWT_SECRET: string;
 };
 
 const envSchema = joi
@@ -12,16 +16,23 @@ const envSchema = joi
     PORT: joi.number().positive().default(8000),
     HOST: joi.string().default("127.0.0.1"),
     DB_URL: joi.string().default("mongodb://127.0.0.1:27017/rizzlet"),
+    GOOGLE_CLIENT_ID: joi.string().required(),
+    GOOGLE_CLIENT_SECRET: joi.string().required(),
+    FRONTEND_BASE_URL: joi.string().uri().default("http://localhost:3000"),
+    JWT_SECRET: joi.string().required(),
   })
   .unknown();
 
 dotenv.config();
 
-const { error, value: envVars } = envSchema.validate(process.env);
+const { error, value: maybeEnvVars } = envSchema.validate(process.env);
 
 if (error) {
-  throw new Error(`Env Vars validation error: ${error.message}`);
+  console.error(`Env Vars validation error: ${error.message}`);
+  process.exit(1);
 }
+
+const envVars = maybeEnvVars as EnvVars;
 
 // Export so other files can use type-checked env vars
 export { envVars };

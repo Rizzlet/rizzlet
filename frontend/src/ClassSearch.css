@@ -1,0 +1,75 @@
+.class-search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh; /* height */
+  padding-top: 10px; /* top padding */
+  margin-top: auto; /* Push to the top */
+}
+
+.header-container {
+  background-color: #4caf50; /* Green background */
+  padding: 20px; /* Green box width */
+  width: 50%; /* Adjust width as a percentage or use specific values like pixels */
+  max-width: 1000px; /* Optional: Add a max-width to limit the width further */
+  box-sizing: border-box; /* Include padding in width calculation */
+  text-align: center; /* Center align the text horizontally */
+  margin-top: -70px; /* Adjust margin top to reduce the gap */
+}
+
+.heading {
+  color: #ffffff; /* White text color */
+  font-size: 32px; /* Adjust font size */
+}
+
+select {
+  padding: 8px 12px; /* Add padding */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 4px; /* Add border-radius */
+  background-color: #fff; /* Set background color */
+  font-size: 16px; /* Set font size */
+  color: #333; /* Set text color */
+}
+
+/* Apply styles when the dropdown is hovered over */
+select:hover {
+  border-color: #999; /* Change border color */
+}
+
+/* Apply styles when the dropdown is focused */
+select:focus {
+  outline: none; /* Remove default outline */
+  border-color: #555; /* Change border color */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1); /* Add box shadow */
+}
+
+.dropdown-container {
+  position: relative; /* Change to relative positioning */
+  margin: 20px auto; /* Center the dropdown container */
+  width: fit-content; /* Set width to fit the content */
+  top: 500px;
+}
+
+.dropdown {
+  width: 500px; /* Adjust width as needed */
+  margin-left: auto; /* Center the dropdown within its container */
+  margin-right: auto;
+}
+
+.dropdown-title {
+  font-size: 16px; /* Adjust font size as needed */
+  color: #666; /* Adjust color as needed */
+  margin-bottom: 5px; /* Adjust margin bottom as needed */
+}
+
+.header {
+  padding: 5px 20px; /* Adjust padding as needed */
+  background-color:salmon  
+}
+
+.brand {
+  font-size: 40px; /* Adjust font size as needed */
+  font-weight: bold;
+  color: #4caf50;
+}

@@ -7,13 +7,14 @@ servers:
   - url: http://localhost:8000/api/
 tags:
   - name: Questions
+  - name: Auth
 paths:
-  /hello:
+  /class:
     post:
       tags:
         - Sample
-      summary: Say hello!
-      operationId: hello
+      summary: Add a class!
+      operationId: class
       requestBody:
         content:
           application/json:
@@ -23,7 +24,7 @@ paths:
                 name:
                   type: string
             example:
-              name: "Dylan"
+              name: "CSC 308"
 
         required: true
       responses:
@@ -32,8 +33,8 @@ paths:
           content:
             text/plain; charset=utf-8:
               examples:
-                Hello Dylan:
-                  value: '"Hello Dylan!"'
+                Class CSC 430:
+                  value: '"Class CSC 308!"'
         "422":
           description: Validation exception
         "500":
@@ -65,6 +66,46 @@ paths:
           description: Validation exception
         "500":
           description: Server Exception
+  /auth/google:
+    post:
+      tags:
+        - Auth
+      description: Try to login with google's auth code
+      operationId: authGoogle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                authorizationCode:
+                  type: string
+        required: true
+      responses:
+        "200":
+          description: Auth Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  email:
+                    type: string
+                  id:
+                    type: string
+                  sub:
+                    type: string
+        "400":
+          description: Auth code validation error
+        "422":
+          description: Validation exception
+        "500":
+          description: Server exception
+
 components:
   schemas:
     Question:
