@@ -1,7 +1,5 @@
 
 import FlashcardField from "./Components/questionRender"
-
-
 import React from "react";
 import QuestionsList from "./Components/QuestionsList";
 
