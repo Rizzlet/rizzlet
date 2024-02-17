@@ -1,6 +1,6 @@
 import { Application } from "express";
 
-import FetchAllHandler from "./api/questions";
+import FetchAllHandler from "./api/questions.js";
 
 import passport from "passport";
 import { envVars } from "./env.js";

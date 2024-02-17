@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { getConnection } from "./db.js";
+// import { getConnection } from "./db.js";
 
 export const questionSchema = new mongoose.Schema({
   type: {
