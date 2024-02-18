@@ -16,6 +16,7 @@
   box-sizing: border-box; /* Include padding in width calculation */
   text-align: center; /* Center align the text horizontally */
   margin-top: -70px; /* Adjust margin top to reduce the gap */
+  border-radius: 15px; /* Add border radius to make the edges less sharp */
 }
 
 .heading {

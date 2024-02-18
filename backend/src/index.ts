@@ -32,17 +32,20 @@ app.use(cookieParser());
 
 // So we can accept json in the body of requests
 app.use(express.json());
+/*
 app.use(
   cors({
     credentials: true,
     origin: envVars.FRONTEND_BASE_URL,
   }),
 );
+*/
 
+app.use(cors()); 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 addRoutes(app);
 
 app.listen(envVars.PORT, () => {
-  console.log(`Server running : http://${envVars.HOST}:${envVars.PORT}`);
+  console.log(`Server running : http://${envVars.HOST}:${envVars.PORT}/api-docs`);
 });
