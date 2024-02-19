@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import "./ClassSearch.css"; 
+import "./ClassSearch.css";
 import axios from "axios";
 
-export default function ClassSearch() { 
-  
+export default function ClassSearch() {
   const [classNames, setClassNames] = useState<string[]>([]);
+  const [selectedClasses, setSelectedClasses] = useState<string[]>([]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     // Fetch class names from backend when component mounts
@@ -20,8 +21,23 @@ export default function ClassSearch() {
       console.error("Error fetching class names:", error);
     }
   };
-  
-  
+
+  const handleClassSelect = (className: string) => {
+    // Check if the class is already selected
+    const index = selectedClasses.indexOf(className);
+    if (index === -1) {
+      // If not selected, add it to the list
+      setSelectedClasses([...selectedClasses, className]);
+    } else {
+      // If already selected, remove it from the list
+      setSelectedClasses(selectedClasses.filter((name) => name !== className));
+    }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <div>
       {/* Header section */}
@@ -29,33 +45,58 @@ export default function ClassSearch() {
         <div className="brand">Rizzlet</div>
       </div>
 
-      {/* Dropdown box */}
+      {/* Custom dropdown box */}
       <div className="dropdown-container">
-        <div className="dropdown-title">Classes</div>
-        <select className="dropdown">
-          {/* Map over classNames array to populate dropdown options */}
-          {classNames.map((className, index) => (
-            <option key={index} value={className}>
-              {className}
-            </option>
-          ))}
-          <option>
-            
-          </option>
-        </select>
+        <div className="dropdown-title" onClick={toggleDropdown}>
+          Classes
+        </div>
+        {isDropdownOpen && (
+          <div className="dropdown">
+            {classNames.map((className, index) => (
+              <div key={index} className="dropdown-item">
+                <input
+                  className="checkbox"
+                  type="checkbox"
+                  value={className}
+                  checked={selectedClasses.includes(className)}
+                  onChange={() => handleClassSelect(className)}
+                />
+                <label>{className}</label>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Green background container */}
       <div className="class-search-container">
         <div className="header-container">
-
           {/* Heading */}
           <div className="heading-container">
             <h1 className="heading">Class Search</h1>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
 
+      {/* Container for the title "Selected Classes" */}
+    {selectedClasses.length > 0 && (
+      <div className="selected-classes-title-container">
+      <div className="selected-classes-title">
+        Selected Classes
+      </div>
+    </div>
+    )}
+
+    {/* Container for the list of selected classes */}
+    {selectedClasses.length > 0 && (
+      <div className="selected-classes-container">
+        <ul>
+          {selectedClasses.map((className, index) => (
+            <li key={index}>{className}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+);
+}

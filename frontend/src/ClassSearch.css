@@ -19,6 +19,17 @@
   border-radius: 15px; /* Add border radius to make the edges less sharp */
 }
 
+.header {
+  padding: 5px 20px; /* Adjust padding as needed */
+  background-color:salmon  
+}
+
+.brand {
+  font-size: 40px; /* Adjust font size as needed */
+  font-weight: bold;
+  color: #4caf50;
+}
+
 .heading {
   color: #ffffff; /* White text color */
   font-size: 32px; /* Adjust font size */
@@ -47,30 +58,112 @@ select:focus {
 
 .dropdown-container {
   position: relative; /* Change to relative positioning */
+  display: inline-block;
+  cursor: pointer;
   margin: 20px auto; /* Center the dropdown container */
   width: fit-content; /* Set width to fit the content */
-  top: 500px;
-}
-
-.dropdown {
-  width: 500px; /* Adjust width as needed */
-  margin-left: auto; /* Center the dropdown within its container */
-  margin-right: auto;
+  top: 600px;
+  left: 50%; /* Move container to the middle */
+  transform: translateX(-50%); /* Center container */
 }
 
 .dropdown-title {
-  font-size: 16px; /* Adjust font size as needed */
+  font-size: 20px; /* Adjust font size as needed */
   color: #666; /* Adjust color as needed */
   margin-bottom: 5px; /* Adjust margin bottom as needed */
+  background-color: #f1f1f1;
+  padding: 15px;
+  width: 700px;
+  display: flex;
+  justify-content: space-between; /* Horizontally center the content */
+  align-items: center; /* Vertically center the content */
 }
 
-.header {
-  padding: 5px 20px; /* Adjust padding as needed */
-  background-color:salmon  
+.dropdown-title::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #666; /* Arrow color */
 }
 
-.brand {
-  font-size: 40px; /* Adjust font size as needed */
+.dropdown {
+  display: none;
+  position: absolute;
+  left: 50%; /* Position the left edge of the dropdown at the center */
+  transform: translateX(-50%); /* Translate the dropdown back by half of its width */
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border: 1px solid #ddd;
+  z-index: 1;
+  width: 700px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 5px; /* Adjust the padding to add space */
+}
+
+.checkbox {
+  margin-right: 8px; /* Adjust the margin to add space */
+}
+
+.dropdown-container:hover .dropdown {
+  display: block;
+}
+
+.selected-classes-title {
+  background-color: salmon; /* Pink background color */
+  padding: 10px; /* Add padding */
+  width: fit-content; /* Set width to fit content */
+  border-radius: 5px; /* Add border radius */
+  color: white; /* Set font color to white */
+  display: flex; /* Use flexbox to center vertically */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  width: 700px;
+}
+
+.selected-classes-title-container {
+  text-align: center; /* Center the title */
+  margin-top: 20px; /* Adjust margin as needed */
+  position: fixed; /* Fixed positioning */
+  top: 25%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Translate to center */
+}
+
+.selected-classes-container {
+  position: absolute; /* Fixed positioning */
+  background-color: salmon; /* Salmon pink background */
+  padding: 10px; /* Add padding */
+  border-radius: 5px; /* Add border radius */
+  top: 37%; /* Adjust top position as needed */
+  left: 50%; /* Position at the center horizontally */
+  transform: translate(-50%, -50%); /* Center horizontally and vertically */
+  display: flex; /* Use flexbox */
+  flex-wrap: wrap; /* Allow flex items to wrap to the next line */
+  justify-content: center; /* Center the items horizontally */
+  width: 700px;
+  align-items: flex-start;
+}
+
+.selected-classes-container ul {
+  padding: 40px;;
+  display: flex; /* Use flexbox */
+  flex-wrap: wrap; /* Allow flex items to wrap to the next line */
+  justify-content: center; /* Center the items horizontally */
+}
+
+.selected-classes-container ul li {
+  color: #fff; /* White text color */
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  padding: 10px;
+  margin: 8px;
   font-weight: bold;
-  color: #4caf50;
 }
