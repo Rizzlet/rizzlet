@@ -13,8 +13,8 @@ export default function Flashcard(props: any){
   
   // Because of how tailwind works, styles have to be predefined so that it can be dynamically changed
   const enum selectedVariants{
-    selected = "bg-pink-400 rounded-lg size-2/5 shadow-2xl cursor-pointer absolute",
-    notSelected = "bg-red-50 rounded-lg size-2/5 shadow-2xl cursor-pointer absolute",
+    selected = "bg-pink-400 rounded-lg size-3/5 shadow-2xl cursor-pointer absolute",
+    notSelected = "bg-red-50 rounded-lg size-3/5 shadow-2xl cursor-pointer absolute",
 
     notSelectedhidden = "bg-red-50 rounded-lg size-2/5 shadow-2xl cursor-pointer absolute hidden",
     notSelected0 = "bg-red-50 rounded-lg size-2/5 shadow-2xl cursor-pointer absolute -translate-y-0 translate-x-0",
