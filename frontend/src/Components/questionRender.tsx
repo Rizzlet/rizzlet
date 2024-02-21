@@ -13,7 +13,7 @@ interface Question {
 // Get questions and answers
 async function fetchQuestions(): Promise<Question[]> {
   try {
-    const response = await axios.get("/api/questions");
+    const response = await axios.get("/api/question");
     return response.data;
   } catch (error) {
     console.error("Error fetching questions:", error);

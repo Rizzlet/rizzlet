@@ -4,7 +4,11 @@ import axios from "axios";
 interface Question {
   _id: string;
   type: string;
-  createdBy: string;
+  createdBy: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  };
   question: string;
   answer: boolean;
 }
@@ -18,21 +22,11 @@ interface User {
 
 async function fetchQuestions(): Promise<Question[]> {
   try {
-    const response = await axios.get("/api/questions");
+    const response = await axios.get("/api/question");
     return response.data;
   } catch (error) {
     console.error("Error fetching questions:", error);
     return [];
-  }
-}
-
-async function fetchUser(userId: string): Promise<User | null> {
-  try {
-    const response = await axios.get(`/api/users/${userId}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching user ${userId}`, error);
-    return null;
   }
 }
 
@@ -64,20 +58,13 @@ interface QuestionItemProps {
 }
 
 function QuestionItem({ question }: QuestionItemProps) {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    async function fetchUserData() {
-      const userData = await fetchUser(question.createdBy);
-      setUser(userData);
-    }
-    fetchUserData();
-  }, [question.createdBy]);
-
   return (
     <li>
       <p>Question: {question.question}</p>
-      <p>Submitted by: {user ? `${user.firstName} ${user.lastName}` : "Loading..."}</p>
+      <p>
+        Submitted by:{" "}
+        {`${question.createdBy.firstName} ${question.createdBy.lastName}`}
+      </p>
     </li>
   );
 }

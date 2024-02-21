@@ -14,7 +14,7 @@ export default function ClassSearch() {
 
   const fetchClassNames = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/classes");
+      const response = await axios.get("http://localhost:8000/api/class");
       console.log("Response from backend:", response);
       setClassNames(response.data);
     } catch (error) {
