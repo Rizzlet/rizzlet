@@ -9,7 +9,7 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "node .",
-    "nodemon": "nodemon -w .env -w src/ -e ts --exec \"yarn start\"",
+    "nodemon": "nodemon -w .env -w swagger.yaml -w src/ -e ts --exec \"yarn start\"",
     "pretty": "prettier --write .",
     "lint": "eslint --ignore-path .eslintignore src",
     "test": "jest"

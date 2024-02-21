@@ -36,8 +36,8 @@ export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
   app.post("/api/auth/google", googleAuthHandler);
   app.post("/api/auth/logout", logoutHandler);
-  app.post("/api/questions", submitQuestionHandler);
-  app.get("/api/questions", fetchAllQuestionsHandler);
+  app.post("/api/question", requireAuth, submitQuestionHandler);
+  app.get("/api/question", fetchAllQuestionsHandler);
   app.post("/api/class", classHandler);
-  app.get("/api/classes", fetchClassesHandler);
+  app.get("/api/class", fetchClassesHandler);
 }

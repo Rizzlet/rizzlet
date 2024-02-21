@@ -7,7 +7,7 @@ servers:
   - url: http://localhost:8000/api/
 tags:
   - name: Questions
-  - name: Classes
+  - name: Class
   - name: Auth
 paths:
   /class:
@@ -29,13 +29,26 @@ paths:
 
         required: true
       responses:
+        "201":
+          description: Successful operation
+        "422":
+          description: Validation exception
+        "500":
+          description: Server Exception
+    get:
+      tags:
+        - Class
+      summary: Get all classes
+      operationId: getAllClasses
+      responses:
         "200":
           description: Successful operation
           content:
-            text/plain; charset=utf-8:
-              examples:
-                Class CSC 430:
-                  value: '"Class CSC 430!"'
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
         "422":
           description: Validation exception
         "500":
@@ -74,7 +87,7 @@ paths:
     post:
       tags:
         - Questions
-      description: Add a given question to the database
+      summary: Add a given question to the database
       operationId: addQuestion
       requestBody:
         content:
@@ -83,7 +96,7 @@ paths:
               $ref: "#/components/schemas/Question"
         required: true
       responses:
-        "200":
+        "201":
           description: Successful operation
           content:
             application/json:
@@ -96,10 +109,12 @@ paths:
           description: Validation exception
         "500":
           description: Server Exception
+        "401":
+          description: Unauthorized
     get:
       tags:
         - Questions
-      description: Get all questions
+      summary: Get all questions
       operationId: getAllQuestions
       responses:
         "200":
@@ -108,8 +123,8 @@ paths:
             application/json:
               schema:
                 type: array
-                  items:
-                    $ref: "#/components/schemas/Question"
+                items:
+                  $ref: "#/components/schemas/QuestionWithName"
         "422":
           description: Validation exception
         "500":
@@ -118,7 +133,7 @@ paths:
     post:
       tags:
         - Auth
-      description: Try to login with google's auth code
+      summary: Try to login with google's auth code
       operationId: authGoogle
       requestBody:
         content:
@@ -153,9 +168,44 @@ paths:
           description: Validation exception
         "500":
           description: Server exception
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout of Rizzlet
+      operationId: logout
+      responses:
+        "204":
+          description: Logout Success
 
 components:
   schemas:
+    QuestionWithName:
+      required:
+        - question
+        - answer
+        - createdBy
+      type: object
+      properties:
+        _id:
+          type: string
+        type:
+          type: string
+          enum:
+            - true/false
+        question:
+          type: string
+        answer:
+          type: boolean
+        createdBy:
+          type: object
+          properties:
+            _id:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
     Question:
       required:
         - question

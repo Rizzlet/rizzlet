@@ -14,7 +14,7 @@ const bodySchema = joi.object<classBody, true>({
 export async function fetchClassesHandler(req: Request, res: Response) {
   try {
     // Fetch class names from the database
-    const classNames = await getClassNames(); // You need to implement this function in your class.ts file
+    const classNames = await getClassNames();
 
     // Send the class names as a JSON response
     res.json(classNames);
@@ -34,5 +34,5 @@ export async function classHandler(req: Request, res: Response) {
 
   await newClass(body.name);
 
-  res.send(`Class ${body.name}!`);
+  res.sendStatus(201);
 }
