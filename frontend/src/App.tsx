@@ -1,13 +1,11 @@
-
-import FlashcardField from "./Components/questionRender"
+import FlashcardField from "./components/questionRender";
 import React from "react";
-import QuestionsList from "./Components/QuestionsList";
+import QuestionsList from "./components/QuestionsList";
 
 export default function App() {
   return (
     <div>
-    <h1 className="text-3xl font-bold bg-green-700">Rizzlet!</h1>
+      <h1 className="text-3xl font-bold bg-green-700">Rizzlet!</h1>
     </div>
   );
-
 }
