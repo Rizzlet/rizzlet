@@ -1,15 +1,9 @@
 import { Request, Response } from "express";
 import { Question } from "../models/question.js";
 
-
-export default function FetchAllHandler(res: Response){
-  try{
-    res.send(Question.find());
-    res.status(200).send("Fetching success");
-  }
-  catch(error){
-    res.status(500).send("Fetching failed");
-  }
+export async function fetchAllQuestionsHandler(_req: Request, res: Response) {
+  const questions = await Question.find().populate("createdBy").exec();
+  res.send(questions);
 }
 
 export async function submitQuestionHandler(req: Request, res: Response) {
@@ -30,4 +24,3 @@ export async function submitQuestionHandler(req: Request, res: Response) {
     res.status(500).json({ error: "Internal server error" });
   }
 }
-

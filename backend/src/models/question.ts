@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-// import { getConnection } from "./db.js";
+import { getConnection } from "./db.js";
 
 export const questionSchema = new mongoose.Schema({
   type: {
@@ -23,4 +23,7 @@ export const questionSchema = new mongoose.Schema({
   },
 });
 
-export const Question = mongoose.model("Question", questionSchema);
+export const Question = (await getConnection()).model(
+  "Question",
+  questionSchema,
+);

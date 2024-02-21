@@ -22,7 +22,7 @@ export const userSchema = new mongoose.Schema({
   },
 });
 
-export const User = mongoose.model("User", userSchema);
+export const User = (await getConnection()).model("User", userSchema);
 
 /* Returns the id of the user or null if the user couldn't be created */
 export async function getIdCreateOrUpdate(
@@ -31,10 +31,6 @@ export async function getIdCreateOrUpdate(
   email: string,
   googleUserId: string,
 ): Promise<string | null> {
-  const conn = await getConnection();
-
-  const User = conn.model("User", userSchema);
-
   const userDetails = { firstName, lastName, googleUserId, email };
 
   // So we can either create a new user or update an existing one
@@ -50,4 +46,3 @@ export async function getIdCreateOrUpdate(
 
   return results.id;
 }
-

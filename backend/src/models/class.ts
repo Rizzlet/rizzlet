@@ -9,11 +9,9 @@ export const classSchema = new mongoose.Schema({
   },
 });
 
+const Class = (await getConnection()).model("Class", classSchema);
+
 export async function newClass(name: string) {
-  const conn = await getConnection();
-
-  const Class = conn.model("Class", classSchema);
-
   const newClass = new Class({ name });
 
   await newClass.save();

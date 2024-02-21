@@ -9,11 +9,9 @@ export const helloSchema = new mongoose.Schema({
   },
 });
 
+export const Hello = (await getConnection()).model("Hello", helloSchema);
+
 export async function recordHello(name: string) {
-  const conn = await getConnection();
-
-  const Hello = conn.model("Hello", helloSchema);
-
   const newHello = new Hello({ name });
 
   await newHello.save();
