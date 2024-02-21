@@ -9,6 +9,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import Login from "./Login";
 import { AuthProvider } from "./AuthContext";
 import { AuthGuard } from "./AuthenticationGuard";
+import Flashcard from "./Components/flashcards";
+import FlashcardField from "./Components/questionRender";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/answerQuestion",
+    element: <FlashcardField />
   },
   {
     path: "/protected",
