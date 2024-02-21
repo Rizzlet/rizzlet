@@ -13,8 +13,8 @@ paths:
   /class:
     post:
       tags:
-        - Classes
-      summary: Add a class!
+        - Class
+      summary: Add a class
       operationId: class
       requestBody:
         content:
@@ -35,7 +35,37 @@ paths:
             text/plain; charset=utf-8:
               examples:
                 Class CSC 430:
-                  value: '"Class CSC 308!"'
+                  value: '"Class CSC 430!"'
+        "422":
+          description: Validation exception
+        "500":
+          description: Server Exception
+  /hello:
+    post:
+      tags:
+        - hello
+      summary: Say hello
+      operationId: hello
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+            example:
+              name: "Dylan"
+
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                My name is Dylan:
+                  value: '"My name is Dylan!"'
         "422":
           description: Validation exception
         "500":

@@ -9,13 +9,25 @@
 }
 
 .header-container {
-  background-color: #4caf50; /* Green background */
+  background-color: #AED5A6; /* Green background */
   padding: 20px; /* Green box width */
   width: 50%; /* Adjust width as a percentage or use specific values like pixels */
   max-width: 1000px; /* Optional: Add a max-width to limit the width further */
   box-sizing: border-box; /* Include padding in width calculation */
   text-align: center; /* Center align the text horizontally */
   margin-top: -70px; /* Adjust margin top to reduce the gap */
+  border-radius: 15px; /* Add border radius to make the edges less sharp */
+}
+
+.header {
+  padding: 5px 20px; /* Adjust padding as needed */
+  background-color: cornflowerblue
+}
+
+.brand {
+  font-size: 40px; /* Adjust font size as needed */
+  font-weight: bold;
+  color: white
 }
 
 .heading {
@@ -46,30 +58,114 @@ select:focus {
 
 .dropdown-container {
   position: relative; /* Change to relative positioning */
+  display: inline-block;
+  cursor: pointer;
   margin: 20px auto; /* Center the dropdown container */
   width: fit-content; /* Set width to fit the content */
-  top: 500px;
-}
-
-.dropdown {
-  width: 500px; /* Adjust width as needed */
-  margin-left: auto; /* Center the dropdown within its container */
-  margin-right: auto;
+  top: 600px;
+  left: 50%; /* Move container to the middle */
+  transform: translateX(-50%); /* Center container */
 }
 
 .dropdown-title {
-  font-size: 16px; /* Adjust font size as needed */
+  font-size: 20px; /* Adjust font size as needed */
   color: #666; /* Adjust color as needed */
   margin-bottom: 5px; /* Adjust margin bottom as needed */
+  background-color: #f1f1f1;
+  padding: 15px;
+  width: 700px;
+  display: flex;
+  justify-content: space-between; /* Horizontally center the content */
+  align-items: center; /* Vertically center the content */
 }
 
-.header {
-  padding: 5px 20px; /* Adjust padding as needed */
-  background-color:salmon  
+.dropdown-title::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #666; /* Arrow color */
 }
 
-.brand {
-  font-size: 40px; /* Adjust font size as needed */
-  font-weight: bold;
-  color: #4caf50;
+.dropdown {
+  display: none;
+  position: absolute;
+  left: 50%; /* Position the left edge of the dropdown at the center */
+  transform: translateX(-50%); /* Translate the dropdown back by half of its width */
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border: 1px solid #ddd;
+  z-index: 1;
+  width: 700px;
 }
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 5px; /* Adjust the padding to add space */
+}
+
+.checkbox {
+  margin-right: 8px; /* Adjust the margin to add space */
+}
+
+.dropdown-container:hover .dropdown {
+  display: block;
+}
+
+.selected-classes-title {
+  background-color: cornflowerblue; /* Pink background color */
+  padding: 10px; /* Add padding */
+  border-radius: 50px; /* Add border radius */
+  color: white; /* Set font color to white */
+  width: 700px;
+}
+
+.selected-classes-title-container {
+  position: absolute;
+  text-align: center; /* Center the title */
+  margin-top: 1%; /* Adjust margin as needed */
+  top: 35%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -100%); /* Translate to center */
+
+}
+
+.selected-classes-container {
+  position: absolute; /* Fixed positioning */
+  background-color: cornflowerblue; /* Salmon pink background */
+  border-radius: 5px; /* Add border radius */
+  top: 40%; /* Adjust top position as needed */
+  left: 50%; /* Position at the center horizontally */
+  transform: translate(-50%, 0%); /* Center horizontally and vertically */
+  display: flex; /* Use flexbox */
+  flex-wrap: wrap; /* Allow flex items to wrap to the next line */
+  justify-content: center; /* Center the items horizontally */
+  width: 700px;
+}
+
+.selected-classes-container ul {
+  padding: 40px;;
+  display: flex; /* Use flexbox */
+}
+
+.selected-classes-container ul li {
+  color: #666; /* Text color */
+  background-color: #ddd; /* Background color */
+  border: 1px solid #ccc; /* Border color */
+  border-radius: 10px; /* Border radius */
+  margin-bottom: 10px; /* Margin bottom */
+  padding: 10px; /* Padding */
+  margin: 10px; /* Margin */
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Shadow */
+}
+
+body {
+  background: linear-gradient(to bottom right, #f2e6ff, #cbf5da); /* Gradient background */
+}
+
+
+
+
