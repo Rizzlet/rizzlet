@@ -39,12 +39,12 @@ export default function ClassSearch() {
   };
 
   return (
-    <div>
+    <div className="class-search-background"> {/*gradient background*/}
       {/* Header section */}
       <div className="header">
         <div className="brand">Rizzlet</div>
       </div>
-
+  
       {/* Custom dropdown box */}
       <div className="dropdown-container">
         <div className="dropdown-title" onClick={toggleDropdown}>
@@ -67,7 +67,7 @@ export default function ClassSearch() {
           </div>
         )}
       </div>
-
+  
       {/* Green background container */}
       <div className="class-search-container">
         <div className="header-container">
@@ -77,14 +77,14 @@ export default function ClassSearch() {
           </div>
         </div>
       </div>
-
+  
       {/* Container for the title "Selected Classes" */}
       {selectedClasses.length > 0 && (
         <div className="selected-classes-title-container">
           <div className="selected-classes-title">Selected Classes</div>
         </div>
       )}
-
+  
       {/* Container for the list of selected classes */}
       {selectedClasses.length > 0 && (
         <div className="selected-classes-container">
@@ -96,5 +96,5 @@ export default function ClassSearch() {
         </div>
       )}
     </div>
-  );
+  );  
 }

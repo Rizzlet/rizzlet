@@ -162,7 +162,7 @@ select:focus {
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Shadow */
 }
 
-body {
+.class-search-background {
   background: linear-gradient(to bottom right, #f2e6ff, #cbf5da); /* Gradient background */
 }
 
