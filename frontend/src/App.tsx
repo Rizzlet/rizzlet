@@ -1,11 +1,16 @@
 import FlashcardField from "./components/questionRender";
 import React from "react";
 import QuestionsList from "./components/QuestionsList";
+import LandingPage from "./pages/LandingPage";
+import FrontPage from "./pages/FrontPage";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 export default function App() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold bg-green-700">Rizzlet!</h1>
-    </div>
+    <Routes>
+      <Route path="/" element={<FrontPage />} />
+    </Routes>
   );
 }
+
+/**       <Route path="/" element={<LandingPage />} /> */
