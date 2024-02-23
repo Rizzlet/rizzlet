@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Flashcard from "./flashcards";
+import Flashcard from "../components/Flashcard";
 import axios from "axios";
 
 interface Question {
@@ -21,7 +21,7 @@ async function fetchQuestions(): Promise<Question[]> {
   }
 }
 
-export default function FlashcardField() {
+export default function AnswerQuestion() {
   let [questionToRender, changeQuestionToRender] = useState(0);
 
   let animationDirection = useRef("none");

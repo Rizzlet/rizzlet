@@ -1,6 +1,6 @@
 import { CodeResponse, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../context/auth/AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -99,9 +99,9 @@ export default function LoginPage() {
                   <g
                     id="Icons"
                     stroke="none"
-                    stroke-width="1"
+                    strokeWidth="1"
                     fill="none"
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                   >
                     {" "}
                     <g

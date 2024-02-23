@@ -1,15 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import App from "./App";
-import { UserInput } from "./TakeUserInput";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import ClassSearch from "./ClassSearch";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import Login from "./Login";
-import { AuthProvider } from "./AuthContext";
-import { AuthGuard } from "./AuthenticationGuard";
-import FlashcardField from "./components/questionRender";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+import { AuthProvider } from "./context/auth/AuthContext";
+import { AuthGuard } from "./context/auth/AuthenticationGuard";
+
+import ClassSearch from "./pages/ClassSearch";
+import QuestionSubmission from "./pages/QuestionSubmission";
+import App from "./pages/Homepage";
+import Login from "./pages/Login";
+import FlashcardField from "./pages/AnswerQuestion";
+
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +25,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/submitQuestion",
-    element: <UserInput />,
+    element: <QuestionSubmission />,
   },
   {
     path: "/login",
