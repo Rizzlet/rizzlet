@@ -5,9 +5,9 @@ import {
   InputQuestion,
   TrueAndFalseButtons,
   Buttons,
-} from "./SubmitQuestion";
+} from "../components/SubmitQuestion";
 
-export function UserInput() {
+export default function QuestionSubmission() {
   const [state, setState] = useState({
     type: "",
     createdBy: "",
