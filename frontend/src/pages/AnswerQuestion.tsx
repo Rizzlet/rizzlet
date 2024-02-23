@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Flashcard from "../components/Flashcard";
+import Flashcard from "../components/Flashcard"
 import axios from "axios";
 
 interface Question {
@@ -13,7 +13,7 @@ interface Question {
 // Get questions and answers
 async function fetchQuestions(): Promise<Question[]> {
   try {
-    const response = await axios.get("/api/question");
+    const response = await axios.get("http://127.0.0.1:8000/api/question");
     return response.data;
   } catch (error) {
     console.error("Error fetching questions:", error);
@@ -21,8 +21,12 @@ async function fetchQuestions(): Promise<Question[]> {
   }
 }
 
-export default function AnswerQuestion() {
+export default function FlashcardField() {
+  // Used to determine what flashcards is shown on screen. Represents the index of the array of flashcards
   let [questionToRender, changeQuestionToRender] = useState(0);
+
+  // The list of questions in database
+  let [listOfQuestions, setListofQuestions] = useState<Question[]>([]);
 
   let animationDirection = useRef("none");
 
@@ -30,44 +34,36 @@ export default function AnswerQuestion() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  // function mapQuestions(questionArray: Question[]){
-  //   return questionArray.map((question, index) => {return <Flashcard position={index} question={question}></Flashcard>});
-  // }
+  function mapQuestions(questionArray: Question[]){
+    return questionArray.map((questionElement, index) => {return <Flashcard
+    question={questionElement.question}
+    rightAnswer={questionElement.answer}
+    animation={animationDirection.current}
+    currentCard={questionToRender}
+    originalPosition={index}></Flashcard>});
+  }
 
-  // let mapping;
-  // useEffect(() => {
-  //   fetchQuestions().then(result => {
-  //     if (result){
-  //       mapping = mapQuestions(result)
-  //     }
-  //     else{
-  //       mapping = <div></div>;
-  //     }
-  //   })
-  // }, [])
-
-  const test = ["hi", "yep", "hihi", "nope", "oop"];
-
-  const list_of_flashcards = test.map((question, index) => {
-    return (
-      <Flashcard
-        originalPosition={index}
-        question={question}
-        animation={animationDirection.current}
-        currentCard={questionToRender}
-      ></Flashcard>
-    );
-  });
+  
+  useEffect(() => {
+    fetchQuestions().then(result => {
+      if (result){
+        setListofQuestions(result);
+      }
+      else{
+        console.log("Error loading questions");
+      }
+    })
+  }, [])
 
   return (
     <div className="relative flex justify-center h-screen w-screen items-center bg-gradient-to-br from-green-900 via-green-400 to bg-green-600 m-0 p-0">
       <div className="relative h-3/5 w-3/5 flex justify-center items-center m-0 p-0">
-        {list_of_flashcards[questionToRender]}
+        {mapQuestions(listOfQuestions)[questionToRender]}
 
         <button
           className="absolute w-10 h-10 left-full"
           onClick={() => {
-            if (questionToRender === test.length) {
+            if (questionToRender === listOfQuestions.length) {
               changeQuestionToRender(0);
             } else {
               changeQuestionToRender(questionToRender++);
@@ -85,7 +81,7 @@ export default function AnswerQuestion() {
           className="absolute h-10 w-10 right-full"
           onClick={() => {
             if (questionToRender === -1) {
-              changeQuestionToRender(test.length - 1);
+              changeQuestionToRender(listOfQuestions.length - 1);
             } else {
               changeQuestionToRender(questionToRender--);
             }
@@ -101,3 +97,4 @@ export default function AnswerQuestion() {
     </div>
   );
 }
+

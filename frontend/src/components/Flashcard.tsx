@@ -4,7 +4,7 @@ import Answers from "./Answers";
 export default function Flashcard(props: any) {
   /**
    * @param question: the question that the user writes
-   * @param type: passed down to answers component
+   * @param rightAnswer: passed down to answers component
    * @param animation: Will define what direction the animation will play when rendered
    * @param currentCard: Every flashcard keeps a reference to the current card being rendered which is just an index
    * @param originalPosition: A flashcards unique index
