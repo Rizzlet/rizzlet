@@ -40,14 +40,8 @@ export default function Flashcard(props: any) {
         <h1>{props.question}</h1>
       </div>
       <Answers
-        type={props.type}
         hidden={`${selected ? "visible" : "hidden"}`}
-        answerOptions={[
-          { answer: "lol" },
-          { answer: "ahhhhhhhhh" },
-          { answer: "touhou" },
-          { answer: "lol" },
-        ]}
+        rightAnswer = {props.rightAnswer}
       ></Answers>
     </div>
   );
