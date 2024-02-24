@@ -7,7 +7,7 @@ export default function App() {
   return (
     <div>
       <NavBar />
-      <h1 className="text-3xl font-bold bg-green-700">Rizzlet!</h1>
+      <p className="text-3xl font-bold">Rizzlet!</p>
     </div>
   );
 }
