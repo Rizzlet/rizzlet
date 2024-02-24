@@ -20,6 +20,11 @@ export const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  score: {
+    type: Number,
+    require: true,
+  }
+
 });
 
 export const User = (await getConnection()).model("User", userSchema);
