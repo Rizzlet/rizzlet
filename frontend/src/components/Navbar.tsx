@@ -1,9 +1,17 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../context/auth/AuthContext";
+
+const links = [
+  { to: "/", text: "Home" },
+  { to: "/login", text: "About" },
+];
 
 export default function NavBar() {
   const [showUserDropDown, setShowUserDropDown] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const location = window.location.pathname;
+  const authData = useAuth();
 
   return (
     <nav className="bg-white border-solid border-2 border-gray-200 ">
@@ -18,66 +26,29 @@ export default function NavBar() {
           </div>
         </div>
         <div className="flex relative items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <button
-            type="button"
-            className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 "
-            onClick={() => {
-              setShowUserDropDown(!showUserDropDown);
-            }}
-          >
-            <span className="sr-only">Open user menu</span>
-            <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50">
-              R
-            </div>
-          </button>
+          {authData?.isLoggedIn ? (
+            <button
+              type="button"
+              className="flex text-sm bg-gray-800 rounded-full md:me-0 hover:ring-4 hover:ring-gray-300 "
+              onClick={() => {
+                setShowUserDropDown(!showUserDropDown);
+              }}
+            >
+              <span className="sr-only">Open user menu</span>
+              <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50">
+                R
+              </div>
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className="text-sm bg-gray-800 text-white rounded-md md:me-0  hover:outline-none hover:ring-4 hover:ring-gray-200  p-2"
+            >
+              Log in
+            </Link>
+          )}
 
-          {/*Drop Down Menu */}
-          <div
-            className="absolute top-full right-0 z-50 bg-white shadow-md"
-            hidden={!showUserDropDown}
-            id="user-dropdown"
-          >
-            <div className="px-4 py-3">
-              <span className="block text-sm text-gray-900">Bonnie Green</span>
-              <span className="block text-sm  text-gray-500 truncate ">
-                name@flowbite.com
-              </span>
-            </div>
-            <ul className="py-2" aria-labelledby="user-menu-button">
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-                >
-                  Dashboard
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-                >
-                  Settings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-                >
-                  Earnings
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-                >
-                  Sign out
-                </a>
-              </li>
-            </ul>
-          </div>
+          <UserDropDown showUserDropDown={showUserDropDown} />
           <button
             data-collapse-toggle="navbar-user"
             type="button"
@@ -96,9 +67,9 @@ export default function NavBar() {
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M1 1h15M1 7h15M1 13h15"
               />
             </svg>
@@ -109,50 +80,74 @@ export default function NavBar() {
           hidden={!showMenu}
         >
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white ">
-            <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 "
-                aria-current="page"
-              >
-                Home
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 "
-              >
-                About
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 "
-              >
-                Services
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 "
-              >
-                Pricing
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 "
-              >
-                Contact
-              </a>
-            </li>
+            {links.map((link) => (
+              <li key={link.to}>
+                <Link
+                  to={link.to}
+                  className={
+                    "block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 " +
+                    (location === link.to ? "text-blue-700" : "text-gray-900")
+                  }
+                  aria-current="page"
+                >
+                  {link.text}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
     </nav>
+  );
+}
+
+function UserDropDown(props: { showUserDropDown: boolean }) {
+  return (
+    <div
+      className="absolute top-full right-0 z-50 bg-white shadow-md"
+      hidden={!props.showUserDropDown}
+      id="user-dropdown"
+    >
+      <div className="px-4 py-3">
+        <span className="block text-sm text-gray-900">Bonnie Green</span>
+        <span className="block text-sm  text-gray-500 truncate ">
+          name@flowbite.com
+        </span>
+      </div>
+      <ul className="py-2" aria-labelledby="user-menu-button">
+        <li>
+          <a
+            href="#"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
+          >
+            Dashboard
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
+          >
+            Settings
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
+          >
+            Earnings
+          </a>
+        </li>
+        <li>
+          <a
+            href="#"
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
+          >
+            Sign out
+          </a>
+        </li>
+      </ul>
+    </div>
   );
 }
