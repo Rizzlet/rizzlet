@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
+import axios from 'axios';
 import {
   Title,
   SelectQuestion,
@@ -6,6 +7,7 @@ import {
   TrueAndFalseButtons,
   Buttons,
 } from "../components/SubmitQuestion";
+
 
 export default function QuestionSubmission() {
   const [state, setState] = useState({
@@ -23,11 +25,25 @@ export default function QuestionSubmission() {
     // }
     setState({ ...state, [event.target.id]: value });
   };
-
+  
   // submit button change
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(state);
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/api/question',
+        state,
+        {
+          withCredentials: true, 
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // dropdown change
