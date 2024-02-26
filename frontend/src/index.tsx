@@ -13,11 +13,12 @@ import Login from "./pages/Login";
 import FlashcardField from "./pages/AnswerQuestion";
 
 import "./index.css";
+import HomePage from "./pages/Homepage";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <HomePage />,
   },
   {
     path: "/classSearch",
