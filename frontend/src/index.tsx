@@ -30,7 +30,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/submitQuestion",
-        element: <QuestionSubmission />,
+        element: (
+          <AuthGuard>
+            <QuestionSubmission />
+          </AuthGuard>
+        ),
       },
       {
         path: "/login",
