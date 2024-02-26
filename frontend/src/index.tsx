@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { AuthProvider } from "./context/auth/AuthContext";
 import { AuthGuard } from "./context/auth/AuthenticationGuard";
@@ -13,35 +13,42 @@ import Login from "./pages/Login";
 import FlashcardField from "./pages/AnswerQuestion";
 
 import "./index.css";
+import NavBar from "./components/Navbar";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
-  },
-  {
-    path: "/classSearch",
-    element: <ClassSearch />,
-  },
-  {
-    path: "/submitQuestion",
-    element: <QuestionSubmission />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/answerQuestion",
-    element: <FlashcardField />,
-  },
-  {
-    path: "/protected",
-    element: (
-      <AuthGuard>
-        <App />
-      </AuthGuard>
-    ),
+    element: <NavbarWrapper />,
+    children: [
+      {
+        path: "/",
+        element: <App />,
+      },
+      {
+        path: "/classSearch",
+        element: <ClassSearch />,
+      },
+      {
+        path: "/submitQuestion",
+        element: <QuestionSubmission />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/answerQuestion",
+        element: <FlashcardField />,
+      },
+      {
+        path: "/protected",
+        element: (
+          <AuthGuard>
+            <App />
+          </AuthGuard>
+        ),
+      },
+    ],
   },
 ]);
 
@@ -57,3 +64,12 @@ root.render(
     </AuthProvider>
   </React.StrictMode>
 );
+
+function NavbarWrapper() {
+  return (
+    <div>
+      <NavBar />
+      <Outlet />
+    </div>
+  );
+}

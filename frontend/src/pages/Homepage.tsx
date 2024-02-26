@@ -6,7 +6,6 @@ import NavBar from "../components/Navbar";
 export default function App() {
   return (
     <div>
-      <NavBar />
       <p className="text-3xl font-bold">Rizzlet!</p>
     </div>
   );
