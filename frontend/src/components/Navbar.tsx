@@ -1,17 +1,17 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
 import axios from "axios";
 
 const links = [
   { to: "/", text: "Home" },
-  { to: "/login", text: "About" },
+  { to: "/classSearch", text: "Classes" },
 ];
 
 export default function NavBar() {
   const [showUserDropDown, setShowUserDropDown] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const location = window.location.pathname;
+  const location = useLocation().pathname;
   const authData = useAuth();
 
   return (
