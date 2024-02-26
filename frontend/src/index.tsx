@@ -11,18 +11,18 @@ import QuestionSubmission from "./pages/QuestionSubmission";
 import App from "./pages/Homepage";
 import Login from "./pages/Login";
 import FlashcardField from "./pages/AnswerQuestion";
+import NavBar from "./components/Navbar";
+import HomePage from "./pages/Homepage";
 
 import "./index.css";
-import NavBar from "./components/Navbar";
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <NavbarWrapper />,
     children: [
       {
         path: "/",
-        element: <App />,
+        element: <HomePage />,
       },
       {
         path: "/classSearch",
