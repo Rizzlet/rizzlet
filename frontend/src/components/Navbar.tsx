@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
+import axios from "axios";
 
 const links = [
   { to: "/", text: "Home" },
@@ -36,7 +37,7 @@ export default function NavBar() {
             >
               <span className="sr-only">Open user menu</span>
               <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50">
-                R
+                {authData.authUserFullName[0]}
               </div>
             </button>
           ) : (
@@ -102,6 +103,8 @@ export default function NavBar() {
 }
 
 function UserDropDown(props: { showUserDropDown: boolean }) {
+  const authData = useAuth();
+
   return (
     <div
       className="absolute top-full right-0 z-50 bg-white shadow-md"
@@ -109,43 +112,38 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
       id="user-dropdown"
     >
       <div className="px-4 py-3">
-        <span className="block text-sm text-gray-900">Bonnie Green</span>
-        <span className="block text-sm  text-gray-500 truncate ">
-          name@flowbite.com
+        <span className="block text-sm text-gray-900 w-10">
+          {authData.authUserFullName}
         </span>
       </div>
       <ul className="py-2" aria-labelledby="user-menu-button">
         <li>
-          <a
-            href="#"
+          <button
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-          >
-            Dashboard
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-          >
-            Settings
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-          >
-            Earnings
-          </a>
-        </li>
-        <li>
-          <a
-            href="#"
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
+            onClick={() =>
+              // Clear cookies
+              {
+                // Clear cookie
+                axios
+                  .post(
+                    new URL(
+                      "/api/auth/logout",
+                      process.env.REACT_APP_BACKEND_URL!
+                    ).href,
+                    {},
+                    { withCredentials: true }
+                  )
+                  .then((response) => {
+                    window.location.href = "/";
+                  })
+                  .finally(() => {
+                    authData.setIsLoggedIn(false);
+                  });
+              }
+            }
           >
             Sign out
-          </a>
+          </button>
         </li>
       </ul>
     </div>
