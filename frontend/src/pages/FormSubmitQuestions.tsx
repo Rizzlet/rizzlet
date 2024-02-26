@@ -35,9 +35,6 @@ export default function QuestionSubmission() {
         state,
         {
           withCredentials: true, 
-          headers: {
-            'Content-Type': 'application/json',
-          },
         }
       );
       console.log(response.data);
