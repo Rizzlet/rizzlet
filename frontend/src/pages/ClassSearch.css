@@ -12,7 +12,7 @@
   position: absolute;
   background-color: #AED5A6; /* Green background */
   padding: 20px; /* Green box width */
-  width: 40%; /* Adjust width as a percentage or use specific values like pixels */
+  width: 50%; /* Adjust width as a percentage or use specific values like pixels */
   box-sizing: border-box; /* Include padding in width calculation */
   text-align: center; /* Center align the text horizontally */
   margin-top: -70px; /* Adjust margin top to reduce the gap */
@@ -60,22 +60,21 @@ select:focus {
 }
 
 .dropdown-container {
-  position: fixed; /* Keep fixed positioning */
-  top: 65%; /* Position the container vertically at 50% from the top */
+  display: flex; /* Use flexbox */
+  justify-content: center; /* Center horizontally */
+  position: absolute; /* Keep fixed positioning */
+  top: 70%; /* Position the container vertically at 50% from the top */
   left: 50%; /* Position the container horizontally at 50% from the left */
   transform: translate(-50%, -50%); /* Translate the container -50% of its own width and height to center it */
-  display: inline-block;
   cursor: pointer;
-  width: fit-content; /* Set width to fit the content */
 }
 
 .dropdown-title {
   font-size: 20px; /* Adjust font size as needed */
   color: #666; /* Adjust color as needed */
-  margin-bottom: 5px; /* Adjust margin bottom as needed */
   background-color: #f1f1f1;
   padding: 15px;
-  width: 700px;
+  width: 500px;
   display: flex;
   justify-content: space-between; /* Horizontally center the content */
   align-items: center; /* Vertically center the content */
@@ -93,6 +92,7 @@ select:focus {
 .dropdown {
   display: none;
   position: absolute;
+  top: 105%;
   left: 50%; /* Position the left edge of the dropdown at the center */
   transform: translateX(-50%); /* Translate the dropdown back by half of its width */
   background-color: #fff;
@@ -100,7 +100,7 @@ select:focus {
   padding: 10px;
   border: 1px solid #ddd;
   z-index: 1;
-  width: 700px;
+  width: 500px;
 }
 
 .dropdown-item {
@@ -122,7 +122,7 @@ select:focus {
   padding: 10px; /* Add padding */
   border-radius: 50px; /* Add border radius */
   color: white; /* Set font color to white */
-  width: 700px;
+  width: 500px;
 }
 
 .selected-classes-title-container {
@@ -145,7 +145,7 @@ select:focus {
   display: flex; /* Use flexbox */
   flex-wrap: wrap; /* Allow flex items to wrap to the next line */
   justify-content: center; /* Center the items horizontally */
-  width: 700px;
+  width: 700px auto;
 }
 
 .selected-classes-container ul {
@@ -165,9 +165,9 @@ select:focus {
 }
 
 .submit-button-container {
-  position: fixed; /* Keep fixed positioning */
-  top: 65%; /* Position the container vertically at 50% from the top */
-  left: 75%; /* Position the container horizontally at 50% from the left */
+  position: absolute; /* Keep fixed positioning */
+  top: 70%; /* Position the container vertically at 50% from the top */
+  left: 80%; /* Position the container horizontally at 50% from the left */
   transform: translate(-50%, -50%); /* Translate the container -50% of its own width and height to center it */
   display: inline-block;
 }
@@ -183,7 +183,7 @@ select:focus {
 }
 
 .submit-button:hover {
-  background-color: #2d4a37; /* Darker shade for hover effect */
+  background-color: #3d8556; /* Darker shade for hover effect */
 }
 
 .class-search-background {
