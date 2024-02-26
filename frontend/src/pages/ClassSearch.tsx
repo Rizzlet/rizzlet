@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./ClassSearch.css";
 import axios from "axios";
 
+interface ClassItem {
+  id: string;
+  name: string;
+}
+
 export default function ClassSearch() {
-  const [classNames, setClassNames] = useState<string[]>([]);
+  const [classNames, setClassNames] = useState<ClassItem[]>([]);
   const [selectedClasses, setSelectedClasses] = useState<string[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -14,7 +19,7 @@ export default function ClassSearch() {
 
   const fetchClassNames = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/api/class");
+      const response = await axios.get<ClassItem[]>("http://localhost:8000/api/class");
       console.log("Response from backend:", response);
       setClassNames(response.data);
     } catch (error) {
@@ -38,6 +43,19 @@ export default function ClassSearch() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
+  const handleSubmit = async () => {
+    try {
+      // Send selected classes to the backend
+      await axios.post("http://localhost:8000/api/user/classes", {
+        classes: selectedClasses,
+      });
+      // Optionally, you can clear the selectedClasses state after submission
+      setSelectedClasses([]);
+    } catch (error) {
+      console.error("Error submitting selected classes:", error);
+    }
+  };
+
   return (
     <div className="class-search-background"> {/*gradient background*/}
       {/* Header section */}
@@ -52,21 +70,26 @@ export default function ClassSearch() {
         </div>
         {isDropdownOpen && (
           <div className="dropdown">
-            {classNames.map((className, index) => (
+            {classNames.map((classItem, index) => (
               <div key={index} className="dropdown-item">
                 <input
                   className="checkbox"
                   type="checkbox"
-                  value={className}
-                  checked={selectedClasses.includes(className)}
-                  onChange={() => handleClassSelect(className)}
+                  value={classItem.name}
+                  checked={selectedClasses.includes(classItem.name)}
+                  onChange={() => handleClassSelect(classItem.name)}
                 />
-                <label>{className}</label>
+                <label>{classItem.name}</label>
               </div>
             ))}
           </div>
         )}
       </div>
+
+      {/* Submit button container */}
+    <div className="submit-button-container">
+      <button className="submit-button" onClick={handleSubmit}>Submit</button>
+    </div>
   
       {/* Green background container */}
       <div className="class-search-container">

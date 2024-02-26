@@ -9,14 +9,17 @@
 }
 
 .header-container {
+  position: absolute;
   background-color: #AED5A6; /* Green background */
   padding: 20px; /* Green box width */
-  width: 50%; /* Adjust width as a percentage or use specific values like pixels */
-  max-width: 1000px; /* Optional: Add a max-width to limit the width further */
+  width: 40%; /* Adjust width as a percentage or use specific values like pixels */
   box-sizing: border-box; /* Include padding in width calculation */
   text-align: center; /* Center align the text horizontally */
   margin-top: -70px; /* Adjust margin top to reduce the gap */
   border-radius: 15px; /* Add border radius to make the edges less sharp */
+  top: 10%;
+  left: 50%; /* Move container to the middle */
+  transform: translate(-50%, 100%); /* Center container */
 }
 
 .header {
@@ -57,14 +60,13 @@ select:focus {
 }
 
 .dropdown-container {
-  position: relative; /* Change to relative positioning */
+  position: fixed; /* Keep fixed positioning */
+  top: 65%; /* Position the container vertically at 50% from the top */
+  left: 50%; /* Position the container horizontally at 50% from the left */
+  transform: translate(-50%, -50%); /* Translate the container -50% of its own width and height to center it */
   display: inline-block;
   cursor: pointer;
-  margin: 20px auto; /* Center the dropdown container */
   width: fit-content; /* Set width to fit the content */
-  top: 600px;
-  left: 50%; /* Move container to the middle */
-  transform: translateX(-50%); /* Center container */
 }
 
 .dropdown-title {
@@ -160,6 +162,28 @@ select:focus {
   padding: 10px; /* Padding */
   margin: 10px; /* Margin */
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Shadow */
+}
+
+.submit-button-container {
+  position: fixed; /* Keep fixed positioning */
+  top: 65%; /* Position the container vertically at 50% from the top */
+  left: 75%; /* Position the container horizontally at 50% from the left */
+  transform: translate(-50%, -50%); /* Translate the container -50% of its own width and height to center it */
+  display: inline-block;
+}
+
+.submit-button {
+  background-color: #AED5A6; 
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #2d4a37; /* Darker shade for hover effect */
 }
 
 .class-search-background {

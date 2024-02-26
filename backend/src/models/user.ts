@@ -20,6 +20,10 @@ export const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  classIds: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Class' }],
+    default: [], // Initialize as an empty array
+  },
 });
 
 export const User = (await getConnection()).model("User", userSchema);
@@ -30,8 +34,9 @@ export async function getIdCreateOrUpdate(
   lastName: string,
   email: string,
   googleUserId: string,
+  classIds: string[]
 ): Promise<string | null> {
-  const userDetails = { firstName, lastName, googleUserId, email };
+  const userDetails = { firstName, lastName, googleUserId, email, classIds };
 
   // So we can either create a new user or update an existing one
   // Since a user could change their name
