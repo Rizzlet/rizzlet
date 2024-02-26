@@ -265,3 +265,7 @@ $RECYCLE.BIN/
 # .pnp.*
 
 # End of https://www.toptal.com/developers/gitignore/api/yarn,react,node,visualstudiocode,macos,windows,linux
+
+.envrc
+shell.nix
+.direnv/
