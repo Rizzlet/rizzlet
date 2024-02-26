@@ -11,6 +11,7 @@ import QuestionSubmission from "./pages/QuestionSubmission";
 import App from "./pages/Homepage";
 import Login from "./pages/Login";
 import FlashcardField from "./pages/AnswerQuestion";
+import Profilebar from "./components/Profilebar";
 
 import "./index.css";
 
@@ -33,7 +34,10 @@ const router = createBrowserRouter([
   },
   {
     path: "/answerQuestion",
-    element: <FlashcardField />,
+    element: (<div>
+    <Profilebar/>
+    <FlashcardField />
+    </div>),
   },
   {
     path: "/protected",
