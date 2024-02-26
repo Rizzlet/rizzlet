@@ -4,19 +4,8 @@ import { Link } from "react-router-dom";
 const HomePage: React.FC = () => {
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <header className="px-4 lg:px-6 py-6 grid gap-4 items-center md:gap-6 lg:grid-cols-[auto-1fr] xl:gap-8 xl:py-10">
-        <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 flex items-center justify-center rounded-full bg-green-700 text-gray-50">
-            R
-          </div>
-          <div className="space-y-0.5 ml-2">
-            <h1 className="text-lg font-bold tracking-tighter">Rizzlet</h1>
-            <p className="text-xs text-gray-500">Interactive Flashcards</p>
-          </div>
-        </div>
-      </header>
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 border-t">
+        <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
             <div className="space-y-3">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
