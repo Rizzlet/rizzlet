@@ -112,14 +112,15 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
       id="user-dropdown"
     >
       <div className="px-4 py-3">
-        <span className="block text-sm text-gray-900 w-10">
+        <span className="block text-sm text-gray-600 whitespace-nowrap">
           {authData.authUserFullName}
         </span>
       </div>
+      <hr></hr>
       <ul className="py-2" aria-labelledby="user-menu-button">
         <li>
           <button
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
             onClick={() =>
               // Clear cookies
               {
@@ -133,7 +134,7 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
                     {},
                     { withCredentials: true }
                   )
-                  .then((response) => {
+                  .then(() => {
                     window.location.href = "/";
                   })
                   .finally(() => {
