@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import Flashcard from "../components/Flashcard"
+import Flashcard from "../components/Flashcard";
 import axios from "axios";
 
 interface Question {
@@ -34,26 +34,29 @@ export default function FlashcardField() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  function mapQuestions(questionArray: Question[]){
-    return questionArray.map((questionElement, index) => {return <Flashcard
-    question={questionElement.question}
-    rightAnswer={questionElement.answer}
-    animation={animationDirection.current}
-    currentCard={questionToRender}
-    originalPosition={index}></Flashcard>});
+  function mapQuestions(questionArray: Question[]) {
+    return questionArray.map((questionElement, index) => {
+      return (
+        <Flashcard
+          question={questionElement.question}
+          rightAnswer={questionElement.answer}
+          animation={animationDirection.current}
+          currentCard={questionToRender}
+          originalPosition={index}
+        ></Flashcard>
+      );
+    });
   }
 
-  
   useEffect(() => {
-    fetchQuestions().then(result => {
-      if (result){
+    fetchQuestions().then((result) => {
+      if (result) {
         setListofQuestions(result);
-      }
-      else{
+      } else {
         console.log("Error loading questions");
       }
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <div className="relative flex justify-center h-screen w-screen items-center bg-gradient-to-br from-green-900 via-green-400 to bg-green-600 m-0 p-0">
@@ -97,4 +100,3 @@ export default function FlashcardField() {
     </div>
   );
 }
-

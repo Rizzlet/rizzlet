@@ -1,20 +1,19 @@
 import { Request, Response } from "express";
-import { User } from "../models/user.js"
+import { User } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 
-export async function GetIndividualUser(req: Request, res: Response){
-
+export async function GetIndividualUser(req: Request, res: Response) {
   const userData = verifyAndDecodeToken(req.cookies.token);
-  if (!userData){
+  if (!userData) {
     console.log("backend authentication failed");
     return;
   }
 
-  try{
-    const foundUser = User.find({_id: userData.id});
-    res.send(foundUser).status(200);
-  }
-  catch(error){
+  try {
+    const foundUser = await User.findById(userData.id); // Added await keyword to remove circular reasoning
+    res.send(JSON.stringify(foundUser)).status(200);
+  } catch (error) {
+    console.log(error);
     console.log("error getting specific user");
     res.status(error);
   }
