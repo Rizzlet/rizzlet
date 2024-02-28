@@ -19,7 +19,7 @@ export default function ClassSearch() {
 
   const fetchClassNames = async () => {
     try {
-      const response = await axios.get<ClassItem[]>("http://localhost:8000/api/class");
+      const response = await axios.get<ClassItem[]>(process.env.REACT_APP_BACKEND_URL + "/api/class");
       console.log("Response from backend:", response);
       setClassNames(response.data);
     } catch (error) {
@@ -45,16 +45,21 @@ export default function ClassSearch() {
 
   const handleSubmit = async () => {
     try {
-      // Send selected classes to the backend
-      await axios.post("http://localhost:8000/api/user/classes", {
-        classes: selectedClasses,
-      });
-      // Optionally, you can clear the selectedClasses state after submission
-      setSelectedClasses([]);
+      const requestUrl = new URL("/api/user", process.env.REACT_APP_BACKEND_URL!).href;
+      console.log("Updating user classes at URL:", requestUrl);
+      await axios.put(
+        requestUrl,
+        { classes: selectedClasses },
+        { withCredentials: true }
+      );
+  
+      setSelectedClasses([]); // Clear selected classes after submission
+      console.log("Classes submitted successfully");
     } catch (error) {
       console.error("Error submitting selected classes:", error);
     }
   };
+  
 
   return (
     <div className="class-search-background"> {/*gradient background*/}
