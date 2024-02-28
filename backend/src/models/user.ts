@@ -22,7 +22,7 @@ export const userSchema = new mongoose.Schema({
   },
   classIds: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Class'
+    required: false,
   }],
 });
 

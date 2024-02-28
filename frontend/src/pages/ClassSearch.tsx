@@ -45,6 +45,7 @@ export default function ClassSearch() {
 
   const handleSubmit = async () => {
     try {
+      console.log("selected classes: ", selectedClasses); //debugging delete later
       const requestUrl = new URL("/api/user", process.env.REACT_APP_BACKEND_URL!).href;
       console.log("Updating user classes at URL:", requestUrl);
       await axios.put(

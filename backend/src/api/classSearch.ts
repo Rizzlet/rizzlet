@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { newClass } from "../models/class.js";
 import { getClassNames } from "../models/class.js";
 import { User } from "../models/user.js";
+import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 
 type classBody = {
   name: string;
@@ -40,28 +41,31 @@ export async function classHandler(req: Request, res: Response) {
 
 export async function updateUserClassesHandler(req: Request, res: Response) {
   try {
-    const { userId, classIds } = req.body; 
+    const { classIds } = req.body;
 
+    console.log("these are the classIds: ", classIds);
+
+    const userData = verifyAndDecodeToken(req.cookies.token)!;
+    
+    //userData.id;
+    
     const updatedUser = await User.findByIdAndUpdate(
-      userId,
+      userData.id,
       { $set: { classIds: classIds } },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     );
 
     if (!updatedUser) {
       return res.status(404).json({ error: "User not found" });
     }
+  
+    console.log("This is the user: ", updatedUser);
 
-    res.status(200).json({ message: "User classes updated successfully", user: updatedUser });
+    res.status(200).json({ message: "User classes updated successfully", user: updatedUser,});
+
   } catch (error) {
     console.error("Error updating user classes:", error);
     res.status(500).json({ error: "Internal server error" });
   }
   return;
 }
-
-
-
-
-
-
