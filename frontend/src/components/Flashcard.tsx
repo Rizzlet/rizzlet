@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Answers from "./Answers";
 
 export default function Flashcard(props: any) {
   /**
@@ -14,9 +13,6 @@ export default function Flashcard(props: any) {
   const enum selectedVariants {
     selected = "bg-pink-400 rounded-lg size-4/5 shadow-2xl cursor-pointer absolute",
     notSelected = "bg-red-50 rounded-lg size-4/5 shadow-2xl cursor-pointer absolute",
-
-    notSelectedRightAnimated = "bg-red-50 rounded-lg size-4/5 shadow-2xl cursor-pointer absolute animate-right-next-appear",
-    notSelectedLeftAnimated = "bg-red-50 rounded-lg size-4/5 shadow-2xl cursor-pointer absolute animated-left-next-appear",
   }
 
   const enum questionFormattingVariants {
@@ -39,10 +35,10 @@ export default function Flashcard(props: any) {
       >
         <h1>{props.question}</h1>
       </div>
-      <Answers
+      {/* <Answers
         hidden={`${selected ? "visible" : "hidden"}`}
-        rightAnswer = {props.rightAnswer}
-      ></Answers>
+        rightAnswer={props.rightAnswer}
+      ></Answers> */}
     </div>
   );
 }

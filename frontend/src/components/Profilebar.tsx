@@ -31,12 +31,14 @@ export default function Profilebar() {
       if (result) {
         setTheUser(result);
       } else {
-        console.log("Error loading questions");
+        console.log("Error loading user");
       }
     });
   }, []);
 
   return (
-    <div className="flex justify-items-end bg-white h-7">{TheUser?.score}</div>
+    <nav className="flex justify-end items-center bg-white h-1/6 pl-5 pr-5">
+      <h1 className="text-4xl">{TheUser?.score}</h1>
+    </nav>
   );
 }
