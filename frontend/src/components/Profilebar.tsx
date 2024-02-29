@@ -8,22 +8,22 @@ interface IUser {
   score: number;
 }
 
-export default function Profilebar() {
-  async function GetUser(): Promise<IUser | null> {
-    try {
-      const response = await axios.get(
-        new URL("/api/user", process.env.REACT_APP_BACKEND_URL!).href,
-        {
-          withCredentials: true,
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.log("error fetching specific user", error);
-      return null;
-    }
+export async function GetUser(): Promise<IUser | null> {
+  try {
+    const response = await axios.get(
+      new URL("/api/user", process.env.REACT_APP_BACKEND_URL!).href,
+      {
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error fetching specific user", error);
+    return null;
   }
+}
 
+export default function Profilebar() {
   const [TheUser, setTheUser] = useState<IUser>();
 
   useEffect(() => {

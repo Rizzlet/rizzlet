@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import Flashcard from "../components/Flashcard";
 import axios from "axios";
 import Answers from "../components/Answers";
@@ -14,7 +14,9 @@ interface Question {
 // Get questions and answers
 async function fetchQuestions(): Promise<Question[]> {
   try {
-    const response = await axios.get("http://127.0.0.1:8000/api/question");
+    const response = await axios.get(
+      new URL("/api/question", process.env.REACT_APP_BACKEND_URL!).href
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching questions:", error);
@@ -26,8 +28,20 @@ export default function FlashcardField() {
   // Used to determine what flashcards is shown on screen. Represents the index of the array of flashcards
   let [questionToRender, changeQuestionToRender] = useState(0);
 
+  let [answersToRender, setAnswerstoRender] = useState<ReactNode[]>([]);
   // The list of questions in database
   let [listOfQuestions, setListofQuestions] = useState<Question[]>([]);
+
+  async function checkForAlreadyAnswered(theQuestion: Question) {
+    return (
+      await axios.put(
+        new URL("/api/answeredquestions", process.env.REACT_APP_BACKEND_URL!)
+          .href,
+        { theQuestion },
+        { withCredentials: true }
+      )
+    ).data;
+  }
 
   let animationDirection = useRef("none");
 
@@ -35,6 +49,7 @@ export default function FlashcardField() {
     return await new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  // Generates flaschards to be rendered on screen
   function mapQuestions(questionArray: Question[]) {
     return questionArray.map((questionElement, index) => {
       return (
@@ -49,7 +64,9 @@ export default function FlashcardField() {
     });
   }
 
-  function mapAnswers(theQuestion: Question) {
+  // Generates answers to be rendered on screen
+  async function mapAnswers(theQuestion: Question) {
+    const isItAnswered: boolean = await checkForAlreadyAnswered(theQuestion);
     if (theQuestion !== undefined) {
       const answersElement = [];
       if (
@@ -61,12 +78,12 @@ export default function FlashcardField() {
             <Answers
               answerText={`${!!i ? "true" : "false"}`}
               rightAnswer={`${theQuestion.answer === !!i}`}
+              alreadyAnswered={isItAnswered}
             ></Answers>
           );
         }
-      } else {
       }
-      return answersElement;
+      setAnswerstoRender(answersElement);
     }
   }
 
@@ -80,6 +97,12 @@ export default function FlashcardField() {
     });
   }, []);
 
+  useEffect(() => {
+    if (listOfQuestions.length !== 0) {
+      mapAnswers(listOfQuestions[questionToRender]);
+    }
+  }, [listOfQuestions, questionToRender]);
+
   return (
     <div className="flex justify-center h-screen w-screen bg-gradient-to-br from-green-900 via-green-400 to bg-green-600 m-0 p-0">
       <div className="relative h-full w-3/5 flex justify-center items-center flex-col">
@@ -88,7 +111,7 @@ export default function FlashcardField() {
         </div>
 
         <div className="relative flex justify-evenly h-1/2 w-full">
-          {mapAnswers(listOfQuestions[questionToRender])}
+          {answersToRender}
         </div>
 
         <button

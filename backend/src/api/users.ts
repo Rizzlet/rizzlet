@@ -18,3 +18,21 @@ export async function GetIndividualUser(req: Request, res: Response) {
     res.status(error);
   }
 }
+
+export async function UpdateScore(req: Request, res: Response) {
+  const userData = verifyAndDecodeToken(req.cookies.token);
+  if (!userData) {
+    console.log("update score authorization failed");
+    return;
+  }
+
+  try {
+    await User.findByIdAndUpdate(userData.id, { $inc: { score: 1 } });
+    const newScore = await User.findById(userData.id);
+    if (newScore != null) {
+      res.send(JSON.stringify(newScore.score)).status(201);
+    }
+  } catch (error) {
+    res.status(error);
+  }
+}

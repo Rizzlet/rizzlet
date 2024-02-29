@@ -12,7 +12,9 @@ import { fetchClassesHandler } from "./api/classSearch.js";
 import { googleAuthHandler } from "./api/auth/google.js";
 import { logoutHandler } from "./api/auth/logout.js";
 import { requireAuth } from "./api/auth/sharedAuth.js";
-import { GetIndividualUser } from "./api/users.js";
+import { GetIndividualUser, UpdateScore } from "./api/users.js";
+import { CheckAnswered } from "./api/answeredquestions.js";
+import { SubmitAnsweredQuestion } from "./api/answeredquestions.js";
 
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
@@ -23,4 +25,7 @@ export function addRoutes(app: Application) {
   app.post("/api/class", classHandler);
   app.get("/api/class", fetchClassesHandler);
   app.get("/api/user", requireAuth, GetIndividualUser);
+  app.put("/api/user", requireAuth, UpdateScore);
+  app.put("/api/answeredquestions", requireAuth, CheckAnswered);
+  app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
 }
