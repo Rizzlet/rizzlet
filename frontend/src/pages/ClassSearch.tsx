@@ -27,15 +27,23 @@ export default function ClassSearch() {
     }
   };
 
-  const handleClassSelect = (className: string) => {
+  const getClassName = (classId: string) => {
+    const classItem = classNames.find((item) => item.id === classId);
+    return classItem ? classItem.name : "";
+  };
+
+  const handleClassSelect = (classId: string) => {
     // Check if the class is already selected
-    const index = selectedClasses.indexOf(className);
+    
+    const index = selectedClasses.indexOf(classId);
     if (index === -1) {
       // If not selected, add it to the list
-      setSelectedClasses([...selectedClasses, className]);
+      setSelectedClasses([...selectedClasses, classId]);
+      console.log("class ids: ", classId);
     } else {
       // If already selected, remove it from the list
-      setSelectedClasses(selectedClasses.filter((name) => name !== className));
+      setSelectedClasses(selectedClasses.filter((id) => id !== classId));
+      
     }
   };
 
@@ -50,7 +58,7 @@ export default function ClassSearch() {
       console.log("Updating user classes at URL:", requestUrl);
       await axios.put(
         requestUrl,
-        { classes: selectedClasses },
+        { classIds: selectedClasses },
         { withCredentials: true }
       );
   
@@ -60,7 +68,6 @@ export default function ClassSearch() {
       console.error("Error submitting selected classes:", error);
     }
   };
-  
 
   return (
     <div className="class-search-background"> {/*gradient background*/}
@@ -81,9 +88,9 @@ export default function ClassSearch() {
                 <input
                   className="checkbox"
                   type="checkbox"
-                  value={classItem.name}
-                  checked={selectedClasses.includes(classItem.name)}
-                  onChange={() => handleClassSelect(classItem.name)}
+                  value={classItem.id}
+                  checked={selectedClasses.includes(classItem.id)}
+                  onChange={() => handleClassSelect(classItem.id)}
                 />
                 <label>{classItem.name}</label>
               </div>
@@ -118,8 +125,8 @@ export default function ClassSearch() {
       {selectedClasses.length > 0 && (
         <div className="selected-classes-container">
           <ul>
-            {selectedClasses.map((className, index) => (
-              <li key={index}>{className}</li>
+            {selectedClasses.map((classId, index) => (
+              <li key={index}>{getClassName(classId)}</li>
             ))}
           </ul>
         </div>

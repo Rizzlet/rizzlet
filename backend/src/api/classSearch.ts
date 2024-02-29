@@ -42,26 +42,20 @@ export async function classHandler(req: Request, res: Response) {
 export async function updateUserClassesHandler(req: Request, res: Response) {
   try {
     const { classIds } = req.body;
-
-    console.log("these are the classIds: ", classIds);
-
     const userData = verifyAndDecodeToken(req.cookies.token)!;
     
-    //userData.id;
-    
+    // Update the user's classIds with the new classes
     const updatedUser = await User.findByIdAndUpdate(
       userData.id,
       { $set: { classIds: classIds } },
-      { new: true, runValidators: true },
+      { new: true, runValidators: true }
     );
 
     if (!updatedUser) {
       return res.status(404).json({ error: "User not found" });
     }
   
-    console.log("This is the user: ", updatedUser);
-
-    res.status(200).json({ message: "User classes updated successfully", user: updatedUser,});
+    res.status(200).json({ message: "User classes updated successfully", user: updatedUser });
 
   } catch (error) {
     console.error("Error updating user classes:", error);
