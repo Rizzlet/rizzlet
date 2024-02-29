@@ -17,7 +17,7 @@ export default function ClassSearch() {
     fetchClassNames();
   }, []);
 
-  const fetchClassNames = async () => {
+  const fetchClassNames = async () => {  //fetching class names from the backend
     try {
       const response = await axios.get<ClassItem[]>(process.env.REACT_APP_BACKEND_URL + "/api/class");
       console.log("Response from backend:", response);
@@ -27,12 +27,12 @@ export default function ClassSearch() {
     }
   };
 
-  const getClassName = (classId: string) => {
+  const getClassName = (classId: string) => { //since everythings in ids get the class name to display function
     const classItem = classNames.find((item) => item.id === classId);
     return classItem ? classItem.name : "";
   };
 
-  const handleClassSelect = (classId: string) => {
+  const handleClassSelect = (classId: string) => { //handles class selection
     // Check if the class is already selected
     
     const index = selectedClasses.indexOf(classId);
@@ -51,7 +51,7 @@ export default function ClassSearch() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async () => { //submit button that sends all the selected classes to the user database of classIds
     try {
       console.log("selected classes: ", selectedClasses); //debugging delete later
       const requestUrl = new URL("/api/user", process.env.REACT_APP_BACKEND_URL!).href;
