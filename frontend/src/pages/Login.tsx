@@ -60,11 +60,11 @@ export default function LoginPage() {
 
   // return
   return (
-    <section className="bg-gray-50 dark:bg-gray-900">
-      <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
+    <section className="bg-white">
+      <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 pb-12 top-20 lg:py-100">
         <a
           href="/"
-          className="mb-6 flex items-center text-2xl font-semibold text-gray-900 dark:text-white"
+          className="mb-6 flex items-center text-2xl font-semibold text-gray-900"
         >
           <img
             className="mr-2 h-8 w-8"
@@ -73,15 +73,15 @@ export default function LoginPage() {
           />
           Rizzlet
         </a>
-        <div className="w-full  rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0 dark:border dark:border-gray-700 dark:bg-gray-800">
+        <div className="w-full  rounded-lg bg-white shadow sm:max-w-md md:mt-0 xl:p-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
               Sign in or Register
             </h1>
-            <hr className="bg- dark:bg-gray-700" />
+            <hr className="bg- " />
             <div className="flex items-center justify-center">
               <button
-                className="flex items-center rounded-lg border border-gray-300 bg-white px-6 py-2 text-sm font-medium text-gray-800 shadow-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-900 dark:text-white"
+                className="flex items-center rounded-lg border border-gray-300 bg-white px-6 py-2 text-sm font-medium text-gray-800 shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                 onClick={() => login()}
               >
                 <svg
