@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import FlashcardField from "./pages/AnswerQuestion";
 import NavBar from "./components/Navbar";
 import HomePage from "./pages/Homepage";
+import QuestionOverview from "./components/OverviewApp";
 
 import "./index.css";
 
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
             <App />
           </AuthGuard>
         ),
+      },
+      {
+        path: "/overview",
+        element: <QuestionOverview />,
       },
     ],
   },
