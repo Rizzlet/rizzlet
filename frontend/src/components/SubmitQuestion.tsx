@@ -47,13 +47,13 @@ export function Buttons() {
       <div className="absolute right-0 mt-20 gap-20 px-20 ">
         <button
             type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            className="text-black bg-gray-300 hover:bg-gray-600 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:focus:ring-gray-600"
           >
             Submit
           </button>
           <button
             type="button"
-            className="text-gray-500 bg-blue-700 hover:bg-gray-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-gray-200 dark:hover:bg-blue-300 focus:outline-none dark:focus:ring-blue-500"
+            className="text-black bg-gray-300 hover:bg-gray-600 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:focus:ring-gray-600"
           >
             Close
           </button>
@@ -71,7 +71,7 @@ export function TrueAndFalseButtons({ onTrueFalseButtonClick }: { onTrueFalseBut
           type="button"
           id="answer"
           onClick={() => onTrueFalseButtonClick(true)}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          className="text-black bg-teal-100 hover:bg-teal-500 focus:ring-4 focus:ring-teal-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-teal-100 dark:hover:bg-teal-500 focus:outline-none dark:focus:ring-teal-500"
         >  
           True
         </button>
@@ -79,7 +79,7 @@ export function TrueAndFalseButtons({ onTrueFalseButtonClick }: { onTrueFalseBut
           type="button"
           id="answer"
           onClick={() => onTrueFalseButtonClick(false)}
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          className="text-black bg-teal-100 hover:bg-teal-500 focus:ring-4 focus:ring-teal-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-teal-100 dark:hover:bg-teal-500 focus:outline-none dark:focus:ring-teal-500"
         >
           False
         </button>
