@@ -5,6 +5,7 @@ interface IAnswer {
   rightAnswer: string;
   alreadyAnswered: boolean;
   questionAssociated: string;
+  setAlreadyAnswered: Function;
 }
 
 export default function Answers<T extends IAnswer>(props: T) {
@@ -58,6 +59,7 @@ export default function Answers<T extends IAnswer>(props: T) {
           updateScore();
         }
         handleOnceAnswered();
+        props.setAlreadyAnswered();
       }}
       disabled={props.alreadyAnswered}
     >

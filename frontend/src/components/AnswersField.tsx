@@ -22,7 +22,7 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
    */
 
   async function checkForAlreadyAnswered(theQuestion: Question) {
-    return (
+    const checked = (
       await axios.put(
         new URL("/api/answeredquestions", process.env.REACT_APP_BACKEND_URL!)
           .href,
@@ -30,12 +30,18 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
         { withCredentials: true }
       )
     ).data;
+    setIsItAnswered(checked);
   }
   let [answersToRender, setAnswerstoRender] = useState<ReactNode[]>([]);
 
+  let [isItAnswered, setIsItAnswered] = useState(false);
+
+  function handleAnswered() {
+    setIsItAnswered(true);
+  }
+
   // Generates answers to be rendered on screen
   async function mapAnswers(theQuestion: Question) {
-    const isItAnswered: boolean = await checkForAlreadyAnswered(theQuestion);
     if (theQuestion !== undefined) {
       const answersElement = [];
       if (
@@ -49,6 +55,7 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
               rightAnswer={`${theQuestion.answer === !!i}`}
               alreadyAnswered={isItAnswered}
               questionAssociated={theQuestion._id}
+              setAlreadyAnswered={handleAnswered}
             ></Answers>
           );
         }
@@ -59,9 +66,11 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
 
   useEffect(() => {
     if (props.questionlist.length !== 0) {
-      mapAnswers(props.questionlist[props.questionToRender]);
+      checkForAlreadyAnswered(props.questionlist[props.questionToRender]).then(
+        () => mapAnswers(props.questionlist[props.questionToRender])
+      );
     }
-  }, [props.questionlist, props.questionToRender]);
+  }, [props.questionlist, props.questionToRender, isItAnswered]);
 
   return (
     <div className="relative flex justify-evenly h-1/2 w-full">
