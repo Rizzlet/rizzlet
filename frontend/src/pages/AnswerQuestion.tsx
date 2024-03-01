@@ -60,7 +60,7 @@ export default function AnswerQuestion() {
   });
 
   return (
-    <div className="relative flex justify-center h-screen w-screen items-center bg-gradient-to-br from-green-900 via-green-400 to bg-green-600 m-0 p-0">
+    <div className="relative flex justify-center h-screen w-screen items-center bg-white m-0 p-0">
       <div className="relative h-3/5 w-3/5 flex justify-center items-center m-0 p-0">
         {list_of_flashcards[questionToRender]}
 
