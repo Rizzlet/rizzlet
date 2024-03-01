@@ -9,19 +9,14 @@
 }
 
 .header-container {
-  background-color: #AED5A6; /* Green background */
-  padding: 20px; /* Green box width */
+  background-color: #d3f1e2; /* Teal background */
+  padding: 10px; /* Green box width */
   width: 50%; /* Adjust width as a percentage or use specific values like pixels */
   max-width: 1000px; /* Optional: Add a max-width to limit the width further */
   box-sizing: border-box; /* Include padding in width calculation */
   text-align: center; /* Center align the text horizontally */
   margin-top: -70px; /* Adjust margin top to reduce the gap */
   border-radius: 15px; /* Add border radius to make the edges less sharp */
-}
-
-.header {
-  padding: 5px 20px; /* Adjust padding as needed */
-  background-color: cornflowerblue
 }
 
 .brand {
@@ -31,7 +26,7 @@
 }
 
 .heading {
-  color: #ffffff; /* White text color */
+  color: #0c0c0c; /* White text color */
   font-size: 32px; /* Adjust font size */
 }
 
@@ -116,7 +111,7 @@ select:focus {
 }
 
 .selected-classes-title {
-  background-color: cornflowerblue; /* Pink background color */
+  background-color: #bcbcbc; /* Blue background color */
   padding: 10px; /* Add padding */
   border-radius: 50px; /* Add border radius */
   color: white; /* Set font color to white */
@@ -135,7 +130,7 @@ select:focus {
 
 .selected-classes-container {
   position: absolute; /* Fixed positioning */
-  background-color: cornflowerblue; /* Salmon pink background */
+  /*background-color: #bcbcbc; /* Salmon pink background */
   border-radius: 5px; /* Add border radius */
   top: 40%; /* Adjust top position as needed */
   left: 50%; /* Position at the center horizontally */
@@ -147,7 +142,7 @@ select:focus {
 }
 
 .selected-classes-container ul {
-  padding: 40px;;
+  padding: 40px;
   display: flex; /* Use flexbox */
 }
 
@@ -157,15 +152,11 @@ select:focus {
   border: 1px solid #ccc; /* Border color */
   border-radius: 10px; /* Border radius */
   margin-bottom: 10px; /* Margin bottom */
-  padding: 10px; /* Padding */
+  padding: 40px; /* Padding */
   margin: 10px; /* Margin */
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Shadow */
 }
 
 .class-search-background {
-  background: linear-gradient(to bottom right, #f2e6ff, #cbf5da); /* Gradient background */
+  background: #ffffff /* Gradient background */
 }
-
-
-
-
