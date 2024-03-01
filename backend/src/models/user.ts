@@ -20,10 +20,16 @@ export const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  classIds: [{
-    type: mongoose.Schema.Types.ObjectId,
-    required: false,
-  }],
+  score: {
+    type: Number,
+    required: true,
+  },
+  classIds: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+    },
+  ],
 });
 
 export const User = (await getConnection()).model("User", userSchema);
@@ -34,7 +40,7 @@ export async function getIdCreateOrUpdate(
   lastName: string,
   email: string,
   googleUserId: string,
-  classIds: mongoose.Types.ObjectId[]
+  classIds: mongoose.Types.ObjectId[],
 ): Promise<string | null> {
   const userDetails = { firstName, lastName, googleUserId, email, classIds };
 

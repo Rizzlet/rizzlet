@@ -1,10 +1,9 @@
 import { useState } from "react";
-import Answers from "./Answers";
 
 export default function Flashcard(props: any) {
   /**
    * @param question: the question that the user writes
-   * @param type: passed down to answers component
+   * @param rightAnswer: passed down to answers component
    * @param animation: Will define what direction the animation will play when rendered
    * @param currentCard: Every flashcard keeps a reference to the current card being rendered which is just an index
    * @param originalPosition: A flashcards unique index
@@ -14,9 +13,6 @@ export default function Flashcard(props: any) {
   const enum selectedVariants {
     selected = "bg-pink-400 rounded-lg size-4/5 shadow-2xl cursor-pointer absolute",
     notSelected = "bg-red-50 rounded-lg size-4/5 shadow-2xl cursor-pointer absolute",
-
-    notSelectedRightAnimated = "bg-red-50 rounded-lg size-4/5 shadow-2xl cursor-pointer absolute animate-right-next-appear",
-    notSelectedLeftAnimated = "bg-red-50 rounded-lg size-4/5 shadow-2xl cursor-pointer absolute animated-left-next-appear",
   }
 
   const enum questionFormattingVariants {
@@ -39,16 +35,10 @@ export default function Flashcard(props: any) {
       >
         <h1>{props.question}</h1>
       </div>
-      <Answers
-        type={props.type}
+      {/* <Answers
         hidden={`${selected ? "visible" : "hidden"}`}
-        answerOptions={[
-          { answer: "lol" },
-          { answer: "ahhhhhhhhh" },
-          { answer: "touhou" },
-          { answer: "lol" },
-        ]}
-      ></Answers>
+        rightAnswer={props.rightAnswer}
+      ></Answers> */}
     </div>
   );
 }
