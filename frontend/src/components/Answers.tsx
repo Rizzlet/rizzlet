@@ -10,10 +10,11 @@ interface IAnswer {
 
 export default function Answers<T extends IAnswer>(props: T) {
   /**
-   * @param answerText: Self-Explanatory
+   * @param answerText: answer option text
    * @param rightAnswer: Indicates whether this specific answer is the right answer.
    * @param alreadyAnswered: whether the question was previously answered. will format based on whether its answered
    * @param questionAssociated: the question these answers belong to
+   * @param setAlreadyAnswered: changes the state of whether this question was answered or not
    */
 
   // Saves the user's answered question so it can't be answered multiple times by the same user
@@ -34,8 +35,8 @@ export default function Answers<T extends IAnswer>(props: T) {
   async function updateScore() {
     try {
       await axios
-        .put(
-          new URL("/api/user", process.env.REACT_APP_BACKEND_URL!).href,
+        .post(
+          new URL("/api/user/score", process.env.REACT_APP_BACKEND_URL!).href,
           {},
           {
             withCredentials: true,
