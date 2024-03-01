@@ -15,6 +15,7 @@ import NavBar from "./components/Navbar";
 import HomePage from "./pages/Homepage";
 
 import "./index.css";
+import RateExamplePage from "./pages/RateExample";
 
 const router = createBrowserRouter([
   {
@@ -48,7 +49,7 @@ const router = createBrowserRouter([
         path: "/protected",
         element: (
           <AuthGuard>
-            <App />
+            <RateExamplePage />
           </AuthGuard>
         ),
       },
