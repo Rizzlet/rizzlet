@@ -37,7 +37,7 @@ export default function FlashcardField() {
       await axios.put(
         new URL("/api/answeredquestions", process.env.REACT_APP_BACKEND_URL!)
           .href,
-        { theQuestion },
+        { questionId: theQuestion._id },
         { withCredentials: true }
       )
     ).data;
@@ -79,6 +79,7 @@ export default function FlashcardField() {
               answerText={`${!!i ? "true" : "false"}`}
               rightAnswer={`${theQuestion.answer === !!i}`}
               alreadyAnswered={isItAnswered}
+              questionAssociated={theQuestion._id}
             ></Answers>
           );
         }
