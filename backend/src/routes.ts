@@ -8,6 +8,7 @@ import {
 import { helloWorldHandler } from "./api/helloWorld.js";
 import { classHandler } from "./api/classSearch.js";
 import { fetchClassesHandler } from "./api/classSearch.js";
+import { updateUserClassesHandler } from "./api/classSearch.js";
 
 import { googleAuthHandler } from "./api/auth/google.js";
 import { logoutHandler } from "./api/auth/logout.js";
@@ -25,7 +26,8 @@ export function addRoutes(app: Application) {
   app.post("/api/class", classHandler);
   app.get("/api/class", fetchClassesHandler);
   app.get("/api/user", requireAuth, GetIndividualUser);
-  app.put("/api/user", requireAuth, UpdateScore);
+  app.post("/api/user/score", requireAuth, UpdateScore);
   app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
+  app.put("/api/user", requireAuth, updateUserClassesHandler);
 }

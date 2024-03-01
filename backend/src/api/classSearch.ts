@@ -2,6 +2,8 @@ import joi from "joi";
 import { Request, Response } from "express";
 import { newClass } from "../models/class.js";
 import { getClassNames } from "../models/class.js";
+import { User } from "../models/user.js";
+import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 
 type classBody = {
   name: string;
@@ -35,4 +37,29 @@ export async function classHandler(req: Request, res: Response) {
   await newClass(body.name);
 
   res.sendStatus(201);
+}
+
+export async function updateUserClassesHandler(req: Request, res: Response) {
+  try {
+    const { classIds } = req.body;
+    const userData = verifyAndDecodeToken(req.cookies.token)!;
+    
+    // Update the user's classIds with the new classes
+    const updatedUser = await User.findByIdAndUpdate(
+      userData.id,
+      { $set: { classIds: classIds } },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "User not found" });
+    }
+  
+    res.status(200).json({ message: "User classes updated successfully", user: updatedUser });
+
+  } catch (error) {
+    console.error("Error updating user classes:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+  return;
 }
