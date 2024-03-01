@@ -26,6 +26,6 @@ export function addRoutes(app: Application) {
   app.get("/api/class", fetchClassesHandler);
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.put("/api/user", requireAuth, UpdateScore);
-  app.put("/api/answeredquestions", requireAuth, CheckAnswered);
+  app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
 }
