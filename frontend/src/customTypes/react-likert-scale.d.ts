@@ -3,6 +3,7 @@ declare module "react-likert-scale" {
 
   interface LikertProps {
     responses: ResponseOption[];
+    onChange: (any) => void;
   }
 
   interface ResponseOption {
