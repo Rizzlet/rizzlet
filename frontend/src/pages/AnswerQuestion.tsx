@@ -60,12 +60,12 @@ export default function AnswerQuestion() {
   });
 
   return (
-    <div className="relative flex justify-center h-screen w-screen items-center bg-gradient-to-br from-green-900 via-green-400 to bg-green-600 m-0 p-0">
-      <div className="relative h-3/5 w-3/5 flex justify-center items-center m-0 p-0">
+    <div className="to relative m-0 flex h-screen w-screen items-center justify-center bg-green-600 bg-gradient-to-br from-green-900 via-green-400 p-0">
+      <div className="relative m-0 flex h-3/5 w-3/5 items-center justify-center p-0">
         {list_of_flashcards[questionToRender]}
 
         <button
-          className="absolute w-10 h-10 left-full"
+          className="absolute left-full h-10 w-10"
           onClick={() => {
             if (questionToRender === test.length) {
               changeQuestionToRender(0);
@@ -82,7 +82,7 @@ export default function AnswerQuestion() {
         </button>
 
         <button
-          className="absolute h-10 w-10 right-full"
+          className="absolute right-full h-10 w-10"
           onClick={() => {
             if (questionToRender === -1) {
               changeQuestionToRender(test.length - 1);
