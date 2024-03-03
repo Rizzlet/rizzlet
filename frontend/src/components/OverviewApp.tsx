@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Table from "./Overview";
 import Pagination from "./Pagination";
+//import of router so that it will update URL with each page
+import { BrowserRouter as Router, Route, useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 interface Question {
   _id: string;
@@ -19,7 +22,9 @@ function QuestionOverview() {
   const [currentPage, setCurrentPage] = useState(
     parseInt(localStorage.getItem("currentPage") || "1", 10) //local storage is to save page for refresh
   );
-  const [postsPerPage] = useState(5);
+  const [postsPerPage] = useState(5); //how many are in each page
+  const { page } = useParams<{ page: string }>();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAll().then((result) => {
@@ -46,22 +51,25 @@ function QuestionOverview() {
   }
 
   //Get current Posts
-  // const indexOfLastPost = currentPage * postsPerPage;
-  // const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  // const currentPosts = questions.slice(indexOfFirstPost, indexOfLastPost);
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = questions.slice(indexOfFirstPost, indexOfLastPost);
 
   // //Change Page
-  // const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    localStorage.setItem("currentPage", pageNumber.toString());
+    navigate(`/overview/${pageNumber}`);
+  };
 
   return (
     <div className="container ">
-      {/* <Table /> */}
-      <Table questionData={questions} />
-      {/* <Pagination
+      <Table questionData={currentPosts} />
+      <Pagination
         postsPerPage={postsPerPage}
         totalPosts={questions.length}
         paginate={paginate}
-      /> */}
+      />
     </div>
   );
 }

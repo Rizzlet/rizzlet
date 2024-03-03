@@ -55,7 +55,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/overview",
+        path: "/overview/:pageNumber",
         element: <QuestionOverview />,
       },
       // {

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface PaginationProps {
   postsPerPage: number;
@@ -22,9 +23,11 @@ const Pagination: React.FC<PaginationProps> = ({
       <ul className="pagination">
         {pageNumbers.map((number) => (
           <li key={number} className="page-item">
+            <Link to={`/overview/${number}`} className="Page-link">
             <a onClick={() => paginate(number)} href="#" className="Page-link">
               {number}
             </a>
+            </Link>
           </li>
         ))}
       </ul>
