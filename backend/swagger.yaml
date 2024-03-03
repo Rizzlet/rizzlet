@@ -129,6 +129,41 @@ paths:
           description: Validation exception
         "500":
           description: Server Exception
+  /question/{questionId}/rating:
+    post:
+      tags:
+        - Questions
+      summary: Add a given question to the database
+      parameters:
+        - in: path
+          name: questionId
+          schema:
+            type: string
+          required: true
+          description: ID of question to submit rating for
+      operationId: addQuestionRating
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuestionRating"
+        required: true
+      responses:
+        "201":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        "422":
+          description: Validation exception
+        "500":
+          description: Server Exception
+        "401":
+          description: Unauthorized
   /auth/google:
     post:
       tags:
@@ -220,3 +255,17 @@ components:
           type: string
         answer:
           type: boolean
+    QuestionRating:
+      required:
+        - difficultyRating
+        - relevancyRating
+      type: object
+      properties:
+        difficultyRating:
+          type: number
+          minimum: 1
+          maximum: 5
+        relevancyRating:
+          type: number
+          minimum: 1
+          maximum: 5
