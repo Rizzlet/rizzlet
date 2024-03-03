@@ -14,6 +14,7 @@ import FlashcardField from "./pages/AnswerQuestion";
 import NavBar from "./components/Navbar";
 import HomePage from "./pages/Homepage";
 import QuestionOverview from "./components/OverviewApp";
+// import Page from "./components/Pagination";
 
 import "./index.css";
 
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
         path: "/overview",
         element: <QuestionOverview />,
       },
+      // {
+      //   path: "/pagination",
+      //   element: <Page />,
+      // },
     ],
   },
 ]);
