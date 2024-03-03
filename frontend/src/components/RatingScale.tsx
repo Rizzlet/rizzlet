@@ -9,10 +9,10 @@ interface RatingScaleProps {
 export default function RatingScale(props: RatingScaleProps) {
   return (
     <div className="flex items-center justify-center m-8 gap-8 flex-col">
-      <div className="w-full">
+      <div className="w-full basis-full">
         <p>How difficult was this question?</p>
         <Likert
-          onChange={props.onDifficultyChange}
+          onChange={(obj) => props.onDifficultyChange(obj.value)}
           responses={[
             {
               value: 1,
@@ -37,33 +37,33 @@ export default function RatingScale(props: RatingScaleProps) {
           ]}
         />
       </div>
-      <div className="w-full">
+      <div className="w-full  basis-full">
         <p>
           How relevant was this question to the learning objectives of this
           class?
         </p>
         <Likert
-          onChange={props.onRelevancyChange}
+          onChange={(obj) => props.onRelevancyChange(obj.value)}
           responses={[
             {
               value: 1,
-              text: "Not relevant at all",
+              text: "Not at all Relevant",
             },
             {
               value: 2,
-              text: "Somewhat relevant",
+              text: "Somewhat Relevant",
             },
             {
               value: 3,
-              text: "Moderately relevant",
+              text: "Moderately",
             },
             {
               value: 4,
-              text: "Very relevant",
+              text: "Very Relevant",
             },
             {
               value: 5,
-              text: "Extremely relevant",
+              text: "Extremely Relevant",
             },
           ]}
         />

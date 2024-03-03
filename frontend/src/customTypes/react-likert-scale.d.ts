@@ -1,9 +1,13 @@
 declare module "react-likert-scale" {
-  export default class Likert extends React.Component<LikertProps, any> {}
+  export default class Likert<T extends ResponseOption> extends React.Component<
+    LikertProps<T>,
+    any
+  > {}
 
-  interface LikertProps {
-    responses: ResponseOption[];
-    onChange: (any) => void;
+  interface LikertProps<T extends ResponseOption> {
+    responses: T[];
+    onChange?: (obj: T) => void;
+    className?: string;
   }
 
   interface ResponseOption {
