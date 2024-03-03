@@ -46,22 +46,22 @@ function QuestionOverview() {
   }
 
   //Get current Posts
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = questions.slice(indexOfFirstPost, indexOfLastPost);
+  // const indexOfLastPost = currentPage * postsPerPage;
+  // const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  // const currentPosts = questions.slice(indexOfFirstPost, indexOfLastPost);
 
-  //Change Page
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  // //Change Page
+  // const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div className="container ">
       {/* <Table /> */}
-      <Table questionData={currentPosts} />
-      <Pagination
+      <Table questionData={questions} />
+      {/* <Pagination
         postsPerPage={postsPerPage}
         totalPosts={questions.length}
         paginate={paginate}
-      />
+      /> */}
     </div>
   );
 }

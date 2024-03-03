@@ -23,7 +23,7 @@ function Table(props: TableProps) {
       <table className="w-screen min-h-[80dvh] py-2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-700">
         <TableHeader />
         <TableBody questionData={props.questionData} />
-        <Pages />
+        {/* <Pages /> */}
       </table>
     </div>
   );
