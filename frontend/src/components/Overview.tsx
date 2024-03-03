@@ -1,7 +1,89 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import {} from "./SubmitQuestion";
+import { Link } from "react-router-dom";
 
+//Creating the Pagination
+interface PagesProps {
+  currentPage: number;
+  totalPages: number;
+  postsPerPage: number;
+  onPrevClick: () => void;
+  onNextClick: () => void;
+}
+
+const Pages: React.FC<PagesProps> = ({
+  currentPage,
+  postsPerPage,
+  totalPages,
+  onPrevClick,
+  onNextClick,
+}) => {
+
+  return (
+    <div className="flex flex-col items-center">
+      <span className="text-sm text-gray-700 dark:text-gray-700">
+        Showing Page{" "}
+        <span className="font-semibold text-gray-900 dark:text-black">
+          {currentPage}
+        </span>{" "}
+        of{" "}
+        <span className="font-semibold text-gray-900 dark:text-black">
+          {totalPages}
+        </span>{" "}
+      </span>
+      <div className="inline-flex mt-2 xs:mt-0">
+        <button
+          className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-teal-100 dark:border-gray-700 dark:text-gray-800 dark:hover:bg-gray-300 dark:hover:text-black"
+          onClick={onPrevClick}
+          disabled={currentPage === 1}
+        >
+          <svg
+            className="w-3.5 h-3.5 me-2 rtl:rotate-180"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 10"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 5H1m0 0 4 4M1 5l4-4"
+            />
+          </svg>
+          Prev
+        </button>
+        <button
+          className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-teal-100 dark:border-gray-700 dark:text-gray-800 dark:hover:bg-gray-300 dark:hover:text-black"
+          onClick={onNextClick}
+          disabled={currentPage === totalPages}
+        >
+          Next
+          <svg
+            className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 10"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M1 5h12m0 0L9 1m4 4L9 9"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
+
+
+//Creating the Table with Questions
 interface TableProps {
   questionData: {
     _id: string;
@@ -23,7 +105,6 @@ function Table(props: TableProps) {
       <table className="w-screen min-h-[80dvh] py-2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-700">
         <TableHeader />
         <TableBody questionData={props.questionData} />
-        {/* <Pages /> */}
       </table>
     </div>
   );
@@ -80,88 +161,4 @@ function TableBody(props: TableProps) {
   return <tbody>{rows}</tbody>;
 }
 
-// function TableBody (props: TableProps) {
-//   const rows = props.questionData.map((row, index) => {
-//     return (
-//       <tr key={index}>
-//         <td>{row.type}</td>
-//         <td>{row.createdBy.firstName} {row.createdBy.lastName}</td>
-//         <td>{row.question}</td>
-//         <td>{row.answer}</td>
-//         <td>
-//         </td>
-//       </tr>
-//     );
-//   });
-//   return (
-//       <tbody>
-//          {rows}
-//       </tbody>
-//    );
-// }
-
-function Pages() {
-  return (
-    <div>
-      <div className="flex flex-col items-center ">
-        {/* <!-- Help text --> */}
-        <span className="text-sm text-gray-700 dark:text-gray-700">
-          Showing{" "}
-          <span className="font-semibold text-gray-900 dark:text-black">1</span>{" "}
-          to{" "}
-          <span className="font-semibold text-gray-900 dark:text-black">
-            10
-          </span>{" "}
-          of{" "}
-          <span className="font-semibold text-gray-900 dark:text-black">
-            100
-          </span>{" "}
-          Entries
-        </span>
-        <div className="inline-flex mt-2 xs:mt-0">
-          {/* <!-- Buttons --> */}
-          <button className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-teal-100 dark:border-gray-700 dark:text-gray-800 dark:hover:bg-gray-300 dark:hover:text-black">
-            <svg
-              className="w-3.5 h-3.5 me-2 rtl:rotate-180"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
-            >
-              {/* arrow */}
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 5H1m0 0 4 4M1 5l4-4"
-              />
-            </svg>
-            Prev
-          </button>
-          <button className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-teal-100 dark:border-gray-700 dark:text-gray-800 dark:hover:bg-gray-300 dark:hover:text-black">
-            Next
-            <svg
-              className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 10"
-            >
-              {/* arrow */}
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M1 5h12m0 0L9 1m4 4L9 9"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default Table;
+export {Table, Pages} ;

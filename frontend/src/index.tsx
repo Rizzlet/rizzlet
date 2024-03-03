@@ -58,10 +58,6 @@ const router = createBrowserRouter([
         path: "/overview/:pageNumber",
         element: <QuestionOverview />,
       },
-      // {
-      //   path: "/pagination",
-      //   element: <Page />,
-      // },
     ],
   },
 ]);

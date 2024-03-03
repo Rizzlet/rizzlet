@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Table from "./Overview";
-import Pagination from "./Pagination";
+import { Table, Pages } from "./Overview";
 //import of router so that it will update URL with each page
-import { BrowserRouter as Router, Route, useParams } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { BrowserRouter as Route, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Question {
   _id: string;
@@ -19,6 +18,8 @@ interface Question {
 
 function QuestionOverview() {
   const [questions, setQuestionData] = useState<Question[]>([]);
+
+  //pagination const
   const [currentPage, setCurrentPage] = useState(
     parseInt(localStorage.getItem("currentPage") || "1", 10) //local storage is to save page for refresh
   );
@@ -38,6 +39,7 @@ function QuestionOverview() {
     localStorage.setItem("currentPage", currentPage.toString());
   }, [currentPage]);
 
+  //getting questions from moongo
   async function fetchAll() {
     try {
       const response = await axios.get<Question[]>(
@@ -55,7 +57,7 @@ function QuestionOverview() {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = questions.slice(indexOfFirstPost, indexOfLastPost);
 
-  // //Change Page
+  //Change Page
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
     localStorage.setItem("currentPage", pageNumber.toString());
@@ -65,11 +67,13 @@ function QuestionOverview() {
   return (
     <div className="container ">
       <Table questionData={currentPosts} />
-      <Pagination
-        postsPerPage={postsPerPage}
-        totalPosts={questions.length}
-        paginate={paginate}
-      />
+      {Pages({
+        currentPage,
+        postsPerPage: postsPerPage,
+        totalPages: Math.ceil(questions.length / postsPerPage),
+        onPrevClick: ()  => paginate(currentPage - 1),
+        onNextClick: () => paginate(currentPage + 1),
+      })}{" "}
     </div>
   );
 }

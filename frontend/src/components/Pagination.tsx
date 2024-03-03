@@ -23,10 +23,8 @@ const Pagination: React.FC<PaginationProps> = ({
       <ul className="pagination">
         {pageNumbers.map((number) => (
           <li key={number} className="page-item">
-            <Link to={`/overview/${number}`} className="Page-link">
-            <a onClick={() => paginate(number)} href="#" className="Page-link">
-              {number}
-            </a>
+            <Link to={`/overview/${number}`} className="Page-link" onClick={() => paginate(number)}>
+                {number}
             </Link>
           </li>
         ))}
