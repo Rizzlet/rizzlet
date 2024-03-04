@@ -138,8 +138,8 @@ export default function ClassSearch() {
                   className="checkbox"
                   type="checkbox"
                   value={classItem.name}
-                  checked={selectedClasses.includes(classItem.name)}
-                  onChange={() => handleClassSelect(classItem.name)}
+                  checked={selectedClasses.includes(classItem.id)}
+                  onChange={() => handleClassSelect(classItem.id)}
                 />
                 <label>{classItem.name}</label>
               </div>
