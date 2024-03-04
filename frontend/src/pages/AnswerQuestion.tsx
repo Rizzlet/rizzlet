@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Flashcard from "../components/Flashcard";
 import axios from "axios";
 import AnswersField from "../components/AnswersField";
@@ -63,8 +63,8 @@ export default function FlashcardField() {
   }, []);
 
   return (
-    <div className="flex justify-center h-screen w-screen bg-gradient-to-br from-green-900 via-green-400 to bg-green-600 m-0 p-0">
-      <div className="relative h-full w-3/5 flex justify-center items-center flex-col">
+    <div className="relative flex justify-center h-screen w-screen items-center bg-white m-0 p-0">
+      <div className="relative h-3/5 w-3/5 flex-col justify-center items-center m-0 p-0">
         <div className="relative flex justify-center items-center text-4xl h-full w-full">
           {mapQuestions(listOfQuestions)[questionToRender]}
         </div>

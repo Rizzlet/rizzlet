@@ -9,10 +9,10 @@
 }
 
 .header-container {
-  position: absolute;
-  background-color: #aed5a6; /* Green background */
-  padding: 20px; /* Green box width */
-  width: 50%;
+  background-color: #d3f1e2; /* Teal background */
+  padding: 10px; /* Green box width */
+  width: 50%; /* Adjust width as a percentage or use specific values like pixels */
+  max-width: 1000px; /* Optional: Add a max-width to limit the width further */
   box-sizing: border-box; /* Include padding in width calculation */
   text-align: center; /* Center align the text horizontally */
   margin-top: -70px;
@@ -22,11 +22,6 @@
   transform: translate(-50%, 100%);
 }
 
-.header {
-  padding: 5px 20px;
-  background-color: cornflowerblue;
-}
-
 .brand {
   font-size: 40px;
   font-weight: bold;
@@ -34,8 +29,8 @@
 }
 
 .heading {
-  color: #ffffff;
-  font-size: 32px;
+  color: #0c0c0c; /* White text color */
+  font-size: 32px; /* Adjust font size */
 }
 
 select {
@@ -121,7 +116,7 @@ select:focus {
 }
 
 .selected-classes-title {
-  background-color: cornflowerblue;
+  background-color: #bcbcbc; /* Blue background color */
   padding: 10px; /* Add padding */
   border-radius: 50px; /* Add border radius */
   color: white;
@@ -138,8 +133,8 @@ select:focus {
 }
 
 .selected-classes-container {
-  position: absolute;
-  background-color: cornflowerblue;
+  position: absolute; /* Fixed positioning */
+  /*background-color: #bcbcbc; /* Salmon pink background */
   border-radius: 5px; /* Add border radius */
   top: 40%;
   left: 50%;
@@ -152,45 +147,20 @@ select:focus {
 
 .selected-classes-container ul {
   padding: 40px;
-  display: flex;
+  display: flex; /* Use flexbox */
 }
 
 .selected-classes-container ul li {
   color: #666; /* Text color */
   background-color: #ddd;
   border: 1px solid #ccc; /* Border color */
-  border-radius: 10px;
-  margin-bottom: 10px;
-  padding: 10px; /* Padding */
+  border-radius: 10px; /* Border radius */
+  margin-bottom: 10px; /* Margin bottom */
+  padding: 40px; /* Padding */
   margin: 10px; /* Margin */
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Shadow */
 }
 
-.submit-button-container {
-  position: absolute;
-  left: 80%;
-  display: inline-block;
-  top: 695px;
-}
-
-.submit-button {
-  background-color: #aed5a6;
-  color: white;
-  font-weight: bold;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.submit-button:hover {
-  background-color: #3d8556; /* Darker shade for hover effect */
-}
-
 .class-search-background {
-  background: linear-gradient(
-    to bottom right,
-    #f2e6ff,
-    #cbf5da
-  ); /* Gradient background */
+  background: #ffffff /* Gradient background */
 }
