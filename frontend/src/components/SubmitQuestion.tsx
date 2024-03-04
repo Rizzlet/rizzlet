@@ -71,7 +71,7 @@ export function TrueAndFalseButtons({ onTrueFalseButtonClick }: { onTrueFalseBut
           type="button"
           id="answer"
           onClick={() => onTrueFalseButtonClick(true)}
-          className="text-black bg-teal-100 hover:bg-teal-500 focus:ring-4 focus:ring-teal-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-teal-100 dark:hover:bg-teal-500 focus:outline-none dark:focus:ring-teal-500"
+          className="text-black bg-[#d3f1e2] hover:bg-teal-500 focus:ring-4 focus:ring-teal-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-[#d3f1e2] dark:hover:bg-teal-500 focus:outline-none dark:focus:ring-teal-500"
         >  
           True
         </button>
@@ -79,7 +79,7 @@ export function TrueAndFalseButtons({ onTrueFalseButtonClick }: { onTrueFalseBut
           type="button"
           id="answer"
           onClick={() => onTrueFalseButtonClick(false)}
-          className="text-black bg-teal-100 hover:bg-teal-500 focus:ring-4 focus:ring-teal-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-teal-100 dark:hover:bg-teal-500 focus:outline-none dark:focus:ring-teal-500"
+          className="text-black bg-[#d3f1e2] hover:bg-teal-500 focus:ring-4 focus:ring-teal-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-[#d3f1e2] dark:hover:bg-teal-500 focus:outline-none dark:focus:ring-teal-500"
         >
           False
         </button>
