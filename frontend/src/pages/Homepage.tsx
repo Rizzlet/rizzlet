@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const HomePage: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-[100dvh]">
+    <div className="flex min-h-[100dvh] flex-col">
       <main className="flex-1">
         <section
           className="w-full py-12 md:py-32 lg:py-40 bg-no-repeat bg-cover relative"
@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
               </p>
             </div>
             <Link
-              className="inline-flex h-9 items-center justify-center rounded-md border border-gray-200 bg-white px-4 shadow-sm text-sm font-medium 
+              className="inline-flex h-9 items-center justify-center rounded-md border border-gray-200 bg-white px-4 text-sm font-medium shadow-sm 
             transition-colors hover:bg-gray-100 hover:text-gray-900"
               to="/login"
             >

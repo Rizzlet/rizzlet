@@ -7,6 +7,11 @@ interface ClassItem {
   name: string;
 }
 
+interface ClassItem {
+  id: string;
+  name: string;
+}
+
 export default function ClassSearch() {
   const [classNames, setClassNames] = useState<ClassItem[]>([]);
   const [selectedClasses, setSelectedClasses] = useState<string[]>([]);
@@ -24,8 +29,11 @@ export default function ClassSearch() {
   }, []);
 
   const fetchClassNames = async () => {
+    //fetching class names from the backend
     try {
-      const response = await axios.get("http://localhost:8000/api/class");
+      const response = await axios.get<ClassItem[]>(
+        process.env.REACT_APP_BACKEND_URL + "/api/class"
+      );
       console.log("Response from backend:", response);
       setClassNames(response.data);
     } catch (error) {
@@ -33,15 +41,24 @@ export default function ClassSearch() {
     }
   };
 
-  const handleClassSelect = (className: string) => {
+  const getClassName = (classId: string) => {
+    //since everythings in ids get the class name to display function
+    const classItem = classNames.find((item) => item.id === classId);
+    return classItem ? classItem.name : "";
+  };
+
+  const handleClassSelect = (classId: string) => {
+    //handles class selection
     // Check if the class is already selected
-    const index = selectedClasses.indexOf(className);
+
+    const index = selectedClasses.indexOf(classId);
     if (index === -1) {
       // If not selected, add it to the list
-      setSelectedClasses([...selectedClasses, className]);
+      setSelectedClasses([...selectedClasses, classId]);
+      console.log("class ids: ", classId);
     } else {
       // If already selected, remove it from the list
-      setSelectedClasses(selectedClasses.filter((name) => name !== className));
+      setSelectedClasses(selectedClasses.filter((id) => id !== classId));
     }
   };
 
@@ -107,7 +124,12 @@ export default function ClassSearch() {
           </div>
         )}
       </div>
-  
+      {/* Submit button container */}
+      <div className="submit-button-container">
+        <button className="submit-button" onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
       {/* Green background container */}
       <div className="class-search-container">
         <div className="header-container">
@@ -117,7 +139,6 @@ export default function ClassSearch() {
           </div>
         </div>
       </div>
-  
       {/* Container for the title "Selected Classes" */}
       {/* {selectedClasses.length > 0 && (
         <div className="selected-classes-title-container">
@@ -129,14 +150,14 @@ export default function ClassSearch() {
       {selectedClasses.length > 0 && (
         <div className="selected-classes-container">
           <ul>
-            {selectedClasses.map((className, index) => (
-              <li key={index}>{className}</li>
+            {selectedClasses.map((classId, index) => (
+              <li key={index}>{getClassName(classId)}</li>
             ))}
           </ul>
         </div>
       )}
     </div>
-  );  
+  );
 }
 
 // // .class-search-container
