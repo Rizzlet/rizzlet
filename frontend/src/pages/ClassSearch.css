@@ -10,40 +10,40 @@
 
 .header-container {
   position: absolute;
-  background-color: #AED5A6; /* Green background */
+  background-color: #aed5a6; /* Green background */
   padding: 20px; /* Green box width */
-  width: 50%; 
+  width: 50%;
   box-sizing: border-box; /* Include padding in width calculation */
   text-align: center; /* Center align the text horizontally */
-  margin-top: -70px; 
-  border-radius: 15px; 
+  margin-top: -70px;
+  border-radius: 15px;
   top: 10%;
-  left: 50%; 
-  transform: translate(-50%, 100%); 
+  left: 50%;
+  transform: translate(-50%, 100%);
 }
 
 .header {
-  padding: 5px 20px; 
-  background-color: cornflowerblue
+  padding: 5px 20px;
+  background-color: cornflowerblue;
 }
 
 .brand {
-  font-size: 40px; 
+  font-size: 40px;
   font-weight: bold;
-  color: white
+  color: white;
 }
 
 .heading {
-  color: #ffffff; 
-  font-size: 32px; 
+  color: #ffffff;
+  font-size: 32px;
 }
 
 select {
   padding: 8px 12px; /* Add padding */
   border: 1px solid #ccc; /* Add border */
   border-radius: 4px; /* Add border-radius */
-  background-color: #fff; 
-  font-size: 16px; 
+  background-color: #fff;
+  font-size: 16px;
   color: #333; /* Set text color */
 }
 
@@ -95,7 +95,9 @@ select:focus {
   display: none;
   position: absolute;
   left: 50%; /* Position the left edge of the dropdown at the center */
-  transform: translateX(-50%); /* Translate the dropdown back by half of its width */
+  transform: translateX(
+    -50%
+  ); /* Translate the dropdown back by half of its width */
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
@@ -119,10 +121,10 @@ select:focus {
 }
 
 .selected-classes-title {
-  background-color: cornflowerblue; 
+  background-color: cornflowerblue;
   padding: 10px; /* Add padding */
   border-radius: 50px; /* Add border radius */
-  color: white; 
+  color: white;
   width: 500px;
 }
 
@@ -130,49 +132,49 @@ select:focus {
   position: absolute;
   text-align: center; /* Center the title */
   margin-top: 1%; /* Adjust margin as needed */
-  top: 35%; 
-  left: 50%; 
-  transform: translate(-50%, -100%); 
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -100%);
 }
 
 .selected-classes-container {
   position: absolute;
-  background-color: cornflowerblue; 
+  background-color: cornflowerblue;
   border-radius: 5px; /* Add border radius */
-  top: 40%; 
-  left: 50%; 
-  transform: translate(-50%, 0%); 
-  display: flex; 
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  display: flex;
   flex-wrap: wrap; /* Allow flex items to wrap to the next line */
-  justify-content: center; 
+  justify-content: center;
   width: 700px auto;
 }
 
 .selected-classes-container ul {
-  padding: 40px;;
+  padding: 40px;
   display: flex;
 }
 
 .selected-classes-container ul li {
   color: #666; /* Text color */
-  background-color: #ddd; 
+  background-color: #ddd;
   border: 1px solid #ccc; /* Border color */
-  border-radius: 10px; 
-  margin-bottom: 10px; 
+  border-radius: 10px;
+  margin-bottom: 10px;
   padding: 10px; /* Padding */
   margin: 10px; /* Margin */
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Shadow */
 }
 
 .submit-button-container {
-  position: absolute;  
-  left: 80%; 
+  position: absolute;
+  left: 80%;
   display: inline-block;
   top: 695px;
 }
 
 .submit-button {
-  background-color: #AED5A6; 
+  background-color: #aed5a6;
   color: white;
   font-weight: bold;
   padding: 10px 20px;
@@ -186,9 +188,9 @@ select:focus {
 }
 
 .class-search-background {
-  background: linear-gradient(to bottom right, #f2e6ff, #cbf5da); /* Gradient background */
+  background: linear-gradient(
+    to bottom right,
+    #f2e6ff,
+    #cbf5da
+  ); /* Gradient background */
 }
-
-
-
-

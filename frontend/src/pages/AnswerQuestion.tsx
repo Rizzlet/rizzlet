@@ -75,7 +75,7 @@ export default function FlashcardField() {
         ></AnswersField>
 
         <button
-          className="absolute w-10 h-10 left-full"
+          className="absolute left-full h-10 w-10"
           onClick={() => {
             if (questionToRender === listOfQuestions.length) {
               changeQuestionToRender(0);
@@ -92,7 +92,7 @@ export default function FlashcardField() {
         </button>
 
         <button
-          className="absolute h-10 w-10 right-full"
+          className="absolute right-full h-10 w-10"
           onClick={() => {
             if (questionToRender === -1) {
               changeQuestionToRender(listOfQuestions.length - 1);

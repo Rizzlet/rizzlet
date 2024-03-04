@@ -8,7 +8,6 @@ import { AuthGuard } from "./context/auth/AuthenticationGuard";
 
 import ClassSearch from "./pages/ClassSearch";
 import QuestionSubmission from "./pages/FormSubmitQuestions";
-import App from "./pages/Homepage";
 import Login from "./pages/Login";
 import FlashcardField from "./pages/AnswerQuestion";
 import Profilebar from "./components/Profilebar";
@@ -16,6 +15,7 @@ import NavBar from "./components/Navbar";
 import HomePage from "./pages/Homepage";
 
 import "./index.css";
+import RatingPage from "./pages/RatingPage";
 
 const router = createBrowserRouter([
   {
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
         path: "/protected",
         element: (
           <AuthGuard>
-            <App />
+            <RatingPage />
           </AuthGuard>
         ),
       },

@@ -17,9 +17,12 @@ export default function ClassSearch() {
     fetchClassNames();
   }, []);
 
-  const fetchClassNames = async () => {  //fetching class names from the backend
+  const fetchClassNames = async () => {
+    //fetching class names from the backend
     try {
-      const response = await axios.get<ClassItem[]>(process.env.REACT_APP_BACKEND_URL + "/api/class");
+      const response = await axios.get<ClassItem[]>(
+        process.env.REACT_APP_BACKEND_URL + "/api/class"
+      );
       console.log("Response from backend:", response);
       setClassNames(response.data);
     } catch (error) {
@@ -27,14 +30,16 @@ export default function ClassSearch() {
     }
   };
 
-  const getClassName = (classId: string) => { //since everythings in ids get the class name to display function
+  const getClassName = (classId: string) => {
+    //since everythings in ids get the class name to display function
     const classItem = classNames.find((item) => item.id === classId);
     return classItem ? classItem.name : "";
   };
 
-  const handleClassSelect = (classId: string) => { //handles class selection
+  const handleClassSelect = (classId: string) => {
+    //handles class selection
     // Check if the class is already selected
-    
+
     const index = selectedClasses.indexOf(classId);
     if (index === -1) {
       // If not selected, add it to the list
@@ -43,7 +48,6 @@ export default function ClassSearch() {
     } else {
       // If already selected, remove it from the list
       setSelectedClasses(selectedClasses.filter((id) => id !== classId));
-      
     }
   };
 
@@ -51,17 +55,21 @@ export default function ClassSearch() {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handleSubmit = async () => { //submit button that sends all the selected classes to the user database of classIds
+  const handleSubmit = async () => {
+    //submit button that sends all the selected classes to the user database of classIds
     try {
       console.log("selected classes: ", selectedClasses); //debugging delete later
-      const requestUrl = new URL("/api/user", process.env.REACT_APP_BACKEND_URL!).href;
+      const requestUrl = new URL(
+        "/api/user",
+        process.env.REACT_APP_BACKEND_URL!
+      ).href;
       console.log("Updating user classes at URL:", requestUrl);
       await axios.put(
         requestUrl,
         { classIds: selectedClasses },
         { withCredentials: true }
       );
-  
+
       setSelectedClasses([]); // Clear selected classes after submission
       console.log("Classes submitted successfully");
     } catch (error) {
@@ -70,12 +78,13 @@ export default function ClassSearch() {
   };
 
   return (
-    <div className="class-search-background"> {/*gradient background*/}
+    <div className="class-search-background">
+      {" "}
+      {/*gradient background*/}
       {/* Header section */}
       <div className="header">
         <div className="brand">Rizzlet</div>
       </div>
-  
       {/* Custom dropdown box */}
       <div className="dropdown-container">
         <div className="dropdown-title" onClick={toggleDropdown}>
@@ -98,12 +107,12 @@ export default function ClassSearch() {
           </div>
         )}
       </div>
-
       {/* Submit button container */}
-    <div className="submit-button-container">
-      <button className="submit-button" onClick={handleSubmit}>Submit</button>
-    </div>
-  
+      <div className="submit-button-container">
+        <button className="submit-button" onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
       {/* Green background container */}
       <div className="class-search-container">
         <div className="header-container">
@@ -113,14 +122,12 @@ export default function ClassSearch() {
           </div>
         </div>
       </div>
-  
       {/* Container for the title "Selected Classes" */}
       {selectedClasses.length > 0 && (
         <div className="selected-classes-title-container">
           <div className="selected-classes-title">Selected Classes</div>
         </div>
       )}
-  
       {/* Container for the list of selected classes */}
       {selectedClasses.length > 0 && (
         <div className="selected-classes-container">
@@ -132,5 +139,5 @@ export default function ClassSearch() {
         </div>
       )}
     </div>
-  );  
+  );
 }
