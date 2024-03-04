@@ -1,6 +1,3 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
 //Creating the Pagination
 interface PagesProps {
   currentPage: number;
@@ -17,7 +14,6 @@ const Pages: React.FC<PagesProps> = ({
   onPrevClick,
   onNextClick,
 }) => {
-
   return (
     <div className="flex flex-col items-center">
       <span className="text-sm text-gray-700 dark:text-gray-700">
@@ -80,9 +76,6 @@ const Pages: React.FC<PagesProps> = ({
   );
 };
 
-
-
-
 //Creating the Table with Questions
 interface TableProps {
   questionData: {
@@ -141,19 +134,10 @@ function TableBody(props: TableProps) {
         className=" border-b dark:border-gray-200 dark:hover:bg-gray-200"
       >
         {/* <th scope="row" className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-black"> */}
-        <td scope="col" className="px-6 py-3">
-          {row.type}
-        </td>
-        <td
-          scope="col"
-          className="px-6 py-3"
-        >{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td>
-        <td scope="col" className="px-6 py-3">
-          {row.question}
-        </td>
-        <td scope="col" className="px-6 py-3">
-          {row.answer ? "True" : "False"}
-        </td>
+        <td className="px-6 py-3">{row.type}</td>
+        <td className="px-6 py-3">{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td>
+        <td className="px-6 py-3">{row.question}</td>
+        <td className="px-6 py-3">{row.answer ? "True" : "False"}</td>
         {/* </th> */}
       </tr>
     );
@@ -161,4 +145,4 @@ function TableBody(props: TableProps) {
   return <tbody>{rows}</tbody>;
 }
 
-export {Table, Pages} ;
+export { Table, Pages };

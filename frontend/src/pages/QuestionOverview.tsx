@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Pages } from "../components/Overview";
 //import of router so that it will update URL with each page
-import { BrowserRouter as Route, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 interface Question {
@@ -24,7 +23,6 @@ function QuestionOverview() {
     parseInt(localStorage.getItem("currentPage") || "1", 10) //local storage is to save page for refresh
   );
   const [postsPerPage] = useState(5); //how many are in each page
-  const { page } = useParams<{ page: string }>();
   const navigate = useNavigate();
 
   useEffect(() => {

@@ -9,29 +9,27 @@
 }
 
 .header-container {
-  background-color: #AED5A6; /* Green background */
-  padding: 20px; /* Green box width */
+  background-color: #d3f1e2; /* Teal background */
+  padding: 10px; /* Green box width */
   width: 50%; /* Adjust width as a percentage or use specific values like pixels */
   max-width: 1000px; /* Optional: Add a max-width to limit the width further */
   box-sizing: border-box; /* Include padding in width calculation */
   text-align: center; /* Center align the text horizontally */
-  margin-top: -70px; /* Adjust margin top to reduce the gap */
-  border-radius: 15px; /* Add border radius to make the edges less sharp */
-}
-
-.header {
-  padding: 5px 20px; /* Adjust padding as needed */
-  background-color: cornflowerblue
+  margin-top: -70px;
+  border-radius: 15px;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, 100%);
 }
 
 .brand {
-  font-size: 40px; /* Adjust font size as needed */
+  font-size: 40px;
   font-weight: bold;
-  color: white
+  color: white;
 }
 
 .heading {
-  color: #ffffff; /* White text color */
+  color: #0c0c0c; /* White text color */
   font-size: 32px; /* Adjust font size */
 }
 
@@ -39,8 +37,8 @@ select {
   padding: 8px 12px; /* Add padding */
   border: 1px solid #ccc; /* Add border */
   border-radius: 4px; /* Add border-radius */
-  background-color: #fff; /* Set background color */
-  font-size: 16px; /* Set font size */
+  background-color: #fff;
+  font-size: 16px;
   color: #333; /* Set text color */
 }
 
@@ -92,7 +90,9 @@ select:focus {
   display: none;
   position: absolute;
   left: 50%; /* Position the left edge of the dropdown at the center */
-  transform: translateX(-50%); /* Translate the dropdown back by half of its width */
+  transform: translateX(
+    -50%
+  ); /* Translate the dropdown back by half of its width */
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 10px;
@@ -116,56 +116,51 @@ select:focus {
 }
 
 .selected-classes-title {
-  background-color: cornflowerblue; /* Pink background color */
+  background-color: #bcbcbc; /* Blue background color */
   padding: 10px; /* Add padding */
   border-radius: 50px; /* Add border radius */
-  color: white; /* Set font color to white */
-  width: 700px;
+  color: white;
+  width: 500px;
 }
 
 .selected-classes-title-container {
   position: absolute;
   text-align: center; /* Center the title */
   margin-top: 1%; /* Adjust margin as needed */
-  top: 35%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -100%); /* Translate to center */
-
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -100%);
 }
 
 .selected-classes-container {
   position: absolute; /* Fixed positioning */
-  background-color: cornflowerblue; /* Salmon pink background */
+  /*background-color: #bcbcbc; /* Salmon pink background */
   border-radius: 5px; /* Add border radius */
-  top: 40%; /* Adjust top position as needed */
-  left: 50%; /* Position at the center horizontally */
-  transform: translate(-50%, 0%); /* Center horizontally and vertically */
-  display: flex; /* Use flexbox */
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  display: flex;
   flex-wrap: wrap; /* Allow flex items to wrap to the next line */
-  justify-content: center; /* Center the items horizontally */
-  width: 700px;
+  justify-content: center;
+  width: 700px auto;
 }
 
 .selected-classes-container ul {
-  padding: 40px;;
+  padding: 40px;
   display: flex; /* Use flexbox */
 }
 
 .selected-classes-container ul li {
   color: #666; /* Text color */
-  background-color: #ddd; /* Background color */
+  background-color: #ddd;
   border: 1px solid #ccc; /* Border color */
   border-radius: 10px; /* Border radius */
   margin-bottom: 10px; /* Margin bottom */
-  padding: 10px; /* Padding */
+  padding: 40px; /* Padding */
   margin: 10px; /* Margin */
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Shadow */
 }
 
 .class-search-background {
-  background: linear-gradient(to bottom right, #f2e6ff, #cbf5da); /* Gradient background */
+  background: #ffffff /* Gradient background */
 }
-
-
-
-
