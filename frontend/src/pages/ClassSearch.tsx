@@ -62,6 +62,28 @@ export default function ClassSearch() {
     }
   };
 
+  const handleSubmit = async () => {
+    //submit button that sends all the selected classes to the user database of classIds
+    try {
+      console.log("selected classes: ", selectedClasses); //debugging delete later
+      const requestUrl = new URL(
+        "/api/user",
+        process.env.REACT_APP_BACKEND_URL!
+      ).href;
+      console.log("Updating user classes at URL:", requestUrl);
+      await axios.put(
+        requestUrl,
+        { classIds: selectedClasses },
+        { withCredentials: true }
+      );
+
+      setSelectedClasses([]); // Clear selected classes after submission
+      console.log("Classes submitted successfully");
+    } catch (error) {
+      console.error("Error submitting selected classes:", error);
+    }
+  };
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -81,7 +103,7 @@ export default function ClassSearch() {
   //         <div className="border-l border-r border-transparent border-t-8 border-gray-600"></div>
   //       </div>
   //         {/* Dropdown Items */}
-          
+
   //     </div>
   //     {/* Conatiner for Selected Classes */}
   //     <div className="absolute text-center mt-1 top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-full">
@@ -89,7 +111,7 @@ export default function ClassSearch() {
   //         Selected Classes
   //       </div>
   //     </div>
-    
+
   //     {/* Container for list of selected classes */}
   //     <div className="absolute bg-gray-400 rounded-lg top-2/5 left-1/2 transform -translate-x-1/2 flex flex-wrap justify-center p-4 w-700">
   //       <ul className="flex flex-wrap justify-center">
@@ -100,8 +122,9 @@ export default function ClassSearch() {
   // );
 
   return (
-    <div className="class-search-background"> {/*gradient background*/}
-  
+    <div className="class-search-background">
+      {" "}
+      {/*gradient background*/}
       {/* Custom dropdown box */}
       <div className="dropdown-container">
         <div className="dropdown-title" onClick={toggleDropdown}>
@@ -145,7 +168,6 @@ export default function ClassSearch() {
           <div className="selected-classes-title">Selected Classes</div>
         </div>
       )} */}
-  
       {/* Container for the list of selected classes */}
       {selectedClasses.length > 0 && (
         <div className="selected-classes-container">
