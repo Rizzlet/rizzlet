@@ -36,7 +36,7 @@ export default function NavBar() {
               }}
             >
               <span className="sr-only">Open user menu</span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-900 text-gray-50">
+              <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50" style={{backgroundColor: authData.profileColor}}>
                 {authData.authUserFullName[0]}
               </div>
             </button>

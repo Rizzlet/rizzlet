@@ -20,6 +20,10 @@ export const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profileColor: {
+    type: String,
+    default: "#000000",
+  },
   score: {
     type: Number,
     required: true,
@@ -40,9 +44,10 @@ export async function getIdCreateOrUpdate(
   lastName: string,
   email: string,
   googleUserId: string,
+  profileColor: string,
   classIds: mongoose.Types.ObjectId[],
 ): Promise<string | null> {
-  const userDetails = { firstName, lastName, googleUserId, email, classIds };
+  const userDetails = { firstName, lastName, googleUserId, email, profileColor, classIds };
 
   // So we can either create a new user or update an existing one
   // Since a user could change their name

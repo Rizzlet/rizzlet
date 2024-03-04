@@ -51,6 +51,7 @@ export async function googleAuthHandler(req: Request, res: Response) {
     lastName: data.family_name,
     email: data.email,
     sub: data.sub!,
+    profileColor: "#FFA500",
   };
 
   // We assume that the sub field always exists on google tokens
@@ -61,6 +62,7 @@ export async function googleAuthHandler(req: Request, res: Response) {
     user.lastName,
     user.email,
     userId,
+    user.profileColor,
     [],
   );
 
