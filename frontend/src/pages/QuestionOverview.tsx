@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Pages } from "./Overview";
+import { Table, Pages } from "../components/Overview";
 //import of router so that it will update URL with each page
 import { BrowserRouter as Route, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -71,7 +71,7 @@ function QuestionOverview() {
         currentPage,
         postsPerPage: postsPerPage,
         totalPages: Math.ceil(questions.length / postsPerPage),
-        onPrevClick: ()  => paginate(currentPage - 1),
+        onPrevClick: () => paginate(currentPage - 1),
         onNextClick: () => paginate(currentPage + 1),
       })}{" "}
     </div>
