@@ -14,6 +14,10 @@ export default function NavBar() {
   const location = useLocation().pathname;
   const authData = useAuth();
 
+  const generateRandomColor = () => {
+    return '#' + Math.floor(Math.random()*16777215).toString(16);
+  };
+
   return (
     <nav className="bg-white border-solid border-2 border-gray-200 ">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -36,7 +40,7 @@ export default function NavBar() {
               }}
             >
               <span className="sr-only">Open user menu</span>
-              <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50">
+              <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50" style={{backgroundColor: generateRandomColor()}}>
                 {authData.authUserFullName[0]}
               </div>
             </button>
@@ -49,7 +53,7 @@ export default function NavBar() {
             </NavLink>
           )}
 
-          <UserDropDown showUserDropDown={showUserDropDown} />
+          <UserDropDown showUserDropDown={showUserDropDown} generateRandomColor={generateRandomColor} />
           <button
             data-collapse-toggle="navbar-user"
             type="button"
@@ -102,7 +106,7 @@ export default function NavBar() {
   );
 }
 
-function UserDropDown(props: { showUserDropDown: boolean }) {
+function UserDropDown(props: { showUserDropDown: boolean, generateRandomColor: () => string }) {
   const authData = useAuth();
 
   return (
