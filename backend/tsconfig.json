@@ -20,5 +20,5 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["src/**/*", ".env"]
+  "include": ["src/**/*", ".env", "src/models/server.ts", "../frontend/src/components/PaginationControls.tsx", "../frontend/src/components/page.tsx"]
 }
