@@ -36,7 +36,7 @@ export default function LoginPage() {
       .post(
         new URL("/api/auth/google", process.env.REACT_APP_BACKEND_URL!).href,
         { authorizationCode },
-        { withCredentials: true }
+        { withCredentials: true },
       )
       .then((response) => {
         const data = response.data as BackendLoginResponse;
@@ -61,7 +61,7 @@ export default function LoginPage() {
   // return
   return (
     <section className="bg-white">
-      <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 pb-12 top-20 lg:py-100">
+      <div className="lg:py-100 top-20 mx-auto flex flex-col items-center justify-center px-6 py-8 pb-12">
         <a
           href="/"
           className="mb-6 flex items-center text-2xl font-semibold text-gray-900"

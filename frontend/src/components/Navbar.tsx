@@ -15,22 +15,22 @@ export default function NavBar() {
   const authData = useAuth();
 
   return (
-    <nav className="bg-white border-solid border-2 border-gray-200 ">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav className="border-2 border-solid border-gray-200 bg-white ">
+      <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
         <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-900 text-gray-50">
             R
           </div>
-          <div className="space-y-0.5 ml-2">
+          <div className="ml-2 space-y-0.5">
             <h1 className="text-lg font-bold tracking-tighter">Rizzlet</h1>
             <p className="text-xs text-gray-500 ">Interactive Flashcards</p>
           </div>
         </div>
-        <div className="flex relative items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <div className="relative flex items-center space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
           {authData?.isLoggedIn ? (
             <button
               type="button"
-              className="flex text-sm bg-gray-800 rounded-full md:me-0 hover:ring-4 hover:ring-gray-300 "
+              className="flex rounded-full bg-gray-800 text-sm hover:ring-4 hover:ring-gray-300 md:me-0 "
               onClick={() => {
                 setShowUserDropDown(!showUserDropDown);
               }}
@@ -43,7 +43,7 @@ export default function NavBar() {
           ) : (
             <NavLink
               to="/login"
-              className="text-sm bg-gray-800 text-white rounded-md md:me-0  hover:outline-none hover:ring-4 hover:ring-gray-200  p-2"
+              className="rounded-md bg-gray-800 p-2 text-sm text-white  hover:outline-none hover:ring-4 hover:ring-gray-200  md:me-0"
             >
               Log in
             </NavLink>
@@ -53,14 +53,14 @@ export default function NavBar() {
           <button
             data-collapse-toggle="navbar-user"
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 "
+            className="inline-flex h-10 w-10 items-center justify-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 md:hidden "
             onClick={() => {
               setShowMenu(!showMenu);
             }}
           >
             <span className="sr-only">Open main menu</span>
             <svg
-              className="w-5 h-5"
+              className="h-5 w-5"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -77,16 +77,16 @@ export default function NavBar() {
           </button>
         </div>
         <div
-          className="items-center justify-between w-full md:flex md:w-auto md:order-1"
+          className="w-full items-center justify-between md:order-1 md:flex md:w-auto"
           hidden={!showMenu}
         >
-          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white ">
+          <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 rtl:space-x-reverse ">
             {links.map((link) => (
               <li key={link.to}>
                 <NavLink
                   to={link.to}
                   className={
-                    "block py-2 px-3 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 " +
+                    "block rounded px-3 py-2 hover:bg-gray-100 md:p-0 md:hover:bg-transparent md:hover:text-blue-700 " +
                     (location === link.to ? "text-blue-700" : "text-gray-900")
                   }
                   aria-current="page"
@@ -107,12 +107,12 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
 
   return (
     <div
-      className="absolute top-full right-0 z-50 bg-white shadow-md"
+      className="absolute right-0 top-full z-50 bg-white shadow-md"
       hidden={!props.showUserDropDown}
       id="user-dropdown"
     >
       <div className="px-4 py-3">
-        <span className="block text-sm text-gray-600 whitespace-nowrap">
+        <span className="block whitespace-nowrap text-sm text-gray-600">
           {authData.authUserFullName}
         </span>
       </div>
@@ -120,7 +120,7 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
       <ul className="py-2" aria-labelledby="user-menu-button">
         <li>
           <button
-            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap"
+            className="block whitespace-nowrap px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             onClick={() =>
               // Clear cookies
               {
@@ -129,10 +129,10 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
                   .post(
                     new URL(
                       "/api/auth/logout",
-                      process.env.REACT_APP_BACKEND_URL!
+                      process.env.REACT_APP_BACKEND_URL!,
                     ).href,
                     {},
-                    { withCredentials: true }
+                    { withCredentials: true },
                   )
                   .then(() => {
                     window.location.href = "/";
