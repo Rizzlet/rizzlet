@@ -14,6 +14,7 @@ import Profilebar from "./components/Profilebar";
 import NavBar from "./components/Navbar";
 import HomePage from "./pages/Homepage";
 import QuestionOverview from "./pages/QuestionOverview";
+import MyClassPage from "./pages/MyClasses";
 // import Page from "./components/Pagination";
 
 import "./index.css";
@@ -57,6 +58,14 @@ const router = createBrowserRouter([
         element: (
           <AuthGuard>
             <RatingPage />
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/myclasses",
+        element: (
+          <AuthGuard>
+            <MyClassPage />
           </AuthGuard>
         ),
       },
