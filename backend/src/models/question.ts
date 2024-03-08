@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { User } from "./user.js";
 import { getConnection } from "./db.js";
+import Class from "./class.js";
 
 export const questionSchema = new mongoose.Schema({
   type: {
@@ -22,9 +23,17 @@ export const questionSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+
+  class: {
+    type: mongoose.Types.ObjectId,
+    ref: Class.modelName,
+    require: true,
+  },
 });
 
 export const Question = (await getConnection()).model(
   "Question",
   questionSchema,
 );
+
+export default Class;
