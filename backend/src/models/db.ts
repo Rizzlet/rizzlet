@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { envVars } from "../env.js";
+import { getEnvVars } from "../env.js";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 let connection: mongoose.Connection | null = null;
@@ -12,7 +12,7 @@ export async function getConnection() {
       const mongo = await MongoMemoryServer.create();
       connectionUri = mongo.getUri();
     } else {
-      connectionUri = envVars.DB_URL;
+      connectionUri = getEnvVars().DB_URL;
     }
 
     connection = await mongoose

@@ -12,7 +12,7 @@
     "nodemon": "nodemon -w .env -w swagger.yaml -w src/ -e ts --exec \"yarn start\"",
     "pretty": "prettier --write .",
     "lint": "eslint --ignore-path .eslintignore src",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest"
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest"
   },
   "keywords": [],
   "author": "",
