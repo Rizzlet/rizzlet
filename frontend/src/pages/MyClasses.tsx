@@ -104,8 +104,8 @@ export default function MyClasses() {
           <h1 className="text-4xl m-2 ">My Classes</h1>
         </div>
         <div
-          className="w-10 h-10 rounded-2xl border-2 bg-gray-300 
-          border-gray-500 flex justify-center cursor-pointer 
+          className="w-10 h-10 rounded-2xl border-2 
+          border-black flex justify-center cursor-pointer 
           hover:bg-gray-400 transition duration-100 ease-in-out"
           onClick={() => setShowAddClassModal(true)}
         >

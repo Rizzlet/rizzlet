@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { TrashIcon } from "@heroicons/react/20/solid";
+import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/20/solid";
 
 interface ClassWidgetProps {
   name: string;
@@ -53,7 +53,10 @@ function DotDotDotMenu(props: { onDelete: () => void }) {
                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                   onClick={props.onDelete}
                 >
-                  <TrashIcon className="mr-2 h-5 w-5" aria-hidden="true" />
+                  <ArrowLeftStartOnRectangleIcon
+                    className="mr-2 h-5 w-5"
+                    aria-hidden="true"
+                  />
                   Leave Class
                 </button>
               )}
