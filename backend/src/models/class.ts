@@ -9,7 +9,7 @@ export const classSchema = new mongoose.Schema({
   },
 });
 
-const Class = (await getConnection()).model("Class", classSchema);
+export const Class = (await getConnection()).model("Class", classSchema);
 
 export async function getClassNames() {
   try {
@@ -23,7 +23,6 @@ export async function getClassNames() {
     throw error;
   }
 }
-
 
 export async function newClass(name: string) {
   const newClass = new Class({ name });

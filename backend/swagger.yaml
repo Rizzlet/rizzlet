@@ -53,6 +53,30 @@ paths:
           description: Validation exception
         "500":
           description: Server Exception
+  /user/classes:
+    get:
+      tags:
+        - User
+      summary: Get all classes for a user
+      operationId: userClasses
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+        "422":
+          description: Validation exception
+        "500":
+          description: Server Exception
   /hello:
     post:
       tags:

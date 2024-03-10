@@ -12,6 +12,7 @@
     "allowUnreachableCode": false,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "skipLibCheck": true,
 
     // Linter Checks
     "noImplicitReturns": true,
@@ -27,5 +28,6 @@
     "../frontend/src/components/PaginationControls.tsx",
     "../frontend/src/components/page.tsx",
     "_worker.ts"
-  ]
+  ],
+  "exclude": ["node_modules/", "dist"]
 }

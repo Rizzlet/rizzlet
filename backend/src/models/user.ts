@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { getConnection } from "./db.js";
+import { Class } from "./class.js";
 
 export const userSchema = new mongoose.Schema({
   firstName: {
@@ -32,6 +33,7 @@ export const userSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
+      ref: Class.modelName,
     },
   ],
 });
@@ -47,7 +49,14 @@ export async function getIdCreateOrUpdate(
   profileColor: string,
   classIds: mongoose.Types.ObjectId[],
 ): Promise<string | null> {
-  const userDetails = { firstName, lastName, googleUserId, email, profileColor, classIds };
+  const userDetails = {
+    firstName,
+    lastName,
+    googleUserId,
+    email,
+    profileColor,
+    classIds,
+  };
 
   // So we can either create a new user or update an existing one
   // Since a user could change their name
@@ -61,4 +70,24 @@ export async function getIdCreateOrUpdate(
   }
 
   return results.id;
+}
+
+export async function getUserClasses(userId: string) {
+  try {
+    const user = await User.findById(userId)
+      .populate({
+        path: "classIds",
+        select: { name: 1, _id: 1 },
+      })
+      .exec();
+    if (user === null) {
+      console.error("User not found: ", userId);
+      return null;
+    }
+    console.log("User classes:", user);
+    return user.classIds as unknown as { name: string; _id: string }[];
+  } catch (error) {
+    console.error("Error fetching user classes:", error);
+    throw error;
+  }
 }

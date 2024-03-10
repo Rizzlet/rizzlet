@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User } from "../models/user.js";
+import { User, getUserClasses } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 
 export async function GetIndividualUser(req: Request, res: Response) {
@@ -35,4 +35,25 @@ export async function UpdateScore(req: Request, res: Response) {
   } catch (error) {
     res.status(error);
   }
+}
+
+export async function UserClasses(req: Request, res: Response) {
+  const userData = verifyAndDecodeToken(req.cookies.token)!;
+
+  // GEt all classes that the user is enrolled in
+  const classes = await getUserClasses(userData.id);
+
+  if (classes === null) {
+    res.status(500).send("Internal server error");
+    return;
+  }
+
+  const returnClasses = classes.map((c) => {
+    return {
+      name: c.name,
+      id: c._id,
+    };
+  });
+
+  res.json(returnClasses).status(200);
 }

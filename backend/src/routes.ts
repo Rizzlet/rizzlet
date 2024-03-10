@@ -14,7 +14,7 @@ import { googleAuthHandler } from "./api/auth/google.js";
 import { logoutHandler } from "./api/auth/logout.js";
 import { requireAuth } from "./api/auth/sharedAuth.js";
 import { submitQuestionRatingHandler } from "./api/questionRating.js";
-import { GetIndividualUser, UpdateScore } from "./api/users.js";
+import { GetIndividualUser, UpdateScore, UserClasses } from "./api/users.js";
 import { CheckAnswered } from "./api/answeredquestions.js";
 import { SubmitAnsweredQuestion } from "./api/answeredquestions.js";
 
@@ -33,6 +33,7 @@ export function addRoutes(app: Application) {
   app.get("/api/class", fetchClassesHandler);
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.post("/api/user/score", requireAuth, UpdateScore);
+  app.get("/api/user/classes", requireAuth, UserClasses);
   app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
   app.put("/api/user", requireAuth, updateUserClassesHandler);

@@ -5,6 +5,7 @@ import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 export default function AddClassModal(props: {
   open: boolean;
   onClose: () => void;
+  newClasses: { name: string; id: string }[];
 }) {
   const [selected, setSelected] = useState("");
 
@@ -57,7 +58,7 @@ export default function AddClassModal(props: {
                       <ClassComboBox
                         setSelected={setSelected}
                         selected={selected}
-                        classes={[{ name: "CSC 303", id: "abc" }]}
+                        classes={props.newClasses}
                       />
                     </div>
                   </div>
