@@ -1,6 +1,6 @@
 import { Combobox, Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+import { CheckIcon } from "@heroicons/react/20/solid";
 
 interface ClassItem {
   id: string;

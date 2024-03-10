@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ClassWidget from "../components/ClassWidget";
-import { createPortal } from "react-dom";
 import AddClassModal from "../components/AddClassModal";
 
 interface ClassItem {

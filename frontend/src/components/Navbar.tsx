@@ -5,7 +5,7 @@ import axios from "axios";
 
 const links = [
   { to: "/", text: "Home" },
-  { to: "/classSearch", text: "Classes" },
+  { to: "/myclasses", text: "Classes" },
 ];
 
 export default function NavBar() {
@@ -36,7 +36,10 @@ export default function NavBar() {
               }}
             >
               <span className="sr-only">Open user menu</span>
-              <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50" style={{backgroundColor: authData.profileColor}}>
+              <div
+                className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50"
+                style={{ backgroundColor: authData.profileColor }}
+              >
                 {authData.authUserFullName[0]}
               </div>
             </button>
@@ -129,10 +132,10 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
                   .post(
                     new URL(
                       "/api/auth/logout",
-                      process.env.REACT_APP_BACKEND_URL!,
+                      process.env.REACT_APP_BACKEND_URL!
                     ).href,
                     {},
-                    { withCredentials: true },
+                    { withCredentials: true }
                   )
                   .then(() => {
                     window.location.href = "/";
