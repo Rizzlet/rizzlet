@@ -10,7 +10,8 @@ interface ClassItem {
 }
 
 export default function MyClasses() {
-  const [classes, setClasses] = useState<ClassItem[]>([]);
+  const [allClasses, setAllClasses] = useState<ClassItem[]>([]);
+  const [userClasses, setUserClasses] = useState<ClassItem[]>([]);
   const [showAddClassModal, setShowAddClassModal] = useState(false);
 
   async function fetchClasses() {
@@ -20,11 +21,46 @@ export default function MyClasses() {
     );
 
     if (response.status === 200) {
-      setClasses(response.data);
+      setAllClasses(response.data);
     } else {
       console.error("Got invalid status from class request!");
       console.error(response);
     }
+
+    // Use axios to get the user's classes from the backend
+    const userResponse = await axios.get<ClassItem[]>(
+      process.env.REACT_APP_BACKEND_URL + "/api/user/classes",
+      { withCredentials: true }
+    );
+
+    if (userResponse.status === 200) {
+      setUserClasses(userResponse.data);
+    } else {
+      console.error("Got invalid status from user class request!");
+      console.error(userResponse);
+    }
+  }
+
+  function addClass(classes: ClassItem) {
+    console.log(classes);
+    // Use axios to get the user's classes from the backend
+    axios
+      .put(
+        process.env.REACT_APP_BACKEND_URL + "/api/user",
+        {
+          classIds: [classes.id],
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          fetchClasses();
+        }
+      })
+      .catch((err) => {
+        console.error("Got invalid status from user class request!");
+        console.error(err);
+      });
   }
 
   useEffect(() => {
@@ -36,6 +72,10 @@ export default function MyClasses() {
       <AddClassModal
         open={showAddClassModal}
         onClose={() => setShowAddClassModal(false)}
+        newClasses={allClasses.filter(
+          (c) => !userClasses.some((uc) => uc.id === c.id)
+        )}
+        onSubmit={addClass}
       />
       <div className="flex justify-between items-center">
         <div className=" bg-teal-200 mb-2 rounded-md items-center justify-center inline-flex">
@@ -51,7 +91,7 @@ export default function MyClasses() {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {classes.map((cls) => {
+        {userClasses.map((cls) => {
           return <ClassWidget name={cls.name} id={cls.id} />;
         })}
       </div>
