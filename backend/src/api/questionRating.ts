@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 
 import joi from "joi";
-import { addQuestionRating } from "../models/questionRatings.js";
+import { getRelevancyRatingsForQuestion, addQuestionRating, deleteQuestion } from "../models/questionRatings.js";
 
 type SubmitQuestionRatingBody = {
   difficultyRating: number;
@@ -32,6 +32,32 @@ export async function submitQuestionRatingHandler(req: Request, res: Response) {
     body.relevancyRating,
     userData.id,
   );
+
+  const relevancyThreshold = 1; //change to maybe two and inc lowRelevancyCount
+  const relevancyRatings = await getRelevancyRatingsForQuestion(questionId);
+  const lowRelevancyCount = relevancyRatings.filter(rating => rating.relevancyRating <= relevancyThreshold).length;
+
+  if (lowRelevancyCount >= 3) {
+    // If the low relevancy count exceeds the threshold, delete the question
+    await deleteQuestion(questionId);
+  }
+
+  /* for 3 diff users who rated 1 relevancy
+
+  const usersWithLowRelevancy = new Set<string>();
+
+  relevancyRatings.forEach(rating => {
+    if (rating.relevancyRating <= relevancyThreshold) {
+      usersWithLowRelevancy.add(rating.submittedBy.toString());
+    }
+  });
+
+  // Check if the number of unique users with low relevancy rating exceeds the threshold
+  if (usersWithLowRelevancy.size >= 3) {
+    // If the threshold is exceeded, delete or hide the question
+    await deleteQuestion(questionId);
+  }
+  */
 
   res.sendStatus(201);
 }
