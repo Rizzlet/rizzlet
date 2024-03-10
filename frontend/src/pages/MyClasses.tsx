@@ -48,7 +48,7 @@ export default function MyClasses() {
       .put(
         process.env.REACT_APP_BACKEND_URL + "/api/user",
         {
-          classIds: [classes.id],
+          classIds: [classes.id, ...userClasses.map((c) => c.id)],
         },
         { withCredentials: true }
       )
@@ -59,6 +59,29 @@ export default function MyClasses() {
       })
       .catch((err) => {
         console.error("Got invalid status from user class request!");
+        console.error(err);
+      });
+  }
+
+  function removeClass(classToRemove: ClassItem) {
+    // Use axios to get the user's classes from the backend
+    axios
+      .put(
+        process.env.REACT_APP_BACKEND_URL + "/api/user",
+        {
+          classIds: userClasses
+            .filter((c) => c.id !== classToRemove.id)
+            .map((c) => c.id),
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          fetchClasses();
+        }
+      })
+      .catch((err) => {
+        console.error("Got invalid status from user remove class request!");
         console.error(err);
       });
   }
@@ -92,7 +115,15 @@ export default function MyClasses() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {userClasses.map((cls) => {
-          return <ClassWidget name={cls.name} id={cls.id} />;
+          return (
+            <ClassWidget
+              name={cls.name}
+              id={cls.id}
+              onDelete={() => {
+                removeClass(cls);
+              }}
+            />
+          );
         })}
       </div>
     </div>
