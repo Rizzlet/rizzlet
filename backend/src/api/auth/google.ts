@@ -75,7 +75,9 @@ export async function googleAuthHandler(req: Request, res: Response) {
 
   const encodedToken = jwt.sign(tokenData, getEnvVars().JWT_SECRET);
 
-  res.cookie("token", encodedToken);
+  res.cookie("token", encodedToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  });
 
   res.status(200).json(tokenData);
 }
