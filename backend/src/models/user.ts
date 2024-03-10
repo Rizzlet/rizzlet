@@ -47,7 +47,6 @@ export async function getIdCreateOrUpdate(
   email: string,
   googleUserId: string,
   profileColor: string,
-  classIds: mongoose.Types.ObjectId[],
 ): Promise<string | null> {
   const userDetails = {
     firstName,
@@ -55,7 +54,6 @@ export async function getIdCreateOrUpdate(
     googleUserId,
     email,
     profileColor,
-    classIds,
   };
 
   // So we can either create a new user or update an existing one

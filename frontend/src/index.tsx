@@ -44,10 +44,6 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/login",
-        element: <Login />,
-      },
-      {
         path: "/answerQuestion",
         element: (
           <AuthGuard>
@@ -69,6 +65,10 @@ const router = createBrowserRouter([
         element: <QuestionOverview />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

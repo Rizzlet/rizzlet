@@ -63,7 +63,6 @@ export async function googleAuthHandler(req: Request, res: Response) {
     user.email,
     userId,
     user.profileColor,
-    [],
   );
 
   if (results === null) {
