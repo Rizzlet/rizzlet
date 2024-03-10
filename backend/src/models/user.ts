@@ -82,7 +82,6 @@ export async function getUserClasses(userId: string) {
       console.error("User not found: ", userId);
       return null;
     }
-    console.log("User classes:", user);
     return user.classIds as unknown as { name: string; _id: string }[];
   } catch (error) {
     console.error("Error fetching user classes:", error);

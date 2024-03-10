@@ -29,14 +29,9 @@ export default function QuestionSubmission() {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/question",
-        state,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(response.data);
+      await axios.post("http://localhost:8000/api/question", state, {
+        withCredentials: true,
+      });
     } catch (error) {
       console.error(error);
     }

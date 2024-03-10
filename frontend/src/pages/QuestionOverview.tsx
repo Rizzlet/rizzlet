@@ -28,7 +28,6 @@ function QuestionOverview() {
   useEffect(() => {
     fetchAll().then((result) => {
       if (result) setQuestionData(result);
-      console.log(result);
     });
   }, []);
 
