@@ -2,12 +2,13 @@
 interface TableProps {
   userData: {
     _id: string;
-    googleUserId: number;
+    googleUserId: string;
     email: string;
     firstName: string;
     lastName: string;
     score: number;
     profileColor: string;
+    classIds: [];
   }[];
 }
 
@@ -43,6 +44,8 @@ function TableHeader() {
 }
 
 function TableBody(props: TableProps) {
+  console.log("User Data:", props.userData);
+
   const rows = props.userData.map((row, index) => {
     //to resolve is createdBy is NULL
     // const createdByInfo = row.createdBy || { firstName: "", lastName: "" };
@@ -51,11 +54,10 @@ function TableBody(props: TableProps) {
         key={index}
         className=" border-b dark:border-gray-200 dark:hover:bg-gray-200"
       >
-        {/* <th scope="row" className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-black"> */}
-        {/* <td className="px-6 py-3">{row.rank}</td> */}
+        <td className="px-6 py-3">{index + 1}</td>{" "}
+        {/* Assuming "index" represents the rank */}
         <td className="px-6 py-3">{`${row.firstName} ${row.lastName}`}</td>
         <td className="px-6 py-3">{row.score}</td>
-        {/* </th> */}
       </tr>
     );
   });

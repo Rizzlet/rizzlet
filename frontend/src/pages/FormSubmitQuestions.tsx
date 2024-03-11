@@ -30,7 +30,7 @@ export default function QuestionSubmission() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/question",
+        process.env.REACT_APP_BACKEND_URL + "/api/question",
         state,
         {
           withCredentials: true,

@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table} from "../components/Overview";
+import { Table} from "../components/LeaderBoard";
 //import of router so that it will update URL with each page
 import { useNavigate } from "react-router-dom";
 
 interface Users {
-  userData: {
     _id: string;
-    googleUserId: number;
+    googleUserId: string;
     email: string;
     firstName: string;
     lastName: string;
     score: number;
     profileColor: string;
-  };
+    classIds: [],
 }
 
 function LeaderBoard() {
@@ -31,7 +30,11 @@ function LeaderBoard() {
   async function fetchAll() {
     try {
       const response = await axios.get<Users[]>(
-        "http://localhost:8000/api/users"
+        // "http://localhost:8000/api/user/ten"
+        process.env.REACT_APP_BACKEND_URL + "/api/user/ten",
+        {
+          withCredentials: true,
+        }
       );
       return response.data;
     } catch (error) {
@@ -43,7 +46,7 @@ function LeaderBoard() {
 
   return (
     <div className="container ">
-      <Table users={users} />
+      <Table userData={users} />
 
     </div>
   );
