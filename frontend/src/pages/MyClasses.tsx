@@ -100,7 +100,7 @@ export default function MyClasses() {
         onSubmit={addClass}
       />
       <div className="flex justify-between items-center">
-        <div className=" bg-teal-200 mb-2 rounded-md items-center justify-center inline-flex">
+        <div className=" bg-primary mb-2 rounded-md items-center justify-center inline-flex">
           <h1 className="text-4xl m-2 ">My Classes</h1>
         </div>
         <div
