@@ -44,7 +44,7 @@ export async function addQuestionRating(
 
   await newQuestionRating.save();
 }
-
+/*
 export async function deleteQuestion(questionId: string) {
   try {
     // Find the question by its ID and delete it
@@ -52,6 +52,18 @@ export async function deleteQuestion(questionId: string) {
     console.log(`Question with ID ${questionId} deleted successfully.`);
   } catch (error) {
     console.error(`Error deleting question with ID ${questionId}:`, error);
+    throw error;
+  }
+}
+*/
+
+export async function hideQuestion(questionId: string) {
+  try {
+    // Find the question by its ID and update isHidden to true
+    await Question.findByIdAndUpdate(questionId, { isHidden: true });
+    console.log(`Question with ID ${questionId} hidden successfully.`);
+  } catch (error) {
+    console.error(`Error hiding question with ID ${questionId}:`, error);
     throw error;
   }
 }

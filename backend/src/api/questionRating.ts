@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 
 import joi from "joi";
-import { getRelevancyRatingsForQuestion, addQuestionRating, deleteQuestion } from "../models/questionRatings.js";
+import { getRelevancyRatingsForQuestion, addQuestionRating, hideQuestion } from "../models/questionRatings.js";
 
 type SubmitQuestionRatingBody = {
   difficultyRating: number;
@@ -34,12 +34,12 @@ export async function submitQuestionRatingHandler(req: Request, res: Response) {
   );
 
   const relevancyThreshold = 1; //change to maybe two and inc lowRelevancyCount
-  const relevancyRatings = await getRelevancyRatingsForQuestion(questionId);
-  const lowRelevancyCount = relevancyRatings.filter(rating => rating.relevancyRating <= relevancyThreshold).length;
+  const relevancyRatings = await getRelevancyRatingsForQuestion(questionId); 
+  const lowRelevancyCount = relevancyRatings.filter(rating => rating.relevancyRating <= relevancyThreshold).length; 
 
   if (lowRelevancyCount >= 3) {
-    // If the low relevancy count exceeds the threshold, delete the question
-    await deleteQuestion(questionId);
+    // If the low relevancy count exceeds the threshold, set the isHidden to true in the question schema
+    await hideQuestion(questionId);
   }
 
   /* for 3 diff users who rated 1 relevancy
