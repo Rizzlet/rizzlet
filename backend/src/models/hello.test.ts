@@ -5,6 +5,6 @@ beforeEach(() => {
   jest.useFakeTimers();
 });
 
-test("passed", async () => {
-  expect(await recordHello("test"));
+test("passed", () => {
+  expect(recordHello("test"));
 });
