@@ -13,13 +13,14 @@ interface Users {
     score: number;
     profileColor: string;
     classIds: [],
+    rank: number;
 }
 
 function LeaderBoard() {
   const [users, setUsers] = useState<Users[]>([]);
 
   useEffect(() => {
-    fetchAll().then((result) => {
+    fetchUsers().then((result) => {
       if (result) setUsers(result);
       console.log(result);
     });
@@ -27,10 +28,9 @@ function LeaderBoard() {
 
 
   //getting questions from moongo
-  async function fetchAll() {
+  async function fetchUsers() {
     try {
       const response = await axios.get<Users[]>(
-        // "http://localhost:8000/api/user/ten"
         process.env.REACT_APP_BACKEND_URL + "/api/user/ten",
         {
           withCredentials: true,
