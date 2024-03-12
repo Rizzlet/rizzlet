@@ -1,3 +1,4 @@
+import { useAuth } from "../context/auth/AuthContext";
 //Creating the Table with Questions
 interface TableProps {
   userData: {
@@ -26,6 +27,7 @@ function Table(props: TableProps) {
       <div className="relative sm:rounded-lg">
         <table className="w-screen min-h-[80dvh] py-2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-700">
           <TableHeader />
+          <UserRank userData={props.userData}/>
           <TableBody userData={props.userData} />
         </table>
       </div>
@@ -51,6 +53,32 @@ function TableHeader() {
   );
 }
 
+
+function UserRank(props: TableProps) {
+  console.log("User Data:", props.userData);
+  const authData = useAuth();
+
+  // Find the user with the matching full name
+  const currentUser = props.userData.find(user => {
+    const fullName = `${user.firstName} ${user.lastName}`;
+    return fullName === authData.authUserFullName;
+  });
+
+  // Display user information
+  return (
+    <tbody className="bg-orange-50">
+      {currentUser && (
+        <tr className=" border-b dark:border-gray-200 dark:hover:bg-gray-200">
+          <td className="px-6 py-3">{currentUser.rank}</td>
+          <td className="px-6 py-3">{`${currentUser.firstName} ${currentUser.lastName}`}</td>
+          <td className="px-6 py-3">{currentUser.score}</td>
+        </tr>
+      )}
+    </tbody>
+  );
+}
+
+
 function TableBody(props: TableProps) {
   console.log("User Data:", props.userData);
 
@@ -72,7 +100,6 @@ function TableBody(props: TableProps) {
 
   return <tbody>{rows}</tbody>;
 }
-
 
 
 export { Table };
