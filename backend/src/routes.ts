@@ -6,7 +6,7 @@ import {
 } from "./api/questions.js";
 
 import { helloWorldHandler } from "./api/helloWorld.js";
-import { classHandler } from "./api/classSearch.js";
+import { classHandler, fetchQuestionsByClass } from "./api/classSearch.js";
 import { fetchClassesHandler } from "./api/classSearch.js";
 import { updateUserClassesHandler } from "./api/classSearch.js";
 
@@ -31,6 +31,7 @@ export function addRoutes(app: Application) {
   );
   app.post("/api/class", classHandler);
   app.get("/api/class", fetchClassesHandler);
+  app.get("/api/class/:id", requireAuth, fetchQuestionsByClass);
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.post("/api/user/score", requireAuth, UpdateScore);
   app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
