@@ -35,5 +35,3 @@ export const Question = (await getConnection()).model(
   "Question",
   questionSchema,
 );
-
-export default Class;
