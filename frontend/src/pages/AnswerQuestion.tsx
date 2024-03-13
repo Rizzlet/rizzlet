@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState} from "react";
 import Flashcard from "../components/Flashcard";
 import axios from "axios";
 import AnswersField from "../components/AnswersField";
+import { useParams } from "react-router-dom";
 
 interface Question {
   _id: string;
@@ -11,11 +12,13 @@ interface Question {
   answer: boolean;
 }
 
-// Get questions and answers
-async function fetchQuestions(): Promise<Question[]> {
+
+// Get questions and answers based on class
+async function fetchQuestions(classId: string | undefined): Promise<Question[]> {
+  
   try {
     const response = await axios.get(
-      new URL("/api/question", process.env.REACT_APP_BACKEND_URL!).href
+      new URL(`/api/class/${classId}`, process.env.REACT_APP_BACKEND_URL!).href, {withCredentials:true}
     );
     return response.data;
   } catch (error) {
@@ -32,6 +35,9 @@ export default function FlashcardField() {
   let [listOfQuestions, setListofQuestions] = useState<Question[]>([]);
 
   let animationDirection = useRef("none");
+
+  // id of class
+  const { id } = useParams();
 
   async function Sleep(ms: number) {
     return await new Promise((resolve) => setTimeout(resolve, ms));
@@ -53,7 +59,7 @@ export default function FlashcardField() {
   }
 
   useEffect(() => {
-    fetchQuestions().then((result) => {
+    fetchQuestions(id).then((result) => {
       if (result) {
         setListofQuestions(result);
       } else {
