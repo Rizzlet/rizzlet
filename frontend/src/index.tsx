@@ -18,6 +18,7 @@ import QuestionOverview from "./pages/QuestionOverview";
 
 import "./index.css";
 import RatingPage from "./pages/RatingPage";
+import NoClasses from "./pages/AnswerQuestionNoClasses";
 
 const router = createBrowserRouter([
   {
@@ -44,13 +45,26 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "/answerQuestion",
-        element: (
-          <AuthGuard>
-            <Profilebar />
-            <FlashcardField />
-          </AuthGuard>
-        ),
+        children:[
+          {
+            path: "/answerQuestion",
+            element: (
+              <AuthGuard>
+                <NoClasses />
+              </AuthGuard>
+            ),
+          },
+          {
+            path: "/answerQuestion/:id",
+            element: (
+              <AuthGuard>
+                <Profilebar />
+                <FlashcardField />
+              </AuthGuard>
+            ),
+          }
+
+        ]
       },
       {
         path: "/protected",
