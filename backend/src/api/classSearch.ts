@@ -4,6 +4,7 @@ import { newClass } from "../models/class.js";
 import { getClassNames } from "../models/class.js";
 import { User } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
+import { Question } from "../models/question.js";
 
 type classBody = {
   name: string;
@@ -29,7 +30,7 @@ export async function fetchClassesHandler(req: Request, res: Response) {
 export async function classHandler(req: Request, res: Response) {
   const { error, value: body } = bodySchema.validate(req.body);
 
-  if (error) {
+  if (error) { 
     res.status(422).send(error.message);
     return;
   }
@@ -62,4 +63,42 @@ export async function updateUserClassesHandler(req: Request, res: Response) {
     res.status(500).json({ error: "Internal server error" });
   }
   return;
+}
+
+export async function fetchQuestionsByClass(req: Request, res: Response){
+  const classId = req.params["id"];
+  try {    
+    const userData = verifyAndDecodeToken(req.cookies.token);
+
+      if (!userData){
+        res.status(401);
+        return;
+      }
+      
+      // Gets the user from the database
+      const foundUser = await User.findById(userData.id).exec();
+      if (foundUser != null){
+        // Finds the questions associated with the class
+        const foundQuestions = await Question.find({class: classId}).exec();
+
+        if (foundQuestions.length == 0){
+          res.status(404);
+        }
+        else{
+          // Checks to see if the user is registered with the classid
+          for (let i = 0; i < foundUser.classIds.length; i++){
+            if (foundUser.classIds[i] == classId){
+              res.send(JSON.stringify(foundQuestions)).status(201);
+              return;
+            }
+          }
+        }
+        res.status(401);
+      }
+    }
+  catch(error){
+    console.error();
+    res.status(500).json({error: "Internal server error"});
+  }
+
 }
