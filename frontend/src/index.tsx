@@ -10,7 +10,6 @@ import ClassSearch from "./pages/ClassSearch";
 import QuestionSubmission from "./pages/FormSubmitQuestions";
 import Login from "./pages/Login";
 import FlashcardField from "./pages/AnswerQuestion";
-import Profilebar from "./components/Profilebar";
 import NavBar from "./components/Navbar";
 import HomePage from "./pages/Homepage";
 import QuestionOverview from "./pages/QuestionOverview";
@@ -45,7 +44,7 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        children:[
+        children: [
           {
             path: "/answerQuestion",
             element: (
@@ -58,13 +57,11 @@ const router = createBrowserRouter([
             path: "/answerQuestion/:id",
             element: (
               <AuthGuard>
-                <Profilebar />
                 <FlashcardField />
               </AuthGuard>
             ),
-          }
-
-        ]
+          },
+        ],
       },
       {
         path: "/protected",
