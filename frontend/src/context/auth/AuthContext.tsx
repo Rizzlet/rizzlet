@@ -9,6 +9,8 @@ type AuthState = {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
   profileColor: string;
   updateProfileColor: (color: string) => void;
+  authUserId: string;
+  setAuthUserId: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export function AuthProvider({
@@ -39,6 +41,15 @@ export function AuthProvider({
     setProfileColor(color);
   };
 
+  const [authUserId, setAuthUserId] = React.useState<string>(
+    localStorage.getItem("_id") || ""
+  );
+
+  // const updateAuthUserId = (userId: string) => {
+  //   localStorage.setItem("_id", userId);
+  //   setAuthUserId(userId);
+  // };
+
   const value: AuthState = {
     authUserFullName,
     setAuthUserFullName,
@@ -46,6 +57,8 @@ export function AuthProvider({
     setIsLoggedIn,
     profileColor,
     updateProfileColor,
+    authUserId,
+    setAuthUserId,
   };
 
   return (

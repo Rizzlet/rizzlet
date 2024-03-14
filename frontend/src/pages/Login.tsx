@@ -28,6 +28,7 @@ export default function LoginPage() {
     }
   }, [auth.isLoggedIn, navigate]);
 
+  
   const handleSuccess = (credentialResponse: CodeResponse) => {
     const authorizationCode = credentialResponse.code;
 
@@ -36,7 +37,7 @@ export default function LoginPage() {
       .post(
         new URL("/api/auth/google", process.env.REACT_APP_BACKEND_URL!).href,
         { authorizationCode },
-        { withCredentials: true },
+        { withCredentials: true }
       )
       .then((response) => {
         const data = response.data as BackendLoginResponse;
@@ -46,6 +47,15 @@ export default function LoginPage() {
 
         auth.setAuthUserFullName(`${data.firstName} ${data.lastName}`);
         localStorage.setItem("fullName", `${data.firstName} ${data.lastName}`);
+
+
+        //set userID as mongoDB id
+        axios.get('/api/user') 
+        .then(userResponse => {
+          const userData = userResponse.data;
+          auth.setAuthUserId(userData._id);
+          localStorage.setItem("_id", userData._id);
+        })
       })
       .catch((error) => {
         console.error("Unable to contact backend for log in", error);
