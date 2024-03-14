@@ -54,7 +54,7 @@ export default function LoginPage() {
         .then(userResponse => {
           const userData = userResponse.data;
           auth.setAuthUserId(userData._id);
-          localStorage.setItem("_id", userData._id);
+          localStorage.setItem("authUserId", userData._id);
         })
       })
       .catch((error) => {

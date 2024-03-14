@@ -1,7 +1,7 @@
 import { useAuth } from "../context/auth/AuthContext";
 //Creating the Table with Questions
 interface TableProps {
-  userData: {
+  users: {
     _id: string;
     googleUserId: string;
     email: string;
