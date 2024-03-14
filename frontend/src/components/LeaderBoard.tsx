@@ -1,7 +1,7 @@
 import { useAuth } from "../context/auth/AuthContext";
 //Creating the Table with Questions
 interface TableProps {
-  users: {
+  userData: {
     _id: string;
     googleUserId: string;
     email: string;
@@ -79,9 +79,10 @@ function TableBody(props: TableProps) {
   const authData = useAuth();
 
   // Find the user with the matching ID
-  const currentUser = sortedUserData.find(user => 
-    user._id === authData.authUserId
-  );
+  const currentUser = props.userData.find(user => {
+    const id = `${user._id}`;
+    return id === authData.authUserId;
+  });
   console.log("currentUser", currentUser);
   console.log("authUserId", authData.authUserId); //incase someone has the same name
 

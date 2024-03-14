@@ -1,48 +1,37 @@
-// leaderboard.tsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table } from "../components/LeaderBoard";
-import { useAuth } from "../context/auth/AuthContext";
+import { Table} from "../components/LeaderBoard";
+//import of router so that it will update URL with each page
+import { useNavigate } from "react-router-dom";
 
-interface User {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  score: number;
-  // Add other necessary user properties
+interface Users {
+    _id: string;
+    googleUserId: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    score: number;
+    profileColor: string;
+    classIds: [],
+    rank: number;
 }
 
 function LeaderBoard() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const authData = useAuth();
+  const [users, setUsers] = useState<Users[]>([]);
 
   useEffect(() => {
     fetchUsers().then((result) => {
       if (result) setUsers(result);
-    });
-
-    fetchCurrentUser().then((user) => {
-      setCurrentUser(user);
+      console.log(result);
     });
   }, []);
 
+
+  //getting questions from moongo
   async function fetchUsers() {
     try {
-      const response = await axios.get<User[]>("/api/user/ten", {
-        withCredentials: true,
-      });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      return [];
-    }
-  }
-
-  async function fetchCurrentUser() {
-    try {
-      const response = await axios.get<User>(
-        `/api/user/${authData.authUserId}`,
+      const response = await axios.get<Users[]>(
+        process.env.REACT_APP_BACKEND_URL + "/api/user/ten",
         {
           withCredentials: true,
         }
@@ -50,13 +39,15 @@ function LeaderBoard() {
       return response.data;
     } catch (error) {
       console.log(error);
-      return null;
+      return false;
     }
   }
 
+
   return (
-    <div className="container">
-      <Table userData={users} currentUser={currentUser} />
+    <div className="container ">
+      <Table userData={users} />
+
     </div>
   );
 }

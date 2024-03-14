@@ -43,12 +43,8 @@ export function AuthProvider({
 
   const [authUserId, setAuthUserId] = React.useState<string>(
     localStorage.getItem("_id") || ""
+    
   );
-
-  // const updateAuthUserId = (userId: string) => {
-  //   localStorage.setItem("_id", userId);
-  //   setAuthUserId(userId);
-  // };
 
   const value: AuthState = {
     authUserFullName,
