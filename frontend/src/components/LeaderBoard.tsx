@@ -78,18 +78,14 @@ function TableBody(props: TableProps) {
   console.log("User Data:", props.userData);
   const authData = useAuth();
 
-  // Find the user with the matching ID
   const currentUser = props.userData.find(user => {
-    const id = `${user._id}`;
-    return id === authData.authUserId;
+    const fullName = `${user._id}`;
+    return fullName === authData.authUserId;
   });
   console.log("currentUser", currentUser);
   console.log("authUserId", authData.authUserId); //incase someone has the same name
-
-  // const currentUser = props.userData.find(user => {
-  //   const fullName = `${user.firstName} ${user.lastName}`;
-  //   return fullName === authData.authUserFullName;
-  // });
+  console.log("authUserId", authData.authUserFullName); //incase someone has the same name
+  console.log("authUserId", authData.profileColor); //incase someone has the same name
 
   return (
   <tbody>

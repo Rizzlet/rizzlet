@@ -59,22 +59,3 @@ try {
     res.status(500).send("Internal Server Error");
   }
 }
-
-export async function GetCurrentUser(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
-  if (!userData) {
-    console.log("backend authentication failed");
-    return res.sendStatus(401); // Unauthorized
-  }
-
-  try {
-    const foundUser = await User.findById(userData.id);
-    if (!foundUser) {
-      return res.sendStatus(404); // Not Found
-    }
-    res.send(foundUser).status(200);
-  } catch (error) {
-    console.error("Error getting current user:", error);
-    res.status(500).send("Internal Server Error");
-  }
-}

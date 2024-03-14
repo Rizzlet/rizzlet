@@ -48,17 +48,8 @@ export default function LoginPage() {
         auth.setAuthUserFullName(`${data.firstName} ${data.lastName}`);
         localStorage.setItem("fullName", `${data.firstName} ${data.lastName}`);
 
-        // auth.setAuthUserId(`${data.id}`);
-        // localStorage.setItem("authUserId", data.id);
-        //set userID as mongoDB id
-        // axios.get('/api/user/curUser') 
-        // .then(userResponse => {
-        //   const userData = userResponse.data;
-        //   auth.setAuthUserId(userData.googleUserId);
-        //   localStorage.setItem("authUserId", userData.googleUserId);
-        //   console.log("AUTHuserData", userData);
-        // })
-
+        auth.setAuthUserId(`${data.id}`);
+        localStorage.setItem("authUserId", data.id);
 
       })
       .catch((error) => {
