@@ -3,13 +3,9 @@ import { useAuth } from "../context/auth/AuthContext";
 interface TableProps {
   userData: {
     _id: string;
-    googleUserId: string;
-    email: string;
     firstName: string;
     lastName: string;
     score: number;
-    profileColor: string;
-    classIds: [];
     rank: number;
   }[];
 }
@@ -52,7 +48,6 @@ function TableHeader() {
   );
 }
 
-
 function TableBody(props: TableProps) {
   console.log("User Data:", props.userData);
 
@@ -64,6 +59,7 @@ function TableBody(props: TableProps) {
     user.rank = index + 1;
   });
 
+  //assign each row what info I want in each
   const rows = sortedUserData.map((row, index) => (
     <tr
       key={index}
@@ -75,29 +71,30 @@ function TableBody(props: TableProps) {
     </tr>
   ));
 
+  //set authentication information
   console.log("User Data:", props.userData);
   const authData = useAuth();
 
-  const currentUser = props.userData.find(user => {
+  // search for authenticated user (based on ID) in the leaderboard
+  const currentUser = props.userData.find((user) => {
     const fullName = `${user._id}`;
     return fullName === authData.authUserId;
   });
+
   console.log("currentUser", currentUser);
-  console.log("authUserId", authData.authUserId); //incase someone has the same name
-  console.log("authUserId", authData.authUserFullName); //incase someone has the same name
-  console.log("authUserId", authData.profileColor); //incase someone has the same name
+  //console.log("authUserId", authData.authUserId); //base it off of MongoDB user ID: Object(....)
 
   return (
-  <tbody>
-        {currentUser && (
-          <tr className=" border-b dark:border-gray-200 dark:hover:bg-gray-200 bg-orange-50">
-            <td className="px-6 py-3">{currentUser.rank}</td>
-            <td className="px-6 py-3">{`${currentUser.firstName} ${currentUser.lastName}`}</td>
-            <td className="px-6 py-3">{currentUser.score}</td>
-          </tr>
-        )}
-     {rows}
-  </tbody>
+    <tbody>
+      {currentUser && (
+        <tr className=" border-b dark:border-gray-200 dark:hover:bg-gray-200 bg-orange-50">
+          <td className="px-6 py-3">{currentUser.rank}</td>
+          <td className="px-6 py-3">{`${currentUser.firstName} ${currentUser.lastName}`}</td>
+          <td className="px-6 py-3">{currentUser.score}</td>
+        </tr>
+      )}
+      {rows}
+    </tbody>
   );
 }
 

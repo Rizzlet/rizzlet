@@ -16,12 +16,10 @@ export default function QuestionSubmission() {
     answer: false,
   });
 
-  // question inpout change
+  // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     let value: (typeof state)[keyof typeof state] = event.target.value;
-    // if (event.target.type === "button") {
-    //   value = event.target.checked;
-    // }
+
     setState({ ...state, [event.target.id]: value });
   };
 
@@ -42,7 +40,7 @@ export default function QuestionSubmission() {
     }
   };
 
-  // dropdown change
+  // dropdown to select which question type
   const onQuestionTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value: (typeof state)["type"] = event.target.value;
     setState({ ...state, type: value });

@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table} from "../components/LeaderBoard";
+import { Table } from "../components/LeaderBoard";
 //import of router so that it will update URL with each page
 import { useNavigate } from "react-router-dom";
 
 interface Users {
-    _id: string;
-    googleUserId: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    score: number;
-    profileColor: string;
-    classIds: [],
-    rank: number;
+  _id: string;
+  firstName: string;
+  lastName: string;
+  score: number;
+  rank: number;
 }
 
 function LeaderBoard() {
   const [users, setUsers] = useState<Users[]>([]);
 
+  //fetch the users 
   useEffect(() => {
     fetchUsers().then((result) => {
       if (result) setUsers(result);
@@ -26,8 +23,7 @@ function LeaderBoard() {
     });
   }, []);
 
-
-  //getting questions from moongo
+  //getting top ten users from backend
   async function fetchUsers() {
     try {
       const response = await axios.get<Users[]>(
@@ -43,11 +39,9 @@ function LeaderBoard() {
     }
   }
 
-
   return (
     <div className="container ">
       <Table userData={users} />
-
     </div>
   );
 }

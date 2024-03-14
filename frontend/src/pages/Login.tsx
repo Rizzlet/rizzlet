@@ -28,7 +28,6 @@ export default function LoginPage() {
     }
   }, [auth.isLoggedIn, navigate]);
 
-  
   const handleSuccess = (credentialResponse: CodeResponse) => {
     const authorizationCode = credentialResponse.code;
 
@@ -50,16 +49,11 @@ export default function LoginPage() {
 
         auth.setAuthUserId(`${data.id}`);
         localStorage.setItem("authUserId", data.id);
-
       })
       .catch((error) => {
         console.error("Unable to contact backend for log in", error);
       });
-
-
-
-};
-
+  };
 
   const login = useGoogleLogin({
     onSuccess: handleSuccess,
