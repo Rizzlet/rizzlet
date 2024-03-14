@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
 import axios from "axios";
+import Answers from "./Answers";
 
 const links = [
   { to: "/", text: "Home" },
@@ -10,23 +11,9 @@ const links = [
 
 export default function NavBar() {
   const [showUserDropDown, setShowUserDropDown] = useState(false);
-  const [streak, setStreak] = useState(0);
   const [showMenu, setShowMenu] = useState(false);
   const location = useLocation().pathname;
   const authData = useAuth();
-
-  useEffect (() => {
-    fetchStreak();
-  }, []);
-
-  const fetchStreak = async () => {
-    try {
-      const response = await axios.get("api/user/streak");
-      setStreak(response.data.streak);
-    } catch (error) {
-      console.error('Error fetching streak:', error);
-    }
-  }
 
   return (
     <nav className="border-2 border-solid border-gray-200 bg-white ">
@@ -41,7 +28,6 @@ export default function NavBar() {
           </div>
         </div>
         <div className="relative flex items-center space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
-          <div className="text-gray-500">{`Streak: ${streak}`}</div>
           {authData?.isLoggedIn ? (
             <button
               type="button"
@@ -119,6 +105,25 @@ export default function NavBar() {
 
 function UserDropDown(props: { showUserDropDown: boolean }) {
   const authData = useAuth();
+  const [streak, setStreak] = useState(0);
+  const [points, setPoints] = useState(0);
+
+  useEffect (() => {
+    fetchStreak();
+  }, []);
+
+  const fetchStreak = async () => {
+    try {
+      const response = await axios.get("api/user/streak");
+      setStreak(response.data.streak);
+    } catch (error) {
+      console.error('Error fetching streak:', error);
+    }
+  }
+
+  const updatePoints = async (newPoints: number) => {
+    setPoints(newPoints);
+  }
 
   return (
     <div
@@ -129,6 +134,12 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
       <div className="px-4 py-3">
         <span className="block whitespace-nowrap text-sm text-gray-600">
           {authData.authUserFullName}
+        </span>
+        <span className="block whitespace-nowrap text-sm text-gray-600">
+          Points: {points}
+        </span>
+        <span className="block whitespace-nowrap text-sm text-gray-600">
+          Streak: {streak}
         </span>
       </div>
       <hr></hr>
