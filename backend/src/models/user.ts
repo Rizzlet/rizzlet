@@ -28,6 +28,10 @@ export const userSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  lastAnsweredTimestamp: {
+    type: Date,
+    default: null,
+  },
   classIds: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -61,4 +65,17 @@ export async function getIdCreateOrUpdate(
   }
 
   return results.id;
+}
+
+export async function calculateStreak(userID: string) {
+  const user = await User.findById(userID);
+  if (!user) return 0;
+
+  const lastAnsweredTimestamp = user.lastAnsweredTimestamp;
+  if (!lastAnsweredTimestamp) return 0;
+
+  const timeDifference = Date.now() - lastAnsweredTimestamp.getTime();
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+
+  return daysDifference;
 }

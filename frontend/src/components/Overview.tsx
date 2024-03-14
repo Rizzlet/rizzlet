@@ -95,7 +95,7 @@ function Table(props: TableProps) {
     //overflow-x-auto
     //"w-full py-12 md:py-32 lg:py-40 bg-no-repeat bg-cover relative"
     <div className="relative sm:rounded-lg ">
-      <table className="w-screen min-h-[80dvh] py-2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-700">
+      <table className="w-screen min-h-[80dvh] py-2 text-sm text-left rtl:text-right text-gray-500">
         <TableHeader />
         <TableBody questionData={props.questionData} />
       </table>
@@ -105,7 +105,7 @@ function Table(props: TableProps) {
 
 function TableHeader() {
   return (
-    <thead className="text-small text-gray-700 uppercase bg-gray-50 dark:bg-teal-100 dark:text-black">
+    <thead className="text-small bg-[#d3f1e2] text-gray-700 uppercase">
       <tr>
         <th scope="col" className="px-6 py-3">
           Type
