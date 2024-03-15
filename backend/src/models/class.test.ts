@@ -7,9 +7,10 @@ beforeEach(() => {
 
 test("create a class", () => {
   const run = async () => {
-    expect(newClass("test"));
-    expect((await getClassNames()).length).toBe(1);
-    expect((await getClassNames())[0]).toBe("test");
+    await newClass("test");
+    const classNames = await getClassNames();
+    expect(classNames.length).toBe(1);
+    expect(classNames[0]!.name).toBe("test");
   };
 
   run();

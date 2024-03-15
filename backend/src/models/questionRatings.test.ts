@@ -7,7 +7,14 @@ beforeEach(() => {
 
 test("create a class", () => {
   const run = async () => {
-    expect(addQuestionRating("test", 1, 1, "test"));
+    expect(
+      addQuestionRating(
+        "65e2688f29d9685a38616ee5",
+        1,
+        1,
+        "65e2688f29d9685a38616ee5",
+      ),
+    );
   };
 
   run();
