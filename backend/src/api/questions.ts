@@ -28,6 +28,7 @@ export async function submitQuestionHandler(req: Request, res: Response) {
       question,
       answer,
       createdBy: userData.id,
+      class: req.body.class,
     });
     const newQuestionRes = await newQuestion.save();
 
