@@ -42,6 +42,12 @@ export default function QuestionSubmission() {
     }
   };
 
+    // Classes dropdown change
+    const onClassChange = (event: ChangeEvent<HTMLSelectElement>) => {
+      const value: (typeof state)["class"] = event.target.value;
+      setState({ ...state, class: value });
+    };
+
   const onQuestionTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value: (typeof state)["type"] = event.target.value;
     setState({ ...state, type: value });
