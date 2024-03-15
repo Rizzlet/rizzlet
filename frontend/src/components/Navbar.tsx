@@ -22,7 +22,7 @@ export default function NavBar() {
             R
           </div>
           <div className="ml-2 space-y-0.5">
-            <h1 className="text-lg font-bold tracking-tighter">Rizzlet</h1>
+            <h1 className="text-lg font-bold tracking-tighter">Rizzlet™</h1>
             <p className="text-xs text-gray-500 ">Interactive Flashcards</p>
           </div>
         </div>
