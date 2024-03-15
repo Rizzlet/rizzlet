@@ -91,6 +91,7 @@ try {
     console.error("Error getting top ten users:", error);
     res.status(500).send("Internal Server Error");
   }
+}
 
 export async function calculateStreak(userID: string) {
   const user = await User.findById(userID);

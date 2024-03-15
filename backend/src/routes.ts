@@ -23,6 +23,7 @@ import { GetTopTen } from "./models/user.js";
 import { CheckAnswered } from "./api/answeredquestions.js";
 import { SubmitAnsweredQuestion } from "./api/answeredquestions.js";
 import { calculateStreak } from "./models/user.js";
+import { getScore } from "./api/users.js";
 
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
