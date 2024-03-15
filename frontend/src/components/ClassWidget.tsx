@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/20/solid";
+import { Link } from "react-router-dom";
 
 interface ClassWidgetProps {
   name: string;
@@ -16,7 +17,12 @@ export default function ClassWidget(props: ClassWidgetProps) {
       justify-between"
     >
       <div className="m-4">
-        <p className="text-2xl">{props.name}</p>
+        <Link
+          to={`/answerQuestions/${props.id}`}
+          className="text-2xl underline"
+        >
+          {props.name}
+        </Link>
       </div>
 
       <div className="mr-4 ">
