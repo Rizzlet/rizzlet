@@ -36,3 +36,23 @@ export async function UpdateScore(req: Request, res: Response) {
     res.status(error);
   }
 }
+
+export async function getScore(req: Request, res: Response) {
+  const userData = verifyAndDecodeToken(req.cookies.token);
+  if (!userData) {
+    console.log("Authorization failed");
+    return res.status(401).json({ message: "Authorization failed" });
+  }
+
+  try {
+    const user = await User.findById(userData.id);
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ score: user.score });
+  } catch (error) {
+    console.error("Error fetching user score:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
