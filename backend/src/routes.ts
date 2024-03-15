@@ -14,7 +14,8 @@ import { googleAuthHandler } from "./api/auth/google.js";
 import { logoutHandler } from "./api/auth/logout.js";
 import { requireAuth } from "./api/auth/sharedAuth.js";
 import { submitQuestionRatingHandler } from "./api/questionRating.js";
-import { GetTopTen, GetIndividualUser, UpdateScore } from "./api/users.js";
+import { GetIndividualUser, UpdateScore } from "./api/users.js";
+import { GetTopTen } from "./models/user.js";
 import { CheckAnswered } from "./api/answeredquestions.js";
 import { SubmitAnsweredQuestion } from "./api/answeredquestions.js";
 

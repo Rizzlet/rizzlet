@@ -37,25 +37,4 @@ export async function UpdateScore(req: Request, res: Response) {
   }
 }
 
-export async function GetTopTen (req: Request, res: Response) {
-  //verify tokens for authentication
-  const userData = verifyAndDecodeToken(req.cookies.token);
-  if (!userData) {
-    console.log("update score authorization failed");
-    return;
-  }
 
-  //sorting to get top 10 
-try {
-    // Find the top ten users sorted by score in descending order
-    const topTenUsers = await User.find({})
-      .sort({ score: -1 })
-      .limit(10)
-      // .select("firstName lastName score");
-
-    res.send(topTenUsers).status(200);
-  } catch (error) {
-    console.error("Error getting top ten users:", error);
-    res.status(500).send("Internal Server Error");
-  }
-}
