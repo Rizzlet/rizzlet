@@ -6,6 +6,7 @@ interface IAnswer {
   alreadyAnswered: boolean;
   questionAssociated: string;
   setAlreadyAnswered: Function;
+  updatePoints: (newPoints: number) => void;
 }
 
 export default function Answers<T extends IAnswer>(props: T) {
@@ -41,15 +42,11 @@ export default function Answers<T extends IAnswer>(props: T) {
           {
             withCredentials: true,
           }
-        )
-        .then((result) => {
-          if (result) {
-            console.log("post successful");
-          }
-        });
-    } catch (error) {
+        );
+        props.updatePoints(1);
+      } catch (error) {
       console.log(error);
-    }
+      }
   }
 
   return (

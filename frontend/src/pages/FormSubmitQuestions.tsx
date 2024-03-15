@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   Title,
   SelectQuestion,
+  SelectClass,
   InputQuestion,
   TrueAndFalseButtons,
   Buttons,
@@ -14,14 +15,13 @@ export default function QuestionSubmission() {
     createdBy: "",
     question: "",
     answer: false,
+    class: "",
   });
 
-  // question inpout change
+  // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     let value: (typeof state)[keyof typeof state] = event.target.value;
-    // if (event.target.type === "button") {
-    //   value = event.target.checked;
-    // }
+
     setState({ ...state, [event.target.id]: value });
   };
 
@@ -29,15 +29,25 @@ export default function QuestionSubmission() {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await axios.post("http://localhost:8000/api/question", state, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        process.env.REACT_APP_BACKEND_URL + "/api/question",
+        state,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // dropdown change
+  // Classes dropdown change
+  const onClassChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const value: (typeof state)["class"] = event.target.value;
+    setState({ ...state, class: value });
+  };
+
   const onQuestionTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value: (typeof state)["type"] = event.target.value;
     setState({ ...state, type: value });
@@ -52,10 +62,16 @@ export default function QuestionSubmission() {
     <div>
       <Title />
       <form className="flashcard" onSubmit={onSubmit}>
-        <SelectQuestion
-          onQuestionTypeChange={onQuestionTypeChange}
-          selectedType={state.type}
-        />
+        <div className="w-dvw">
+          <SelectQuestion
+            onQuestionTypeChange={onQuestionTypeChange}
+            selectedType={state.type}
+          />
+          <SelectClass
+            onClassChange={onClassChange}
+            selectedType={state.class}
+          ></SelectClass>
+        </div>
         <InputQuestion onFieldChange={onFieldChange} />
         <TrueAndFalseButtons onTrueFalseButtonClick={onTrueFalseButtonClick} />
         <Buttons />

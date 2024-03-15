@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { getConnection } from "./db.js";
 import { Class } from "./class.js";
+import { verifyAndDecodeToken } from "../api/auth/sharedAuth.js";
+import { Request, Response } from "express";
 
 export const userSchema = new mongoose.Schema({
   firstName: {
@@ -28,6 +30,10 @@ export const userSchema = new mongoose.Schema({
   score: {
     type: Number,
     required: true,
+  },
+  lastAnsweredTimestamp: {
+    type: Date,
+    default: null,
   },
   classIds: [
     {
@@ -87,4 +93,38 @@ export async function getUserClasses(userId: string) {
     console.error("Error fetching user classes:", error);
     throw error;
   }
+}
+export async function GetTopTen(req: Request, res: Response) {
+  //verify tokens for authentication
+  const userData = verifyAndDecodeToken(req.cookies.token);
+  if (!userData) {
+    console.log("update score authorization failed");
+    return;
+  }
+
+  //sorting to get top 10
+  try {
+    // Find the top ten users sorted by score in descending order
+    const topTenUsers = await User.find({}).sort({ score: -1 });
+    // .limit(3)
+    // .select("firstName lastName score");
+
+    res.send(topTenUsers).status(200);
+  } catch (error) {
+    console.error("Error getting top ten users:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
+export async function calculateStreak(userID: string) {
+  const user = await User.findById(userID);
+  if (!user) return 0;
+
+  const lastAnsweredTimestamp = user.lastAnsweredTimestamp;
+  if (!lastAnsweredTimestamp) return 0;
+
+  const timeDifference = Date.now() - lastAnsweredTimestamp.getTime();
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+  return daysDifference;
 }

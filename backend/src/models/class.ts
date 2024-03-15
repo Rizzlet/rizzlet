@@ -24,3 +24,5 @@ export async function newClass(name: string) {
 
   await newClass.save();
 }
+
+export default Class;

@@ -40,7 +40,7 @@ function QuestionOverview() {
   async function fetchAll() {
     try {
       const response = await axios.get<Question[]>(
-        "http://localhost:8000/api/question"
+        process.env.REACT_APP_BACKEND_URL + "/api/question"
       );
       return response.data;
     } catch (error) {
