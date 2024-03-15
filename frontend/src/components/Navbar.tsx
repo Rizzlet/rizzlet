@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
 import axios from "axios";
@@ -36,7 +36,10 @@ export default function NavBar() {
               }}
             >
               <span className="sr-only">Open user menu</span>
-              <div className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50" style={{backgroundColor: authData.profileColor}}>
+              <div
+                className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50"
+                style={{ backgroundColor: authData.profileColor }}
+              >
                 {authData.authUserFullName[0]}
               </div>
             </button>
@@ -104,6 +107,41 @@ export default function NavBar() {
 
 function UserDropDown(props: { showUserDropDown: boolean }) {
   const authData = useAuth();
+  // const [streak, setStreak] = useState(0);
+  const [points, setPoints] = useState(0);
+
+  useEffect(() => {
+    // fetchStreak();
+    fetchPoints();
+  }, []);
+
+  // const fetchStreak = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       new URL("/api/user/streak", process.env.REACT_APP_BACKEND_URL!).href,
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     );
+  //     setStreak(response.data.streak);
+  //   } catch (error) {
+  //     console.error("Error fetching streak:", error);
+  //   }
+  // };
+
+  const fetchPoints = async () => {
+    try {
+      const response = await axios.get(
+        new URL("/api/user/score", process.env.REACT_APP_BACKEND_URL!).href,
+        {
+          withCredentials: true,
+        }
+      );
+      setPoints(response.data.score);
+    } catch (error) {
+      console.error("Error fetching user points:", error);
+    }
+  };
 
   return (
     <div
@@ -115,6 +153,12 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
         <span className="block whitespace-nowrap text-sm text-gray-600">
           {authData.authUserFullName}
         </span>
+        <span className="block whitespace-nowrap text-sm text-gray-600">
+          Points: {points}
+        </span>
+        {/* <span className="block whitespace-nowrap text-sm text-gray-600">
+          Streak: {streak}
+        </span> */}
       </div>
       <hr></hr>
       <ul className="py-2" aria-labelledby="user-menu-button">
@@ -129,10 +173,10 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
                   .post(
                     new URL(
                       "/api/auth/logout",
-                      process.env.REACT_APP_BACKEND_URL!,
+                      process.env.REACT_APP_BACKEND_URL!
                     ).href,
                     {},
-                    { withCredentials: true },
+                    { withCredentials: true }
                   )
                   .then(() => {
                     window.location.href = "/";

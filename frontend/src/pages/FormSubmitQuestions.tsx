@@ -3,6 +3,7 @@ import axios from "axios";
 import {
   Title,
   SelectQuestion,
+  SelectClass,
   InputQuestion,
   TrueAndFalseButtons,
   Buttons,
@@ -14,6 +15,7 @@ export default function QuestionSubmission() {
     createdBy: "",
     question: "",
     answer: false,
+    class: "",
   });
 
   // question input change
@@ -40,7 +42,6 @@ export default function QuestionSubmission() {
     }
   };
 
-  // dropdown to select which question type
   const onQuestionTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value: (typeof state)["type"] = event.target.value;
     setState({ ...state, type: value });
@@ -55,10 +56,16 @@ export default function QuestionSubmission() {
     <div>
       <Title />
       <form className="flashcard" onSubmit={onSubmit}>
-        <SelectQuestion
-          onQuestionTypeChange={onQuestionTypeChange}
-          selectedType={state.type}
-        />
+        <div className="w-dvw">
+          <SelectQuestion
+            onQuestionTypeChange={onQuestionTypeChange}
+            selectedType={state.type}
+          />
+          <SelectClass
+            onClassChange={onClassChange}
+            selectedType={state.class}
+          ></SelectClass>
+        </div>
         <InputQuestion onFieldChange={onFieldChange} />
         <TrueAndFalseButtons onTrueFalseButtonClick={onTrueFalseButtonClick} />
         <Buttons />

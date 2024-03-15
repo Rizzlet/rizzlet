@@ -19,7 +19,7 @@
   border-radius: 15px;
   top: 10%;
   left: 50%;
-  transform: translate(-50%, 100%);
+  /* transform: translate(-50%, 100%); */
 }
 
 .brand {

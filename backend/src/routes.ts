@@ -6,7 +6,11 @@ import {
 } from "./api/questions.js";
 
 import { helloWorldHandler } from "./api/helloWorld.js";
-import { classHandler } from "./api/classSearch.js";
+import {
+  classHandler,
+  fetchQuestionsByClass,
+  getUserClasses,
+} from "./api/classSearch.js";
 import { fetchClassesHandler } from "./api/classSearch.js";
 import { updateUserClassesHandler } from "./api/classSearch.js";
 
@@ -18,6 +22,7 @@ import { GetIndividualUser, UpdateScore } from "./api/users.js";
 import { GetTopTen } from "./models/user.js";
 import { CheckAnswered } from "./api/answeredquestions.js";
 import { SubmitAnsweredQuestion } from "./api/answeredquestions.js";
+import { calculateStreak } from "./models/user.js";
 
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
@@ -32,9 +37,14 @@ export function addRoutes(app: Application) {
   );
   app.post("/api/class", classHandler);
   app.get("/api/class", fetchClassesHandler);
+  app.get("/api/class/:id", requireAuth, fetchQuestionsByClass);
+  app.get("/api/submitQuestion/classes", requireAuth, getUserClasses);
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.post("/api/user/score", requireAuth, UpdateScore);
   app.get("/api/user/ten", requireAuth, GetTopTen);
+  app.get("/api/user/score", requireAuth, getScore);
+  app.post("/api/user/streak",requireAuth, calculateStreak);
+  app.get("/api/user/streak",requireAuth, calculateStreak);
   app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
   app.put("/api/user", requireAuth, updateUserClassesHandler);
