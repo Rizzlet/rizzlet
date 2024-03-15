@@ -2,7 +2,7 @@
 
 ### Design
 
-Storyboard - [https://miro.com/app/board/uXjVNupQDM8=/](https://miro.com/app/board/uXjVNupQDM8=/)
+Technical Spec - [Link](https://docs.google.com/document/d/1pt8KaxrR4H4lkDkm3iwLrpPXjrTpsPzHESjQOSDFHxA/edit?usp=sharing)
 
 ## Contributing
 

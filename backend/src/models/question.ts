@@ -23,11 +23,15 @@ export const questionSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-
   class: {
     type: mongoose.Types.ObjectId,
     ref: Class.modelName,
     require: true,
+  },
+  isHidden: {
+    //this is for low rated questions. So when displaying questions we can use this to filter 
+    type: Boolean,
+    default: false,
   },
 });
 
