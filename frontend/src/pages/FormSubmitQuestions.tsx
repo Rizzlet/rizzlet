@@ -18,12 +18,10 @@ export default function QuestionSubmission() {
     class: "",
   });
 
-  // question inpout change
+  // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
     let value: (typeof state)[keyof typeof state] = event.target.value;
-    // if (event.target.type === "button") {
-    //   value = event.target.checked;
-    // }
+
     setState({ ...state, [event.target.id]: value });
   };
 
@@ -32,7 +30,7 @@ export default function QuestionSubmission() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/question",
+        process.env.REACT_APP_BACKEND_URL + "/api/question",
         state,
         {
           withCredentials: true,
@@ -44,13 +42,6 @@ export default function QuestionSubmission() {
     }
   };
 
-  // Classes dropdown change
-  const onClassChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const value: (typeof state)["class"] = event.target.value;
-    setState({ ...state, class: value });
-  };
-
-  // dropdown change
   const onQuestionTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value: (typeof state)["type"] = event.target.value;
     setState({ ...state, type: value });

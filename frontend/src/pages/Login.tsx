@@ -36,7 +36,7 @@ export default function LoginPage() {
       .post(
         new URL("/api/auth/google", process.env.REACT_APP_BACKEND_URL!).href,
         { authorizationCode },
-        { withCredentials: true },
+        { withCredentials: true }
       )
       .then((response) => {
         const data = response.data as BackendLoginResponse;
@@ -46,6 +46,9 @@ export default function LoginPage() {
 
         auth.setAuthUserFullName(`${data.firstName} ${data.lastName}`);
         localStorage.setItem("fullName", `${data.firstName} ${data.lastName}`);
+
+        auth.setAuthUserId(`${data.id}`);
+        localStorage.setItem("authUserId", data.id);
       })
       .catch((error) => {
         console.error("Unable to contact backend for log in", error);

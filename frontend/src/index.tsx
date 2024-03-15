@@ -13,10 +13,10 @@ import FlashcardField from "./pages/AnswerQuestion";
 import NavBar from "./components/Navbar";
 import HomePage from "./pages/Homepage";
 import QuestionOverview from "./pages/QuestionOverview";
-// import Page from "./components/Pagination";
 
 import "./index.css";
 import RatingPage from "./pages/RatingPage";
+import LeaderBoard from "./pages/LeaderBoardPage";
 import NoClasses from "./pages/AnswerQuestionNoClasses";
 
 const router = createBrowserRouter([
@@ -74,6 +74,10 @@ const router = createBrowserRouter([
       {
         path: "/overview/:pageNumber",
         element: <QuestionOverview />,
+      },
+      {
+        path: "/leaderBoard",
+        element: <LeaderBoard />,
       },
     ],
   },
