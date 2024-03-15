@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import { answeredquestion } from "../models/answeredquestion.js";
+import { User } from "../models/user.js";
 
 export async function CheckAnswered(req: Request, res: Response) {
   const userData = verifyAndDecodeToken(req.cookies.token);
@@ -10,7 +11,7 @@ export async function CheckAnswered(req: Request, res: Response) {
     return;
   }
 
-  try {
+  try { //move to its own function in models (like anything that uses findone or mongoose)
     const foundAnsweredQuestion = await answeredquestion
       .findOne({ User: userData.id, Question: questionId })
       .exec();
@@ -38,6 +39,7 @@ export async function SubmitAnsweredQuestion(req: Request, res: Response) {
       Question: req.body.Question,
     });
     await newAnsweredQuestion.save();
+    await User.findOneAndUpdate({ _id: userData.id }, {lastAnsweredTimestamp: new Date() });
     console.log("post successful");
     res.status(201);
   } catch (error) {

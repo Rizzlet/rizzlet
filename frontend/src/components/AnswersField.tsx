@@ -13,6 +13,7 @@ interface Question {
 interface IAnswerField {
   questionlist: Question[];
   questionToRender: number;
+  updatePoints: (newPoints: number) => void;
 }
 
 export default function AnswersField<T extends IAnswerField>(props: T) {
@@ -56,6 +57,7 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
               alreadyAnswered={isItAnswered}
               questionAssociated={theQuestion._id}
               setAlreadyAnswered={handleAnswered}
+              updatePoints={props.updatePoints}
             ></Answers>
           );
         }

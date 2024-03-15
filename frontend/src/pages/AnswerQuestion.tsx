@@ -29,6 +29,8 @@ async function fetchQuestions(
 }
 
 export default function FlashcardField() {
+  const [points, setPoints] = useState<number>(0);
+
   // Used to determine what flashcards is shown on screen. Represents the index of the array of flashcards
   let [questionToRender, changeQuestionToRender] = useState(0);
 
@@ -68,6 +70,20 @@ export default function FlashcardField() {
       }
     });
   }, [id]);
+
+  const updatePoints = async (newPoints: number) => {
+    try {
+      const response = await axios.post(
+        "/api/user/score",
+        { points: newPoints },
+        { withCredentials: true }
+      );
+  
+      setPoints(newPoints);
+    } catch (error) {
+      console.error('Error updating user points:', error);
+    }
+  };
 
   return (
     <div className="relative flex flex-row justify-center h-svh w-dvw items-center bg-white m-0 p-0">
@@ -113,6 +129,7 @@ export default function FlashcardField() {
         <AnswersField
           questionlist={listOfQuestions}
           questionToRender={questionToRender}
+          updatePoints={updatePoints}
         ></AnswersField>
       </div>
     </div>
