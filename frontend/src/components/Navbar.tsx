@@ -5,7 +5,8 @@ import axios from "axios";
 
 const links = [
   { to: "/", text: "Home" },
-  { to: "/classSearch", text: "Classes" },
+  { to: "/myclasses", text: "Classes" },
+  { to: "/submitQuestion", text: "Submit Questions" },
 ];
 
 export default function NavBar() {
@@ -22,7 +23,7 @@ export default function NavBar() {
             R
           </div>
           <div className="ml-2 space-y-0.5">
-            <h1 className="text-lg font-bold tracking-tighter">Rizzlet</h1>
+            <h1 className="text-lg font-bold tracking-tighter">Rizzlet™</h1>
             <p className="text-xs text-gray-500 ">Interactive Flashcards</p>
           </div>
         </div>

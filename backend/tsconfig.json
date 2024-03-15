@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "module": "ES2022",
+    "module": "ESNext",
     "esModuleInterop": true,
-    "lib": ["ES2022"],
-    "target": "ES2022",
+    "lib": ["ESNext"],
+    "target": "ESNext",
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
@@ -12,6 +12,7 @@
     "allowUnreachableCode": false,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "skipLibCheck": true,
 
     // Linter Checks
     "noImplicitReturns": true,
@@ -20,5 +21,13 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["src/**/*", ".env", "src/models/server.ts", "../frontend/src/components/PaginationControls.tsx", "../frontend/src/components/page.tsx"]
+  "include": [
+    "src/**/*",
+    ".env",
+    "src/models/server.ts",
+    "../frontend/src/components/PaginationControls.tsx",
+    "../frontend/src/components/page.tsx",
+    "_worker.ts"
+  ],
+  "exclude": ["node_modules/", "dist"]
 }

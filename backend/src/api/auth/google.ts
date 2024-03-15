@@ -2,7 +2,7 @@ import axios from "axios";
 import { Request, Response } from "express";
 import joi from "joi";
 import jwt from "jsonwebtoken";
-import { envVars } from "../../env.js";
+import { getEnvVars } from "../../env.js";
 import { getIdCreateOrUpdate } from "../../models/user.js";
 import { ClientTokenData } from "./sharedAuth.js";
 
@@ -63,7 +63,6 @@ export async function googleAuthHandler(req: Request, res: Response) {
     user.email,
     userId,
     user.profileColor,
-    [],
   );
 
   if (results === null) {
@@ -74,9 +73,11 @@ export async function googleAuthHandler(req: Request, res: Response) {
 
   const tokenData: ClientTokenData = { ...user, id: results };
 
-  const encodedToken = jwt.sign(tokenData, envVars.JWT_SECRET);
+  const encodedToken = jwt.sign(tokenData, getEnvVars().JWT_SECRET);
 
-  res.cookie("token", encodedToken);
+  res.cookie("token", encodedToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  });
 
   res.status(200).json(tokenData);
 }

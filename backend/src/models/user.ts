@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import { getConnection } from "./db.js";
+import { Class } from "./class.js";
 import { verifyAndDecodeToken } from "../api/auth/sharedAuth.js";
 import { Request, Response } from "express";
-
 
 export const userSchema = new mongoose.Schema({
   firstName: {
@@ -39,6 +39,7 @@ export const userSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       required: false,
+      ref: Class.modelName,
     },
   ],
 });
@@ -52,9 +53,14 @@ export async function getIdCreateOrUpdate(
   email: string,
   googleUserId: string,
   profileColor: string,
-  classIds: mongoose.Types.ObjectId[],
 ): Promise<string | null> {
-  const userDetails = { firstName, lastName, googleUserId, email, profileColor, classIds };
+  const userDetails = {
+    firstName,
+    lastName,
+    googleUserId,
+    email,
+    profileColor,
+  };
 
   // So we can either create a new user or update an existing one
   // Since a user could change their name
@@ -70,7 +76,25 @@ export async function getIdCreateOrUpdate(
   return results.id;
 }
 
-export async function GetTopTen (req: Request, res: Response) {
+export async function getUserClasses(userId: string) {
+  try {
+    const user = await User.findById(userId)
+      .populate({
+        path: "classIds",
+        select: { name: 1, _id: 1 },
+      })
+      .exec();
+    if (user === null) {
+      console.error("User not found: ", userId);
+      return null;
+    }
+    return user.classIds as unknown as { name: string; _id: string }[];
+  } catch (error) {
+    console.error("Error fetching user classes:", error);
+    throw error;
+  }
+}
+export async function GetTopTen(req: Request, res: Response) {
   //verify tokens for authentication
   const userData = verifyAndDecodeToken(req.cookies.token);
   if (!userData) {
@@ -78,13 +102,12 @@ export async function GetTopTen (req: Request, res: Response) {
     return;
   }
 
-  //sorting to get top 10 
-try {
+  //sorting to get top 10
+  try {
     // Find the top ten users sorted by score in descending order
-    const topTenUsers = await User.find({})
-      .sort({ score: -1 })
-      // .limit(3)
-      // .select("firstName lastName score");
+    const topTenUsers = await User.find({}).sort({ score: -1 });
+    // .limit(3)
+    // .select("firstName lastName score");
 
     res.send(topTenUsers).status(200);
   } catch (error) {
@@ -101,7 +124,7 @@ export async function calculateStreak(userID: string) {
   if (!lastAnsweredTimestamp) return 0;
 
   const timeDifference = Date.now() - lastAnsweredTimestamp.getTime();
-  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
   return daysDifference;
 }

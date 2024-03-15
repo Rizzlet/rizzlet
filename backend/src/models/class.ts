@@ -9,19 +9,14 @@ export const classSchema = new mongoose.Schema({
   },
 });
 
-const Class = (await getConnection()).model("Class", classSchema);
+export const Class = (await getConnection()).model("Class", classSchema);
 
 export async function getClassNames() {
-  try {
-    // Fetch class names from the database
-    const classNames = await Class.find({}, "_id name"); // Include the _id field in the query
+  // Fetch class names from the database
+  const classNames = await Class.find({}, "_id name"); // Include the _id field in the query
 
-    // Extract class names and IDs from documents
-    return classNames.map((cls) => ({ id: cls._id, name: cls.name }));
-  } catch (error) {
-    console.error("Error fetching class names:", error);
-    throw error;
-  }
+  // Extract class names and IDs from documents
+  return classNames.map((cls) => ({ id: cls._id, name: cls.name }));
 }
 
 export async function newClass(name: string) {

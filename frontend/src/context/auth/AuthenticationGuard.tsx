@@ -21,5 +21,5 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     }
   }, [auth.isLoggedIn, navigate, location]);
 
-  return <>{children}</>;
+  return <>{auth.isLoggedIn ? children : <>Redirecting to login page...</>}</>;
 }

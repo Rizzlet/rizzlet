@@ -6,7 +6,7 @@ import swaggerUi from "swagger-ui-express";
 import fs from "fs";
 import yaml from "yaml";
 import cookieParser from "cookie-parser";
-import { envVars } from "./env.js";
+import { getEnvVars } from "./env.js";
 import { addRoutes } from "./routes.js";
 import { getConnection } from "./models/db.js";
 
@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: envVars.FRONTEND_BASE_URL,
+    origin: getEnvVars().FRONTEND_BASE_URL,
   }),
 );
 
@@ -44,8 +44,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 addRoutes(app);
 
-app.listen(envVars.PORT, () => {
+app.listen(getEnvVars().PORT, () => {
   console.log(
-    `Server running : http://${envVars.HOST}:${envVars.PORT}/api-docs`,
+    `Server running : http://${getEnvVars().HOST}:${getEnvVars().PORT}/api-docs`,
   );
 });
