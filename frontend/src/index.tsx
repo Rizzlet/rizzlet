@@ -46,7 +46,7 @@ const router = createBrowserRouter([
       {
         children: [
           {
-            path: "/answerQuestion",
+            path: "/answerQuestions",
             element: (
               <AuthGuard>
                 <NoClasses />
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: "/answerQuestion/:id",
+            path: "/answerQuestions/:id",
             element: (
               <AuthGuard>
                 <FlashcardField />
