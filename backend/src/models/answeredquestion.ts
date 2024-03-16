@@ -16,7 +16,20 @@ export const answeredQuestionsSchema = new mongoose.Schema({
   },
 });
 
-export const answeredquestion = (await getConnection()).model(
+export const AnsweredQuestion = (await getConnection()).model(
   "answeredquestion",
   answeredQuestionsSchema,
 );
+
+export async function addAnsweredQuestion(userId: string, questionId: string) {
+  const newAnsweredQuestion = new AnsweredQuestion({
+    User: userId,
+    Question: questionId,
+  });
+
+  await newAnsweredQuestion.save();
+  await User.findOneAndUpdate(
+    { _id: userId },
+    { lastAnsweredTimestamp: new Date() },
+  );
+}

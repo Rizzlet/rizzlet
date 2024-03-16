@@ -20,8 +20,8 @@ import { requireAuth } from "./api/auth/sharedAuth.js";
 import { submitQuestionRatingHandler } from "./api/questionRating.js";
 import { GetIndividualUser, UpdateScore, UserClasses } from "./api/users.js";
 import {} from "./models/user.js";
-import { CheckAnswered } from "./api/answeredquestions.js";
-import { SubmitAnsweredQuestion } from "./api/answeredquestions.js";
+import { CheckAnswered } from "./api/answeredQuestion.js";
+import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
 import { calculateStreak, GetTopTen } from "./models/user.js";
 import { getScore } from "./api/users.js";
 
