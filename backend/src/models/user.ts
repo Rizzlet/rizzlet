@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { getConnection } from "./db.js";
-import { Class } from "./class";
-import { verifyAndDecodeToken } from "../api/auth/sharedAuth.js";
 import { Request, Response } from "express";
+import { getConnection } from "./db.js";
+import { Class } from "./class.js";
+import { verifyAndDecodeToken } from "../api/auth/sharedAuth.js";
 
 const userSchema = new mongoose.Schema({
   firstName: {
