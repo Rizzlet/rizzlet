@@ -29,7 +29,7 @@ export const questionSchema = new mongoose.Schema({
     require: true,
   },
   isHidden: {
-    //this is for low rated questions. So when displaying questions we can use this to filter 
+    //this is for low rated questions. So when displaying questions we can use this to filter
     type: Boolean,
     default: false,
   },
@@ -39,3 +39,22 @@ export const Question = (await getConnection()).model(
   "Question",
   questionSchema,
 );
+
+export async function addQuestion(
+  type: string,
+  userId: string,
+  question: string,
+  answer: string,
+  classId: string,
+) {
+  const newQuestion = new Question({
+    type,
+    question,
+    answer,
+    createdBy: userId,
+    class: classId,
+  });
+  const newQuestionRes = await newQuestion.save();
+
+  return newQuestionRes._id;
+}

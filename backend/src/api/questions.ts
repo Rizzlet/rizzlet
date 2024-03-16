@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Question } from "../models/question.js";
+import { Question, addQuestion } from "../models/question.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 
 export async function fetchAllQuestionsHandler(_req: Request, res: Response) {
@@ -22,19 +22,13 @@ export async function submitQuestionHandler(req: Request, res: Response) {
     return;
   }
 
-  try {
-    const newQuestion = new Question({
-      type,
-      question,
-      answer,
-      createdBy: userData.id,
-      class: req.body.class,
-    });
-    const newQuestionRes = await newQuestion.save();
+  const questionId = addQuestion(
+    type,
+    question,
+    answer,
+    userData.id,
+    req.body.class,
+  );
 
-    res.status(201).json({ id: newQuestionRes._id });
-  } catch (error) {
-    console.error("Error submitting question:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
+  res.status(201).json({ id: questionId });
 }

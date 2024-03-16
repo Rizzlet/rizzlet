@@ -3,7 +3,7 @@ import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import {
   addAnsweredQuestion,
   checkAnswered,
-} from "../models/answeredquestion.js";
+} from "../models/answeredQuestion.js";
 
 export async function CheckAnswered(req: Request, res: Response) {
   const userData = verifyAndDecodeToken(req.cookies.token);
