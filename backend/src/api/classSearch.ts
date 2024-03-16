@@ -5,7 +5,7 @@ import { getClassNames } from "../models/class.js";
 import { User, setUserClasses } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import mongoose from "mongoose";
-import Class from "../models/class.js";
+import { Class } from "../models/class.js";
 
 type classBody = {
   name: string;

@@ -1,4 +1,4 @@
-import { newClass, getClassNames } from "./class";
+import { newClass, getClassNames } from "./class.js";
 import { jest } from "@jest/globals";
 
 beforeEach(() => {

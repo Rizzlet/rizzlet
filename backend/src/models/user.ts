@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 import { getConnection } from "./db.js";
-import { Class } from "./class.js";
+import { Class } from "./class";
 import { verifyAndDecodeToken } from "../api/auth/sharedAuth.js";
 import { Request, Response } from "express";
 
-export const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,

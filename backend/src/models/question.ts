@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { User } from "./user.js";
 import { getConnection } from "./db.js";
-import Class from "./class.js";
+import { Class } from "./class.js";
 
 export const questionSchema = new mongoose.Schema({
   type: {

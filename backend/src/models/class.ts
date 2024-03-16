@@ -3,7 +3,7 @@ import { getConnection } from "./db.js";
 import { User } from "./user.js";
 import { Question } from "./question.js";
 
-export const classSchema = new mongoose.Schema({
+const classSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -26,8 +26,6 @@ export async function newClass(name: string) {
 
   await newClass.save();
 }
-
-export default Class;
 
 export async function getQuestionsFromClassForUser(
   userId: string,
