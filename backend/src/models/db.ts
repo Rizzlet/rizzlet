@@ -12,21 +12,15 @@ export async function getConnection() {
       const mongo = await MongoMemoryServer.create();
       connectionUri = mongo.getUri();
     } else {
+      // Not tested because we don't want to test the real database
       connectionUri = getEnvVars().DB_URL;
     }
 
-    connection = await mongoose
-      .createConnection(connectionUri)
-      .asPromise()
-      .catch((err) => {
-        console.error("Database connection error");
-        console.error(err);
-        process.exit(1);
-      });
+    connection = await mongoose.createConnection(connectionUri);
   }
   return connection;
 }
 
-function testingWithJest() {
+export function testingWithJest() {
   return process.env.JEST_WORKER_ID !== undefined;
 }

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { getConnection } from "./db.js";
 
-export const classSchema = new mongoose.Schema({
+const classSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -22,7 +22,5 @@ export async function getClassNames() {
 export async function newClass(name: string) {
   const newClass = new Class({ name });
 
-  await newClass.save();
+  return await newClass.save();
 }
-
-export default Class;

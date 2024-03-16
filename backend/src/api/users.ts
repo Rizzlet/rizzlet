@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User, getUserClasses } from "../models/user.js";
+import { User, getAllUsersByScore, getUserClasses } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 
 export async function GetIndividualUser(req: Request, res: Response) {
@@ -75,4 +75,18 @@ export async function getScore(req: Request, res: Response) {
     console.error("Error fetching user score:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
+}
+
+export async function getTopTenUsers(req: Request, res: Response) {
+  //verify tokens for authentication
+  const userData = verifyAndDecodeToken(req.cookies.token);
+  if (!userData) {
+    console.log("update score authorization failed");
+    return;
+  }
+
+  //sorting to get top
+  const topTenUsers = getAllUsersByScore();
+
+  res.send(topTenUsers).status(200);
 }

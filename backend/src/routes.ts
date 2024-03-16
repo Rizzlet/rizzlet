@@ -20,9 +20,9 @@ import { requireAuth } from "./api/auth/sharedAuth.js";
 import { submitQuestionRatingHandler } from "./api/questionRating.js";
 import { GetIndividualUser, UpdateScore, UserClasses } from "./api/users.js";
 import {} from "./models/user.js";
-import { CheckAnswered } from "./api/answeredquestions.js";
-import { SubmitAnsweredQuestion } from "./api/answeredquestions.js";
-import { calculateStreak, GetTopTen } from "./models/user.js";
+import { CheckAnswered } from "./api/answeredQuestion.js";
+import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
+import { calculateStreak, getTopTenUsers } from "./models/user.js";
 import { getScore } from "./api/users.js";
 
 export function addRoutes(app: Application) {
@@ -42,7 +42,7 @@ export function addRoutes(app: Application) {
   app.get("/api/submitQuestion/classes", requireAuth, getUserClasses);
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.get("/api/user/classes", requireAuth, UserClasses);
-  app.get("/api/user/ten", requireAuth, GetTopTen);
+  app.get("/api/user/ten", requireAuth, getTopTenUsers);
   app.get("/api/user/score", requireAuth, getScore);
   app.post("/api/user/score", requireAuth, UpdateScore);
   app.post("/api/user/streak", requireAuth, calculateStreak);
