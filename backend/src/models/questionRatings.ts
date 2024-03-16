@@ -46,28 +46,14 @@ export async function addQuestionRating(
 }
 
 export async function hideQuestion(questionId: string) {
-  try {
-    // Find the question by its ID and update isHidden to true
-    await Question.findByIdAndUpdate(questionId, { isHidden: true });
-    console.log(`Question with ID ${questionId} hidden successfully.`);
-  } catch (error) {
-    console.error(`Error hiding question with ID ${questionId}:`, error);
-    throw error;
-  }
+  // Find the question by its ID and update isHidden to true
+  await Question.findByIdAndUpdate(questionId, { isHidden: true });
 }
 
 export async function getRelevancyRatingsForQuestion(questionId: string) {
-  try {
-    // Fetch relevancy ratings for the specified question ID
-    const relevancyRatings = await QuestionRating.find({
-      question: questionId,
-    });
-    return relevancyRatings;
-  } catch (error) {
-    console.error(
-      `Error fetching relevancy ratings for question ${questionId}:`,
-      error,
-    );
-    throw error;
-  }
+  // Fetch relevancy ratings for the specified question ID
+  const relevancyRatings = await QuestionRating.find({
+    question: questionId,
+  });
+  return relevancyRatings;
 }

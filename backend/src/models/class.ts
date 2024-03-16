@@ -22,5 +22,5 @@ export async function getClassNames() {
 export async function newClass(name: string) {
   const newClass = new Class({ name });
 
-  await newClass.save();
+  return await newClass.save();
 }

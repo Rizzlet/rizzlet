@@ -26,7 +26,7 @@ export const questionSchema = new mongoose.Schema({
   class: {
     type: mongoose.Types.ObjectId,
     ref: Class.modelName,
-    require: true,
+    required: true,
   },
   isHidden: {
     //this is for low rated questions. So when displaying questions we can use this to filter
@@ -71,10 +71,6 @@ export async function getQuestionsFromClassForUser(
 
   // Finds the questions associated with the class
   const foundQuestions = await Question.find({ class: classId }).exec();
-
-  if (foundQuestions.length == 0) {
-    return null;
-  }
 
   // Checks to see if the user is registered with the classid
   for (let i = 0; i < foundUser.classIds.length; i++) {
