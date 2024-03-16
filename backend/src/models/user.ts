@@ -76,6 +76,17 @@ export async function getIdCreateOrUpdate(
   return results.id;
 }
 
+export async function setUserClasses(userId: string, classIds: string[]) {
+  // Update the user's classIds with the new classes
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { $set: { classIds: classIds } },
+    { new: true, runValidators: true },
+  );
+
+  return updatedUser;
+}
+
 export async function getUserClasses(userId: string) {
   try {
     const user = await User.findById(userId)
