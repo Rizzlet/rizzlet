@@ -33,3 +33,12 @@ export async function addAnsweredQuestion(userId: string, questionId: string) {
     { lastAnsweredTimestamp: new Date() },
   );
 }
+
+export async function checkAnswered(userId: string, questionId: string) {
+  const foundAnsweredQuestion = await AnsweredQuestion.findOne({
+    User: userId,
+    Question: questionId,
+  }).exec();
+
+  return foundAnsweredQuestion != null;
+}
