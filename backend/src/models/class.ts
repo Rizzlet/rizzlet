@@ -52,4 +52,6 @@ export async function getQuestionsFromClassForUser(
       return foundQuestions;
     }
   }
+
+  return null;
 }
