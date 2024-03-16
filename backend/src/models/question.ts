@@ -44,7 +44,7 @@ export async function addQuestion(
   type: string,
   userId: string,
   question: string,
-  answer: string,
+  answer: boolean,
   classId: string,
 ) {
   const newQuestion = new Question({
@@ -57,4 +57,31 @@ export async function addQuestion(
   const newQuestionRes = await newQuestion.save();
 
   return newQuestionRes._id;
+}
+
+export async function getQuestionsFromClassForUser(
+  userId: string,
+  classId: string,
+) {
+  const foundUser = await User.findById(userId).exec();
+
+  if (foundUser === null) {
+    return null;
+  }
+
+  // Finds the questions associated with the class
+  const foundQuestions = await Question.find({ class: classId }).exec();
+
+  if (foundQuestions.length == 0) {
+    return null;
+  }
+
+  // Checks to see if the user is registered with the classid
+  for (let i = 0; i < foundUser.classIds.length; i++) {
+    if (foundUser.classIds[i]?.toString() === classId) {
+      return foundQuestions.filter((question) => !question.isHidden);
+    }
+  }
+
+  return null;
 }

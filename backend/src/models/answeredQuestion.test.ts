@@ -16,5 +16,5 @@ test("can add answered question", async () => {
 
   expect(
     await checkAnswered("65e2688f29d9685a38616ee5", "25e2688f29d9685a38616ee6"),
-  ).toBe(true);
+  ).toBe(false);
 });

@@ -24,9 +24,9 @@ export async function submitQuestionHandler(req: Request, res: Response) {
 
   const questionId = addQuestion(
     type,
+    userData.id,
     question,
     answer,
-    userData.id,
     req.body.class,
   );
 

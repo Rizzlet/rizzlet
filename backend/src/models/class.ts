@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
 import { getConnection } from "./db.js";
-import { User } from "./user.js";
-import { Question } from "./question.js";
 
 const classSchema = new mongoose.Schema({
   name: {
@@ -25,31 +23,4 @@ export async function newClass(name: string) {
   const newClass = new Class({ name });
 
   await newClass.save();
-}
-
-export async function getQuestionsFromClassForUser(
-  userId: string,
-  classId: string,
-) {
-  const foundUser = await User.findById(userId).exec();
-
-  if (foundUser === null) {
-    return null;
-  }
-
-  // Finds the questions associated with the class
-  const foundQuestions = await Question.find({ class: classId }).exec();
-
-  if (foundQuestions.length == 0) {
-    return null;
-  }
-
-  // Checks to see if the user is registered with the classid
-  for (let i = 0; i < foundUser.classIds.length; i++) {
-    if (foundUser.classIds[i]?.toString() === classId) {
-      return foundQuestions;
-    }
-  }
-
-  return null;
 }

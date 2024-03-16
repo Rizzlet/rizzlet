@@ -1,11 +1,12 @@
 import joi from "joi";
 import { Request, Response } from "express";
-import { getQuestionsFromClassForUser, newClass } from "../models/class.js";
+import { newClass } from "../models/class.js";
 import { getClassNames } from "../models/class.js";
 import { User, setUserClasses } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import mongoose from "mongoose";
 import { Class } from "../models/class.js";
+import { getQuestionsFromClassForUser } from "../models/question.js";
 
 type classBody = {
   name: string;

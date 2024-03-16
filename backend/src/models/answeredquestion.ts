@@ -40,5 +40,5 @@ export async function checkAnswered(userId: string, questionId: string) {
     Question: questionId,
   }).exec();
 
-  return foundAnsweredQuestion != null;
+  return !!foundAnsweredQuestion;
 }
