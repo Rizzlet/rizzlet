@@ -6,7 +6,7 @@ import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/auth/AuthContext";
 import { AuthGuard } from "./context/auth/AuthenticationGuard";
 
-import ClassSearch from "./pages/ClassSearch";
+import MyClasses from "./pages/MyClasses";
 import QuestionSubmission from "./pages/FormSubmitQuestions";
 import Login from "./pages/Login";
 import FlashcardField from "./pages/AnswerQuestion";
@@ -28,8 +28,12 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/classSearch",
-        element: <ClassSearch />,
+        path: "/myclasses",
+        element: (
+          <AuthGuard>
+            <MyClasses />
+          </AuthGuard>
+        ),
       },
       {
         path: "/submitQuestion",
@@ -40,13 +44,9 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/login",
-        element: <Login />,
-      },
-      {
         children: [
           {
-            path: "/answerQuestion",
+            path: "/answerQuestions",
             element: (
               <AuthGuard>
                 <NoClasses />
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
             ),
           },
           {
-            path: "/answerQuestion/:id",
+            path: "/answerQuestions/:id",
             element: (
               <AuthGuard>
                 <FlashcardField />
@@ -80,6 +80,10 @@ const router = createBrowserRouter([
         element: <LeaderBoard />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

@@ -78,10 +78,10 @@ export default function FlashcardField() {
         { points: newPoints },
         { withCredentials: true }
       );
-  
+
       setPoints(newPoints);
     } catch (error) {
-      console.error('Error updating user points:', error);
+      console.error("Error updating user points:", error);
     }
   };
 
@@ -94,7 +94,7 @@ export default function FlashcardField() {
           <button
             className="absolute h-1/6 w-1/6 left-full"
             onClick={() => {
-              if (questionToRender === listOfQuestions.length) {
+              if (questionToRender === listOfQuestions.length - 1) {
                 changeQuestionToRender(0);
               } else {
                 changeQuestionToRender(questionToRender++);

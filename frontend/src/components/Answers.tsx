@@ -35,18 +35,17 @@ export default function Answers<T extends IAnswer>(props: T) {
 
   async function updateScore() {
     try {
-      await axios
-        .post(
-          new URL("/api/user/score", process.env.REACT_APP_BACKEND_URL!).href,
-          {},
-          {
-            withCredentials: true,
-          }
-        );
-        props.updatePoints(1);
-      } catch (error) {
+      await axios.post(
+        new URL("/api/user/score", process.env.REACT_APP_BACKEND_URL!).href,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      props.updatePoints(1);
+    } catch (error) {
       console.log(error);
-      }
+    }
   }
 
   return (

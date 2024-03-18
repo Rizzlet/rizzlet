@@ -1,18 +1,26 @@
 import mongoose from "mongoose";
-import { envVars } from "../env.js";
+import { getEnvVars } from "../env.js";
+import { MongoMemoryServer } from "mongodb-memory-server";
 
 let connection: mongoose.Connection | null = null;
 
 export async function getConnection() {
   if (!connection) {
-    connection = await mongoose
-      .createConnection(envVars.DB_URL)
-      .asPromise()
-      .catch((err) => {
-        console.error("Database connection error");
-        console.error(err);
-        process.exit(1);
-      });
+    let connectionUri: string;
+
+    if (testingWithJest()) {
+      const mongo = await MongoMemoryServer.create();
+      connectionUri = mongo.getUri();
+    } else {
+      // Not tested because we don't want to test the real database
+      connectionUri = getEnvVars().DB_URL;
+    }
+
+    connection = await mongoose.createConnection(connectionUri);
   }
   return connection;
+}
+
+export function testingWithJest() {
+  return process.env.JEST_WORKER_ID !== undefined;
 }

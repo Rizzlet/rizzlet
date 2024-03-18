@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
-import { envVars } from "../../env.js";
+import { getEnvVars } from "../../env.js";
 
 export type ClientTokenData = {
   firstName: string;
@@ -37,7 +37,7 @@ export function verifyAndDecodeToken(token: string): ClientTokenData | null {
   let decodedToken;
 
   try {
-    decodedToken = jwt.verify(token, envVars.JWT_SECRET);
+    decodedToken = jwt.verify(token, getEnvVars().JWT_SECRET);
   } catch (error) {
     return null;
   }

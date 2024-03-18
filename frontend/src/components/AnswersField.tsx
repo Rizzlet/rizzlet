@@ -41,38 +41,42 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
     setIsItAnswered(true);
   }
 
-  // Generates answers to be rendered on screen
-  async function mapAnswers(theQuestion: Question) {
-    if (theQuestion !== undefined) {
-      const answersElement = [];
-      if (
-        theQuestion.type === "true/false" ||
-        theQuestion.type === "TrueAndFalse"
-      ) {
-        for (let i = 1; i >= 0; i--) {
-          answersElement.push(
-            <Answers
-              answerText={`${!!i ? "true" : "false"}`}
-              rightAnswer={`${theQuestion.answer === !!i}`}
-              alreadyAnswered={isItAnswered}
-              questionAssociated={theQuestion._id}
-              setAlreadyAnswered={handleAnswered}
-              updatePoints={props.updatePoints}
-            ></Answers>
-          );
-        }
-      }
-      setAnswerstoRender(answersElement);
-    }
-  }
-
   useEffect(() => {
+    // Generates answers to be rendered on screen
+    async function mapAnswers(theQuestion: Question) {
+      if (theQuestion !== undefined) {
+        const answersElement = [];
+        if (
+          theQuestion.type === "true/false" ||
+          theQuestion.type === "TrueAndFalse"
+        ) {
+          for (let i = 1; i >= 0; i--) {
+            answersElement.push(
+              <Answers
+                answerText={`${!!i ? "true" : "false"}`}
+                rightAnswer={`${theQuestion.answer === !!i}`}
+                alreadyAnswered={isItAnswered}
+                questionAssociated={theQuestion._id}
+                setAlreadyAnswered={handleAnswered}
+                updatePoints={props.updatePoints}
+              ></Answers>
+            );
+          }
+        }
+        setAnswerstoRender(answersElement);
+      }
+    }
     if (props.questionlist.length !== 0) {
       checkForAlreadyAnswered(props.questionlist[props.questionToRender]).then(
         () => mapAnswers(props.questionlist[props.questionToRender])
       );
     }
-  }, [props.questionlist, props.questionToRender, isItAnswered]);
+  }, [
+    props.questionlist,
+    props.questionToRender,
+    isItAnswered,
+    props.updatePoints,
+  ]);
 
   return (
     <div className="relative flex justify-evenly h-1/2 w-full">

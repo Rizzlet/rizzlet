@@ -9,8 +9,6 @@ export default function SubmitRating(props: { questionId: string }) {
   const navigate = useNavigate();
 
   const onSubmit = async () => {
-    console.log("Difficulty Rating: ", difficultyRating);
-    console.log("Relevancy Rating: ", relevancyRating);
     await axios
       .post(
         `http://localhost:8000/api/question/${props.questionId}/rating`,
