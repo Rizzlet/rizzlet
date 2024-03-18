@@ -111,7 +111,7 @@ export default function FlashcardField() {
           <button
             className="absolute h-1/6 w-1/6 right-full"
             onClick={() => {
-              if (questionToRender === -1) {
+              if (questionToRender === 0) {
                 changeQuestionToRender(listOfQuestions.length - 1);
               } else {
                 changeQuestionToRender(questionToRender--);
