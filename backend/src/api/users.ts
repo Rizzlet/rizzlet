@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { User, getAllUsersByScore, getUserClasses } from "../models/user.js";
+import { User, getAllUsersByScore } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
+import { getUserClasses } from "..//models/class.js";
 
 export async function GetIndividualUser(req: Request, res: Response) {
   const userData = verifyAndDecodeToken(req.cookies.token);
@@ -86,7 +87,7 @@ export async function getTopTenUsers(req: Request, res: Response) {
   }
 
   //sorting to get top
-  const topTenUsers = getAllUsersByScore();
+  const topTenUsers = await getAllUsersByScore();
 
   res.send(topTenUsers).status(200);
 }
