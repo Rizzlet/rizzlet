@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { getConnection } from "./db.js";
+import { User } from "./user.js";
 
 const classSchema = new mongoose.Schema({
   name: {
@@ -23,4 +24,17 @@ export async function newClass(name: string) {
   const newClass = new Class({ name });
 
   return await newClass.save();
+}
+
+export async function getUserClasses(userId: string) {
+  const user = await User.findById(userId)
+    .populate({
+      path: "classIds",
+      select: { name: 1, _id: 1 },
+    })
+    .exec();
+  if (user === null) {
+    return null;
+  }
+  return user.classIds as unknown as { name: string; _id: string }[];
 }

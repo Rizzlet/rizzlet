@@ -1,6 +1,17 @@
 import mongoose from "mongoose";
 import { getConnection } from "./db.js";
-import { Class } from "./class.js";
+
+// Hack to get Class.modelName to work, otherwise we get a MissingSchemaError
+const classSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+});
+
+export const Class = (await getConnection()).model("Class", classSchema);
+
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -80,18 +91,6 @@ export async function setUserClasses(userId: string, classIds: string[]) {
   return updatedUser;
 }
 
-export async function getUserClasses(userId: string) {
-  const user = await User.findById(userId)
-    .populate({
-      path: "classIds",
-      select: { name: 1, _id: 1 },
-    })
-    .exec();
-  if (user === null) {
-    return null;
-  }
-  return user.classIds as unknown as { name: string; _id: string }[];
-}
 export async function getAllUsersByScore() {
   const topTenUsers = await User.find({}).sort({ score: -1 });
   return topTenUsers;
