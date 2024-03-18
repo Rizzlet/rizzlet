@@ -107,27 +107,27 @@ export default function NavBar() {
 
 function UserDropDown(props: { showUserDropDown: boolean }) {
   const authData = useAuth();
-  // const [streak, setStreak] = useState(0);
+  const [streak, setStreak] = useState(0);
   const [points, setPoints] = useState(0);
 
   useEffect(() => {
-    // fetchStreak();
+    fetchStreak();
     fetchPoints();
   }, []);
 
-  // const fetchStreak = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       new URL("/api/user/streak", process.env.REACT_APP_BACKEND_URL!).href,
-  //       {
-  //         withCredentials: true,
-  //       }
-  //     );
-  //     setStreak(response.data.streak);
-  //   } catch (error) {
-  //     console.error("Error fetching streak:", error);
-  //   }
-  // };
+  const fetchStreak = async () => {
+    try {
+      const response = await axios.post(
+        new URL("/api/user/streak", process.env.REACT_APP_BACKEND_URL!).href,
+        {
+          withCredentials: true,
+        }
+      );
+      setStreak(response.data.streak);
+    } catch (error) {
+      console.error("Error fetching streak:", error);
+    }
+  };
 
   const fetchPoints = async () => {
     try {
@@ -156,9 +156,9 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
         <span className="block whitespace-nowrap text-sm text-gray-600">
           Points: {points}
         </span>
-        {/* <span className="block whitespace-nowrap text-sm text-gray-600">
+        <span className="block whitespace-nowrap text-sm text-gray-600">
           Streak: {streak}
-        </span> */}
+        </span>
       </div>
       <hr></hr>
       <ul className="py-2" aria-labelledby="user-menu-button">
