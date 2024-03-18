@@ -64,7 +64,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/protected",
+        path: "/ratingSample",
         element: (
           <AuthGuard>
             <RatingPage />
