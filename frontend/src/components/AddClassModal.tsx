@@ -22,7 +22,7 @@ export default function AddClassModal(props: {
 
   return (
     <>
-      <Transition appear show={props.open} as={Fragment}>
+      {/* <Transition appear show={props.open} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={props.onClose}>
           <Transition.Child
             as={Fragment}
@@ -59,7 +59,7 @@ export default function AddClassModal(props: {
                   </Dialog.Title>
                   <div className="mt-2">
                     {/* Cetner checkbox */}
-                    <div className="flex justify-center">
+                    {/* <div className="flex justify-center">
                       <ClassComboBox
                         setSelected={setSelected}
                         selected={selected}
@@ -101,7 +101,7 @@ export default function AddClassModal(props: {
             </div>
           </div>
         </Dialog>
-      </Transition>
+      </Transition> */} 
     </>
   );
 }
@@ -127,7 +127,7 @@ function ClassComboBox(props: {
 
   return (
     <div className="top-16 w-72 self-center">
-      <Combobox value={props.selected} onChange={props.setSelected}>
+      {/* <Combobox value={props.selected} onChange={props.setSelected}>
         <div className="relative mt-1">
           <div className="relative w-full cursor-default overflow-scroll rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
             <Combobox.Input
@@ -186,7 +186,7 @@ function ClassComboBox(props: {
             </Combobox.Options>
           </Transition>
         </div>
-      </Combobox>
+      </Combobox> */}
     </div>
   );
 }
