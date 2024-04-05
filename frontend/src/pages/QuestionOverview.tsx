@@ -19,29 +19,31 @@ function QuestionOverview() {
   const [questions, setQuestionData] = useState<Question[]>([]);
 
   //pagination const
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(localStorage.getItem("currentPage") || "1", 10) //local storage is to save page for refresh
-  );
-  const [postsPerPage] = useState(5); //how many are in each page
-  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1) //local storage is to save page for refresh
+  const postsPerPage = 10; //how many are in each page
+  // const navigate = useNavigate();
 
   useEffect(() => {
-    fetchAll().then((result) => {
+    fetchQuestions().then((result) => {
       if (result) setQuestionData(result);
     });
   }, []);
 
   //To stay on the same page when switching pages
-  useEffect(() => {
-    localStorage.setItem("currentPage", currentPage.toString());
-  }, [currentPage]);
+  // useEffect(() => {
+  //   localStorage.setItem("currentPage", currentPage.toString());
+  // }, [currentPage]);
 
   //getting questions from moongo
-  async function fetchAll() {
+  async function fetchQuestions() {
     try {
       const response = await axios.get<Question[]>(
-        process.env.REACT_APP_BACKEND_URL + "/api/question"
+        process.env.REACT_APP_BACKEND_URL + "/api/paginate/question",
+        {
+          withCredentials: true,
+        }
       );
+      console.log("paginate question: ", response.data)
       return response.data;
     } catch (error) {
       console.log(error);
@@ -50,20 +52,22 @@ function QuestionOverview() {
   }
 
   //Get current Posts
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = questions.slice(indexOfFirstPost, indexOfLastPost);
+  // const indexOfLastPost = currentPage * postsPerPage;
+  // const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  // const currentPosts = questions.slice(indexOfFirstPost, indexOfLastPost);
 
   //Change Page
   const paginate = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    localStorage.setItem("currentPage", pageNumber.toString());
-    navigate(`/overview/${pageNumber}`);
+    // localStorage.setItem("currentPage", pageNumber.toString());
+    // navigate(`/overview/${pageNumber}`);
   };
+
+  console.log("questions: ", questions);
 
   return (
     <div className="container ">
-      <Table questionData={currentPosts} />
+      <Table questionData={questions} />
       {Pages({
         currentPage,
         postsPerPage: postsPerPage,

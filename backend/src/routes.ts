@@ -30,6 +30,7 @@ import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
 import { calculateStreak } from "./models/user.js";
 import { getScore } from "./api/users.js";
 import { getQuestionsCreatedByUser } from "./models/question.js";
+import { paginatedQuestions } from "./api/ptest.js"
 
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
@@ -37,7 +38,7 @@ export function addRoutes(app: Application) {
   app.post("/api/auth/logout", logoutHandler);
   app.post("/api/question", requireAuth, submitQuestionHandler);
   app.get("/api/question", fetchAllQuestionsHandler);
-  app.get("/api/question/:createdBy", getQuestionsCreatedByUser);
+  app.get("/api/question/:created", getQuestionsCreatedByUser);
   app.post(
     "/api/question/:questionId/rating",
     requireAuth,
@@ -57,4 +58,5 @@ export function addRoutes(app: Application) {
   app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
   app.put("/api/user", requireAuth, updateUserClassesHandler);
+  app.get("/api/paginate/question", requireAuth, paginatedQuestions);
 }
