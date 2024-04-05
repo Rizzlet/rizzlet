@@ -38,7 +38,7 @@ export function addRoutes(app: Application) {
   app.post("/api/auth/logout", logoutHandler);
   app.post("/api/question", requireAuth, submitQuestionHandler);
   app.get("/api/question", fetchAllQuestionsHandler);
-  app.get("/api/question/:created", getQuestionsCreatedByUser);
+  app.get("/api/question/user", getQuestionsCreatedByUser);
   app.post(
     "/api/question/:questionId/rating",
     requireAuth,
@@ -58,5 +58,5 @@ export function addRoutes(app: Application) {
   app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
   app.put("/api/user", requireAuth, updateUserClassesHandler);
-  app.get("/api/paginate/question", requireAuth, paginatedQuestions);
+  app.get("/api/paginate", paginatedQuestions);
 }

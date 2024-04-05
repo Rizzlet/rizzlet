@@ -12,7 +12,7 @@ import Login from "./pages/Login";
 import FlashcardField from "./pages/AnswerQuestion";
 import NavBar from "./components/Navbar";
 import HomePage from "./pages/Homepage";
-import QuestionOverview from "./pages/QuestionOverview";
+import QuestionOverview from "./pages/QuestionOverviewBeta";
 import ProfilePage from "./pages/ProfilePage";
 
 import "./index.css";

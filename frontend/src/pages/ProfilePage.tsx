@@ -37,6 +37,7 @@ function ProfilePage() {
   }, [currentPage]);
 
   //getting questions from moongo
+  // "/api/question/:created",
   async function fetchAll() {
     try {
       const response = await axios.get<Question[]>(
