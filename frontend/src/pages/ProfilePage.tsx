@@ -41,7 +41,7 @@ function ProfilePage() {
   async function fetchAll() {
     try {
       const response = await axios.get<Question[]>(
-        process.env.REACT_APP_BACKEND_URL + "/api/question"
+        process.env.REACT_APP_BACKEND_URL + "/api/question/user"
       );
       return response.data;
     } catch (error) {
@@ -54,6 +54,12 @@ function ProfilePage() {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = questions.slice(indexOfFirstPost, indexOfLastPost);
+  let totalPages: number;
+  if (Math.ceil(questions.length / postsPerPage) == 0) {
+    totalPages = 1;
+  } else {
+    totalPages = Math.ceil(questions.length / postsPerPage)
+  }
 
   //Change Page
   const paginate = (pageNumber: number) => {
@@ -67,7 +73,7 @@ function ProfilePage() {
       {Pages({
         currentPage,
         postsPerPage: postsPerPage,
-        totalPages: Math.ceil(questions.length / postsPerPage),
+        totalPages: totalPages,
         onPrevClick: () => paginate(currentPage - 1),
         onNextClick: () => paginate(currentPage + 1),
       })}{" "}

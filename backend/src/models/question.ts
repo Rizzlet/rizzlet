@@ -92,7 +92,7 @@ export async function getQuestionsCreatedByUser(
   }
 
   // checks questions
-  const foundQuestions = await Question.find({ createdBy: userId }).exec();
+  const foundQuestions = await Question.find({ createdBy: createdBy }).exec();
 
   // // Checks to see if the user is registered with the classid
   // for (let i = 0; i < foundUser.classIds.length; i++) {
