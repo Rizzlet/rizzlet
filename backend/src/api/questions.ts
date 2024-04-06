@@ -14,20 +14,20 @@ export async function fetchAllQuestionsHandler(_req: Request, res: Response) {
 
 export async function fetchQuestionsByUser(req: Request, res: Response) {
   try {
-  //make sure that the user is authenticated
-  const userData = verifyAndDecodeToken(req.cookies.token);
+    //make sure that the user is authenticated
+    const userData = verifyAndDecodeToken(req.cookies.token);
 
-  if (!userData) {
-    res.status(401).json({ error: "Unauthorized" });
-    return;
-  }
+    if (!userData) {
+      res.status(401).json({ error: "Unauthorized" });
+      return;
+    }
 
-  //get the user ID
-  const userId = userData.id;
+    //get the user ID
+    const userId = userData.id;
 
-  //find question based on the userID 
-  const questions = await Question.find({ createdBy: userId }).exec();
-  res.send(questions);
+    //find question based on the userID
+    const questions = await Question.find({ createdBy: userId }).exec();
+    res.send(questions);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

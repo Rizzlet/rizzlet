@@ -94,8 +94,8 @@ function Table(props: TableProps) {
   return (
     //overflow-x-auto
     //"w-full py-12 md:py-32 lg:py-40 bg-no-repeat bg-cover relative"
-    <div className="relative sm:rounded-lg items-h-screen flex items-center justify-center  pt-3">
-      <table className="w-11/12 min-h-[80dvh] py-2 text-sm text-left rtl:text-right text-gray-500 border border-gray-300">
+    <div className="relative sm:rounded-lg items-h-screen flex items-center justify-center pt-3 ">
+      <table className="w-11/12 min-h-[74dvh] py-2 text-sm text-left rtl:text-right text-gray-500 border border-gray-300">
         <TableHeader />
         <TableBody questionData={props.questionData} />
       </table>

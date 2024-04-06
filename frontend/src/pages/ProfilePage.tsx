@@ -44,7 +44,8 @@ function ProfilePage() {
         process.env.REACT_APP_BACKEND_URL + "/api/question/user",
         {
           withCredentials: true,
-        });
+        }
+      );
       console.log("question-user: ", response.data);
       return response.data;
     } catch (error) {
@@ -61,7 +62,7 @@ function ProfilePage() {
   if (Math.ceil(questions.length / postsPerPage) == 0) {
     totalPages = 1;
   } else {
-    totalPages = Math.ceil(questions.length / postsPerPage)
+    totalPages = Math.ceil(questions.length / postsPerPage);
   }
 
   //Change Page
