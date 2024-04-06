@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Pages } from "../components/Overview";
+import { Table, Pages } from "../components/ProfilePage";
 //import of router so that it will update URL with each page
 import { useNavigate } from "react-router-dom";
 
@@ -41,8 +41,11 @@ function ProfilePage() {
   async function fetchAll() {
     try {
       const response = await axios.get<Question[]>(
-        process.env.REACT_APP_BACKEND_URL + "/api/question/user"
-      );
+        process.env.REACT_APP_BACKEND_URL + "/api/question/user",
+        {
+          withCredentials: true,
+        });
+      console.log("question-user: ", response.data);
       return response.data;
     } catch (error) {
       console.log(error);

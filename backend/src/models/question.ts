@@ -82,24 +82,3 @@ export async function getQuestionsFromClassForUser(
   return null;
 }
 
-export async function getQuestionsCreatedByUser(
-  userId: string,
-) {
-  const foundUser = await User.findById(userId).exec();
-
-  if (foundUser === null) {
-    return null;
-  }
-
-  // checks questions
-  const foundQuestions = await Question.find({ createdBy: createdBy }).exec();
-
-  // // Checks to see if the user is registered with the classid
-  // for (let i = 0; i < foundUser.classIds.length; i++) {
-  //   if (foundUser.classIds[i]?.toString() === classId) {
-  //     return foundQuestions.filter((question) => !question.isHidden);
-  //   }
-  // }
-
-  return foundQuestions;
-}

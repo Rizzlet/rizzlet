@@ -15,7 +15,7 @@ const Pages: React.FC<PagesProps> = ({
   onNextClick,
 }) => {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center py-3">
       <span className="text-sm text-gray-700 dark:text-gray-700">
         Showing Page{" "}
         <span className="font-semibold text-gray-900 dark:text-black">
@@ -26,7 +26,7 @@ const Pages: React.FC<PagesProps> = ({
           {totalPages}
         </span>{" "}
       </span>
-      <div className="inline-flex mt-2 xs:mt-0">
+      <div className="inline-flex mt-2 xs:mt-0 ">
         <button
           className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-teal-100 dark:border-gray-700 dark:text-gray-800 dark:hover:bg-gray-300 dark:hover:text-black"
           onClick={onPrevClick}
@@ -94,8 +94,8 @@ function Table(props: TableProps) {
   return (
     //overflow-x-auto
     //"w-full py-12 md:py-32 lg:py-40 bg-no-repeat bg-cover relative"
-    <div className="relative sm:rounded-lg ">
-      <table className="w-screen min-h-[80dvh] py-2 text-sm text-left rtl:text-right text-gray-500">
+    <div className="relative sm:rounded-lg items-h-screen flex items-center justify-center  pt-3">
+      <table className="w-11/12 min-h-[80dvh] py-2 text-sm text-left rtl:text-right text-gray-500 border border-gray-300">
         <TableHeader />
         <TableBody questionData={props.questionData} />
       </table>
@@ -110,9 +110,9 @@ function TableHeader() {
         <th scope="col" className="px-6 py-3">
           Type
         </th>
-        <th scope="col" className="px-6 py-3">
+        {/* <th scope="col" className="px-6 py-3">
           Created By
-        </th>
+        </th> */}
         <th scope="col" className="px-6 py-3">
           Question
         </th>
@@ -127,7 +127,7 @@ function TableHeader() {
 function TableBody(props: TableProps) {
   const rows = props.questionData.map((row, index) => {
     //to resolve is createdBy is NULL
-    const createdByInfo = row.createdBy || { firstName: "", lastName: "" };
+    // const createdByInfo = row.createdBy || { firstName: "", lastName: "" };
     return (
       <tr
         key={index}
@@ -135,7 +135,7 @@ function TableBody(props: TableProps) {
       >
         {/* <th scope="row" className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-black"> */}
         <td className="px-6 py-3">{row.type}</td>
-        <td className="px-6 py-3">{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td>
+        {/* <td className="px-6 py-3">{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td> */}
         <td className="px-6 py-3">{row.question}</td>
         <td className="px-6 py-3">{row.answer ? "True" : "False"}</td>
         {/* </th> */}
