@@ -58,6 +58,8 @@ function ProfilePage() {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = questions.slice(indexOfFirstPost, indexOfLastPost);
+  
+  //makes sure that the base line is 1 and not 0;
   let totalPages: number;
   if (Math.ceil(questions.length / postsPerPage) == 0) {
     totalPages = 1;

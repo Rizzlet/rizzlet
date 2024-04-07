@@ -23,55 +23,73 @@ function QuestionOverview() {
   const postsPerPage = 10; //how many are in each page
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchQuestions().then((result) => {
-      if (result) setQuestionData(result);
-    });
-  }, []);
-
   //To stay on the same page when switching pages
   // useEffect(() => {
   //   localStorage.setItem("currentPage", currentPage.toString());
   // }, [currentPage]);
 
-  //getting questions from moongo
-  async function fetchQuestions() {
+  useEffect(() => {
+    fetchQuestions(currentPage).then((result) => {
+      if (result) setQuestionData(result);
+    });
+  }, [currentPage]);
+
+  async function fetchQuestions(page: number) {
     try {
       const response = await axios.get<Question[]>(
-        process.env.REACT_APP_BACKEND_URL + "/api/paginate",
-        {
-          withCredentials: true,
-        }
+        process.env.REACT_APP_BACKEND_URL + `/api/paginate?page=${page}&limit=${postsPerPage}`,
+        { withCredentials: true }
       );
-      console.log("paginate question: ", response.data)
       return response.data;
     } catch (error) {
       console.log(error);
-      return false;
+      return [];
     }
   }
 
+ //makes sure that the base line is 1 and not 0;
+ let totalPages: number;
+ if (Math.ceil(questions.length / postsPerPage) == 0) {
+   totalPages = 1;
+ } else {
+   totalPages = Math.ceil(questions.length / postsPerPage);
+ }
+
   //Change Page
-  const paginate = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-    localStorage.setItem("currentPage", pageNumber.toString());
-    navigate(`/overview/${pageNumber}`);
-  };
+  // const paginate = (pageNumber: number) => {
+  //   setCurrentPage(pageNumber);
+  //   // localStorage.setItem("currentPage", pageNumber.toString());
+  //   // navigate(`/overview/${pageNumber}`);
+  // };
 
   console.log("questions: ", questions);
 
   return (
-    <div className="container ">
+    <div className="container">
       <Table questionData={questions} />
-      {Pages({
-        currentPage,
-        postsPerPage: postsPerPage,
-        totalPages: Math.ceil(questions.length / postsPerPage),
-        onPrevClick: () => paginate(currentPage - 1),
-        onNextClick: () => paginate(currentPage + 1),
-      })}{" "}
+      <Pages
+        currentPage={currentPage}
+        postsPerPage={postsPerPage}
+        totalPages={totalPages}
+        onPrevClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        onNextClick={() => setCurrentPage((prev) => prev + 1)}
+      />
     </div>
   );
 }
+
+  // return (
+  //   <div className="container ">
+  //     <Table questionData={questions} />
+  //     {Pages({
+  //       currentPage,
+  //       postsPerPage: postsPerPage,
+  //       totalPages: totalPages,
+  //       onPrevClick: () => paginate(currentPage - 1),
+  //       onNextClick: () => paginate(currentPage + 1),
+  //     })}{" "}
+  //   </div>
+  // );
+
 
 export default QuestionOverview;

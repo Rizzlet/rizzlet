@@ -30,7 +30,6 @@ import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
 import { calculateStreak } from "./models/user.js";
 import { getScore } from "./api/users.js";
-// import { getQuestionsCreatedByUser } from "./models/question.js";
 import { paginatedQuestions } from "./api/ptest.js"
 
 export function addRoutes(app: Application) {
