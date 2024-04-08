@@ -8,6 +8,21 @@ const classSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  score: [
+    {
+      of: {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: User.modelName,
+          required: true,
+        },
+        score: {
+          type: Number,
+          required: true,
+        },
+      },
+    },
+  ],
 });
 
 export const Class = (await getConnection()).model("Class", classSchema);

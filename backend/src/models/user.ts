@@ -35,10 +35,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "#000000",
   },
-  score: {
-    type: Number,
-    required: true,
-  },
   lastAnsweredTimestamp: {
     type: Date,
     default: null,
