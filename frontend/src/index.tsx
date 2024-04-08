@@ -85,6 +85,12 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  /*
+  {
+    path: "/questions/:id",
+    element: < />,
+  }
+  */
 ]);
 
 const root = ReactDOM.createRoot(

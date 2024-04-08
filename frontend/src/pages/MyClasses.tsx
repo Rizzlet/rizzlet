@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ClassWidget from "../components/ClassWidget";
 import AddClassModal from "../components/AddClassModal";
-
 interface ClassItem {
   id: string;
   name: string;
@@ -12,6 +11,7 @@ export default function MyClasses() {
   const [allClasses, setAllClasses] = useState<ClassItem[]>([]);
   const [userClasses, setUserClasses] = useState<ClassItem[]>([]);
   const [showAddClassModal, setShowAddClassModal] = useState(false);
+  const [classColors, setClassColors] = useState<Record<string, string>>({});
 
   async function fetchClasses() {
     // Use axios to get the classes from the backend
@@ -34,6 +34,15 @@ export default function MyClasses() {
 
     if (userResponse.status === 200) {
       setUserClasses(userResponse.data);
+      // Load colors from local storage
+      const savedColors: Record<string, string> = {};
+      userResponse.data.forEach(cls => {
+        const savedColor = localStorage.getItem(cls.id);
+        if (savedColor) {
+          savedColors[cls.id] = savedColor;
+        }
+      });
+      setClassColors(savedColors);
     } else {
       console.error("Got invalid status from user class request!");
       console.error(userResponse);
@@ -89,6 +98,14 @@ export default function MyClasses() {
     fetchClasses();
   }, []);
 
+  const handleColorChange = (classId: string, color: string) => {
+    setClassColors(prevColors => ({
+      ...prevColors,
+      [classId]: color
+    }));
+    localStorage.setItem(classId, color);
+  };
+
   return (
     <div className="m-16">
       <AddClassModal
@@ -100,8 +117,8 @@ export default function MyClasses() {
         onSubmit={addClass}
       />
       <div className="flex justify-between items-center">
-        <div className=" bg-primary mb-2 rounded-md items-center justify-center inline-flex">
-          <h1 className="text-4xl m-2 ">My Classes</h1>
+        <div className=" bg-primary mb-8 rounded-md items-center justify-center inline-flex">
+          <h1 className="text-4xl m-3 ">My Classes</h1>
         </div>
         <div
           className="w-10 h-10 rounded-2xl border-2 
@@ -109,7 +126,7 @@ export default function MyClasses() {
           hover:bg-gray-400 transition duration-100 ease-in-out"
           onClick={() => setShowAddClassModal(true)}
         >
-          <p className="text-3xl justify-end">+</p>
+          <p className="text-2xl justify-end">+</p>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -121,6 +138,8 @@ export default function MyClasses() {
               onDelete={() => {
                 removeClass(cls);
               }}
+              selectedColor={classColors[cls.id] || "bg-gray-200"} // Default to gray if color not found
+              setSelectedColor={(color) => handleColorChange(cls.id, color)}
             />
           );
         })}

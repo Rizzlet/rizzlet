@@ -1,44 +1,65 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ArrowLeftStartOnRectangleIcon } from "@heroicons/react/20/solid";
+import { SwatchIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 
 interface ClassWidgetProps {
   name: string;
   id: string;
   onDelete: () => void;
+  selectedColor: string;
+  setSelectedColor: (color: string) => void;
 }
 
 export default function ClassWidget(props: ClassWidgetProps) {
+  const [backgroundColor, setBackgroundColor] = useState(props.selectedColor);
+
+  useEffect(() => {
+    // Update background color when selectedColor prop changes
+    setBackgroundColor(props.selectedColor);
+  }, [props.selectedColor]);
+
+  const changeColor = (color: string) => {
+    setBackgroundColor(color);
+    props.setSelectedColor(color);
+  };
+
   return (
     <div
-      className="bg-gray-300 border-gray-500 border-2 rounded-xl 
-      min-h-36 flex
-      justify-between"
+      className={`${backgroundColor} border-gray-400 border-2 rounded-xl 
+      min-h-44 flex
+      justify-between max-w-screen-md`}
     >
-      <div className="m-4">
+      <div className="m-5">
         <Link
           to={`/answerQuestions/${props.id}`}
-          className="text-2xl underline"
+          className="text-2xl hover:underline"
         >
           {props.name}
         </Link>
       </div>
 
       <div className="mr-4 ">
-        <DotDotDotMenu onDelete={props.onDelete} />
+        <DotDotDotMenu onDelete={props.onDelete} changeColor={changeColor} />
       </div>
     </div>
   );
 }
 
-function DotDotDotMenu(props: { onDelete: () => void }) {
+function DotDotDotMenu(props: { onDelete: () => void; changeColor: (color: string) => void }) {
+  const [showColorModal, setShowColorModal] = useState(false);
+
+  const toggleColorModal = () => {
+    setShowColorModal(!showColorModal);
+  };
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center rounded-md text-black hover:text-gray-800">
-          <p className="text-3xl">...</p>
-        </Menu.Button>
+      <Menu.Button className="inline-flex w-full justify-center rounded-md text-black hover:text-gray-800">
+        <p className="text-3xl">...</p>
+      </Menu.Button>  
       </div>
       <Transition
         as={Fragment}
@@ -51,6 +72,17 @@ function DotDotDotMenu(props: { onDelete: () => void }) {
       >
         <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
           <div className="px-1 py-1 ">
+            
+          <Menu.Item>
+  <button
+    className="text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-200"
+    onClick={toggleColorModal}
+  >
+    <SwatchIcon className="mr-2 h-5 w-5" aria-hidden="true" />
+    Change Color
+  </button>
+</Menu.Item>
+
             <Menu.Item>
               {({ active }) => (
                 <button
@@ -67,9 +99,58 @@ function DotDotDotMenu(props: { onDelete: () => void }) {
                 </button>
               )}
             </Menu.Item>
+            
           </div>
         </Menu.Items>
       </Transition>
+      {showColorModal && (
+        <ColorModal
+          onClose={toggleColorModal}
+          changeColor={props.changeColor}
+        />
+      )}
     </Menu>
+  );
+}
+
+function ColorModal(props: { onClose: () => void; changeColor: (color: string) => void }) {
+  const colors = [
+    { name: "Blue", value: "bg-blue-200" },
+    { name: "Green", value: "bg-green-200" },
+    { name: "Yellow", value: "bg-yellow-100" },
+    { name: "Red", value: "bg-red-200" },
+    { name: "Purple", value: "bg-purple-200" },
+    { name: "Gray", value: "bg-gray-200" },
+  ];
+
+  const [selectedColor, setSelectedColor] = useState("");
+
+  const selectColor = (color: string) => {
+    setSelectedColor(color);
+    props.changeColor(color);
+    props.onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 overflow-y-auto z-50 flex justify-center items-center bg-black bg-opacity-50">
+      <div className="bg-white rounded-lg p-4 w-64">
+        <div className="text-lg font-semibold mb-4">Choose Color</div>
+        <div className="space-y-2">
+          {colors.map((color, index) => (
+            <button
+              key={index}
+              className="flex items-center space-x-2 text-gray-900 group w-full rounded-md px-2 py-2 text-sm hover:bg-gray-100"
+              onClick={() => selectColor(color.value)}
+            >
+              <div
+                className={`w-6 h-6 rounded-full ${color.value}`}
+                style={{ border: selectedColor === color.value ? "2px solid black" : "none" }}
+              ></div>
+              <span>{color.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
