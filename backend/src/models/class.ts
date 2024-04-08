@@ -10,16 +10,14 @@ const classSchema = new mongoose.Schema({
   },
   score: [
     {
-      of: {
-        user: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: User.modelName,
-          required: true,
-        },
-        score: {
-          type: Number,
-          required: true,
-        },
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: User.modelName,
+        required: true,
+      },
+      score: {
+        type: Number,
+        required: true,
       },
     },
   ],
@@ -52,4 +50,8 @@ export async function getUserClasses(userId: string) {
     return null;
   }
   return user.classIds as unknown as { name: string; _id: string }[];
+}
+
+export async function getClass(classId: string) {
+  return await Class.findById(classId).exec();
 }
