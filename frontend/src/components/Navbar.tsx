@@ -109,11 +109,9 @@ export default function NavBar() {
 function UserDropDown(props: { showUserDropDown: boolean }) {
   const authData = useAuth();
   const [streak, setStreak] = useState(0);
-  const [points, setPoints] = useState(0);
 
   useEffect(() => {
     fetchStreak();
-    fetchPoints();
   }, []);
 
   const fetchStreak = async () => {
@@ -130,20 +128,6 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
     }
   };
 
-  const fetchPoints = async () => {
-    try {
-      const response = await axios.get(
-        new URL("/api/user/score", process.env.REACT_APP_BACKEND_URL!).href,
-        {
-          withCredentials: true,
-        }
-      );
-      setPoints(response.data.score);
-    } catch (error) {
-      console.error("Error fetching user points:", error);
-    }
-  };
-
   return (
     <div
       className="absolute right-0 top-full z-50 bg-white shadow-md"
@@ -153,9 +137,6 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
       <div className="px-4 py-3">
         <span className="block whitespace-nowrap text-sm text-gray-600">
           {authData.authUserFullName}
-        </span>
-        <span className="block whitespace-nowrap text-sm text-gray-600">
-          Points: {points}
         </span>
         <span className="block whitespace-nowrap text-sm text-gray-600">
           Streak: {streak}
