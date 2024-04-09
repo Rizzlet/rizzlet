@@ -7,26 +7,26 @@ import { Question } from "../models/question.js";
 // const Questions = await fetchAllQuestionsHandler;
 
 // export async function paginatedQuestions(req: Request, res: Response) {
-  // try {
-    // Await the resolution of the promise to get the function
+//   try {
+//     // Await the resolution of the promise to get the function
     
-    // Now you can call the function
-    // const questions = await Question.find(Questions).exec();
+//     // Now you can call the function
+//     const questions = await Question.find().exec();
     
-    // Do something with the returned data
-    // const paginate = await paginatedResults(questions);
+//     // Do something with the returned data
+//     // const paginate = await paginatedResults(questions);
     
-    // res.send(questions);
-  // } catch (error) {
-  //   console.error("Error paginating questions:", error);
-  //   res.status(500).send("Internal Server Error");
-  // }
+//     res.send(questions);
+//   } catch (error) {
+//     console.error("Error paginating questions:", error);
+//     res.status(500).send("Internal Server Error paginate");
+//   }
 // }
 
 export async function paginatedQuestions(req: Request, res: Response, next: NextFunction) {
   try {
     const paginate = await paginatedResults(Question); 
-    await paginate(req, res, next);
+    await paginate(req, res, next); // Call the returned pagination handler function
   
   } catch (error) {
     console.error("Error paginating questions:", error);
@@ -65,9 +65,11 @@ async function paginatedResults<T>(model: typeof Question): Promise<(req: Reques
     try {
       results.results = await model.find().limit(limit).skip(startIndex).exec() as T[];
       res.locals.paginatedResults = results;
+      // console.log("req:", req)
+      console.log("res", results)
       next()
     } catch (error) {
-      res.status(500).json("paginate failed")
+      res.status(500).json({ message: "paginate failed", error: error.message });
     }
   };
 }
