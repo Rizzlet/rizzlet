@@ -73,7 +73,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/overview/:pageNumber",
+        path: "/overview",
         element: <QuestionOverview />,
       },
       {
