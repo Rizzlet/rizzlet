@@ -55,3 +55,8 @@ export async function getUserClasses(userId: string) {
 export async function getClass(classId: string) {
   return await Class.findById(classId).exec();
 }
+
+export async function getAllUsersScoreByClass(classId: string) {
+  const classEntry = await Class.findById(classId).exec();
+  return classEntry?.score;
+}

@@ -87,11 +87,6 @@ export async function setUserClasses(userId: string, classIds: string[]) {
   return updatedUser;
 }
 
-export async function getAllUsersByScore() {
-  const topTenUsers = await User.find({}).sort({ score: -1 });
-  return topTenUsers;
-}
-
 export async function calculateStreak(userID: string) {
   const user = await User.findById(userID);
 

@@ -42,7 +42,7 @@ export function addRoutes(app: Application) {
   app.get("/api/submitQuestion/classes", requireAuth, getUserClasses);
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.get("/api/user/classes", requireAuth, UserClasses);
-  app.get("/api/user/ten", requireAuth, getTopTenUsers);
+  app.get("/api/class/topFour", requireAuth, getTopTenUsers);
   app.get("/api/user/score", requireAuth, getScore);
   app.post("/api/user/streak", requireAuth, calculateStreak);
   app.get("/api/user/streak", requireAuth, calculateStreak);

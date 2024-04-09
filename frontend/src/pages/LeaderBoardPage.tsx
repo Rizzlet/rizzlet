@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table } from "../components/LeaderBoard";
 //import of router so that it will update URL with each page
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Users {
   _id: string;
@@ -14,8 +14,9 @@ interface Users {
 
 function LeaderBoard() {
   const [users, setUsers] = useState<Users[]>([]);
+  const { classId } = useParams();
 
-  //fetch the users 
+  //fetch the users
   useEffect(() => {
     fetchUsers().then((result) => {
       if (result) setUsers(result);
@@ -26,6 +27,7 @@ function LeaderBoard() {
   //getting top ten users from backend
   async function fetchUsers() {
     try {
+      // TODO: Change this to include classId
       const response = await axios.get<Users[]>(
         process.env.REACT_APP_BACKEND_URL + "/api/user/ten",
         {

@@ -1,7 +1,12 @@
 import { Request, Response } from "express";
-import { User, getAllUsersByScore } from "../models/user.js";
+import { User } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
-import { getClass, getUserClasses } from "..//models/class.js";
+import {
+  getAllUsersScoreByClass,
+  getClass,
+  getUserClasses,
+} from "..//models/class.js";
+import joi from "joi";
 
 export async function GetIndividualUser(req: Request, res: Response) {
   const userData = verifyAndDecodeToken(req.cookies.token);
@@ -62,8 +67,6 @@ export async function UserClasses(req: Request, res: Response) {
   res.json(returnClasses).status(200);
 }
 
-import joi from "joi";
-
 type GetScoreBody = {
   classId: string;
 };
@@ -117,6 +120,14 @@ export async function getScore(req: Request, res: Response) {
   }
 }
 
+type GetTopTenUsers = {
+  classId: string;
+};
+
+const topTenUsersSchema = joi.object<GetTopTenUsers, true>({
+  classId: joi.string().required(),
+});
+
 export async function getTopTenUsers(req: Request, res: Response) {
   //verify tokens for authentication
   const userData = verifyAndDecodeToken(req.cookies.token);
@@ -125,8 +136,41 @@ export async function getTopTenUsers(req: Request, res: Response) {
     return;
   }
 
-  //sorting to get top
-  const topTenUsers = await getAllUsersByScore();
+  const { error, value: body } = topTenUsersSchema.validate(req.body);
 
-  res.send(topTenUsers).status(200);
+  if (error) {
+    return res.status(400).json({ message: error.message });
+  }
+
+  // TODO: Get top ten users for a class
+  const allUsers = await getAllUsersScoreByClass(body.classId);
+
+  const sortedUsers = allUsers?.toSorted((a, b) => b.score - a.score);
+
+  if (!sortedUsers) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+
+  const currentUserPlace =
+    sortedUsers.map((user) => user.id).indexOf(userData.id) + 1;
+
+  if (currentUserPlace === 0 || currentUserPlace > 3) {
+    // Take top 3 and append user at the end
+    const topThree = sortedUsers
+      .slice(0, 3)
+      .map((user) => ({ user: user.id, score: user.score }));
+    const currentUser = sortedUsers.find((user) => user.id === userData.id) || {
+      user: userData.id,
+      score: 0,
+    };
+
+    topThree.push(currentUser);
+    return res.status(200).json({ topThree });
+  } else {
+    // User is in the top 4, take top 4.
+    const topFour = sortedUsers
+      .slice(0, 4)
+      .map((user) => ({ user: user.id, score: user.score }));
+    return res.status(200).json({ topFour });
+  }
 }
