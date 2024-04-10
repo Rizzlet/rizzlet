@@ -8,7 +8,7 @@ const classSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  score: [
+  scores: [
     {
       user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -57,6 +57,36 @@ export async function getClass(classId: string) {
 }
 
 export async function getAllUsersScoreByClass(classId: string) {
+  const classEntry = await Class.findById(classId).select({ scores: 1 }).exec();
+  return mongooseArrayToArray(classEntry!.scores);
+}
+
+export async function setScoreForUserByClass(
+  classId: string,
+  userId: string,
+  score: number,
+) {
   const classEntry = await Class.findById(classId).exec();
-  return classEntry?.score;
+  if (classEntry === null) {
+    return false;
+  }
+
+  const userScore = classEntry.scores.find((s) => s.user.toString() === userId);
+
+  if (!userScore) {
+    classEntry.scores.push({ user: userId, score });
+  } else {
+    userScore.score = score;
+  }
+
+  await classEntry.save();
+  return true;
+}
+
+function mongooseArrayToArray<T>(mongooseArray: T[]) {
+  const array = [];
+  for (let i = 0; i < mongooseArray.length; i += 1) {
+    array.push(mongooseArray[i]);
+  }
+  return array;
 }

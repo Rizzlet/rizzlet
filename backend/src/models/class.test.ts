@@ -31,7 +31,7 @@ test("get all users in class by score", async () => {
   const users = (await getAllUsersScoreByClass(classId))!;
 
   expect(users.length).toBeGreaterThanOrEqual(1);
-  expect(users.map((u) => u.user._id.toString()).includes(userId!)).toBe(true);
+  expect(users.map((u) => u.user.toString()).includes(userId!)).toBe(true);
 });
 
 test("getUserClasses returns an empty array if the user has no classes", async () => {

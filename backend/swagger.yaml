@@ -82,13 +82,14 @@ paths:
       tags:
         - Class
       summary: Get the top ten users for a class, always including the logged in one
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              name:
-                classId: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                classId:
+                  type: string
       operationId: getTopFour
       responses:
         "200":
