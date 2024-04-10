@@ -7,7 +7,13 @@ import {
   InputQuestion,
   TrueAndFalseButtons,
   Buttons,
+  AnswerChoiceField,
 } from "../components/SubmitQuestion";
+
+export interface MultipleChoiceAnswer {
+  answer: string;
+  correct: boolean;
+}
 
 export default function QuestionSubmission() {
   const [state, setState] = useState({
@@ -17,6 +23,13 @@ export default function QuestionSubmission() {
     answer: false,
     class: "",
   });
+
+  const [answerList, setAnswerList] = useState<MultipleChoiceAnswer[]>([
+    { answer: "", correct: false },
+    { answer: "", correct: false },
+    { answer: "", correct: false },
+    { answer: "", correct: false },
+  ]);
 
   // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +86,16 @@ export default function QuestionSubmission() {
           ></SelectClass>
         </div>
         <InputQuestion onFieldChange={onFieldChange} />
-        <TrueAndFalseButtons onTrueFalseButtonClick={onTrueFalseButtonClick} />
+        {state.type === "TrueAndFalse" ? (
+          <TrueAndFalseButtons
+            onTrueFalseButtonClick={onTrueFalseButtonClick}
+          />
+        ) : (
+          <AnswerChoiceField
+            numOfAnswerChoice={4}
+            theAnswerList={answerList}
+          ></AnswerChoiceField>
+        )}
         <Buttons />
       </form>
     </div>
