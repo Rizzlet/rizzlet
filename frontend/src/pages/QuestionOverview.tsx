@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Pages } from "../components/Overview";
 //import of router so that it will update URL with each page
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 interface Question {
   _id: string;
@@ -17,50 +17,42 @@ interface Question {
 
 function QuestionOverview() {
   const [questions, setQuestionData] = useState<Question[]>([]);
-  const [totalQuestions, setTotalQuestions] = useState(1);
-  //pagination const
-  const [currentPage, setCurrentPage] = useState(1) //local storage is to save page for refresh
-  const postsPerPage = 5; //how many are in each page
-  // const navigate = useNavigate();
-
-  //To stay on the same page when switching pages
-  // useEffect(() => {
-  //   localStorage.setItem("currentPage", currentPage.toString());
-  // }, [currentPage]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 5;
+  const { page = 1, limit = postsPerPage } = useParams();
 
   useEffect(() => {
-    fetchQuestions(currentPage).then((result) => {
-      if (result) {
-        setQuestionData(result);
-        // setTotalQuestions(result.totalQuestions)
+    setCurrentPage(Number(page));
+  }, [page]);
+
+  useEffect(() => {
+    fetchQuestions(currentPage, Number(limit)).then((result) => {
+      if (result && result.paginatedData) {
+        setQuestionData(result.paginatedData);
+        setTotalPages(Math.ceil(result.totalQuestions / postsPerPage)); 
+        console.log("total question:", result.totalQuestions)
       }
     });
-  }, [currentPage]);
+  }, [currentPage, limit]);
+  console.log("total pages: ", totalPages);
 
-  console.log("questions 1: ", questions);
-
-  async function fetchQuestions(page: number) {
-    console.log("Page:", page);
-    console.log("Limit:", postsPerPage);
+  async function fetchQuestions(page: number, limit: number) {
     try {
-      const response = await axios.get<Question[]>(
-        process.env.REACT_APP_BACKEND_URL + `/api/paginate?page=${page}&limit=${postsPerPage}`,
+      const response = await axios.get<any>(
+        `${process.env.REACT_APP_BACKEND_URL}/api/paginate?page=${page}&limit=${limit}`,
         { withCredentials: true }
       );
       return response.data;
     } catch (error) {
       console.log("fetch error: ", error);
-      return [];
+      return { paginatedData: [], totalQuestions: 0 };
     }
   }
-
  //makes sure that the base line is 1 and not 0;
- let totalPages: number;
- if (Math.ceil(questions.length / postsPerPage) === 0) {
-   totalPages = 1;
- } else {
-   totalPages = Math.ceil(questions.length / postsPerPage);
- }
+//  if (totalPages === 0) {
+//    totalPages = 1;
+//  }
 
   //Change Page
   // const paginate = (pageNumber: number) => {
@@ -68,8 +60,8 @@ function QuestionOverview() {
   //   // localStorage.setItem("currentPage", pageNumber.toString());
   //   // navigate(`/overview/${pageNumber}`);
   // };
+  console.log("cur pages: ", currentPage);
 
-  console.log("questions: ", questions);
 
   return (
     <div className="container">

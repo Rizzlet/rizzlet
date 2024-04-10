@@ -12,7 +12,8 @@ export async function paginatedQuestions(req: Request, res: Response, next: Next
 
     // Access paginated results from res.locals.paginatedResults
     const paginatedData = res.locals.paginatedResults.results;
-    res.send(paginatedData);
+    // console.log("allQuestions", allQuestions);
+    res.send({paginatedData, allQuestions});
   } catch (error) {
     console.error("Error paginating questions:", error);
     res.status(500).send("Internal Server Error");
