@@ -118,8 +118,9 @@ function ColorModal(props: { onClose: () => void; changeColor: (color: string) =
     { name: "Blue", value: "bg-blue-200" },
     { name: "Green", value: "bg-green-200" },
     { name: "Yellow", value: "bg-yellow-100" },
-    { name: "Red", value: "bg-red-200" },
+    { name: "Pink", value: "bg-rose-200" },
     { name: "Purple", value: "bg-purple-200" },
+    { name: "Orange", value: "bg-orange-200" },
     { name: "Gray", value: "bg-gray-200" },
   ];
 
