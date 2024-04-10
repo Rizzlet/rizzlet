@@ -57,7 +57,10 @@ export async function getClass(classId: string) {
 }
 
 export async function getAllUsersScoreByClass(classId: string) {
-  const classEntry = await Class.findById(classId).select({ scores: 1 }).exec();
+  const classEntry = await Class.findById(classId)
+    .select({ scores: 1 })
+    .populate("scores.user")
+    .exec();
   return mongooseArrayToArray(classEntry!.scores);
 }
 

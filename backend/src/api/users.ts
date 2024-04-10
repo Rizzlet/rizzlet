@@ -146,8 +146,6 @@ export async function getTopTenUsers(req: Request, res: Response) {
   // TODO: Get top ten users for a class
   const allUsers = await getAllUsersScoreByClass(body.classId);
 
-  await setScoreForUserByClass(body.classId, userData.id, 5);
-
   allUsers?.sort((a, b) => b.score - a.score);
   let sortedUsers = allUsers;
 
@@ -157,7 +155,10 @@ export async function getTopTenUsers(req: Request, res: Response) {
 
   sortedUsers = sortedUsers.map((ranking, index) => {
     const newUser = {
-      user: ranking.user.toString(),
+      user: {
+        id: ranking.user._id.toString(),
+        name: ranking.user.firstName + " " + ranking.user.lastName,
+      },
       score: ranking.score,
       rank: index + 1,
     };
@@ -165,15 +166,17 @@ export async function getTopTenUsers(req: Request, res: Response) {
   });
 
   const currentUserPlace =
-    sortedUsers.map((user) => user.user).indexOf(userData.id) + 1;
+    sortedUsers.map((user) => user.user.id).indexOf(userData.id) + 1;
 
   let topFour = sortedUsers.slice(0, 3);
 
   if (currentUserPlace === 0) {
     // User has no score, so score of zero
-
     topFour.push({
-      user: userData.id,
+      user: {
+        id: userData.id,
+        name: userData.firstName + " " + userData.lastName,
+      },
       score: 0,
       rank: sortedUsers.length + 1,
     });
