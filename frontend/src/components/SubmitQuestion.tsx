@@ -1,5 +1,6 @@
 import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import axios from "axios";
+import { MultipleChoiceAnswer } from "../pages/FormSubmitQuestions";
 
 export function Title() {
   return (
@@ -138,6 +139,61 @@ export function InputQuestion({
       ></input>
     </div>
   );
+}
+
+// When multiple choice option is selected, users can input custom answers for the question
+export function InputAnswer({
+  answerPosition,
+  answerChange,
+}: {
+  answerPosition: number;
+  answerChange: (position: number, answerValue: string) => void;
+}) {
+  return (
+    <div className="px-5">
+      {/* message */}
+      <label
+        htmlFor="answer"
+        className="mb-2 block text-2xl font-medium text-gray-900 dark:text-black"
+      >
+        {`Answer ${answerPosition + 1}`}
+      </label>
+      {/* textbox has blue border when clicked on*/}
+      <input
+        id="answer"
+        onChange={() => {
+          answerChange(answerPosition, "test");
+        }}
+        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-white dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+        placeholder="Type Your Answer Here..."
+      ></input>
+    </div>
+  );
+}
+
+// Multiple Choice Answer Field
+export function AnswerChoiceField({
+  numOfAnswerChoice,
+  theAnswerList,
+}: {
+  numOfAnswerChoice: number;
+  theAnswerList: MultipleChoiceAnswer[];
+}) {
+  let answerChoiceArray = [];
+
+  function onAnswerChange(position: number, answerValue: string) {
+    theAnswerList[position].answer = answerValue;
+  }
+
+  for (let i = 0; i < numOfAnswerChoice; i++) {
+    answerChoiceArray.push(
+      <InputAnswer
+        answerPosition={i}
+        answerChange={onAnswerChange}
+      ></InputAnswer>
+    );
+  }
+  return <div>{answerChoiceArray}</div>;
 }
 
 // submit and close
