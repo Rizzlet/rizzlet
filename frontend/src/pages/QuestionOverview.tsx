@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Pages } from "../components/Overview";
 //import of router so that it will update URL with each page
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 interface Question {
   _id: string;
@@ -20,23 +20,30 @@ function QuestionOverview() {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 5;
+  const navigate = useNavigate();
   const { page = 1, limit = postsPerPage } = useParams();
 
   useEffect(() => {
     setCurrentPage(Number(page));
   }, [page]);
 
+  //assigns questions and totalPages from the response data
   useEffect(() => {
     fetchQuestions(currentPage, Number(limit)).then((result) => {
       if (result && result.paginatedData) {
         setQuestionData(result.paginatedData);
-        setTotalPages(Math.ceil(result.totalQuestions / postsPerPage)); 
-        console.log("total question:", result.totalQuestions)
+        if (Math.ceil(result.totalQuestions / postsPerPage) === 0) {
+          setTotalPages(1);
+        } else {
+          setTotalPages(Math.ceil(result.totalQuestions / postsPerPage)); 
+          // console.log("total question:", result.totalQuestions)
+        }
       }
     });
   }, [currentPage, limit]);
-  console.log("total pages: ", totalPages);
+  // console.log("total pages: ", totalPages);
 
+  //fetches paginated data and the total pages
   async function fetchQuestions(page: number, limit: number) {
     try {
       const response = await axios.get<any>(
@@ -49,19 +56,25 @@ function QuestionOverview() {
       return { paginatedData: [], totalQuestions: 0 };
     }
   }
- //makes sure that the base line is 1 and not 0;
-//  if (totalPages === 0) {
-//    totalPages = 1;
-//  }
 
-  //Change Page
-  // const paginate = (pageNumber: number) => {
-  //   setCurrentPage(pageNumber);
-  //   // localStorage.setItem("currentPage", pageNumber.toString());
-  //   // navigate(`/overview/${pageNumber}`);
-  // };
   console.log("cur pages: ", currentPage);
 
+  // decides what previous click does
+  const handlePrevClick = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1)) //sets the current page
+    if (currentPage > 1) {
+      navigate(`?page=${currentPage - 1}&limit=${limit}`); //navigates to the link
+    }
+  };
+
+  //decides what next click does
+  const handleNextClick = () => {
+    setCurrentPage((prev) => prev + 1) //sets the current page
+    if (currentPage < totalPages) {
+      navigate(`?page=${currentPage + 1}&limit=${limit}`); //navigates the link
+    }
+    
+  };
 
   return (
     <div className="container">
@@ -70,8 +83,10 @@ function QuestionOverview() {
         currentPage={currentPage}
         postsPerPage={postsPerPage}
         totalPages={totalPages}
-        onPrevClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-        onNextClick={() => setCurrentPage((prev) => prev + 1)}
+        onPrevClick= {handlePrevClick}
+        onNextClick={handleNextClick}
+        // onPrevClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        // onNextClick={() => setCurrentPage((prev) => prev + 1)}
       />
     </div>
   );
