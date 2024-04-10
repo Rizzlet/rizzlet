@@ -149,30 +149,39 @@ export async function getTopTenUsers(req: Request, res: Response) {
   await setScoreForUserByClass(body.classId, userData.id, 5);
 
   allUsers?.sort((a, b) => b.score - a.score);
-  const sortedUsers = allUsers;
+  let sortedUsers = allUsers;
 
   if (!sortedUsers) {
     return res.status(404).json({ message: "Can't find class" });
   }
 
-  const currentUserPlace =
-    sortedUsers.map((user) => user.user.toString()).indexOf(userData.id) + 1;
+  sortedUsers = sortedUsers.map((ranking, index) => {
+    const newUser = {
+      user: ranking.user.toString(),
+      score: ranking.score,
+      rank: index + 1,
+    };
+    return newUser;
+  });
 
-  if (currentUserPlace === 0 || currentUserPlace > 3) {
-    // Take top 3 and append user at the end
-    const topFour = sortedUsers.slice(0, 3);
-    const currentUser = sortedUsers.find(
-      (user) => user.user.toString() === userData.id,
-    ) || {
+  const currentUserPlace =
+    sortedUsers.map((user) => user.user).indexOf(userData.id) + 1;
+
+  let topFour = sortedUsers.slice(0, 3);
+
+  if (currentUserPlace === 0) {
+    // User has no score, so score of zero
+
+    topFour.push({
       user: userData.id,
       score: 0,
-    };
-
-    topFour.push(currentUser);
-    return res.status(200).json({ topFour });
+      rank: sortedUsers.length + 1,
+    });
+  } else if (currentUserPlace > 3) {
+    topFour.push(sortedUsers[currentUserPlace - 1]);
   } else {
     // User is in the top 4, take top 4.
-    const topFour = sortedUsers.slice(0, 4);
-    return res.status(200).json({ topFour });
+    topFour = sortedUsers.slice(0, 4);
   }
+  return res.status(200).json({ topFour });
 }
