@@ -17,11 +17,11 @@ interface Question {
 
 function QuestionOverview() {
   const [questions, setQuestionData] = useState<Question[]>([]);
-
+  const [totalQuestions, setTotalQuestions] = useState(1);
   //pagination const
   const [currentPage, setCurrentPage] = useState(1) //local storage is to save page for refresh
-  const postsPerPage = 10; //how many are in each page
-  const navigate = useNavigate();
+  const postsPerPage = 5; //how many are in each page
+  // const navigate = useNavigate();
 
   //To stay on the same page when switching pages
   // useEffect(() => {
@@ -30,11 +30,18 @@ function QuestionOverview() {
 
   useEffect(() => {
     fetchQuestions(currentPage).then((result) => {
-      if (result) setQuestionData(result);
+      if (result) {
+        setQuestionData(result);
+        // setTotalQuestions(result.totalQuestions)
+      }
     });
   }, [currentPage]);
 
+  console.log("questions 1: ", questions);
+
   async function fetchQuestions(page: number) {
+    console.log("Page:", page);
+    console.log("Limit:", postsPerPage);
     try {
       const response = await axios.get<Question[]>(
         process.env.REACT_APP_BACKEND_URL + `/api/paginate?page=${page}&limit=${postsPerPage}`,
@@ -42,14 +49,14 @@ function QuestionOverview() {
       );
       return response.data;
     } catch (error) {
-      console.log(error);
+      console.log("fetch error: ", error);
       return [];
     }
   }
 
  //makes sure that the base line is 1 and not 0;
  let totalPages: number;
- if (Math.ceil(questions.length / postsPerPage) == 0) {
+ if (Math.ceil(questions.length / postsPerPage) === 0) {
    totalPages = 1;
  } else {
    totalPages = Math.ceil(questions.length / postsPerPage);
@@ -77,19 +84,5 @@ function QuestionOverview() {
     </div>
   );
 }
-
-  // return (
-  //   <div className="container ">
-  //     <Table questionData={questions} />
-  //     {Pages({
-  //       currentPage,
-  //       postsPerPage: postsPerPage,
-  //       totalPages: totalPages,
-  //       onPrevClick: () => paginate(currentPage - 1),
-  //       onNextClick: () => paginate(currentPage + 1),
-  //     })}{" "}
-  //   </div>
-  // );
-
 
 export default QuestionOverview;

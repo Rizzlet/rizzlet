@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Pages } from "../components/ProfilePage";
-//import of router so that it will update URL with each page
-import { useNavigate } from "react-router-dom";
-
 interface Question {
   _id: string;
   type: string;
@@ -15,76 +12,54 @@ interface Question {
   };
 }
 
-function ProfilePage() {
+function QuestionOverview() {
   const [questions, setQuestionData] = useState<Question[]>([]);
 
   //pagination const
-  const [currentPage, setCurrentPage] = useState(
-    parseInt(localStorage.getItem("currentPage") || "1", 10) //local storage is to save page for refresh
-  );
-  const [postsPerPage] = useState(5); //how many are in each page
-  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1) //local storage is to save page for refresh
+  const postsPerPage = 10; //how many are in each page
 
   useEffect(() => {
-    fetchAll().then((result) => {
+    fetchQuestions(currentPage).then((result) => {
       if (result) setQuestionData(result);
     });
-  }, []);
-
-  //To stay on the same page when switching pages
-  useEffect(() => {
-    localStorage.setItem("currentPage", currentPage.toString());
   }, [currentPage]);
 
-  //getting questions from moongo
-  // "/api/question/:created",
-  async function fetchAll() {
+  async function fetchQuestions(page: number) {
     try {
       const response = await axios.get<Question[]>(
-        process.env.REACT_APP_BACKEND_URL + "/api/question/user",
-        {
-          withCredentials: true,
-        }
+        process.env.REACT_APP_BACKEND_URL + `/api/question/user`,
+        { withCredentials: true }
       );
-      console.log("question-user: ", response.data);
       return response.data;
     } catch (error) {
       console.log(error);
-      return false;
+      return [];
     }
   }
 
-  //Get current Posts
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = questions.slice(indexOfFirstPost, indexOfLastPost);
-  
-  //makes sure that the base line is 1 and not 0;
-  let totalPages: number;
-  if (Math.ceil(questions.length / postsPerPage) == 0) {
-    totalPages = 1;
-  } else {
-    totalPages = Math.ceil(questions.length / postsPerPage);
-  }
+ //makes sure that the base line is 1 and not 0;
+ let totalPages: number;
+ if (Math.ceil(questions.length / postsPerPage) == 0) {
+   totalPages = 1;
+ } else {
+   totalPages = Math.ceil(questions.length / postsPerPage);
+ }
 
-  //Change Page
-  const paginate = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-    localStorage.setItem("currentPage", pageNumber.toString());
-  };
+  console.log("questions: ", questions);
 
   return (
-    <div className="container ">
-      <Table questionData={currentPosts} />
-      {Pages({
-        currentPage,
-        postsPerPage: postsPerPage,
-        totalPages: totalPages,
-        onPrevClick: () => paginate(currentPage - 1),
-        onNextClick: () => paginate(currentPage + 1),
-      })}{" "}
+    <div className="container">
+      <Table questionData={questions} />
+      <Pages
+        currentPage={currentPage}
+        postsPerPage={postsPerPage}
+        totalPages={totalPages}
+        onPrevClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        onNextClick={() => setCurrentPage((prev) => prev + 1)}
+      />
     </div>
   );
 }
 
-export default ProfilePage;
+export default QuestionOverview;

@@ -3,7 +3,7 @@ import { Application } from "express";
 import {
   fetchAllQuestionsHandler,
   submitQuestionHandler,
-  fetchQuestionsByUser
+  fetchQuestionsByUser,
 } from "./api/questions.js";
 
 import { helloWorldHandler } from "./api/helloWorld.js";
@@ -30,7 +30,7 @@ import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
 import { calculateStreak } from "./models/user.js";
 import { getScore } from "./api/users.js";
-import { paginatedQuestions } from "./api/ptest.js"
+import { paginatedQuestions } from "./api/ptest.js";
 
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
@@ -58,5 +58,5 @@ export function addRoutes(app: Application) {
   app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
   app.put("/api/user", requireAuth, updateUserClassesHandler);
-  app.get("/api/paginate", paginatedQuestions);
+  app.get("/api/paginate", requireAuth, paginatedQuestions);
 }
