@@ -23,6 +23,7 @@ function QuestionOverview() {
   const navigate = useNavigate();
   const { page = 1, limit = postsPerPage } = useParams();
 
+  //changes each page 
   useEffect(() => {
     setCurrentPage(Number(page));
   }, [page]);
@@ -63,7 +64,7 @@ function QuestionOverview() {
   const handlePrevClick = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1)) //sets the current page
     if (currentPage > 1) {
-      navigate(`?page=${currentPage - 1}&limit=${limit}`); //navigates to the link
+      navigate(`?page=${currentPage - 1}`); //navigates to the link
     }
   };
 
@@ -71,7 +72,7 @@ function QuestionOverview() {
   const handleNextClick = () => {
     setCurrentPage((prev) => prev + 1) //sets the current page
     if (currentPage < totalPages) {
-      navigate(`?page=${currentPage + 1}&limit=${limit}`); //navigates the link
+      navigate(`?page=${currentPage + 1}`); //navigates the link
     }
     
   };
@@ -85,8 +86,6 @@ function QuestionOverview() {
         totalPages={totalPages}
         onPrevClick= {handlePrevClick}
         onNextClick={handleNextClick}
-        // onPrevClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-        // onNextClick={() => setCurrentPage((prev) => prev + 1)}
       />
     </div>
   );
