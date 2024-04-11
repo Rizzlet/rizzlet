@@ -24,12 +24,12 @@ export default function QuestionSubmission() {
     class: "",
   });
 
-  const [answerList, setAnswerList] = useState<MultipleChoiceAnswer[]>([
+  const answerList = [
     { answer: "", correct: false },
     { answer: "", correct: false },
     { answer: "", correct: false },
     { answer: "", correct: false },
-  ]);
+  ];
 
   // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
