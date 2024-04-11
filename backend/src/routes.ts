@@ -3,6 +3,7 @@ import { Application } from "express";
 import {
   fetchAllQuestionsHandler,
   submitQuestionHandler,
+  fetchQuestionsByUser,
 } from "./api/questions.js";
 
 import { helloWorldHandler } from "./api/helloWorld.js";
@@ -29,7 +30,7 @@ import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
 import { calculateStreak } from "./models/user.js";
 import { getScore } from "./api/users.js";
-import { paginatedQuestions, paginatedQuestionsByUser } from "./api/pagination.js";
+import { paginatedQuestions } from "./api/pagination.js";
 
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
@@ -37,6 +38,7 @@ export function addRoutes(app: Application) {
   app.post("/api/auth/logout", logoutHandler);
   app.post("/api/question", requireAuth, submitQuestionHandler);
   app.get("/api/question", fetchAllQuestionsHandler);
+  app.get("/api/question/user", fetchQuestionsByUser);
   app.post(
     "/api/question/:questionId/rating",
     requireAuth,
@@ -57,5 +59,4 @@ export function addRoutes(app: Application) {
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
   app.put("/api/user", requireAuth, updateUserClassesHandler);
   app.get("/api/paginate", requireAuth, paginatedQuestions);
-  app.get("/api/question/user", paginatedQuestionsByUser);
 }
