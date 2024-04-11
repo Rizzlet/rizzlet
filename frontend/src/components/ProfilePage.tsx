@@ -113,6 +113,9 @@ function TableHeader() {
         <th scope="col" className="px-6 py-3">
           Type
         </th>
+        {/* <th scope="col" className="px-6 py-3">
+          Created By
+        </th> */}
         <th scope="col" className="px-6 py-3">
           Question
         </th>
@@ -131,7 +134,7 @@ function TableBody(props: TableProps) {
     return (
       <tr
         key={index}
-        className=" border-b border-gray-200 hover:bg-gray-200"
+        className=" border-b dark:border-gray-200 dark:hover:bg-gray-200"
       >
         {/* <th scope="row" className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-black"> */}
         <td className="px-6 py-3">{row.type}</td>

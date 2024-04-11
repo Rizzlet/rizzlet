@@ -23,7 +23,6 @@ function QuestionOverview() {
   const navigate = useNavigate();
   const { page = 1, limit = postsPerPage } = useParams();
 
-  //changes each page 
   useEffect(() => {
     setCurrentPage(Number(page));
   }, [page]);
