@@ -95,13 +95,15 @@ function Table(props: TableProps) {
     //overflow-x-auto
     //"w-full py-12 md:py-32 lg:py-40 bg-no-repeat bg-cover relative"
     <div>
-      <h3 className="m-4 mt-6 *:text-align-left pl-8 text-4xl font-bold leading-none tracking-tight text-gray-700 md:text-4xl lg:text-4xl md:mx-0">Your Submitted Questions</h3>
-    <div className="relative sm:rounded-lg items-h-screen flex items-center justify-center pt-3 ">
-    <table className="w-11/12 min-h-[74dvh] py-2 text-sm text-left rtl:text-right text-gray-500 border border-gray-300">
-      <TableHeader />
-      <TableBody questionData={props.questionData} />
-    </table>
-    </div>
+      <h3 className="m-4 mt-6 *:text-align-left pl-8 text-4xl font-bold leading-none tracking-tight text-gray-700 md:text-4xl lg:text-4xl md:mx-0">
+        Your Submitted Questions
+      </h3>
+      <div className="relative sm:rounded-lg items-h-screen flex items-center justify-center pt-3 ">
+        <table className="w-11/12 min-h-[74dvh] py-2 text-sm text-left rtl:text-right text-gray-500 border border-gray-300">
+          <TableHeader />
+          <TableBody questionData={props.questionData} />
+        </table>
+      </div>
     </div>
   );
 }
@@ -113,9 +115,6 @@ function TableHeader() {
         <th scope="col" className="px-6 py-3">
           Type
         </th>
-        {/* <th scope="col" className="px-6 py-3">
-          Created By
-        </th> */}
         <th scope="col" className="px-6 py-3">
           Question
         </th>
@@ -129,19 +128,14 @@ function TableHeader() {
 
 function TableBody(props: TableProps) {
   const rows = props.questionData.map((row, index) => {
-    //to resolve is createdBy is NULL
-    // const createdByInfo = row.createdBy || { firstName: "", lastName: "" };
     return (
       <tr
         key={index}
         className=" border-b dark:border-gray-200 dark:hover:bg-gray-200"
       >
-        {/* <th scope="row" className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-black"> */}
         <td className="px-6 py-3">{row.type}</td>
-        {/* <td className="px-6 py-3">{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td> */}
         <td className="px-6 py-3">{row.question}</td>
         <td className="px-6 py-3">{row.answer ? "True" : "False"}</td>
-        {/* </th> */}
       </tr>
     );
   });

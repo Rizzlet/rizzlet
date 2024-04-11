@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Pages } from "../components/ProfilePage";
+import { useParams } from "react-router-dom";
+
 interface Question {
   _id: string;
   type: string;
@@ -12,41 +14,49 @@ interface Question {
   };
 }
 
-function QuestionOverview() {
+function ProfilePage() {
   const [questions, setQuestionData] = useState<Question[]>([]);
 
   //pagination const
-  const [currentPage, setCurrentPage] = useState(1) //local storage is to save page for refresh
-  const postsPerPage = 10; //how many are in each page
+  const [totalPages, setTotalPages] = useState(1); //determines the total # of pages
+  const [currentPage, setCurrentPage] = useState(1); //keeps track of current page
+  const postsPerPage = 5; //how many are in each page
+  const { page = 1, limit = postsPerPage } = useParams();
 
+  //set the current page
   useEffect(() => {
-    fetchQuestions(currentPage).then((result) => {
-      if (result) setQuestionData(result);
-    });
-  }, [currentPage]);
+    setCurrentPage(Number(page));
+  }, [page]);
 
-  async function fetchQuestions(page: number) {
+  //assigns questions and totalPages from the response data
+  useEffect(() => {
+    fetchQuestions(currentPage, Number(limit)).then((result) => {
+      if (result && result.paginatedData) {
+        setQuestionData(result.paginatedData);
+        if (Math.ceil(result.totalQuestions / postsPerPage) === 0) {
+          setTotalPages(1);
+        } else {
+          setTotalPages(Math.ceil(result.totalQuestions / postsPerPage));
+          // console.log("total question:", result.totalQuestions)
+        }
+      }
+    });
+  }, [currentPage, limit]);
+
+  //fetches questions based on user
+  async function fetchQuestions(page: number, limit: number) {
     try {
-      const response = await axios.get<Question[]>(
-        process.env.REACT_APP_BACKEND_URL + `/api/question/user`,
+      const response = await axios.get<any>(
+        process.env.REACT_APP_BACKEND_URL +
+          `/api/paginate/question/user?page=${page}&limit=${limit}`,
         { withCredentials: true }
       );
       return response.data;
     } catch (error) {
       console.log(error);
-      return [];
+      return { paginatedData: [], totalQuestions: 0 };
     }
   }
-
- //makes sure that the base line is 1 and not 0;
- let totalPages: number;
- if (Math.ceil(questions.length / postsPerPage) == 0) {
-   totalPages = 1;
- } else {
-   totalPages = Math.ceil(questions.length / postsPerPage);
- }
-
-  console.log("questions: ", questions);
 
   return (
     <div className="container">
@@ -62,4 +72,4 @@ function QuestionOverview() {
   );
 }
 
-export default QuestionOverview;
+export default ProfilePage;

@@ -17,12 +17,13 @@ interface Question {
 
 function QuestionOverview() {
   const [questions, setQuestionData] = useState<Question[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1); //determines # of total pages
+  const [currentPage, setCurrentPage] = useState(1); //keeps track of current page
   const postsPerPage = 5;
-  const navigate = useNavigate();
+  const navigate = useNavigate(); //navigates the route
   const { page = 1, limit = postsPerPage } = useParams();
 
+  //sets current page
   useEffect(() => {
     setCurrentPage(Number(page));
   }, [page]);
@@ -35,7 +36,7 @@ function QuestionOverview() {
         if (Math.ceil(result.totalQuestions / postsPerPage) === 0) {
           setTotalPages(1);
         } else {
-          setTotalPages(Math.ceil(result.totalQuestions / postsPerPage)); 
+          setTotalPages(Math.ceil(result.totalQuestions / postsPerPage));
           // console.log("total question:", result.totalQuestions)
         }
       }
@@ -43,11 +44,11 @@ function QuestionOverview() {
   }, [currentPage, limit]);
   // console.log("total pages: ", totalPages);
 
-  //fetches paginated data and the total pages
+  //fetches paginated data and the total pages of all questions
   async function fetchQuestions(page: number, limit: number) {
     try {
       const response = await axios.get<any>(
-        `${process.env.REACT_APP_BACKEND_URL}/api/paginate?page=${page}&limit=${limit}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?page=${page}&limit=${limit}`,
         { withCredentials: true }
       );
       return response.data;
@@ -61,19 +62,18 @@ function QuestionOverview() {
 
   // decides what previous click does
   const handlePrevClick = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1)) //sets the current page
+    setCurrentPage((prev) => Math.max(prev - 1, 1)); //sets the current page
     if (currentPage > 1) {
-      navigate(`?page=${currentPage - 1}`); //navigates to the link
+      navigate(`?page=${currentPage - 1}`); //navigates to the prev page
     }
   };
 
   //decides what next click does
   const handleNextClick = () => {
-    setCurrentPage((prev) => prev + 1) //sets the current page
+    setCurrentPage((prev) => prev + 1); //sets the current page
     if (currentPage < totalPages) {
-      navigate(`?page=${currentPage + 1}`); //navigates the link
+      navigate(`?page=${currentPage + 1}`); //navigates to the next page 
     }
-    
   };
 
   return (
@@ -83,7 +83,7 @@ function QuestionOverview() {
         currentPage={currentPage}
         postsPerPage={postsPerPage}
         totalPages={totalPages}
-        onPrevClick= {handlePrevClick}
+        onPrevClick={handlePrevClick}
         onNextClick={handleNextClick}
       />
     </div>
