@@ -1,7 +1,28 @@
 import { Request, Response, NextFunction} from "express";
+import { Question } from "../models/question.js";
+
+export async function paginatedQuestions(req: Request, res: Response, next: NextFunction) {
+  try {
+    // Populate the 'createdBy' field for all questions
+    const allQuestions = await Question.find().populate('createdBy').exec();
+
+    // Pass the populated questions to the paginatedResults function
+    const paginationHandler = await paginatedResults(allQuestions);
+    await paginationHandler(req, res, next); // Call the paginationHandler function
+
+    // Access paginated results from res.locals.paginatedResults
+    const paginatedData = res.locals.paginatedResults.results;
+    // console.log("allQuestions", allQuestions);
+    const totalQuestions= allQuestions.length
+    res.send({paginatedData, totalQuestions});
+  } catch (error) {
+    console.error("Error paginating questions:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
 
 // documents is the data you want to paginate
-export async function paginatedResults<T>(documents: T[]): Promise<(req: Request, res: Response, next: NextFunction) => Promise<void>> {
+async function paginatedResults<T>(documents: T[]): Promise<(req: Request, res: Response, next: NextFunction) => Promise<void>> {
   return async (req: Request, res: Response, next: NextFunction) => {
     const page = parseInt(req.query.page as string)
     const limit = parseInt(req.query.limit as string)
@@ -39,4 +60,3 @@ export async function paginatedResults<T>(documents: T[]): Promise<(req: Request
     }
   };
 }
-
