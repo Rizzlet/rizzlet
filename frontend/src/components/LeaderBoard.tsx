@@ -55,11 +55,6 @@ function TableBody(props: TableProps) {
   // sort the users based on scores in descending order
   const sortedUserData = [...props.userData].sort((a, b) => b.score - a.score);
 
-  // assign each user their rank
-  sortedUserData.forEach((user, index) => {
-    user.rank = index + 1;
-  });
-
   //set authentication information
   const authData = useAuth();
 
