@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
 import axios from "axios";
 
@@ -110,6 +110,7 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
   const authData = useAuth();
   const [streak, setStreak] = useState(0);
   const [points, setPoints] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchStreak();
@@ -154,6 +155,21 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
         <span className="block whitespace-nowrap text-sm text-gray-600">
           {authData.authUserFullName}
         </span>
+
+        <ul className="py-2" aria-labelledby="user-menu-button">
+          <hr></hr>
+          <li>
+            <button
+              className="pt-2 block whitespace-nowrap text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => {
+                // redirects to profile page
+                navigate("/profilePage");
+              }}
+            >
+              Profile
+            </button>
+          </li>
+        </ul>
         <span className="block whitespace-nowrap text-sm text-gray-600">
           Points: {points}
         </span>

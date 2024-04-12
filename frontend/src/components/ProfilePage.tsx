@@ -15,7 +15,7 @@ const Pages: React.FC<PagesProps> = ({
   onNextClick,
 }) => {
   return (
-    <div className="flex flex-col items-center py-2">
+    <div className="flex flex-col items-center py-3">
       <span className="text-sm text-gray-700 dark:text-gray-700">
         Showing Page{" "}
         <span className="font-semibold text-gray-900 dark:text-black">
@@ -26,7 +26,7 @@ const Pages: React.FC<PagesProps> = ({
           {totalPages}
         </span>{" "}
       </span>
-      <div className="inline-flex mt-2 xs:mt-0">
+      <div className="inline-flex mt-2 xs:mt-0 ">
         <button
           className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-teal-100 dark:border-gray-700 dark:text-gray-800 dark:hover:bg-gray-300 dark:hover:text-black"
           onClick={onPrevClick}
@@ -92,11 +92,18 @@ interface TableProps {
 
 function Table(props: TableProps) {
   return (
-    <div className="relative sm:rounded-lg ">
-      <table className="w-screen min-h-[75dvh] py-2 text-left rtl:text-right text-gray-500">
-        <TableHeader />
-        <TableBody questionData={props.questionData} />
-      </table>
+    //overflow-x-auto
+    //"w-full py-12 md:py-32 lg:py-40 bg-no-repeat bg-cover relative"
+    <div>
+      <h3 className="m-4 mt-6 *:text-align-left pl-8 text-4xl font-bold leading-none tracking-tight text-gray-700 md:text-4xl lg:text-4xl md:mx-0">
+        Your Submitted Questions
+      </h3>
+      <div className="relative sm:rounded-lg items-h-screen flex items-center justify-center pt-3 ">
+        <table className="w-11/12 min-h-[74dvh] py-2 text-sm text-left rtl:text-right text-gray-500 border border-gray-300">
+          <TableHeader />
+          <TableBody questionData={props.questionData} />
+        </table>
+      </div>
     </div>
   );
 }
@@ -107,9 +114,6 @@ function TableHeader() {
       <tr>
         <th scope="col" className="px-6 py-3">
           Type
-        </th>
-        <th scope="col" className="px-6 py-3">
-          Created By
         </th>
         <th scope="col" className="px-6 py-3">
           Question
@@ -124,12 +128,12 @@ function TableHeader() {
 
 function TableBody(props: TableProps) {
   const rows = props.questionData.map((row, index) => {
-    //to resolve is createdBy is NULL
-    const createdByInfo = row.createdBy || { firstName: "", lastName: "" };
     return (
-      <tr key={index} className=" border-b border-gray-200 hover:bg-gray-200">
+      <tr
+        key={index}
+        className=" border-b dark:border-gray-200 dark:hover:bg-gray-200"
+      >
         <td className="px-6 py-3">{row.type}</td>
-        <td className="px-6 py-3">{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td>
         <td className="px-6 py-3">{row.question}</td>
         <td className="px-6 py-3">{row.answer ? "True" : "False"}</td>
       </tr>
