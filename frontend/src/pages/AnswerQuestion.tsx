@@ -86,7 +86,7 @@ export default function FlashcardField() {
   };
 
   return (
-    <div className="relative flex flex-row justify-center h-svh w-dvw items-center bg-white m-0 p-0">
+    <div className="relative flex flex-row justify-center h-svh items-center bg-white m-0 p-0">
       <div className="relative h-4/5 w-2/5 flex flex-col justify-center items-center m-0 p-0">
         <div className="relative flex flex-row justify-center items-center text-4xl h-full w-full">
           {mapQuestions(listOfQuestions)[questionToRender]}

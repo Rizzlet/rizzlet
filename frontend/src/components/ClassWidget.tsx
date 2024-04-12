@@ -18,7 +18,7 @@ export default function ClassWidget(props: ClassWidgetProps) {
     >
       <div className="m-4">
         <Link
-          to={`/answerQuestions/${props.id}`}
+          to={`/classDashboard/${props.id}`}
           className="text-2xl underline"
         >
           {props.name}

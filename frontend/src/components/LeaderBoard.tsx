@@ -13,17 +13,11 @@ interface TableProps {
 
 function Table(props: TableProps) {
   return (
-    //overflow-x-auto
-    //"w-full py-12 md:py-32 lg:py-40 bg-no-repeat bg-cover relative"
     <div>
-      {/* Header: LeaderBoard */}
-      <h1 className="text-5xl font-extrabold text-black text-center bg-[#96C8AF] w-screen py-3">
-        Leaderboard
-      </h1>
+      {/* <h1 className="text-3xl font-semibold text-center mb-4">Leaderboard</h1> */}
       <div className="relative sm:rounded-lg">
-        <table className="w-screen min-h-[80dvh] py-2 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-700">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-700">
           <TableHeader />
-          {/* <UserRank userData={props.userData}/> */}
           <TableBody userData={props.userData} />
         </table>
       </div>

@@ -13,9 +13,11 @@ interface UserRecord {
   rank: number;
 }
 
-function LeaderBoard() {
+function LeaderBoard(props: {classId?: string}) {
   const [users, setUsers] = useState<UserRecord[]>([]);
-  const { classId } = useParams();
+  const params = useParams();
+
+  const classId = props.classId || params.classId
 
   //fetch the users
   useEffect(() => {
