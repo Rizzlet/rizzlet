@@ -80,7 +80,8 @@ export async function fetchQuestionsByClass(req: Request, res: Response) {
     return;
   }
 
-  res.send(JSON.stringify(questions)).status(201);
+  //res.send(JSON.stringify(questions)).status(201);
+  res.status(201).json(questions);
 }
 
 export async function getUserClasses(req: Request, res: Response) {
