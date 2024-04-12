@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Pages } from "../components/Overview";
 //import of router so that it will update URL with each page
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 
 interface Question {
   _id: string;
@@ -21,7 +21,9 @@ function QuestionOverview() {
   const [currentPage, setCurrentPage] = useState(1); //keeps track of current page
   const postsPerPage = 5;
   const navigate = useNavigate(); //navigates the route
-  const { page = 1, limit = postsPerPage } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get("page") || 1;
+  const limit = searchParams.get("limit") || postsPerPage;
 
   //sets current page
   useEffect(() => {
@@ -64,7 +66,8 @@ function QuestionOverview() {
   const handlePrevClick = () => {
     setCurrentPage((prev) => Math.max(prev - 1, 1)); //sets the current page
     if (currentPage > 1) {
-      navigate(`?page=${currentPage - 1}`); //navigates to the prev page
+      searchParams.set("page", (currentPage - 1).toString()); //navigates to the prev page
+      setSearchParams(searchParams);
     }
   };
 
@@ -72,7 +75,8 @@ function QuestionOverview() {
   const handleNextClick = () => {
     setCurrentPage((prev) => prev + 1); //sets the current page
     if (currentPage < totalPages) {
-      navigate(`?page=${currentPage + 1}`); //navigates to the next page 
+      searchParams.set("page", (currentPage + 1).toString()); //navigates to the next page 
+      setSearchParams(searchParams);
     }
   };
 

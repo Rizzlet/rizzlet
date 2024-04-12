@@ -22,7 +22,7 @@ const ClassDashboard: React.FC = () => {
   const [allClasses, setAllClasses] = useState<Classes[]>([]);
   const [className, setClassName] = useState<string>("");
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedLink = searchParams.get("page") || "game";
+  const selectedLink = searchParams.get("tab") || "game";
   const params = useParams<{ id: string }>();
 
   async function fetchClasses() {
@@ -48,7 +48,8 @@ const ClassDashboard: React.FC = () => {
   }, [allClasses, params.id]);
 
     const handleLinkClick = (link: string) => {
-      setSearchParams({page: link});
+      searchParams.set("tab", link)
+      setSearchParams(searchParams);
     };
 
   return (
