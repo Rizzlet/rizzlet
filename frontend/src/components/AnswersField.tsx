@@ -133,7 +133,9 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
   }, []);
 
   return (
-    <div className={`relative flex justify-evenly h-1/2 w-full`}>
+    <div
+      className={`relative grid grid-rows-2 grid-cols-2 content-evenly h-1/2 w-full`}
+    >
       {answersToRender}
     </div>
   );
