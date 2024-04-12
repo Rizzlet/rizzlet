@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Pages } from "../components/Overview";
-//import of router so that it will update URL with each page
-import { useParams, useNavigate } from "react-router-dom";
+import { Table, Pages } from "../components/ProfilePage";
+import { useParams } from "react-router-dom";
 
 interface Question {
   _id: string;
@@ -15,15 +14,16 @@ interface Question {
   };
 }
 
-function QuestionOverview() {
+function ProfilePage() {
   const [questions, setQuestionData] = useState<Question[]>([]);
-  const [totalPages, setTotalPages] = useState(1); //determines # of total pages
+
+  //pagination const
+  const [totalPages, setTotalPages] = useState(1); //determines the total # of pages
   const [currentPage, setCurrentPage] = useState(1); //keeps track of current page
-  const postsPerPage = 5;
-  const navigate = useNavigate(); //navigates the route
+  const postsPerPage = 5; //how many are in each page
   const { page = 1, limit = postsPerPage } = useParams();
 
-  //sets current page
+  //set the current page
   useEffect(() => {
     setCurrentPage(Number(page));
   }, [page]);
@@ -42,39 +42,21 @@ function QuestionOverview() {
       }
     });
   }, [currentPage, limit]);
-  // console.log("total pages: ", totalPages);
 
-  //fetches paginated data and the total pages of all questions
+  //fetches questions based on user
   async function fetchQuestions(page: number, limit: number) {
     try {
       const response = await axios.get<any>(
-        `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?page=${page}&limit=${limit}`,
+        process.env.REACT_APP_BACKEND_URL +
+          `/api/paginate/question/user?page=${page}&limit=${limit}`,
         { withCredentials: true }
       );
       return response.data;
     } catch (error) {
-      console.log("fetch error: ", error);
+      console.log(error);
       return { paginatedData: [], totalQuestions: 0 };
     }
   }
-
-  console.log("cur pages: ", currentPage);
-
-  // decides what previous click does
-  const handlePrevClick = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1)); //sets the current page
-    if (currentPage > 1) {
-      navigate(`?page=${currentPage - 1}`); //navigates to the prev page
-    }
-  };
-
-  //decides what next click does
-  const handleNextClick = () => {
-    setCurrentPage((prev) => prev + 1); //sets the current page
-    if (currentPage < totalPages) {
-      navigate(`?page=${currentPage + 1}`); //navigates to the next page 
-    }
-  };
 
   return (
     <div className="container">
@@ -83,11 +65,11 @@ function QuestionOverview() {
         currentPage={currentPage}
         postsPerPage={postsPerPage}
         totalPages={totalPages}
-        onPrevClick={handlePrevClick}
-        onNextClick={handleNextClick}
+        onPrevClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+        onNextClick={() => setCurrentPage((prev) => prev + 1)}
       />
     </div>
   );
 }
 
-export default QuestionOverview;
+export default ProfilePage;

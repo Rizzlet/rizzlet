@@ -13,6 +13,7 @@ import FlashcardField from "./pages/AnswerQuestion";
 import NavBar from "./components/Navbar";
 import HomePage from "./pages/Homepage";
 import QuestionOverview from "./pages/QuestionOverview";
+import ProfilePage from "./pages/ProfilePage";
 
 import "./index.css";
 import RatingPage from "./pages/RatingPage";
@@ -72,7 +73,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/overview/:pageNumber",
+        path: "/overview",
         element: <QuestionOverview />,
       },
       {
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
             <LeaderBoard />
           </AuthGuard>
         ),
+      },
+      {
+        path: "/profilePage",
+        element: <ProfilePage />,
       },
     ],
   },
