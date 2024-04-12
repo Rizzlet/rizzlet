@@ -44,7 +44,7 @@ export default function QuestionSubmission() {
     try {
       const response = await axios.post(
         process.env.REACT_APP_BACKEND_URL + "/api/question",
-        state,
+        { state, answerList },
         {
           withCredentials: true,
         }
@@ -90,11 +90,13 @@ export default function QuestionSubmission() {
           <TrueAndFalseButtons
             onTrueFalseButtonClick={onTrueFalseButtonClick}
           />
-        ) : (
+        ) : state.type === "Multiple Choice" ? (
           <AnswerChoiceField
             numOfAnswerChoice={4}
             theAnswerList={answerList}
           ></AnswerChoiceField>
+        ) : (
+          <div></div>
         )}
         <Buttons />
       </form>
