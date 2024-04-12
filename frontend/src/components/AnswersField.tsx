@@ -16,6 +16,13 @@ interface IAnswerField {
   updatePoints: (newPoints: number) => void;
 }
 
+interface IMultipleChoiceAnswers {
+  _id: string;
+  answer: string;
+  correct: boolean;
+  question: string;
+}
+
 export default function AnswersField<T extends IAnswerField>(props: T) {
   /**
    * @param questionlist: list of questions
@@ -33,9 +40,34 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
     ).data;
     setIsItAnswered(checked);
   }
+
+  async function fetchMultipleChoiceAnswers(): Promise<
+    IMultipleChoiceAnswers[]
+  > {
+    try {
+      const theAnswers = (
+        await axios.get(
+          new URL(
+            "/api/question/multipleChoiceAnswers",
+            process.env.REACT_APP_BACKEND_URL!
+          ).href,
+          { withCredentials: true }
+        )
+      ).data;
+      return theAnswers;
+    } catch (error) {
+      console.error();
+      return [];
+    }
+  }
+
   let [answersToRender, setAnswerstoRender] = useState<ReactNode[]>([]);
 
   let [isItAnswered, setIsItAnswered] = useState(false);
+
+  let [multipleChoiceAnswers, setMultipleChoiceAnswers] = useState<
+    IMultipleChoiceAnswers[]
+  >([]);
 
   function handleAnswered() {
     setIsItAnswered(true);
@@ -62,6 +94,22 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
               ></Answers>
             );
           }
+        } else if (theQuestion.type === "Multiple Choice") {
+          const answersForSpecificQuestion = multipleChoiceAnswers.filter(
+            (answers) => answers.question === theQuestion._id
+          );
+          for (let i = 0; i < answersForSpecificQuestion.length; i++) {
+            answersElement.push(
+              <Answers
+                answerText={answersForSpecificQuestion[i].answer}
+                rightAnswer={`${answersForSpecificQuestion[i].correct}`}
+                alreadyAnswered={isItAnswered}
+                questionAssociated={theQuestion._id}
+                setAlreadyAnswered={handleAnswered}
+                updatePoints={props.updatePoints}
+              ></Answers>
+            );
+          }
         }
         setAnswerstoRender(answersElement);
       }
@@ -78,8 +126,16 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
     props.updatePoints,
   ]);
 
+  useEffect(() => {
+    fetchMultipleChoiceAnswers().then((answers) =>
+      setMultipleChoiceAnswers(answers)
+    );
+  }, []);
+
   return (
-    <div className="relative flex justify-evenly h-1/2 w-full">
+    <div
+      className={`relative grid grid-rows-2 grid-cols-2 content-evenly h-1/2 w-full`}
+    >
       {answersToRender}
     </div>
   );

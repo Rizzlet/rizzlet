@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { Question, addQuestion } from "../models/question.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
+import { addAnswer } from "../models/answers.js";
 
 export async function fetchAllQuestionsHandler(_req: Request, res: Response) {
   const questions = await Question.find()
@@ -13,7 +14,7 @@ export async function fetchAllQuestionsHandler(_req: Request, res: Response) {
 }
 
 export async function submitQuestionHandler(req: Request, res: Response) {
-  const { type, question, answer } = req.body;
+  const { state, answerList } = req.body;
 
   const userData = verifyAndDecodeToken(req.cookies.token);
 
@@ -23,12 +24,18 @@ export async function submitQuestionHandler(req: Request, res: Response) {
   }
 
   const questionId = addQuestion(
-    type,
+    state.type,
     userData.id,
-    question,
-    answer,
-    req.body.class,
+    state.question,
+    state.answer,
+    state.class,
   );
+
+  if (state.type === "Multiple Choice") {
+    for (let i = 0; i < answerList.length; i++) {
+      addAnswer(answerList[i].answer, answerList[i].correct, await questionId);
+    }
+  }
 
   res.status(201).json({ id: questionId });
 }

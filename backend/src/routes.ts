@@ -24,10 +24,14 @@ import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
 import { calculateStreak } from "./models/user.js";
 import { getScore } from "./api/users.js";
+
+import { fetchMultipleChoiceAnswers } from "./api/answers.js";
+
 import {
   paginatedQuestionsByUser,
   paginatedAllQuestions,
 } from "./api/pagination.js";
+
 
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
@@ -53,7 +57,15 @@ export function addRoutes(app: Application) {
   app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
   app.put("/api/user", requireAuth, updateUserClassesHandler);
+
+  app.get(
+    "/api/question/multipleChoiceAnswers",
+    requireAuth,
+    fetchMultipleChoiceAnswers,
+  );
+
   app.get("/api/paginate/question", requireAuth, paginatedAllQuestions);
   app.get("/api/paginate/question/user", paginatedQuestionsByUser);
+
 
 }

@@ -29,8 +29,8 @@ export default function Answers<T extends IAnswer>(props: T) {
   }
 
   const enum AnswersVariant {
-    correct = "relative h-1/4 w-2/5 bg-green-300 flex items-center justify-around rounded-lg",
-    incorrect = "relative h-1/4 w-2/5 bg-red-500 flex items-center justify-around rounded-lg",
+    correct = "relative h-1/2 w-8/12 bg-green-300 flex items-center justify-around rounded-lg",
+    incorrect = "relative h-1/2 w-8/12 bg-red-500 flex items-center justify-around rounded-lg",
   }
 
   async function updateScore() {
@@ -49,18 +49,20 @@ export default function Answers<T extends IAnswer>(props: T) {
   }
 
   return (
-    <button
-      className={`${props.alreadyAnswered && props.rightAnswer === "true" ? AnswersVariant.correct : props.alreadyAnswered ? AnswersVariant.incorrect : "relative hover: cursor-pointer h-1/4 w-2/5 bg-white flex items-center justify-around rounded-lg"}`}
-      onClick={() => {
-        if (props.rightAnswer === "true") {
-          updateScore();
-        }
-        handleOnceAnswered();
-        props.setAlreadyAnswered();
-      }}
-      disabled={props.alreadyAnswered}
-    >
-      <h1>{props.answerText}</h1>
-    </button>
+    <div className="flex items-center justify-center">
+      <button
+        className={`${props.alreadyAnswered && props.rightAnswer === "true" ? AnswersVariant.correct : props.alreadyAnswered ? AnswersVariant.incorrect : "relative hover: cursor-pointer h-1/2 w-8/12 bg-teal-100 flex items-center justify-around rounded-lg"}`}
+        onClick={() => {
+          if (props.rightAnswer === "true") {
+            updateScore();
+          }
+          handleOnceAnswered();
+          props.setAlreadyAnswered();
+        }}
+        disabled={props.alreadyAnswered}
+      >
+        <h1>{props.answerText}</h1>
+      </button>
+    </div>
   );
 }
