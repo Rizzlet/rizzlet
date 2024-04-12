@@ -104,7 +104,7 @@ const ClassDashboard: React.FC = () => {
         <div className="flex flex-col min-h-screen w-full lg:min-h-0 lg:flex-1">
             <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 font-bold text-3xl">{selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}</header>
               {selectedLink === "game" && <div>Game Content coming soon</div>}
-              {selectedLink === "leaderboard" && <LeaderBoard />}
+              {selectedLink === "leaderboard" && <LeaderBoard classId={params.id}/>}
               {selectedLink === "flashcards" && <FlashcardField />}
               {selectedLink === "questions" && <QuestionOverview />}
               {selectedLink === "submit" && <QuestionSubmission />}
