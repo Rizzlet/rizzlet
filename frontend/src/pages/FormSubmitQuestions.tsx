@@ -7,7 +7,13 @@ import {
   InputQuestion,
   TrueAndFalseButtons,
   Buttons,
+  AnswerChoiceField,
 } from "../components/SubmitQuestion";
+
+export interface MultipleChoiceAnswer {
+  answer: string;
+  correct: boolean;
+}
 
 export default function QuestionSubmission() {
   const [state, setState] = useState({
@@ -17,6 +23,13 @@ export default function QuestionSubmission() {
     answer: false,
     class: "",
   });
+
+  const answerList = [
+    { answer: "", correct: false },
+    { answer: "", correct: false },
+    { answer: "", correct: false },
+    { answer: "", correct: false },
+  ];
 
   // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +44,7 @@ export default function QuestionSubmission() {
     try {
       const response = await axios.post(
         process.env.REACT_APP_BACKEND_URL + "/api/question",
-        state,
+        { state, answerList },
         {
           withCredentials: true,
         }
@@ -73,7 +86,18 @@ export default function QuestionSubmission() {
           ></SelectClass>
         </div>
         <InputQuestion onFieldChange={onFieldChange} />
-        <TrueAndFalseButtons onTrueFalseButtonClick={onTrueFalseButtonClick} />
+        {state.type === "TrueAndFalse" ? (
+          <TrueAndFalseButtons
+            onTrueFalseButtonClick={onTrueFalseButtonClick}
+          />
+        ) : state.type === "Multiple Choice" ? (
+          <AnswerChoiceField
+            numOfAnswerChoice={4}
+            theAnswerList={answerList}
+          ></AnswerChoiceField>
+        ) : (
+          <div></div>
+        )}
         <Buttons />
       </form>
     </div>

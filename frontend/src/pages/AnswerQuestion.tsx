@@ -94,15 +94,16 @@ export default function FlashcardField() {
           <button
             className="absolute h-1/6 w-1/6 left-full"
             onClick={() => {
-              if (questionToRender === listOfQuestions.length - 1) {
-                changeQuestionToRender(0);
-              } else {
-                changeQuestionToRender(questionToRender++);
+              if (listOfQuestions.length !== 0) {
+                if (questionToRender === listOfQuestions.length - 1) {
+                  changeQuestionToRender(0);
+                } else {
+                  changeQuestionToRender(
+                    (questionToRender) => questionToRender + 1
+                  );
+                }
+                animationDirection.current = "left";
               }
-              animationDirection.current = "left";
-              Sleep(500).then(() => {
-                animationDirection.current = "none";
-              });
             }}
           >
             <h1>right</h1>
@@ -111,15 +112,16 @@ export default function FlashcardField() {
           <button
             className="absolute h-1/6 w-1/6 right-full"
             onClick={() => {
-              if (questionToRender === 0) {
-                changeQuestionToRender(listOfQuestions.length - 1);
-              } else {
-                changeQuestionToRender(questionToRender--);
+              if (listOfQuestions.length !== 0) {
+                if (questionToRender === 0) {
+                  changeQuestionToRender(listOfQuestions.length - 1);
+                } else {
+                  changeQuestionToRender(
+                    (questionToRender) => questionToRender - 1
+                  );
+                }
+                animationDirection.current = "right";
               }
-              animationDirection.current = "right";
-              Sleep(500).then(() => {
-                animationDirection.current = "none";
-              });
             }}
           >
             <h1>left</h1>
