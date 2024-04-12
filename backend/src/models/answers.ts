@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { Question } from "./question";
-import { getConnection } from "./db";
+import { Question } from "./question.js";
+import { getConnection } from "./db.js";
 
 const answerSchema = new mongoose.Schema({
   answer: {
@@ -17,5 +17,21 @@ const answerSchema = new mongoose.Schema({
     ref: Question.modelName,
   },
 });
+
+export async function addAnswer(
+  answerValue: string,
+  correct: boolean,
+  questionId: mongoose.Types.ObjectId,
+) {
+  if (answerValue === "") {
+    return;
+  }
+  const newAnswer = new Answer({
+    answer: answerValue,
+    correct: correct,
+    question: questionId,
+  });
+  await newAnswer.save();
+}
 
 export const Answer = (await getConnection()).model("Answer", answerSchema);
