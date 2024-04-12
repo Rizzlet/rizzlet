@@ -27,7 +27,7 @@ export default function ClassWidget(props: ClassWidgetProps) {
 
       <div className="mr-4 ">
         <DotDotDotMenu onDelete={props.onDelete} />
-      </div>
+      </div> 
     </div>
   );
 }

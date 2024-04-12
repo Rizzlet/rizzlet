@@ -15,7 +15,7 @@ const Pages: React.FC<PagesProps> = ({
   onNextClick,
 }) => {
   return (
-    <div className="flex flex-col items-center py-2">
+    <div className="flex flex-col items-center">
       <span className="text-sm text-gray-700 dark:text-gray-700">
         Showing Page{" "}
         <span className="font-semibold text-gray-900 dark:text-black">
@@ -92,8 +92,10 @@ interface TableProps {
 
 function Table(props: TableProps) {
   return (
+    //overflow-x-auto
+    //"w-full py-12 md:py-32 lg:py-40 bg-no-repeat bg-cover relative"
     <div className="relative sm:rounded-lg ">
-      <table className="w-screen min-h-[75dvh] py-2 text-left rtl:text-right text-gray-500">
+      <table className="w-screen min-h-[80dvh] py-2 text-sm text-left rtl:text-right text-gray-500">
         <TableHeader />
         <TableBody questionData={props.questionData} />
       </table>
@@ -127,11 +129,16 @@ function TableBody(props: TableProps) {
     //to resolve is createdBy is NULL
     const createdByInfo = row.createdBy || { firstName: "", lastName: "" };
     return (
-      <tr key={index} className=" border-b border-gray-200 hover:bg-gray-200">
+      <tr
+        key={index}
+        className=" border-b dark:border-gray-200 dark:hover:bg-gray-200"
+      >
+        {/* <th scope="row" className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-black"> */}
         <td className="px-6 py-3">{row.type}</td>
         <td className="px-6 py-3">{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td>
         <td className="px-6 py-3">{row.question}</td>
         <td className="px-6 py-3">{row.answer ? "True" : "False"}</td>
+        {/* </th> */}
       </tr>
     );
   });
