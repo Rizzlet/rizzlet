@@ -1,5 +1,6 @@
 import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import axios from "axios";
+import { MultipleChoiceAnswer } from "../pages/FormSubmitQuestions";
 
 export function Title() {
   return (
@@ -138,6 +139,62 @@ export function InputQuestion({
       ></input>
     </div>
   );
+}
+
+// When multiple choice option is selected, users can input custom answers for the question
+export function InputAnswer({
+  answerPosition,
+  answerList,
+}: {
+  answerPosition: number;
+  answerList: MultipleChoiceAnswer[];
+}) {
+  return (
+    <div className="px-5">
+      {/* message */}
+      <label
+        htmlFor={`answer${answerPosition}`}
+        className="mb-2 text-2xl block font-medium text-gray-900 dark:text-black"
+      >
+        {`Answer ${answerPosition + 1}`}
+      </label>
+      {/* textbox has blue border when clicked on*/}
+      <input
+        id={`answer${answerPosition}`}
+        onChange={(event) => {
+          answerList[answerPosition].answer = event.target.value;
+        }}
+        className="w-11/12 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-white dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 inline-block"
+        placeholder="Type Your Answer Here..."
+      ></input>
+      <input
+        type="checkbox"
+        className="m-5"
+        onChange={() =>
+          (answerList[answerPosition].correct =
+            !answerList[answerPosition].correct)
+        }
+      ></input>
+    </div>
+  );
+}
+
+// Multiple Choice Answer Field
+export function AnswerChoiceField({
+  numOfAnswerChoice,
+  theAnswerList,
+}: {
+  numOfAnswerChoice: number;
+  theAnswerList: MultipleChoiceAnswer[];
+}) {
+  let answerChoiceArray = [];
+
+  for (let i = 0; i < numOfAnswerChoice; i++) {
+    answerChoiceArray.push(
+      <InputAnswer answerPosition={i} answerList={theAnswerList}></InputAnswer>
+    );
+  }
+  return <div>{answerChoiceArray}</div>;
 }
 
 // submit and close

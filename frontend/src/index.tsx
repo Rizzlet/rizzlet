@@ -13,6 +13,9 @@ import FlashcardField from "./pages/AnswerQuestion";
 import NavBar from "./components/Navbar";
 import HomePage from "./pages/Homepage";
 import QuestionOverview from "./pages/QuestionOverview";
+import ClassDashboard from "./pages/ClassDashboard";
+import ProfilePage from "./pages/ProfilePage";
+
 
 import "./index.css";
 import RatingPage from "./pages/RatingPage";
@@ -46,22 +49,30 @@ const router = createBrowserRouter([
       {
         children: [
           {
-            path: "/answerQuestions",
+            path: "/classDashboard/:id",
             element: (
               <AuthGuard>
-                <NoClasses />
-              </AuthGuard>
-            ),
-          },
-          {
-            path: "/answerQuestions/:id",
-            element: (
-              <AuthGuard>
-                <FlashcardField />
+                <ClassDashboard />
               </AuthGuard>
             ),
           },
         ],
+      },
+      {
+        path: "/answerQuestions",
+        element: (
+          <AuthGuard>
+            <NoClasses />
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/answerQuestions/:id",
+        element: (
+          <AuthGuard>
+            <FlashcardField />
+          </AuthGuard>
+        ),
       },
       {
         path: "/ratingSample",
@@ -72,12 +83,20 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/overview/:pageNumber",
+        path: "/overview",
         element: <QuestionOverview />,
       },
       {
-        path: "/leaderBoard",
-        element: <LeaderBoard />,
+        path: "/leaderBoard/:classId",
+        element: (
+          <AuthGuard>
+            <LeaderBoard />
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/profilePage",
+        element: <ProfilePage />,
       },
     ],
   },

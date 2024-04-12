@@ -77,6 +77,50 @@ paths:
           description: Validation exception
         "500":
           description: Server Exception
+  /class/topFour:
+    post:
+      tags:
+        - Class
+      summary: Get the top ten users for a class, always including the logged in one
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                classId:
+                  type: string
+            example:
+              classId: "65d679f08f3afb1b89eebfc3"
+      operationId: getTopFour
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  topFour:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                        score:
+                          type: number
+        "422":
+          description: Validation exception
+        "500":
+          description: Server Exception
+        "401":
+          description: Unauthorized
   /hello:
     post:
       tags:
