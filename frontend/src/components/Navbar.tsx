@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
 import axios from "axios";
 
@@ -109,11 +109,10 @@ export default function NavBar() {
 function UserDropDown(props: { showUserDropDown: boolean }) {
   const authData = useAuth();
   const [streak, setStreak] = useState(0);
-  const [points, setPoints] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchStreak();
-    fetchPoints();
   }, []);
 
   const fetchStreak = async () => {
@@ -130,20 +129,6 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
     }
   };
 
-  const fetchPoints = async () => {
-    try {
-      const response = await axios.get(
-        new URL("/api/user/score", process.env.REACT_APP_BACKEND_URL!).href,
-        {
-          withCredentials: true,
-        }
-      );
-      setPoints(response.data.score);
-    } catch (error) {
-      console.error("Error fetching user points:", error);
-    }
-  };
-
   return (
     <div
       className="absolute right-0 top-full z-50 bg-white shadow-md"
@@ -154,9 +139,21 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
         <span className="block whitespace-nowrap text-sm text-gray-600">
           {authData.authUserFullName}
         </span>
-        <span className="block whitespace-nowrap text-sm text-gray-600">
-          Points: {points}
-        </span>
+
+        <ul className="py-2" aria-labelledby="user-menu-button">
+          <hr></hr>
+          <li>
+            <button
+              className="pt-2 block whitespace-nowrap text-sm text-gray-700 hover:bg-gray-100"
+              onClick={() => {
+                // redirects to profile page
+                navigate("/profilePage");
+              }}
+            >
+              Profile
+            </button>
+          </li>
+        </ul>
         <span className="block whitespace-nowrap text-sm text-gray-600">
           Streak: {streak}
         </span>

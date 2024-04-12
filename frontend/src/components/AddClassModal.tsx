@@ -58,8 +58,8 @@ export default function AddClassModal(props: {
                     Add a Class
                   </Dialog.Title>
                   <div className="mt-2">
-                    {/* Cetner checkbox */}
-                    <div className="flex justify-center">
+                    Cetner checkbox 
+                     <div className="flex justify-center">
                       <ClassComboBox
                         setSelected={setSelected}
                         selected={selected}
@@ -101,7 +101,7 @@ export default function AddClassModal(props: {
             </div>
           </div>
         </Dialog>
-      </Transition>
+      </Transition> 
     </>
   );
 }
@@ -186,7 +186,7 @@ function ClassComboBox(props: {
             </Combobox.Options>
           </Transition>
         </div>
-      </Combobox>
+      </Combobox> 
     </div>
   );
 }

@@ -8,6 +8,19 @@ const classSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  scores: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: User.modelName,
+        required: true,
+      },
+      score: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
 });
 
 export const Class = (await getConnection()).model("Class", classSchema);
@@ -37,4 +50,46 @@ export async function getUserClasses(userId: string) {
     return null;
   }
   return user.classIds as unknown as { name: string; _id: string }[];
+}
+
+export async function getClass(classId: string) {
+  return await Class.findById(classId).exec();
+}
+
+export async function getAllUsersScoreByClass(classId: string) {
+  const classEntry = await Class.findById(classId)
+    .select({ scores: 1 })
+    .populate("scores.user")
+    .exec();
+  return mongooseArrayToArray(classEntry!.scores);
+}
+
+export async function setScoreForUserByClass(
+  classId: string,
+  userId: string,
+  score: number,
+) {
+  const classEntry = await Class.findById(classId).exec();
+  if (classEntry === null) {
+    return false;
+  }
+
+  const userScore = classEntry.scores.find((s) => s.user.toString() === userId);
+
+  if (!userScore) {
+    classEntry.scores.push({ user: userId, score });
+  } else {
+    userScore.score = score;
+  }
+
+  await classEntry.save();
+  return true;
+}
+
+function mongooseArrayToArray<T>(mongooseArray: T[]) {
+  const array = [];
+  for (let i = 0; i < mongooseArray.length; i += 1) {
+    array.push(mongooseArray[i]);
+  }
+  return array;
 }

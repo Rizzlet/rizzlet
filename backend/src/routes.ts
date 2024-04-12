@@ -18,18 +18,20 @@ import { googleAuthHandler } from "./api/auth/google.js";
 import { logoutHandler } from "./api/auth/logout.js";
 import { requireAuth } from "./api/auth/sharedAuth.js";
 import { submitQuestionRatingHandler } from "./api/questionRating.js";
-import {
-  GetIndividualUser,
-  UpdateScore,
-  UserClasses,
-  getTopTenUsers,
-} from "./api/users.js";
+import { GetIndividualUser, UserClasses, getTopTenUsers } from "./api/users.js";
 import {} from "./models/user.js";
 import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
 import { calculateStreak } from "./models/user.js";
 import { getScore } from "./api/users.js";
+
 import { fetchMultipleChoiceAnswers } from "./api/answers.js";
+
+import {
+  paginatedQuestionsByUser,
+  paginatedAllQuestions,
+} from "./api/pagination.js";
+
 
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
@@ -48,17 +50,22 @@ export function addRoutes(app: Application) {
   app.get("/api/submitQuestion/classes", requireAuth, getUserClasses);
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.get("/api/user/classes", requireAuth, UserClasses);
-  app.get("/api/user/ten", requireAuth, getTopTenUsers);
+  app.post("/api/class/topFour", requireAuth, getTopTenUsers);
   app.get("/api/user/score", requireAuth, getScore);
-  app.post("/api/user/score", requireAuth, UpdateScore);
   app.post("/api/user/streak", requireAuth, calculateStreak);
   app.get("/api/user/streak", requireAuth, calculateStreak);
   app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
   app.put("/api/user", requireAuth, updateUserClassesHandler);
+
   app.get(
     "/api/question/multipleChoiceAnswers",
     requireAuth,
     fetchMultipleChoiceAnswers,
   );
+
+  app.get("/api/paginate/question", requireAuth, paginatedAllQuestions);
+  app.get("/api/paginate/question/user", paginatedQuestionsByUser);
+
+
 }
