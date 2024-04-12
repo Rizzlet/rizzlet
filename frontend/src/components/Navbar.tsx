@@ -109,6 +109,7 @@ export default function NavBar() {
 function UserDropDown(props: { showUserDropDown: boolean }) {
   const authData = useAuth();
   const [streak, setStreak] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchStreak();
