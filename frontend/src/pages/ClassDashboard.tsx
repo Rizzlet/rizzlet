@@ -6,7 +6,7 @@ import {
   RectangleStackIcon,
 } from "@heroicons/react/20/solid";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import LeaderBoard from "./LeaderBoardPage";
 import FlashcardField from "./AnswerQuestion";
@@ -21,7 +21,8 @@ interface Classes {
 const ClassDashboard: React.FC = () => {
   const [allClasses, setAllClasses] = useState<Classes[]>([]);
   const [className, setClassName] = useState<string>("");
-  const [selectedLink, setSelectedLink] = useState<string>("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const selectedLink = searchParams.get("page") || "game";
   const params = useParams<{ id: string }>();
 
   async function fetchClasses() {
@@ -46,9 +47,8 @@ const ClassDashboard: React.FC = () => {
     }
   }, [allClasses, params.id]);
 
-    const handleLinkClick = (link: string, e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-      e.preventDefault();
-      setSelectedLink(link);
+    const handleLinkClick = (link: string) => {
+      setSearchParams({page: link});
     };
 
   return (
@@ -63,50 +63,51 @@ const ClassDashboard: React.FC = () => {
           <div className="flex h-[60px] items-center border-b px-6"></div>
           <div className="flex-1 overflow-auto py-2">
             <nav className="grid items-start px-4 text-sm font-medium">
-              <Link
+              <button
                 className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
-                to={"/classDashboard"} onClick={(e) => handleLinkClick("game", e)}
+                onClick={(e) => handleLinkClick("game")}
               >
                 <PlayIcon className="h-4 w-4"></PlayIcon>
                 Game
-              </Link>
-              <Link
+              </button>
+              <button
                 className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
-                to={"/leaderBoard"} onClick={(e) => handleLinkClick("leaderboard", e)}
+                onClick={(e) => handleLinkClick("leaderboard")}
               >
                 <ArrowTrendingUpIcon className="h-4 w-4"></ArrowTrendingUpIcon>
                 Leaderboard
-              </Link>
-              <Link
+              </button>
+              <button
                 className="flex items-start gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900 transition-all hover:text-gray-900"
-                to={"/answerQuestions"} onClick={(e) => handleLinkClick("flashcards", e)}
+                onClick={(e) => handleLinkClick("flashcards")}
               >
                 <RectangleStackIcon className="h-4 w-4"></RectangleStackIcon>
                 Flashcards
-              </Link>
-              <Link
+              </button>
+              <button
                 className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
-                to={"/overview/1"} onClick={(e) => handleLinkClick("questions", e)}
+                onClick={(e) => handleLinkClick("questions")}
               >
                 <ChatBubbleLeftIcon className="h-4 w-4"></ChatBubbleLeftIcon>
                 Questions
-              </Link>
-              <Link className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
-              to={"/submitQuestion"} onClick={(e) => handleLinkClick("submit", e)}
+              </button>
+              <button
+               className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
+              onClick={(e) => handleLinkClick("submit")}
               >
                 <QuestionMarkCircleIcon className="h-4 w-4"></QuestionMarkCircleIcon>
                 Submit Questions
-              </Link>
+              </button>
             </nav>
           </div>
         </div>
         <div className="flex flex-col min-h-screen w-full lg:min-h-0 lg:flex-1">
-            <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6">
-              {selectedLink === "leaderboard" && (<LeaderBoard />)}
+            <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 font-bold text-3xl">{selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}</header>
+              {selectedLink === "game" && <div>Game Content coming soon</div>}
+              {selectedLink === "leaderboard" && <LeaderBoard />}
               {selectedLink === "flashcards" && <FlashcardField />}
               {selectedLink === "questions" && <QuestionOverview />}
               {selectedLink === "submit" && <QuestionSubmission />}
-              </header>
           </div>
       </div>
     </div>

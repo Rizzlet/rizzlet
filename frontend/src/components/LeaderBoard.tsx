@@ -12,8 +12,8 @@ interface TableProps {
 
 function Table(props: TableProps) {
   return (
-    <div style={{ width: "1250px", maxHeight: "1000px", overflow: "auto", margin: "60px auto", marginLeft: "auto", marginRight: "60px", padding: "10px", border: "5px solid #ccc", borderRadius: "5px" }}>
-      <h1 className="text-3xl font-semibold text-center mb-4">Leaderboard</h1>
+    <div>
+      {/* <h1 className="text-3xl font-semibold text-center mb-4">Leaderboard</h1> */}
       <div className="relative sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-700">
           <TableHeader />

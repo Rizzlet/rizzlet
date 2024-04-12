@@ -62,7 +62,7 @@ export default function QuestionSubmission() {
     <div>
       <Title />
       <form className="flashcard" onSubmit={onSubmit}>
-        <div className="w-dvw">
+        <div>
           <SelectQuestion
             onQuestionTypeChange={onQuestionTypeChange}
             selectedType={state.type}
