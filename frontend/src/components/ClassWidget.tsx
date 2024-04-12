@@ -33,7 +33,7 @@ export default function ClassWidget(props: ClassWidgetProps) {
     >
       <div className="m-5">
         <Link
-          to={`/answerQuestions/${props.id}`}
+          to={`/classDashboard/${props.id}`}
           className="text-2xl hover:underline"
         >
           {props.name}
@@ -47,7 +47,10 @@ export default function ClassWidget(props: ClassWidgetProps) {
   );
 }
 
-function DotDotDotMenu(props: { onDelete: () => void; changeColor: (color: string) => void }) {
+function DotDotDotMenu(props: {
+  onDelete: () => void;
+  changeColor: (color: string) => void;
+}) {
   const [showColorModal, setShowColorModal] = useState(false);
 
   const toggleColorModal = () => {
@@ -57,9 +60,9 @@ function DotDotDotMenu(props: { onDelete: () => void; changeColor: (color: strin
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-      <Menu.Button className="inline-flex w-full justify-center rounded-md text-black hover:text-gray-800">
-        <p className="text-3xl">...</p>
-      </Menu.Button>  
+        <Menu.Button className="inline-flex w-full justify-center rounded-md text-black hover:text-gray-800">
+          <p className="text-3xl">...</p>
+        </Menu.Button>
       </div>
       <Transition
         as={Fragment}
@@ -72,16 +75,15 @@ function DotDotDotMenu(props: { onDelete: () => void; changeColor: (color: strin
       >
         <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
           <div className="px-1 py-1 ">
-            
-          <Menu.Item>
-  <button
-    className="text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-200"
-    onClick={toggleColorModal}
-  >
-    <SwatchIcon className="mr-2 h-5 w-5" aria-hidden="true" />
-    Change Color
-  </button>
-</Menu.Item>
+            <Menu.Item>
+              <button
+                className="text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-200"
+                onClick={toggleColorModal}
+              >
+                <SwatchIcon className="mr-2 h-5 w-5" aria-hidden="true" />
+                Change Color
+              </button>
+            </Menu.Item>
 
             <Menu.Item>
               {({ active }) => (
@@ -99,7 +101,6 @@ function DotDotDotMenu(props: { onDelete: () => void; changeColor: (color: strin
                 </button>
               )}
             </Menu.Item>
-            
           </div>
         </Menu.Items>
       </Transition>
@@ -113,7 +114,10 @@ function DotDotDotMenu(props: { onDelete: () => void; changeColor: (color: strin
   );
 }
 
-function ColorModal(props: { onClose: () => void; changeColor: (color: string) => void }) {
+function ColorModal(props: {
+  onClose: () => void;
+  changeColor: (color: string) => void;
+}) {
   const colors = [
     { name: "Blue", value: "bg-blue-200" },
     { name: "Green", value: "bg-green-200" },
@@ -145,7 +149,10 @@ function ColorModal(props: { onClose: () => void; changeColor: (color: string) =
             >
               <div
                 className={`w-6 h-6 rounded-full ${color.value}`}
-                style={{ border: selectedColor === color.value ? "2px solid black" : "none" }}
+                style={{
+                  border:
+                    selectedColor === color.value ? "2px solid black" : "none",
+                }}
               ></div>
               <span>{color.name}</span>
             </button>
