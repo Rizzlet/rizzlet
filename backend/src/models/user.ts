@@ -35,10 +35,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "#000000",
   },
-  score: {
-    type: Number,
-    required: true,
-  },
   lastAnsweredTimestamp: {
     type: Date,
     default: null,
@@ -89,11 +85,6 @@ export async function setUserClasses(userId: string, classIds: string[]) {
   );
 
   return updatedUser;
-}
-
-export async function getAllUsersByScore() {
-  const topTenUsers = await User.find({}).sort({ score: -1 });
-  return topTenUsers;
 }
 
 export async function calculateStreak(userID: string) {

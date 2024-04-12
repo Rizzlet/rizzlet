@@ -77,8 +77,12 @@ const router = createBrowserRouter([
         element: <QuestionOverview />,
       },
       {
-        path: "/leaderBoard",
-        element: <LeaderBoard />,
+        path: "/leaderBoard/:classId",
+        element: (
+          <AuthGuard>
+            <LeaderBoard />
+          </AuthGuard>
+        ),
       },
       {
         path: "/profilePage",

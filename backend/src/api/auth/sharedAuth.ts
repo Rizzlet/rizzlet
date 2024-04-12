@@ -47,8 +47,8 @@ export function verifyAndDecodeToken(token: string): ClientTokenData | null {
   }
 
   return {
-    firstName: decodedToken.given_name,
-    lastName: decodedToken.family_name,
+    firstName: decodedToken.firstName,
+    lastName: decodedToken.lastName,
     email: decodedToken.email,
     id: decodedToken.id!,
     sub: decodedToken.sub!,
