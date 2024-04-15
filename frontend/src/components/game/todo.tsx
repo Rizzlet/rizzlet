@@ -37,7 +37,7 @@ interface AutoFlashcardProps {
     questionsAnswered: number;
     lastQuestionRight: boolean;
   };
-  onFinish: () => void;
+  currentQuestion: number;
 }
 
 export function AutoFlashcard(props: AutoFlashcardProps) {
@@ -46,25 +46,32 @@ export function AutoFlashcard(props: AutoFlashcardProps) {
 
 interface TimerProps {
   timeInSecs: number;
+  setTimeInSecs: () => number;
   start: boolean; // When false => true, restart to 0
 }
 
 export function Timer(props: TimerProps) {
+  // Stopwatch
+  // Start at 0.00
   return "Healthbar";
 }
 
 interface PeoplePickerProps {
   selectedPerson: string | null; // Person's ID
-  onSelectPerson: () => string;
+  onSelectPerson: () => string; // Assume this will change selectedPerson
   disabled: boolean;
   people: {
     id: string;
     name: string;
     health: number;
-  }[];
+  }[]; // Exactly 3
 }
 
 export function PeoplePicker(props: PeoplePickerProps) {
+  // Use Avatars (User's initial)
+  // Healthbars under them
+  // Highlight selected use somehow
+
   return "Healthbar";
 }
 
