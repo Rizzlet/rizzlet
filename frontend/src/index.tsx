@@ -21,6 +21,7 @@ import "./index.css";
 import RatingPage from "./pages/RatingPage";
 import LeaderBoard from "./pages/LeaderBoardPage";
 import NoClasses from "./pages/AnswerQuestionNoClasses";
+import HealthBarPage from "./components/game/HealthBarPage";
 
 const router = createBrowserRouter([
   {
@@ -110,6 +111,10 @@ const router = createBrowserRouter([
     element: < />,
   }
   */
+ {
+  path: "/healthBar",
+  element: <HealthBarPage />,
+ }
 ]);
 
 const root = ReactDOM.createRoot(
