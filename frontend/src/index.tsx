@@ -21,7 +21,7 @@ import RatingPage from "./pages/RatingPage";
 import LeaderBoard from "./pages/LeaderBoardPage";
 import NoClasses from "./pages/AnswerQuestionNoClasses";
 import HealthBarPage from "./components/game/HealthBarPage";
-import PeoplePicker  from "./components/game/PeoplePickerPage";
+import PeoplePicker  from "./components/game/PeoplePicker";
 
 const router = createBrowserRouter([
   {
