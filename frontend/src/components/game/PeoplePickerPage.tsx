@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth/AuthContext";
 // import PeoplePicker from "./PeoplePicker";
 import axios from "axios";
-
 // import { HealthBar } from "./HealthBar";
 
 interface Person {
-  id: string;
+  _id: string;
   firstName: string;
   lastName: string;
   health: number;
@@ -25,10 +24,9 @@ function PeoplePicker(props: PeoplePickerProps) {
   const authData = useAuth();
 
   //Update selected person when selected person changes
-  useEffect(() => {
-    setSelectedPerson(props.selectedPerson);
-    console.log("selectedPerson", selectedPerson);
-  }, [props.selectedPerson]);
+  // useEffect(() => {
+  //   setSelectedPerson(props.selectedPerson);
+  // }, [props.selectedPerson]);
 
   //fetch all users in the class
   async function fetchUserByClass(classId: string) {
@@ -49,20 +47,28 @@ function PeoplePicker(props: PeoplePickerProps) {
   useEffect(() => {
     fetchUserByClass(classId);
   }, [])
-  // Use Avatars (User's initial)
-  // Healthbars under them
-  // Highlight selected use somehow
+
+  
+  function handleSelectPerson(user: Person) {
+    setSelectedPerson(user._id);
+    props.onSelectPerson(user._id);
+    // console.log("Selected Person ID:", selectedPerson);
+    // console.log("user id", user._id);
+  }
+
+
 
   return (
     <div>
       {usersInClass.map((user) => (
-        <div key={user.id} onClick={() => props.onSelectPerson(user.id)}>
+        <div key={user._id} onClick={() => handleSelectPerson(user)}>
           {avatarIcon(user, `${user.firstName} ${user.lastName}`)}
         </div>
       ))}
     </div>
   );
 }
+
 
 
 // style of the avatar icon

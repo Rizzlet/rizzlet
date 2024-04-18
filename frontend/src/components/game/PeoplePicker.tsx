@@ -1,17 +1,30 @@
 import React from "react";
-// interface PeoplePickerProps {
-//   selectedPerson: string | null; // Person's ID
-//   onSelectPerson: () => string; // Assume this will change selectedPerson
-//   disabled: boolean;
-//   people: {
-//     id: string;
-//     name: string;
-//     health: number;
-//   }[]; // Exactly 3
-// }
+interface Person {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  health: number;
+}
 
-// const PeoplePicker: React.FC<PeoplePickerProps> = ({
+interface PeoplePickerProps {
+  selectedPerson: string | null; // Person's ID
+  onSelectPerson: (id: string) => void; // Function to handle selecting a person
+  disabled: boolean;
+  people: Person[]; // Exactly 3
+}
 
-// })
+const PeoplePicker: React.FC<PeoplePickerProps> = ({
+  selectedPerson,
+  onSelectPerson,
+  disabled,
+  people,
+}) => {
 
-// export default PeoplePicker
+
+  return (
+    <div>
+      
+    </div>
+  );
+};
+export default PeoplePicker;
