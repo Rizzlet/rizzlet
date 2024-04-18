@@ -16,12 +16,12 @@ import QuestionOverview from "./pages/QuestionOverview";
 import ClassDashboard from "./pages/ClassDashboard";
 import ProfilePage from "./pages/ProfilePage";
 
-
 import "./index.css";
 import RatingPage from "./pages/RatingPage";
 import LeaderBoard from "./pages/LeaderBoardPage";
 import NoClasses from "./pages/AnswerQuestionNoClasses";
 import HealthBarPage from "./components/game/HealthBarPage";
+import PeoplePicker  from "./components/game/PeoplePickerPage";
 
 const router = createBrowserRouter([
   {
@@ -105,16 +105,24 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
-  /*
   {
-    path: "/questions/:id",
-    element: < />,
+    path: "/healthBar",
+    element: <HealthBarPage />,
+  },
+  {
+    path: "/peoplePicker",
+    element: (
+      <AuthGuard>
+        <PeoplePicker
+          selectedPerson={null}
+          onSelectPerson={() => {}}
+          disabled={false}
+          people={[]}
+        />
+      </AuthGuard>
+
+    ),
   }
-  */
- {
-  path: "/healthBar",
-  element: <HealthBarPage />,
- }
 ]);
 
 const root = ReactDOM.createRoot(

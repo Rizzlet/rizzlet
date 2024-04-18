@@ -7,6 +7,7 @@ import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import mongoose from "mongoose";
 import { Class } from "../models/class.js";
 import { getQuestionsFromClassForUser } from "../models/question.js";
+import { getAllUsersInClass } from "../models/class.js";
 
 type classBody = {
   name: string;
@@ -83,6 +84,27 @@ export async function fetchQuestionsByClass(req: Request, res: Response) {
   //res.send(JSON.stringify(questions)).status(201);
   res.status(201).json(questions);
 }
+
+export async function fetchUsersByClass(req: Request, res: Response) {
+    const classId = req.params["classId"];
+  
+    if (!classId) {
+      return res.status(400).send({ message: "Missing Class Id" });
+    }
+  
+    try {
+      const allUsersInClass = await getAllUsersInClass(classId);
+  
+      if (!allUsersInClass) {
+        return res.status(404).send({ message: "No users found in the class" });
+      }
+  
+      return res.status(200).json(allUsersInClass);
+    } catch (error) {
+      console.error("Error fetching users by class:", error);
+      return res.status(500).send({ message: "Internal Server Error" });
+    }
+  }
 
 export async function getUserClasses(req: Request, res: Response) {
   try {
