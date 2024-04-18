@@ -4,31 +4,24 @@ import { useAuth } from "../../context/auth/AuthContext";
 import axios from "axios";
 import HealthBar from "./HealthBar";
 
-interface Person {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  health: number;
-}
-
 interface PeoplePickerProps {
   selectedPerson: string | null; // Person's ID
-  onSelectPerson: (id: string) => void; // Function to handle selecting a person
+  onSelectPerson: (id: string) => void; // Assume this will change selectedPerson
   disabled: boolean;
-  people: Person[]; // Exactly 3
+  people: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    health: number;
+  }[]; // Exactly 3
 }
 
 function PeoplePicker(props: PeoplePickerProps) {
   const [selectedPerson, setSelectedPerson] = useState<string | null>(
     props.selectedPerson
   );
-  const [usersInClass, setUsersInClass] = useState<Person[]>([]);
-  const authData = useAuth();
-
-  //Update selected person when selected person changes
-  // useEffect(() => {
-  //   setSelectedPerson(props.selectedPerson);
-  // }, [props.selectedPerson]);
+  const [usersInClass, setUsersInClass] = useState(props.people);
+  // const authData = useAuth();
 
   //fetch all users in the class
   async function fetchUserByClass(classId: string) {
@@ -36,13 +29,10 @@ function PeoplePicker(props: PeoplePickerProps) {
       const response = await axios.get<any>(
         `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
         {
-          params: {
-            limit: 3,
-          },
           withCredentials: true,
         }
       );
-      setUsersInClass(response.data);
+      setUsersInClass(response.data.slice(0,3)); //hardcoded to the first three, but can randomize later
       // console.log("userByClass", response.data)
     } catch (error) {
       console.log("fetch error: ", error);
@@ -55,12 +45,15 @@ function PeoplePicker(props: PeoplePickerProps) {
     fetchUserByClass(classId);
   }, []);
 
-  function handleSelectPerson(user: Person) {
+  function handleSelectPerson(user: any) {
     setSelectedPerson(user._id);
     props.onSelectPerson(user._id);
     // console.log("Selected Person ID:", selectedPerson);
     // console.log("user id", user._id);
   }
+
+  // console.log("people", props.people);
+  // console.log("usersInClass", usersInClass)
 
   return (
     <div>

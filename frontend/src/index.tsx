@@ -115,7 +115,7 @@ const router = createBrowserRouter([
       <AuthGuard>
         <PeoplePicker
           selectedPerson={null}
-          onSelectPerson={() => {}}
+          onSelectPerson={(id: string) => {}}
           disabled={false}
           people={[]}
         />
