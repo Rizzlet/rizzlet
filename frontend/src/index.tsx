@@ -113,12 +113,7 @@ const router = createBrowserRouter([
     path: "/peoplePicker",
     element: (
       <AuthGuard>
-        <PeoplePicker
-          selectedPerson={null}
-          onSelectPerson={(id: string) => {}}
-          disabled={false}
-          people={[]}
-        />
+        <PeoplePicker/>
       </AuthGuard>
 
     ),

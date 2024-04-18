@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth/AuthContext";
-// import PeoplePicker from "./PeoplePicker";
 import axios from "axios";
 import HealthBar from "./HealthBar";
 
 interface PeoplePickerProps {
   selectedPerson: string | null; // Person's ID
   onSelectPerson: (id: string) => void; // Assume this will change selectedPerson
-  disabled: boolean;
+  disabled: boolean; //disabled until finish answering questions
+  //there is a temporary profile color prop 
   people: {
-    _id: string;
-    firstName: string;
-    lastName: string;
+    id: string;
+    name: string;
     health: number;
   }[]; // Exactly 3
 }
@@ -23,6 +22,17 @@ function PeoplePicker(props: PeoplePickerProps) {
   const [usersInClass, setUsersInClass] = useState(props.people);
   const authData = useAuth();
 
+  useEffect(() => {
+    setUsersInClass(props.people); // Update usersInClass when props.people changes
+  }, [props.people]);
+
+  //temporarily hard coded to 308
+  const classId = "65d679f08f3afb1b89eebfc3";
+  useEffect(() => {
+    fetchUserByClass(classId);
+  }, []);
+
+
   //fetch all users in the class
   async function fetchUserByClass(classId: string) {
     try {
@@ -32,28 +42,36 @@ function PeoplePicker(props: PeoplePickerProps) {
           withCredentials: true,
         }
       );
-      setUsersInClass(response.data.slice(0, 3)); //hardcoded to the first three, but can randomize later
+   
+    // Takes all the relevent data 
+    const peopleFormat = response.data.slice(0, 3).map((user: any) => ({
+      id: user._id,
+      name: `${user.firstName} ${user.lastName}`,
+      profileColor: user.profileColor, //added it temporary so that the icons have color
+      health: 100, //set the health to 100 for now but not sure how we're gonna save the health
+    }));
+
+    // Update the state with the peopleFormat
+    setUsersInClass(peopleFormat);
+
       // console.log("userByClass", response.data)
     } catch (error) {
       console.log("fetch error: ", error);
     }
   }
 
-  //temporarily hard coded to 308
-  const classId = "65d679f08f3afb1b89eebfc3";
-  useEffect(() => {
-    fetchUserByClass(classId);
-  }, []);
-
+  // makes sure tha the selected person is changed
   function handleSelectPerson(user: any) {
-    setSelectedPerson(user._id);
-    props.onSelectPerson(user._id);
+    setSelectedPerson(user.id);
+    props.onSelectPerson(user.id);
     // console.log("Selected Person ID:", selectedPerson);
-    // console.log("user id", user._id);
+    // console.log("user id", user.id);
   }
 
-  // console.log("people", props.people);
-  console.log("usersInClass", usersInClass);
+  console.log("people", props.people);
+  console.log("selectedPerson", props.selectedPerson)
+  console.log("onSelectPerson", props.onSelectPerson)
+  // console.log("usersInClass", usersInClass);
 
   return (
     <div className="">
@@ -66,13 +84,13 @@ function PeoplePicker(props: PeoplePickerProps) {
             <div className="">
               {usersInClass[0] && (
                 <div
-                  key={usersInClass[0]._id}
+                  key={usersInClass[0].id}
                   onClick={() => handleSelectPerson(usersInClass[0])}
                 >
                   {avatar(
                     usersInClass[0],
-                    `${usersInClass[0].firstName[0]}`,
-                    usersInClass[0]._id === selectedPerson
+                    `${usersInClass[0].name[0]}`,
+                    usersInClass[0].id === selectedPerson, 75
                   )}
                 </div>
               )}
@@ -81,26 +99,26 @@ function PeoplePicker(props: PeoplePickerProps) {
             <div className=" mt-6 grid grid-cols-2 col-span-1">
               {usersInClass[1] && (
                 <div
-                  key={usersInClass[1]._id}
+                  key={usersInClass[1].id}
                   onClick={() => handleSelectPerson(usersInClass[1])}
                 >
                   {avatar(
                     usersInClass[1],
-                    `${usersInClass[1].firstName[0]}`,
-                    usersInClass[1]._id === selectedPerson
+                    `${usersInClass[1].name[0]}`,
+                    usersInClass[1].id === selectedPerson, 75
                   )}
                 </div>
               )}
-            {/* index 2: third user*/}
+              {/* index 2: third user*/}
               {usersInClass[2] && (
                 <div
-                  key={usersInClass[0]._id}
+                  key={usersInClass[0].id}
                   onClick={() => handleSelectPerson(usersInClass[2])}
                 >
                   {avatar(
                     usersInClass[2],
-                    `${usersInClass[2].firstName[0]}`,
-                    usersInClass[2]._id === selectedPerson
+                    `${usersInClass[2].name[0]}`,
+                    usersInClass[2].id === selectedPerson, 75
                   )}
                 </div>
               )}
@@ -108,7 +126,7 @@ function PeoplePicker(props: PeoplePickerProps) {
           </div>
           {/* The user */}
           <div className="pt-20">
-            {avatar(authData, `${authData.authUserFullName[0]}`, false)}
+            {avatar(authData, `${authData.authUserFullName[0]}`, false, 75)}
           </div>
         </div>
         {/* right side of the screen */}
@@ -119,11 +137,10 @@ function PeoplePicker(props: PeoplePickerProps) {
 }
 
 // style of the avatar icon
-function avatar(user: any, initial: string, isSelected: boolean) {
+function avatar(user: any, initial: string, isSelected: boolean, health: number) {
   const avatarStyle = {
     backgroundColor: user.profileColor,
     border: isSelected ? "4px solid red" : "none",
-    
   };
 
   return (
@@ -135,7 +152,7 @@ function avatar(user: any, initial: string, isSelected: boolean) {
         {initial}
       </div>
       <div className="">
-        <HealthBar health={75}  />
+        <HealthBar health={health} />
       </div>
     </div>
   );
