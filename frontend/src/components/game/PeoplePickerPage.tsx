@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth/AuthContext";
 // import PeoplePicker from "./PeoplePicker";
 import axios from "axios";
-// import { HealthBar } from "./HealthBar";
+import HealthBar from "./HealthBar";
 
 interface Person {
   _id: string;
@@ -19,7 +19,9 @@ interface PeoplePickerProps {
 }
 
 function PeoplePicker(props: PeoplePickerProps) {
-  const [selectedPerson, setSelectedPerson] = useState<string | null>(props.selectedPerson);
+  const [selectedPerson, setSelectedPerson] = useState<string | null>(
+    props.selectedPerson
+  );
   const [usersInClass, setUsersInClass] = useState<Person[]>([]);
   const authData = useAuth();
 
@@ -33,7 +35,12 @@ function PeoplePicker(props: PeoplePickerProps) {
     try {
       const response = await axios.get<any>(
         `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
-        { withCredentials: true }
+        {
+          params: {
+            limit: 3,
+          },
+          withCredentials: true,
+        }
       );
       setUsersInClass(response.data);
       // console.log("userByClass", response.data)
@@ -46,9 +53,8 @@ function PeoplePicker(props: PeoplePickerProps) {
   const classId = "65d679f08f3afb1b89eebfc3";
   useEffect(() => {
     fetchUserByClass(classId);
-  }, [])
+  }, []);
 
-  
   function handleSelectPerson(user: Person) {
     setSelectedPerson(user._id);
     props.onSelectPerson(user._id);
@@ -56,32 +62,41 @@ function PeoplePicker(props: PeoplePickerProps) {
     // console.log("user id", user._id);
   }
 
-
-
   return (
     <div>
       {usersInClass.map((user) => (
         <div key={user._id} onClick={() => handleSelectPerson(user)}>
-          {avatarIcon(user, `${user.firstName} ${user.lastName}`)}
+          {avatar(
+            user,
+            `${user.firstName} ${user.lastName}`,
+            user._id === selectedPerson
+          )}
         </div>
       ))}
     </div>
   );
 }
 
-
-
 // style of the avatar icon
-function avatarIcon(user: any, initial: string) {
+function avatar(user: any, initial: string, isSelected: boolean) {
+  const avatarStyle = {
+    backgroundColor: user.profileColor,
+    border: isSelected ? "3px solid red" : "none",
+  };
+
   return (
-    <div
-      className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50"
-      style={{ backgroundColor: user.profileColor }}
-    >
-      {user.firstName[0]}
+    <div>
+      <div
+        className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50"
+        style={avatarStyle}
+      >
+        {user.firstName[0]}
+      </div>
+      <div className="">
+        <HealthBar health={75} />
+      </div>
     </div>
   );
 }
 
-
-export default PeoplePicker
+export default PeoplePicker;
