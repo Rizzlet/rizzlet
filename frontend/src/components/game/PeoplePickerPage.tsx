@@ -21,7 +21,7 @@ function PeoplePicker(props: PeoplePickerProps) {
     props.selectedPerson
   );
   const [usersInClass, setUsersInClass] = useState(props.people);
-  // const authData = useAuth();
+  const authData = useAuth();
 
   //fetch all users in the class
   async function fetchUserByClass(classId: string) {
@@ -48,8 +48,8 @@ function PeoplePicker(props: PeoplePickerProps) {
   function handleSelectPerson(user: any) {
     setSelectedPerson(user._id);
     props.onSelectPerson(user._id);
-    // console.log("Selected Person ID:", selectedPerson);
-    // console.log("user id", user._id);
+    console.log("Selected Person ID:", selectedPerson);
+    console.log("user id", user._id);
   }
 
   // console.log("people", props.people);
@@ -57,15 +57,24 @@ function PeoplePicker(props: PeoplePickerProps) {
 
   return (
     <div>
+      {/* rendering the "enemy" */}
       {usersInClass.map((user) => (
         <div key={user._id} onClick={() => handleSelectPerson(user)}>
           {avatar(
             user,
-            `${user.firstName} ${user.lastName}`,
+            `${user.firstName[0]}`,
             user._id === selectedPerson
           )}
         </div>
       ))}
+      {/* The user */}
+      <div>
+      {avatar(
+            authData,
+            `${authData.authUserFullName[0]}`,
+            false
+          )}
+      </div>
     </div>
   );
 }
@@ -83,7 +92,7 @@ function avatar(user: any, initial: string, isSelected: boolean) {
         className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50"
         style={avatarStyle}
       >
-        {user.firstName[0]}
+        {initial}
       </div>
       <div className="">
         <HealthBar health={75} />
