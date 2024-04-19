@@ -27,7 +27,6 @@ export async function submitQuestionHandler(req: Request, res: Response) {
     state.type,
     userData.id,
     state.question,
-    state.answer,
     state.class,
   );
 

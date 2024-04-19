@@ -34,7 +34,6 @@ test("hide a question", async () => {
     "true/false",
     "65e2688f29d9685a38616ee5",
     "test",
-    true,
     "65e2688f29d9685a38616ee5",
   );
 
@@ -60,7 +59,6 @@ test("get relevancy ratings for a question", async () => {
     "true/false",
     "65e2688f29d9685a38616ee5",
     "test",
-    true,
     "65e2688f29d9685a38616ee5",
   );
   const relevancy = await getRelevancyRatingsForQuestion(questionId.toString());

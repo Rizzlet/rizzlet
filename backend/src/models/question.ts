@@ -19,10 +19,6 @@ export const questionSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  answer: {
-    type: Boolean,
-    required: true,
-  },
   class: {
     type: mongoose.Types.ObjectId,
     ref: Class.modelName,
@@ -44,13 +40,11 @@ export async function addQuestion(
   type: string,
   userId: string,
   question: string,
-  answer: boolean,
   classId: string,
 ) {
   const newQuestion = new Question({
     type,
     question,
-    answer,
     createdBy: userId,
     class: classId,
   });
