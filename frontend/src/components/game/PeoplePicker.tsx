@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth/AuthContext";
 import axios from "axios";
 import HealthBar from "./HealthBar";
+import { PeoplePicker } from "./todo";
 
 interface PeoplePickerProps {
   selectedPerson: string | null; // Person's ID
@@ -23,6 +24,10 @@ const Select: React.FC<PeoplePickerProps> = ({
 }) => {
   const authData = useAuth();
 
+  console.log("selectedPerson", selectedPerson)
+  // console.log("onSelectPerson", onSelectPerson)
+  console.log("disabled", disabled)
+  console.log("people: ", people)
 
   return (
     <div className="">
