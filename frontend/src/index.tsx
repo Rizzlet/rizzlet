@@ -21,7 +21,7 @@ import RatingPage from "./pages/RatingPage";
 import LeaderBoard from "./pages/LeaderBoardPage";
 import NoClasses from "./pages/AnswerQuestionNoClasses";
 import HealthBarPage from "./components/game/HealthBarPage";
-import PeoplePickerPage from "./components/game/PeoplePickerPage";
+import PeoplePicker from "./components/game/PeoplePickerOne";
 
 const router = createBrowserRouter([
   {
@@ -113,10 +113,10 @@ const router = createBrowserRouter([
     path: "/peoplePicker",
     element: (
       <AuthGuard>
-        <PeoplePickerPage
+        <PeoplePicker
           selectedPerson={null}
           onSelectPerson={(id: string) => {}}
-          disabled={false}
+          disabled={true}
           people={[]}
         />{" "}
       </AuthGuard>

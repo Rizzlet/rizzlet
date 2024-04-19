@@ -58,6 +58,8 @@ function ProfilePage() {
     }
   }
 
+  
+
   return (
     <div className="container">
       <Table questionData={questions} />

@@ -15,8 +15,7 @@ interface PeoplePickerProps {
   }[]; // Exactly 3
 }
 
-
-const PeoplePicker: React.FC<PeoplePickerProps> = ({
+const Select: React.FC<PeoplePickerProps> = ({
   selectedPerson,
   onSelectPerson,
   disabled,
@@ -118,4 +117,4 @@ function avatar(
   );
 }
 
-export default PeoplePicker;
+export default Select;
