@@ -22,6 +22,7 @@ import RatingPage from "./pages/RatingPage";
 import LeaderBoard from "./pages/LeaderBoardPage";
 import NoClasses from "./pages/AnswerQuestionNoClasses";
 import HealthBarPage from "./components/game/HealthBarPage";
+import TimerPage from "./components/game/TimerPage";
 
 const router = createBrowserRouter([
   {
@@ -114,6 +115,10 @@ const router = createBrowserRouter([
  {
   path: "/healthBar",
   element: <HealthBarPage />,
+ },
+ {
+  path: "/timer",
+  element: <TimerPage />,
  }
 ]);
 
