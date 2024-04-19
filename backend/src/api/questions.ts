@@ -30,10 +30,8 @@ export async function submitQuestionHandler(req: Request, res: Response) {
     state.class,
   );
 
-  if (state.type === "Multiple Choice") {
-    for (let i = 0; i < answerList.length; i++) {
-      addAnswer(answerList[i].answer, answerList[i].correct, await questionId);
-    }
+  for (let i = 0; i < answerList.length; i++) {
+    addAnswer(answerList[i].answer, answerList[i].correct, await questionId);
   }
 
   res.status(201).json({ id: questionId });
