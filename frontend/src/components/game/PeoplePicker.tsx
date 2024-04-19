@@ -33,7 +33,7 @@ const Select: React.FC<PeoplePickerProps> = ({
     <div className="">
       <div className="grid grid-cols-2 gap-2 h-screen overflow-hidden">
         {/*left side of the screen */}
-        <div className="col-span-1 bg-gray-200 p-4 pt-8">
+        <div className="col-span-1 bg-[url('https://s3.amazonaws.com/spoonflower/public/design_thumbnails/0424/5908/1431605648965_shop_thumb.png')] p-4 pt-8">
           {/* rendering the "enemy" */}
           <div className="">
             {/* index 0 first*/}
@@ -45,7 +45,7 @@ const Select: React.FC<PeoplePickerProps> = ({
                 >
                   {avatar(
                     people[0],
-                    `${people[0].name[0]}`,
+                    `${people[0].name}`,
                     people[0].id === selectedPerson,
                     75
                   )}
@@ -61,9 +61,9 @@ const Select: React.FC<PeoplePickerProps> = ({
                 >
                   {avatar(
                     people[1],
-                    `${people[1].name[0]}`,
+                    `${people[1].name}`,
                     people[1].id === selectedPerson,
-                    75
+                    50
                   )}
                 </div>
               )}
@@ -75,9 +75,9 @@ const Select: React.FC<PeoplePickerProps> = ({
                 >
                   {avatar(
                     people[2],
-                    `${people[2].name[0]}`,
+                    `${people[2].name}`,
                     people[2].id === selectedPerson,
-                    75
+                    100
                   )}
                 </div>
               )}
@@ -85,7 +85,7 @@ const Select: React.FC<PeoplePickerProps> = ({
           </div>
           {/* The user */}
           <div className="pt-20">
-            {avatar(authData, `${authData.authUserFullName[0]}`, false, 75)}
+            {avatar(authData, `${authData.authUserFullName}`, false, 25)}
           </div>
         </div>
         {/* right side of the screen */}
@@ -98,7 +98,7 @@ const Select: React.FC<PeoplePickerProps> = ({
 // style of the avatar icon
 function avatar(
   user: any,
-  initial: string,
+  name: string,
   isSelected: boolean,
   health: number
 ) {
@@ -113,7 +113,10 @@ function avatar(
         className="h-16 w-16 flex items-center justify-center rounded-full bg-gray-900 text-gray-50 text-2xl"
         style={avatarStyle}
       >
-        {initial}
+        {name[0]}
+      </div>
+      <div className="font-semibold">
+        {name}  
       </div>
       <div className="">
         <HealthBar health={health} />
