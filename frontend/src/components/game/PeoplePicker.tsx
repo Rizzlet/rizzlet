@@ -12,7 +12,7 @@ interface PeoplePickerProps {
     id: string;
     name: string;
     health: number;
-    //there is a temporary profile color prop 
+    //there is a temporary profile color prop
   }[]; // Exactly 3
 }
 
@@ -24,10 +24,10 @@ const Select: React.FC<PeoplePickerProps> = ({
 }) => {
   const authData = useAuth();
 
-  console.log("selectedPerson", selectedPerson)
+  console.log("selectedPerson", selectedPerson);
   // console.log("onSelectPerson", onSelectPerson)
-  console.log("disabled", disabled)
-  console.log("people: ", people)
+  console.log("disabled", disabled);
+  console.log("people: ", people);
 
   return (
     <div className="">
@@ -47,7 +47,8 @@ const Select: React.FC<PeoplePickerProps> = ({
                     people[0],
                     `${people[0].name}`,
                     people[0].id === selectedPerson,
-                    75
+                    75,
+                    disabled
                   )}
                 </div>
               )}
@@ -63,7 +64,8 @@ const Select: React.FC<PeoplePickerProps> = ({
                     people[1],
                     `${people[1].name}`,
                     people[1].id === selectedPerson,
-                    50
+                    50,
+                    disabled
                   )}
                 </div>
               )}
@@ -77,7 +79,8 @@ const Select: React.FC<PeoplePickerProps> = ({
                     people[2],
                     `${people[2].name}`,
                     people[2].id === selectedPerson,
-                    100
+                    100,
+                    disabled
                   )}
                 </div>
               )}
@@ -85,7 +88,13 @@ const Select: React.FC<PeoplePickerProps> = ({
           </div>
           {/* The user */}
           <div className="pt-20">
-            {avatar(authData, `${authData.authUserFullName}`, false, 25)}
+            {avatar(
+              authData,
+              `${authData.authUserFullName}`,
+              false,
+              25,
+              false //false so that the user icon is not grayed out (harcoded)
+            )}
           </div>
         </div>
         {/* right side of the screen */}
@@ -100,10 +109,11 @@ function avatar(
   user: any,
   name: string,
   isSelected: boolean,
-  health: number
+  health: number,
+  disabled: boolean
 ) {
   const avatarStyle = {
-    backgroundColor: user.profileColor,
+      backgroundColor: disabled ? "gray" : user.profileColor,
     border: isSelected ? "4px solid red" : "none",
   };
 
@@ -115,9 +125,7 @@ function avatar(
       >
         {name[0]}
       </div>
-      <div className="font-semibold">
-        {name}  
-      </div>
+      <div className="font-semibold">{name}</div>
       <div className="">
         <HealthBar health={health} />
       </div>
