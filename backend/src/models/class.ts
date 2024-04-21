@@ -19,6 +19,10 @@ const classSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      health: {
+        type: Number,
+        required: true,
+      },
     },
   ],
 });
@@ -29,8 +33,12 @@ export async function getClassNames() {
   // Fetch class names from the database
   const classNames = await Class.find({}, "_id name"); // Include the _id field in the query
 
-  // Extract class names and IDs from documents
-  return classNames.map((cls) => ({ id: cls._id, name: cls.name }));
+  // Extract class names and IDs and userStats from documents
+  return classNames.map((cls) => ({
+    id: cls._id,
+    name: cls.name,
+    scores: cls.scores,
+  }));
 }
 
 export async function newClass(name: string) {
