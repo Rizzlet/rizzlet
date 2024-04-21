@@ -2,27 +2,35 @@ import React, { useState, useEffect } from "react";
 
 interface TimerProps {
   start: boolean;
+  reset: boolean;
   onTimeUpdate: (time: string) => void;
 }
 
-export function Timer({ start, onTimeUpdate }: TimerProps) {
+export function Timer({ start, reset, onTimeUpdate }: TimerProps) {
   const [timeInCentiseconds, setTimeInCentiseconds] = useState(0);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
+    let interval: number | null = null; // Change the type here to number
 
     if (start) {
-      interval = setInterval(() => {
+      interval = window.setInterval(() => { // Use window.setInterval to ensure the correct type
         setTimeInCentiseconds((time) => time + 1);
       }, 10);
-    } else if (interval) {
-      clearInterval(interval);
+    } else {
+      if (interval !== null) clearInterval(interval); // Only clear if interval is not null
     }
 
+    // Clean up function
     return () => {
-      if (interval) clearInterval(interval);
+      if (interval !== null) clearInterval(interval);
     };
   }, [start]);
+
+  useEffect(() => {
+    if (reset) {
+      setTimeInCentiseconds(0);
+    }
+  }, [reset]);
 
   useEffect(() => {
     onTimeUpdate(formatTime(timeInCentiseconds));
@@ -34,6 +42,5 @@ export function Timer({ start, onTimeUpdate }: TimerProps) {
     return `${seconds}:${centiseconds}`;
   };
 
-  // No direct rendering of the time here
   return null;
 }
