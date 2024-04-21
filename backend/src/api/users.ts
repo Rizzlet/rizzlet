@@ -188,3 +188,12 @@ export async function getTopTenUsers(req: Request, res: Response) {
   }
   return res.status(200).json({ topFour });
 }
+
+export async function updateHealthHandler(req: Request, Res: Response) {
+  const userData = verifyAndDecodeToken(req.cookies.token);
+  if (!userData) {
+    console.log("update score authorization failed");
+    return;
+  }
+  const classObj = getClass(req.body.user);
+}
