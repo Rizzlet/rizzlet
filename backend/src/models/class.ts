@@ -31,8 +31,7 @@ export const Class = (await getConnection()).model("Class", classSchema);
 
 export async function getClassNames() {
   // Fetch class names from the database
-  const classNames = await Class.find({}, "_id name"); // Include the _id field in the query
-
+  const classNames = await Class.find({}, "_id name scores"); // Include the _id field in the query
   // Extract class names and IDs and userStats from documents
   return classNames.map((cls) => ({
     id: cls._id,
