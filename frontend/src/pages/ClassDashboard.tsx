@@ -12,16 +12,27 @@ import LeaderBoard from "./LeaderBoardPage";
 import FlashcardField from "./AnswerQuestion";
 import QuestionOverview from "./QuestionOverview";
 import QuestionSubmission from "./FormSubmitQuestions";
+import DamageDealer from "../components/game/damageDealer";
 
+interface UserStats {
+  user: string;
+  score: Number;
+  health: Number;
+}
 interface Classes {
   id: string;
   name: string;
-  scores: Object;
+  scores: UserStats[];
 }
 
 const ClassDashboard: React.FC = () => {
   const [allClasses, setAllClasses] = useState<Classes[]>([]);
   const [className, setClassName] = useState<string>("");
+  const [currentClass, setCurrentClass] = useState<Classes>({
+    id: "",
+    name: "",
+    scores: [],
+  });
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedLink = searchParams.get("tab") || "game";
   const params = useParams<{ id: string }>();
@@ -32,7 +43,6 @@ const ClassDashboard: React.FC = () => {
         process.env.REACT_APP_BACKEND_URL + "/api/class"
       );
       setAllClasses(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error("Error fetching classes:", error);
     }
@@ -46,6 +56,7 @@ const ClassDashboard: React.FC = () => {
     const selectedClass = allClasses.find((c) => c.id === params.id);
     if (selectedClass) {
       setClassName(selectedClass.name);
+      setCurrentClass(selectedClass);
     }
   }, [allClasses, params.id]);
 
@@ -108,7 +119,7 @@ const ClassDashboard: React.FC = () => {
           <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 font-bold text-3xl">
             {selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}
           </header>
-          {selectedLink === "game" && <div>Game Content coming soon</div>}
+          {selectedLink === "game" && <DamageDealer class={currentClass} />}
           {selectedLink === "leaderboard" && (
             <LeaderBoard classId={params.id} />
           )}
