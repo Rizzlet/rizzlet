@@ -86,15 +86,3 @@ export async function setUserClasses(userId: string, classIds: string[]) {
 
   return updatedUser;
 }
-
-export async function calculateStreak(userID: string) {
-  const user = await User.findById(userID);
-
-  const lastAnsweredTimestamp = user!.lastAnsweredTimestamp;
-  if (!lastAnsweredTimestamp) return 0;
-
-  const timeDifference = Date.now() - lastAnsweredTimestamp.getTime();
-  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-  return daysDifference;
-}

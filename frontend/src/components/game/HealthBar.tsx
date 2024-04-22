@@ -11,7 +11,7 @@ const HealthBar: React.FC<HealthBarProps> = ({ health }) => {
   // Define styles for the health bar
   const healthBarStyle: React.CSSProperties = {
     width: healthBarWidth,
-    backgroundColor: health > 70 ? "green" : health > 30 ? "yellow" : "red",
+    backgroundColor: health > 70 ? "green" : health > 30 ? "gold" : "red",
     height: "20px",
     transition: "width 0.5s ease-in-out",
   };

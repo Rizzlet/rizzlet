@@ -22,7 +22,7 @@ import { GetIndividualUser, UserClasses, getTopTenUsers } from "./api/users.js";
 import {} from "./models/user.js";
 import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
-import { calculateStreak } from "./models/user.js";
+import { calculateStreak } from "./models/streakCalculation.js";
 import { getScore } from "./api/users.js";
 
 import { fetchMultipleChoiceAnswers } from "./api/answers.js";
