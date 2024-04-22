@@ -1,9 +1,5 @@
-import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth/AuthContext";
-import axios from "axios";
 import HealthBar from "./HealthBar";
-import { PeoplePicker } from "./todo";
-import { isVisible } from "@testing-library/user-event/dist/utils";
 
 interface PeoplePickerProps {
   selectedPerson: string | null; // Person's ID

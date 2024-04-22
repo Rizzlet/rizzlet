@@ -11,7 +11,7 @@ export default function SubmitRating(props: { questionId: string }) {
   const onSubmit = async () => {
     await axios
       .post(
-        `http://localhost:8000/api/question/${props.questionId}/rating`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/question/${props.questionId}/rating`,
         {
           difficultyRating,
           relevancyRating,
