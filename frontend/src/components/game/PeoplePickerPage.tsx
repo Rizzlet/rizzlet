@@ -8,7 +8,7 @@ function PeoplePicker() {
   // const [disabled, setdisabled] = useState(Boolean);
 
   //hardcoded diabled for now since we dont have the requirements for it
-  const disabled = true;
+  const disabled = false;
   // Temporarily hard coded classId
   const classId = "65d679f08f3afb1b89eebfc3";
   useEffect(() => {

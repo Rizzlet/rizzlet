@@ -34,6 +34,12 @@ const Select: React.FC<PeoplePickerProps> = ({
       <div className="grid grid-cols-2 gap-2 h-screen overflow-hidden">
         {/*left side of the screen */}
         <div className="col-span-1 bg-[url('https://s3.amazonaws.com/spoonflower/public/design_thumbnails/0424/5908/1431605648965_shop_thumb.png')] p-4 pt-8">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
+          />
           {/* rendering the "enemy" */}
           <div className="">
             {/* index 0 first*/}
@@ -113,12 +119,31 @@ function avatar(
   disabled: boolean
 ) {
   const avatarStyle = {
-      backgroundColor: disabled ? "gray" : user.profileColor,
-    border: isSelected ? "4px solid red" : "none",
+    backgroundColor: disabled ? "gray" : user.profileColor,
   };
+
+  const selectStyle = {
+    display: isSelected ? "block" : "none",
+    // transform: isSelected ? "rotate(" : "rotate(0deg)",
+  };
+
+  // const bounce: React.CSSProperties = {
+  //   width: 100%
+  // }
 
   return (
     <div className="flex flex-col items-center justify-center">
+      <div className="animate-bounce" style={selectStyle}>
+        <svg
+          className="w-6 h-6  text-red-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+          viewBox="0 0 16 10"
+        >
+          <path d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z" />
+        </svg>
+      </div>
       <div
         className="h-16 w-16 flex items-center justify-center rounded-full bg-gray-900 text-gray-50 text-2xl"
         style={avatarStyle}
