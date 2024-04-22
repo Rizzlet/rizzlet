@@ -1,6 +1,7 @@
 import { addAnsweredQuestion } from "./answeredQuestion";
 import { getUserClasses, newClass } from "./class";
-import { calculateStreak, getIdCreateOrUpdate, setUserClasses } from "./user";
+import { getIdCreateOrUpdate, setUserClasses } from "./user";
+import { calculateStreak } from "./streakCalculation";
 
 test("get user classes returns the correct classes", async () => {
   const userId = await getIdCreateOrUpdate(

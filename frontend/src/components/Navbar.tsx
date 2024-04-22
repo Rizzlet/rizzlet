@@ -3,6 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
 import axios from "axios";
 
+
 const links = [
   { to: "/", text: "Home" },
   { to: "/myclasses", text: "Classes" },
@@ -108,26 +109,7 @@ export default function NavBar() {
 
 function UserDropDown(props: { showUserDropDown: boolean }) {
   const authData = useAuth();
-  const [streak, setStreak] = useState(0);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchStreak();
-  }, []);
-
-  const fetchStreak = async () => {
-    try {
-      const response = await axios.post(
-        new URL("/api/user/streak", process.env.REACT_APP_BACKEND_URL!).href,
-        {
-          withCredentials: true,
-        }
-      );
-      setStreak(response.data.streak);
-    } catch (error) {
-      console.error("Error fetching streak:", error);
-    }
-  };
 
   return (
     <div
@@ -155,7 +137,7 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
           </li>
         </ul>
         <span className="block whitespace-nowrap text-sm text-gray-600">
-          Streak: {streak}
+          Streak: {authData.streak}
         </span>
       </div>
       <hr></hr>

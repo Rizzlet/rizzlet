@@ -1,4 +1,4 @@
-import { User } from "./user";
+import { User } from "./user.js";
 
 export async function calculateStreak(userID : string) {
   const user = await User.findById(userID);
