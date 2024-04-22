@@ -44,7 +44,7 @@ const Select: React.FC<PeoplePickerProps> = ({
               {people[0] && (
                 <div
                   key={people[0].id}
-                  onClick={() => onSelectPerson(people[0].id)}
+                  onClick={() => disabled===false && onSelectPerson(people[0].id)}
                 >
                   {avatar(
                     people[0],
@@ -61,7 +61,7 @@ const Select: React.FC<PeoplePickerProps> = ({
               {people[1] && (
                 <div
                   key={people[1].id}
-                  onClick={() => onSelectPerson(people[1].id)}
+                  onClick={() => disabled===false && onSelectPerson(people[1].id)}
                 >
                   {avatar(
                     people[1],
@@ -76,7 +76,7 @@ const Select: React.FC<PeoplePickerProps> = ({
               {people[2] && (
                 <div
                   key={people[0].id}
-                  onClick={() => onSelectPerson(people[2].id)}
+                  onClick={() => disabled===false && onSelectPerson(people[2].id)}
                 >
                   {avatar(
                     people[2],
@@ -119,11 +119,6 @@ function avatar(
     backgroundColor: disabled ? "gray" : user.profileColor,
     border: isSelected ? "4px solid #ff605d" : "none",
 };
-
-
-  // const bounce: React.CSSProperties = {
-  //   width: 100%
-  // }
 
   return (
     <div className="flex flex-col items-center justify-center">
