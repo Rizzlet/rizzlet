@@ -7,10 +7,12 @@ const TimerPage = () => {
   const [timerDisplay, setTimerDisplay] = useState("00:00");
 
   const handleReset = () => {
-    setReset(true);
-    setTimerDisplay("00:00");
-    setTimeout(() => setReset(false), 0);
-    setStart(false);
+    setReset(true); // Signal a reset
+    setTimeout(() => {
+      setReset(false); // Reset the signal
+      setTimerDisplay("00:00"); // Update the display only after the state has been cleared
+    }, 10);
+    setStart(false); // Stop the timer
   };
 
   return (

@@ -10,25 +10,26 @@ export function Timer({ start, reset, onTimeUpdate }: TimerProps) {
   const [timeInCentiseconds, setTimeInCentiseconds] = useState(0);
 
   useEffect(() => {
-    let interval: number | null = null; // Change the type here to number
+    let interval: number | null = null;
 
     if (start) {
-      interval = window.setInterval(() => { // Use window.setInterval to ensure the correct type
-        setTimeInCentiseconds((time) => time + 1);
+      interval = window.setInterval(() => {
+        setTimeInCentiseconds(time => time + 1);
       }, 10);
-    } else {
-      if (interval !== null) clearInterval(interval); // Only clear if interval is not null
+    } else if (interval !== null) {
+      clearInterval(interval);
     }
 
-    // Clean up function
     return () => {
-      if (interval !== null) clearInterval(interval);
+      if (interval !== null) {
+        clearInterval(interval);
+      }
     };
   }, [start]);
 
   useEffect(() => {
     if (reset) {
-      setTimeInCentiseconds(0);
+      setTimeInCentiseconds(0); // Set time to zero then emit the update
     }
   }, [reset]);
 
@@ -37,9 +38,10 @@ export function Timer({ start, reset, onTimeUpdate }: TimerProps) {
   }, [timeInCentiseconds, onTimeUpdate]);
 
   const formatTime = (totalCentiseconds: number): string => {
-    const seconds = Math.floor(totalCentiseconds / 100).toString().padStart(2, '0');
+    const minutes = Math.floor(totalCentiseconds / 6000).toString().padStart(2, '0');
+    const seconds = Math.floor((totalCentiseconds % 6000) / 100).toString().padStart(2, '0');
     const centiseconds = (totalCentiseconds % 100).toString().padStart(2, '0');
-    return `${seconds}:${centiseconds}`;
+    return `${minutes}:${seconds}:${centiseconds}`;
   };
 
   return null;
