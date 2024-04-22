@@ -20,7 +20,6 @@ export async function fetchClassesHandler(req: Request, res: Response) {
   try {
     // Fetch class names from the database
     const classNames = await getClassNames();
-    console.log(classNames);
 
     // Send the class names as a JSON response
     res.json(classNames);
