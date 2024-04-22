@@ -93,3 +93,15 @@ function mongooseArrayToArray<T>(mongooseArray: T[]) {
   }
   return array;
 }
+
+export async function getAllUsersInClass(classId: string) {
+
+  const classEntry = await Class.findById(classId).exec();
+
+  if (classEntry === null) {
+    return null;
+  }
+  const usersInClass = await User.find({ classIds: classId }).exec();
+  return usersInClass;
+}
+

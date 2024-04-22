@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Table, Pages } from "../components/ProfilePage";
+import { Table, Pages } from "../components/Profile";
 import { useParams } from "react-router-dom";
 
 interface Question {
@@ -57,6 +57,8 @@ function ProfilePage() {
       return { paginatedData: [], totalQuestions: 0 };
     }
   }
+
+  
 
   return (
     <div className="container">
