@@ -3,6 +3,7 @@ import { useAuth } from "../../context/auth/AuthContext";
 import axios from "axios";
 import HealthBar from "./HealthBar";
 import { PeoplePicker } from "./todo";
+import { isVisible } from "@testing-library/user-event/dist/utils";
 
 interface PeoplePickerProps {
   selectedPerson: string | null; // Person's ID
@@ -120,12 +121,9 @@ function avatar(
 ) {
   const avatarStyle = {
     backgroundColor: disabled ? "gray" : user.profileColor,
-  };
+    border: isSelected ? "4px solid #ff605d" : "none",
+};
 
-  const selectStyle = {
-    display: isSelected ? "block" : "none",
-    // transform: isSelected ? "rotate(" : "rotate(0deg)",
-  };
 
   // const bounce: React.CSSProperties = {
   //   width: 100%
@@ -133,10 +131,9 @@ function avatar(
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <div className="animate-bounce" style={selectStyle}>
+      <div className="animate-bounce" style={{visibility: isSelected ? "visible" : "hidden"}}>
         <svg
           className="w-6 h-6  text-red-400"
-          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
           viewBox="0 0 16 10"
