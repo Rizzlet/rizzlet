@@ -17,13 +17,22 @@ export function AutoFlashcard(props: AutoFlashcardProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<null | string>(null);
 
   const currentQuestion = props.questionSet[props.currentQuestionIdx];
+  const [currentShuffledAnswers, setCurrentShuffledAnswers] = useState<
+    string[] | null
+  >(null);
 
   useEffect(() => {
     setSelectedAnswer(null);
 
     // Shuffle array only when we change to a new question, this is so we don't shuffle between
     // the user answering + showing result
-    shuffleArray(props.questionSet[props.currentQuestionIdx].possibleAnswers);
+
+    // Clone the array so that we use our own copy for shuffling
+    const clonedQuestionSet = [...props.questionSet];
+    shuffleArray(clonedQuestionSet[props.currentQuestionIdx].possibleAnswers);
+    setCurrentShuffledAnswers(
+      clonedQuestionSet[props.currentQuestionIdx].possibleAnswers
+    );
   }, [props.currentQuestionIdx, props.questionSet]);
 
   function onAnswerSelect(text: string) {
@@ -44,37 +53,40 @@ export function AutoFlashcard(props: AutoFlashcardProps) {
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-4">
-          {currentQuestion.possibleAnswers.map((possibleAnswer) => (
-            <div
-              className={`grid grid-cols-10 border-slate-600 border-2 rounded-md justify-center ${!selectedAnswer ? "hover:bg-gray-300" : ""} ${
-                !!selectedAnswer && possibleAnswer === currentQuestion.answer
-                  ? "bg-green-300"
-                  : ""
-              } ${
-                selectedAnswer === possibleAnswer &&
-                currentQuestion.answer !== possibleAnswer
-                  ? "bg-red-300"
-                  : ""
-              }`}
-              onClick={() => onAnswerSelect(possibleAnswer)}
-            >
-              <div>
-                {!!selectedAnswer &&
-                possibleAnswer === currentQuestion.answer ? (
-                  <CheckIcon height={40} />
-                ) : (
-                  <></>
-                )}
-                {selectedAnswer === possibleAnswer &&
-                currentQuestion.answer !== possibleAnswer ? (
-                  <XMarkIcon height={40} />
-                ) : (
-                  <></>
-                )}
+          {currentShuffledAnswers &&
+            currentShuffledAnswers.map((possibleAnswer) => (
+              <div
+                className={`grid grid-cols-10 border-slate-600 border-2 rounded-md justify-center ${!selectedAnswer ? "hover:bg-gray-300" : ""} ${
+                  !!selectedAnswer && possibleAnswer === currentQuestion.answer
+                    ? "bg-green-300"
+                    : ""
+                } ${
+                  selectedAnswer === possibleAnswer &&
+                  currentQuestion.answer !== possibleAnswer
+                    ? "bg-red-300"
+                    : ""
+                }`}
+                onClick={() => onAnswerSelect(possibleAnswer)}
+              >
+                <div>
+                  {!!selectedAnswer &&
+                  possibleAnswer === currentQuestion.answer ? (
+                    <CheckIcon height={40} />
+                  ) : (
+                    <></>
+                  )}
+                  {selectedAnswer === possibleAnswer &&
+                  currentQuestion.answer !== possibleAnswer ? (
+                    <XMarkIcon height={40} />
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <div className="m-2 col-span-8 text-center">
+                  {possibleAnswer}
+                </div>
               </div>
-              <div className="m-2 col-span-8 text-center">{possibleAnswer}</div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </div>
