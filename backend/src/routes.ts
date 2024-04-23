@@ -33,7 +33,6 @@ import {
   paginatedAllQuestions,
 } from "./api/pagination.js";
 
-
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
   app.post("/api/auth/google", googleAuthHandler);
@@ -53,6 +52,7 @@ export function addRoutes(app: Application) {
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.get("/api/user/classes", requireAuth, UserClasses);
   app.post("/api/class/topFour", requireAuth, getTopTenUsers);
+  app.post("/api/class/", requireAuth, getTopTenUsers);
   app.get("/api/user/score", requireAuth, getScore);
   app.post("/api/user/streak", requireAuth, calculateStreak);
   app.get("/api/user/streak", requireAuth, calculateStreak);
@@ -68,6 +68,4 @@ export function addRoutes(app: Application) {
 
   app.get("/api/paginate/question", requireAuth, paginatedAllQuestions);
   app.get("/api/paginate/question/user", paginatedQuestionsByUser);
-
-
 }
