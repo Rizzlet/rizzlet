@@ -1,4 +1,5 @@
-import React, { createContext, useContext } from "react";
+import axios from "axios";
+import React, { createContext, useContext, useEffect } from "react";
 
 const AuthContext = createContext<AuthState | null>(null);
 
@@ -11,7 +12,12 @@ type AuthState = {
   updateProfileColor: (color: string) => void;
   authUserId: string;
   setAuthUserId: React.Dispatch<React.SetStateAction<string>>;
+  streak: number | null;
 };
+
+interface StreakResponse {
+  streak: number;
+}
 
 export function AuthProvider({
   children,
@@ -45,6 +51,31 @@ export function AuthProvider({
     localStorage.getItem("authUserId") || ""
   );
 
+  const [streak, setStreak] = React.useState<number | null>(null)
+
+  useEffect(() => {
+    const fetchStreak = async () => {
+      try {
+        if (!isLoggedIn) {
+          console.log('User not logged in.');
+        }
+        else {
+          const url = new URL(`/api/user/streak`, process.env.REACT_APP_BACKEND_URL!);
+          const response = await axios.get<StreakResponse>(url.href, {
+            withCredentials: true,
+          });
+          setStreak(response.data.streak);
+        }
+      } catch (error) {
+        console.error('Error fetching streak:', error);
+      }
+    };
+
+    if (isLoggedIn) {
+      fetchStreak();
+    }
+  }, [authUserId, isLoggedIn]);
+
   const value: AuthState = {
     authUserFullName,
     setAuthUserFullName,
@@ -54,6 +85,7 @@ export function AuthProvider({
     updateProfileColor,
     authUserId,
     setAuthUserId,
+    streak,
   };
 
   return (

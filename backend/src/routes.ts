@@ -23,7 +23,6 @@ import { GetIndividualUser, UserClasses, getTopTenUsers } from "./api/users.js";
 import {} from "./models/user.js";
 import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
-import { calculateStreak } from "./models/user.js";
 import { getScore } from "./api/users.js";
 import { getUserGroup } from "./api/game.js";
 
@@ -33,6 +32,7 @@ import {
   paginatedQuestionsByUser,
   paginatedAllQuestions,
 } from "./api/pagination.js";
+import { fetchStreakHandler, updateStreakHandler } from "./api/streak.js";
 
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
@@ -56,8 +56,8 @@ export function addRoutes(app: Application) {
   app.post("/api/class/topFour", requireAuth, getTopTenUsers);
   app.post("/api/class/", requireAuth, getTopTenUsers);
   app.get("/api/user/score", requireAuth, getScore);
-  app.post("/api/user/streak", requireAuth, calculateStreak);
-  app.get("/api/user/streak", requireAuth, calculateStreak);
+  app.post("/api/user/streak", requireAuth, updateStreakHandler);
+  app.get("/api/user/streak", requireAuth, fetchStreakHandler);
   app.put("/api/answeredquestions", requireAuth, CheckAnswered); // Used to check whether a question was already answered
   app.post("/api/answeredquestions", requireAuth, SubmitAnsweredQuestion);
   app.put("/api/user", requireAuth, updateUserClassesHandler);
