@@ -32,7 +32,7 @@ jobs:
           key: node_modules-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('package-lock.json') }}
 
       - name: Install NPM dependencies
-        run: npm ci --no-audit; npm install --global prettier
+        run: npm ci --no-audit
 
       - name: Pretty Check
-        run: npx prettier --plugin prettier-plugin-tailwindcss . --check
+        run: npm run check-format
