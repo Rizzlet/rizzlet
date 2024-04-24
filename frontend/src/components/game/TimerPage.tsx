@@ -40,13 +40,13 @@ const TimerPage = () => {
       <div className="flex justify-end mb-10 mr-40 pb-10">
         <button
           onClick={() => setStart(!start)}
-          className={`py-2 px-4 rounded transition-colors mx-2 ${start ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
+          className={`py-2 px-4 rounded transition-colors mx-2 ${start ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
         >
           {start ? 'Stop' : 'Start'}
         </button>
         <button
           onClick={handleReset}
-          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors mx-2"
+          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition-colors mx-2"
         >
           Reset
         </button>
