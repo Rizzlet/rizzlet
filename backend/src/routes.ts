@@ -19,7 +19,12 @@ import { googleAuthHandler } from "./api/auth/google.js";
 import { logoutHandler } from "./api/auth/logout.js";
 import { requireAuth } from "./api/auth/sharedAuth.js";
 import { submitQuestionRatingHandler } from "./api/questionRating.js";
-import { GetIndividualUser, UserClasses, getTopTenUsers } from "./api/users.js";
+import {
+  GetIndividualUser,
+  UserClasses,
+  getTopTenUsers,
+  updateHealthHandler,
+} from "./api/users.js";
 import {} from "./models/user.js";
 import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
@@ -70,4 +75,5 @@ export function addRoutes(app: Application) {
 
   app.get("/api/paginate/question", requireAuth, paginatedAllQuestions);
   app.get("/api/paginate/question/user", paginatedQuestionsByUser);
+  app.post("/api/user/updateHealth", requireAuth, updateHealthHandler);
 }

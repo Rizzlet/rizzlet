@@ -12,15 +12,27 @@ import LeaderBoard from "./LeaderBoardPage";
 import FlashcardField from "./AnswerQuestion";
 import QuestionOverview from "./QuestionOverview";
 import QuestionSubmission from "./FormSubmitQuestions";
+import DamageDealer from "../components/game/damageDealer";
 
+interface UserStats {
+  user: string;
+  score: Number;
+  health: Number;
+}
 interface Classes {
   id: string;
   name: string;
+  scores: UserStats[];
 }
 
 const ClassDashboard: React.FC = () => {
   const [allClasses, setAllClasses] = useState<Classes[]>([]);
   const [className, setClassName] = useState<string>("");
+  const [currentClass, setCurrentClass] = useState<Classes>({
+    id: "",
+    name: "",
+    scores: [],
+  });
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedLink = searchParams.get("tab") || "game";
   const params = useParams<{ id: string }>();
@@ -44,6 +56,7 @@ const ClassDashboard: React.FC = () => {
     const selectedClass = allClasses.find((c) => c.id === params.id);
     if (selectedClass) {
       setClassName(selectedClass.name);
+      setCurrentClass(selectedClass);
     }
   }, [allClasses, params.id]);
 
@@ -54,9 +67,9 @@ const ClassDashboard: React.FC = () => {
 
   return (
     <div className="m-16">
-      <div className="flex items-center justify-between">
-        <div className=" mb-2 inline-flex items-center justify-center rounded-md bg-primary">
-          <h1 className="m-2 text-4xl ">{className}</h1>
+      <div className="flex justify-between items-center">
+        <div className=" bg-primary mb-2 rounded-md items-center justify-center inline-flex">
+          <h1 className="text-4xl m-2 ">{className}</h1>
         </div>
       </div>
       <div className="flex min-h-screen w-full flex-col lg:flex-row">
@@ -102,11 +115,11 @@ const ClassDashboard: React.FC = () => {
             </nav>
           </div>
         </div>
-        <div className="flex min-h-screen w-full flex-col lg:min-h-0 lg:flex-1">
-          <header className="flex h-14 items-center gap-4 border-b bg-gray-100/40 px-6 text-3xl font-bold lg:h-[60px]">
+        <div className="flex flex-col min-h-screen w-full lg:min-h-0 lg:flex-1">
+          <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 font-bold text-3xl">
             {selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}
           </header>
-          {selectedLink === "game" && <div>Game Content coming soon</div>}
+          {selectedLink === "game" && <DamageDealer class={currentClass} />}
           {selectedLink === "leaderboard" && (
             <LeaderBoard classId={params.id} />
           )}
