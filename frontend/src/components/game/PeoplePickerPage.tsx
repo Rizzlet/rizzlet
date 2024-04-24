@@ -5,12 +5,17 @@ import Select from "./PeoplePicker"; // Import the Select component
 function PeoplePicker() {
   const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
   const [usersInClass, setUsersInClass] = useState([]);
+  // const [disabled, setdisabled] = useState(Boolean);
+
+  //hardcoded diabled for now since we dont have the requirements for it
+  const disabled = false;
   // Temporarily hard coded classId
   const classId = "65d679f08f3afb1b89eebfc3";
   useEffect(() => {
     fetchUserByClass(classId);
-  }, [classId]); // Dependency added
+  }, [classId]); 
 
+  //fetchs user by class and formated to match prop
   async function fetchUserByClass(classId: string) {
     try {
       const response = await axios.get<any>(
@@ -33,8 +38,11 @@ function PeoplePicker() {
     }
   }
 
+  //On click handle or a user 
   function handleSelectPerson(id: string) {
+    if (!disabled) {
     setSelectedPerson(id);
+    }
     console.log("Selected person:", id);
   }
 
@@ -42,7 +50,7 @@ function PeoplePicker() {
     <Select
       selectedPerson={selectedPerson}
       onSelectPerson={handleSelectPerson}
-      disabled={false} // Set disabled to false or true as per your requirement
+      disabled={disabled}
       people={usersInClass}
     />
   );
