@@ -14,12 +14,12 @@ interface Question {
 
 // Get questions and answers based on class
 async function fetchQuestions(
-  classId: string | undefined
+  classId: string | undefined,
 ): Promise<Question[]> {
   try {
     const response = await axios.get(
       new URL(`/api/class/${classId}`, process.env.REACT_APP_BACKEND_URL!).href,
-      { withCredentials: true }
+      { withCredentials: true },
     );
     return response.data;
   } catch (error) {
@@ -76,7 +76,7 @@ export default function FlashcardField() {
       const response = await axios.post(
         "/api/user/score",
         { points: newPoints },
-        { withCredentials: true }
+        { withCredentials: true },
       );
 
       setPoints(newPoints);
@@ -86,20 +86,20 @@ export default function FlashcardField() {
   };
 
   return (
-    <div className="relative flex flex-row justify-center h-svh items-center bg-white m-0 p-0">
-      <div className="relative h-4/5 w-2/5 flex flex-col justify-center items-center m-0 p-0">
-        <div className="relative flex flex-row justify-center items-center text-4xl h-full w-full">
+    <div className="relative m-0 flex h-svh flex-row items-center justify-center bg-white p-0">
+      <div className="relative m-0 flex h-4/5 w-2/5 flex-col items-center justify-center p-0">
+        <div className="relative flex h-full w-full flex-row items-center justify-center text-4xl">
           {mapQuestions(listOfQuestions)[questionToRender]}
 
           <button
-            className="absolute h-1/6 w-1/6 left-full"
+            className="absolute left-full h-1/6 w-1/6"
             onClick={() => {
               if (listOfQuestions.length !== 0) {
                 if (questionToRender === listOfQuestions.length - 1) {
                   changeQuestionToRender(0);
                 } else {
                   changeQuestionToRender(
-                    (questionToRender) => questionToRender + 1
+                    (questionToRender) => questionToRender + 1,
                   );
                 }
                 animationDirection.current = "left";
@@ -110,14 +110,14 @@ export default function FlashcardField() {
           </button>
 
           <button
-            className="absolute h-1/6 w-1/6 right-full"
+            className="absolute right-full h-1/6 w-1/6"
             onClick={() => {
               if (listOfQuestions.length !== 0) {
                 if (questionToRender === 0) {
                   changeQuestionToRender(listOfQuestions.length - 1);
                 } else {
                   changeQuestionToRender(
-                    (questionToRender) => questionToRender - 1
+                    (questionToRender) => questionToRender - 1,
                   );
                 }
                 animationDirection.current = "right";

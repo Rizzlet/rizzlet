@@ -51,7 +51,7 @@ function QuestionOverview() {
     try {
       const response = await axios.get<any>(
         `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?page=${page}&limit=${limit}`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
       return response.data;
     } catch (error) {
@@ -75,7 +75,7 @@ function QuestionOverview() {
   const handleNextClick = () => {
     setCurrentPage((prev) => prev + 1); //sets the current page
     if (currentPage < totalPages) {
-      searchParams.set("page", (currentPage + 1).toString()); //navigates to the next page 
+      searchParams.set("page", (currentPage + 1).toString()); //navigates to the next page
       setSearchParams(searchParams);
     }
   };

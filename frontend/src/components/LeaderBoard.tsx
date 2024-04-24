@@ -16,7 +16,7 @@ function Table(props: TableProps) {
     <div>
       {/* <h1 className="text-3xl font-semibold text-center mb-4">Leaderboard</h1> */}
       <div className="relative sm:rounded-lg">
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-700">
+        <table className="w-full text-left text-sm text-gray-500 rtl:text-right dark:text-gray-700">
           <TableHeader />
           <TableBody userData={props.userData} />
         </table>
@@ -27,7 +27,7 @@ function Table(props: TableProps) {
 
 function TableHeader() {
   return (
-    <thead className="text-small text-gray-700 uppercase bg-[#d3f1e2] dark:text-black">
+    <thead className="text-small bg-[#d3f1e2] uppercase text-gray-700 dark:text-black">
       <tr>
         <th scope="col" className="px-6 py-3">
           Rank

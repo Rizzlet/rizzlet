@@ -38,7 +38,7 @@ export default function NavBar() {
             >
               <span className="sr-only">Open user menu</span>
               <div
-                className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-900 text-gray-50"
                 style={{ backgroundColor: authData.profileColor }}
               >
                 {authData.authUserFullName[0]}
@@ -121,7 +121,7 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
         new URL("/api/user/streak", process.env.REACT_APP_BACKEND_URL!).href,
         {
           withCredentials: true,
-        }
+        },
       );
       setStreak(response.data.streak);
     } catch (error) {
@@ -144,7 +144,7 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
           <hr></hr>
           <li>
             <button
-              className="pt-2 block whitespace-nowrap text-sm text-gray-700 hover:bg-gray-100"
+              className="block whitespace-nowrap pt-2 text-sm text-gray-700 hover:bg-gray-100"
               onClick={() => {
                 // redirects to profile page
                 navigate("/profilePage");
@@ -171,10 +171,10 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
                   .post(
                     new URL(
                       "/api/auth/logout",
-                      process.env.REACT_APP_BACKEND_URL!
+                      process.env.REACT_APP_BACKEND_URL!,
                     ).href,
                     {},
-                    { withCredentials: true }
+                    { withCredentials: true },
                   )
                   .then(() => {
                     window.location.href = "/";

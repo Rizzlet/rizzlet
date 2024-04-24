@@ -28,7 +28,7 @@ const ClassDashboard: React.FC = () => {
   async function fetchClasses() {
     try {
       const response = await axios.get<Classes[]>(
-        process.env.REACT_APP_BACKEND_URL + "/api/class"
+        process.env.REACT_APP_BACKEND_URL + "/api/class",
       );
       setAllClasses(response.data);
     } catch (error) {
@@ -47,16 +47,16 @@ const ClassDashboard: React.FC = () => {
     }
   }, [allClasses, params.id]);
 
-    const handleLinkClick = (link: string) => {
-      searchParams.set("tab", link)
-      setSearchParams(searchParams);
-    };
+  const handleLinkClick = (link: string) => {
+    searchParams.set("tab", link);
+    setSearchParams(searchParams);
+  };
 
   return (
     <div className="m-16">
-      <div className="flex justify-between items-center">
-        <div className=" bg-primary mb-2 rounded-md items-center justify-center inline-flex">
-          <h1 className="text-4xl m-2 ">{className}</h1> 
+      <div className="flex items-center justify-between">
+        <div className=" mb-2 inline-flex items-center justify-center rounded-md bg-primary">
+          <h1 className="m-2 text-4xl ">{className}</h1>
         </div>
       </div>
       <div className="flex min-h-screen w-full flex-col lg:flex-row">
@@ -93,8 +93,8 @@ const ClassDashboard: React.FC = () => {
                 Questions
               </button>
               <button
-               className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
-              onClick={(e) => handleLinkClick("submit")}
+                className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
+                onClick={(e) => handleLinkClick("submit")}
               >
                 <QuestionMarkCircleIcon className="h-4 w-4"></QuestionMarkCircleIcon>
                 Submit Questions
@@ -102,14 +102,18 @@ const ClassDashboard: React.FC = () => {
             </nav>
           </div>
         </div>
-        <div className="flex flex-col min-h-screen w-full lg:min-h-0 lg:flex-1">
-            <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 font-bold text-3xl">{selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}</header>
-              {selectedLink === "game" && <div>Game Content coming soon</div>}
-              {selectedLink === "leaderboard" && <LeaderBoard classId={params.id}/>}
-              {selectedLink === "flashcards" && <FlashcardField />}
-              {selectedLink === "questions" && <QuestionOverview />}
-              {selectedLink === "submit" && <QuestionSubmission />}
-          </div>
+        <div className="flex min-h-screen w-full flex-col lg:min-h-0 lg:flex-1">
+          <header className="flex h-14 items-center gap-4 border-b bg-gray-100/40 px-6 text-3xl font-bold lg:h-[60px]">
+            {selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}
+          </header>
+          {selectedLink === "game" && <div>Game Content coming soon</div>}
+          {selectedLink === "leaderboard" && (
+            <LeaderBoard classId={params.id} />
+          )}
+          {selectedLink === "flashcards" && <FlashcardField />}
+          {selectedLink === "questions" && <QuestionOverview />}
+          {selectedLink === "submit" && <QuestionSubmission />}
+        </div>
       </div>
     </div>
   );

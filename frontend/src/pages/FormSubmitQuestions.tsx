@@ -47,7 +47,7 @@ export default function QuestionSubmission() {
         { state, answerList },
         {
           withCredentials: true,
-        }
+        },
       );
       console.log(response.data);
     } catch (error) {

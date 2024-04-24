@@ -60,11 +60,11 @@ export function SelectClass({
       const response = await axios.get(
         new URL(
           "/api/submitQuestion/classes",
-          process.env.REACT_APP_BACKEND_URL!
+          process.env.REACT_APP_BACKEND_URL!,
         ).href,
         {
           withCredentials: true,
-        }
+        },
       );
       return response.data;
     } catch (error) {
@@ -81,7 +81,7 @@ export function SelectClass({
         tempClassArray.push(
           <option value={classArray[i].classId}>
             {classArray[i].className}
-          </option>
+          </option>,
         );
       }
       setUserClasses(tempClassArray);
@@ -154,7 +154,7 @@ export function InputAnswer({
       {/* message */}
       <label
         htmlFor={`answer${answerPosition}`}
-        className="mb-2 text-2xl block font-medium text-gray-900 dark:text-black"
+        className="mb-2 block text-2xl font-medium text-gray-900 dark:text-black"
       >
         {`Answer ${answerPosition + 1}`}
       </label>
@@ -164,7 +164,7 @@ export function InputAnswer({
         onChange={(event) => {
           answerList[answerPosition].answer = event.target.value;
         }}
-        className="w-11/12 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-white dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500 inline-block"
+        className="inline-block w-11/12 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-white dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
         placeholder="Type Your Answer Here..."
       ></input>
       <input
@@ -191,7 +191,7 @@ export function AnswerChoiceField({
 
   for (let i = 0; i < numOfAnswerChoice; i++) {
     answerChoiceArray.push(
-      <InputAnswer answerPosition={i} answerList={theAnswerList}></InputAnswer>
+      <InputAnswer answerPosition={i} answerList={theAnswerList}></InputAnswer>,
     );
   }
   return <div>{answerChoiceArray}</div>;
@@ -204,13 +204,13 @@ export function Buttons() {
       <div className="absolute right-0 mt-20 gap-20 px-20 ">
         <button
           type="submit"
-          className="text-black bg-gray-300 hover:bg-gray-600 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:focus:ring-gray-600"
+          className="mb-2 me-2 rounded-lg bg-gray-300 px-8 py-2.5 text-sm font-medium text-black hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-600 dark:bg-gray-300 dark:hover:bg-gray-600 dark:focus:ring-gray-600"
         >
           Submit
         </button>
         <button
           type="button"
-          className="text-black bg-gray-300 hover:bg-gray-600 focus:ring-4 focus:ring-gray-600 font-medium rounded-lg text-sm px-8 py-2.5 me-2 mb-2 dark:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none dark:focus:ring-gray-600"
+          className="mb-2 me-2 rounded-lg bg-gray-300 px-8 py-2.5 text-sm font-medium text-black hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-600 dark:bg-gray-300 dark:hover:bg-gray-600 dark:focus:ring-gray-600"
         >
           Close
         </button>
@@ -232,7 +232,7 @@ export function TrueAndFalseButtons({
           type="button"
           id="answer"
           onClick={() => onTrueFalseButtonClick(true)}
-          className="text-black bg-[#d3f1e2] hover:bg-teal-500 focus:ring-4 focus:ring-teal-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-[#d3f1e2] dark:hover:bg-teal-500 focus:outline-none dark:focus:ring-teal-500"
+          className="mb-2 me-2 rounded-lg bg-[#d3f1e2] px-5 py-2.5 text-sm font-medium text-black hover:bg-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500 dark:bg-[#d3f1e2] dark:hover:bg-teal-500 dark:focus:ring-teal-500"
         >
           True
         </button>
@@ -240,7 +240,7 @@ export function TrueAndFalseButtons({
           type="button"
           id="answer"
           onClick={() => onTrueFalseButtonClick(false)}
-          className="text-black bg-[#d3f1e2] hover:bg-teal-500 focus:ring-4 focus:ring-teal-500 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-[#d3f1e2] dark:hover:bg-teal-500 focus:outline-none dark:focus:ring-teal-500"
+          className="mb-2 me-2 rounded-lg bg-[#d3f1e2] px-5 py-2.5 text-sm font-medium text-black hover:bg-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500 dark:bg-[#d3f1e2] dark:hover:bg-teal-500 dark:focus:ring-teal-500"
         >
           False
         </button>

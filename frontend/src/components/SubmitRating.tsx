@@ -18,7 +18,7 @@ export default function SubmitRating(props: { questionId: string }) {
         },
         {
           withCredentials: true,
-        }
+        },
       )
       .then(() => {
         navigate("/");
@@ -30,7 +30,7 @@ export default function SubmitRating(props: { questionId: string }) {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="xl:w-1/2 items-center">
+      <div className="items-center xl:w-1/2">
         <RatingScale
           onDifficultyChange={(difficulty) => {
             setDifficultyRating(difficulty);
@@ -41,7 +41,7 @@ export default function SubmitRating(props: { questionId: string }) {
         />
         <div className="flex flex-row-reverse">
           <button
-            className="bg-blue-500 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-2 px-4 rounded mt-4 mr-4 w-1/8 justify-end"
+            className="w-1/8 mr-4 mt-4 justify-end rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 disabled:bg-gray-400"
             disabled={!difficultyRating || !relevancyRating}
             onClick={onSubmit}
           >
