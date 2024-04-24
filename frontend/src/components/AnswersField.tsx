@@ -7,7 +7,6 @@ interface Question {
   type: string;
   createdBy: string;
   question: string;
-  answer: boolean;
 }
 
 interface IAnswerField {
@@ -78,39 +77,22 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
     async function mapAnswers(theQuestion: Question) {
       if (theQuestion !== undefined) {
         const answersElement = [];
-        if (
-          theQuestion.type === "true/false" ||
-          theQuestion.type === "TrueAndFalse"
-        ) {
-          for (let i = 1; i >= 0; i--) {
-            answersElement.push(
-              <Answers
-                answerText={`${!!i ? "true" : "false"}`}
-                rightAnswer={`${theQuestion.answer === !!i}`}
-                alreadyAnswered={isItAnswered}
-                questionAssociated={theQuestion._id}
-                setAlreadyAnswered={handleAnswered}
-                updatePoints={props.updatePoints}
-              ></Answers>
-            );
-          }
-        } else if (theQuestion.type === "Multiple Choice") {
-          const answersForSpecificQuestion = multipleChoiceAnswers.filter(
-            (answers) => answers.question === theQuestion._id
+        const answersForSpecificQuestion = multipleChoiceAnswers.filter(
+          (answers) => answers.question === theQuestion._id
+        );
+        for (let i = 0; i < answersForSpecificQuestion.length; i++) {
+          answersElement.push(
+            <Answers
+              answerText={answersForSpecificQuestion[i].answer}
+              rightAnswer={`${answersForSpecificQuestion[i].correct}`}
+              alreadyAnswered={isItAnswered}
+              questionAssociated={theQuestion._id}
+              setAlreadyAnswered={handleAnswered}
+              updatePoints={props.updatePoints}
+            ></Answers>
           );
-          for (let i = 0; i < answersForSpecificQuestion.length; i++) {
-            answersElement.push(
-              <Answers
-                answerText={answersForSpecificQuestion[i].answer}
-                rightAnswer={`${answersForSpecificQuestion[i].correct}`}
-                alreadyAnswered={isItAnswered}
-                questionAssociated={theQuestion._id}
-                setAlreadyAnswered={handleAnswered}
-                updatePoints={props.updatePoints}
-              ></Answers>
-            );
-          }
         }
+
         setAnswerstoRender(answersElement);
       }
     }
@@ -124,6 +106,7 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
     props.questionToRender,
     isItAnswered,
     props.updatePoints,
+    multipleChoiceAnswers,
   ]);
 
   useEffect(() => {
@@ -134,7 +117,7 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
 
   return (
     <div
-      className={`relative grid grid-rows-2 grid-cols-2 content-evenly h-1/2 w-full`}
+      className={`relative grid h-1/2 w-full grid-cols-2 grid-rows-2 content-evenly`}
     >
       {answersToRender}
     </div>

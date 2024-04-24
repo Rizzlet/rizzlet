@@ -23,18 +23,15 @@ export async function submitQuestionHandler(req: Request, res: Response) {
     return;
   }
 
-  const questionId = addQuestion(
+  const questionId = await addQuestion(
     state.type,
     userData.id,
     state.question,
-    state.answer,
     state.class,
   );
 
-  if (state.type === "Multiple Choice") {
-    for (let i = 0; i < answerList.length; i++) {
-      addAnswer(answerList[i].answer, answerList[i].correct, await questionId);
-    }
+  for (let i = 0; i < answerList.length; i++) {
+    addAnswer(answerList[i].answer, answerList[i].correct, questionId);
   }
 
   res.status(201).json({ id: questionId });

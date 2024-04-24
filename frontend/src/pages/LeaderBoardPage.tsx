@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table } from "../components/LeaderBoard";
 //import of router so that it will update URL with each page
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 interface UserRecord {
   user: {
@@ -13,11 +13,11 @@ interface UserRecord {
   rank: number;
 }
 
-function LeaderBoard(props: {classId?: string}) {
+function LeaderBoard(props: { classId?: string }) {
   const [users, setUsers] = useState<UserRecord[]>([]);
   const params = useParams();
 
-  const classId = props.classId || params.classId
+  const classId = props.classId || params.classId;
 
   //fetch the users
   useEffect(() => {
@@ -25,7 +25,7 @@ function LeaderBoard(props: {classId?: string}) {
       if (result) setUsers(result);
       console.log(result);
     });
-  }, []);
+  });
 
   //getting top ten users from backend
   async function fetchUsers() {

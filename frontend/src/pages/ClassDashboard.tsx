@@ -6,21 +6,33 @@ import {
   RectangleStackIcon,
 } from "@heroicons/react/20/solid";
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import LeaderBoard from "./LeaderBoardPage";
 import FlashcardField from "./AnswerQuestion";
 import QuestionOverview from "./QuestionOverview";
 import QuestionSubmission from "./FormSubmitQuestions";
+import DamageDealer from "../components/game/damageDealer";
 
+interface UserStats {
+  user: string;
+  score: Number;
+  health: Number;
+}
 interface Classes {
   id: string;
   name: string;
+  scores: UserStats[];
 }
 
 const ClassDashboard: React.FC = () => {
   const [allClasses, setAllClasses] = useState<Classes[]>([]);
   const [className, setClassName] = useState<string>("");
+  const [currentClass, setCurrentClass] = useState<Classes>({
+    id: "",
+    name: "",
+    scores: [],
+  });
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedLink = searchParams.get("tab") || "game";
   const params = useParams<{ id: string }>();
@@ -44,19 +56,20 @@ const ClassDashboard: React.FC = () => {
     const selectedClass = allClasses.find((c) => c.id === params.id);
     if (selectedClass) {
       setClassName(selectedClass.name);
+      setCurrentClass(selectedClass);
     }
   }, [allClasses, params.id]);
 
-    const handleLinkClick = (link: string) => {
-      searchParams.set("tab", link)
-      setSearchParams(searchParams);
-    };
+  const handleLinkClick = (link: string) => {
+    searchParams.set("tab", link);
+    setSearchParams(searchParams);
+  };
 
   return (
     <div className="m-16">
       <div className="flex justify-between items-center">
         <div className=" bg-primary mb-2 rounded-md items-center justify-center inline-flex">
-          <h1 className="text-4xl m-2 ">{className}</h1> 
+          <h1 className="text-4xl m-2 ">{className}</h1>
         </div>
       </div>
       <div className="flex min-h-screen w-full flex-col lg:flex-row">
@@ -93,8 +106,8 @@ const ClassDashboard: React.FC = () => {
                 Questions
               </button>
               <button
-               className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
-              onClick={(e) => handleLinkClick("submit")}
+                className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
+                onClick={(e) => handleLinkClick("submit")}
               >
                 <QuestionMarkCircleIcon className="h-4 w-4"></QuestionMarkCircleIcon>
                 Submit Questions
@@ -103,13 +116,17 @@ const ClassDashboard: React.FC = () => {
           </div>
         </div>
         <div className="flex flex-col min-h-screen w-full lg:min-h-0 lg:flex-1">
-            <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 font-bold text-3xl">{selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}</header>
-              {selectedLink === "game" && <div>Game Content coming soon</div>}
-              {selectedLink === "leaderboard" && <LeaderBoard classId={params.id}/>}
-              {selectedLink === "flashcards" && <FlashcardField />}
-              {selectedLink === "questions" && <QuestionOverview />}
-              {selectedLink === "submit" && <QuestionSubmission />}
-          </div>
+          <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 font-bold text-3xl">
+            {selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}
+          </header>
+          {selectedLink === "game" && <DamageDealer class={currentClass} />}
+          {selectedLink === "leaderboard" && (
+            <LeaderBoard classId={params.id} />
+          )}
+          {selectedLink === "flashcards" && <FlashcardField />}
+          {selectedLink === "questions" && <QuestionOverview />}
+          {selectedLink === "submit" && <QuestionSubmission />}
+        </div>
       </div>
     </div>
   );

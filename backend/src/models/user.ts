@@ -39,6 +39,14 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  streakStartTimestamp: {
+    type: Date,
+    default: 0 // Initially set to 0 until a streak is started
+  },
+  streakCount: {
+    type: Number,
+    default: 0 // Initially set to 0
+  },
   classIds: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -85,16 +93,4 @@ export async function setUserClasses(userId: string, classIds: string[]) {
   );
 
   return updatedUser;
-}
-
-export async function calculateStreak(userID: string) {
-  const user = await User.findById(userID);
-
-  const lastAnsweredTimestamp = user!.lastAnsweredTimestamp;
-  if (!lastAnsweredTimestamp) return 0;
-
-  const timeDifference = Date.now() - lastAnsweredTimestamp.getTime();
-  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
-  return daysDifference;
 }
