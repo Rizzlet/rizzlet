@@ -29,8 +29,8 @@ jobs:
         run: npm ci --no-audit
         working-directory: frontend
 
-      - name: Check build
-        run: npx eslint . --max-warnings 0
+      - name: Check Eslint
+        run: npm run lint
         working-directory: frontend
 
   eslint-backend:
@@ -48,6 +48,6 @@ jobs:
         run: npm ci --no-audit
         working-directory: backend
 
-      - name: Check build
-        run: npx eslint . --max-warnings 0
+      - name: Check Eslint
+        run: npm run lint
         working-directory: backend
