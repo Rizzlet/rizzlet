@@ -9,6 +9,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
 
+defaults:
+  run:
+    working-directory: frontend
+
 jobs:
   prettier-frontend:
     runs-on: ubuntu-latest
@@ -16,9 +20,6 @@ jobs:
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
-
-      - name: CD to frontend
-        run: cd frontend
 
       - uses: actions/setup-node@v4
         with:
@@ -33,6 +34,8 @@ jobs:
 
       - name: Install NPM dependencies
         run: npm ci --no-audit
+        working-directory: frontend
 
       - name: Pretty Check
         run: npm run check-format
+        working-directory: frontend
