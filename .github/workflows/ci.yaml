@@ -33,6 +33,9 @@ jobs:
         run: npm run lint
         working-directory: frontend
 
+      - name: Try Build
+        run: npm run build
+
   eslint-backend:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -51,3 +54,6 @@ jobs:
       - name: Check Eslint
         run: npm run lint
         working-directory: backend
+
+      - name: Try Build
+        run: npm run build
