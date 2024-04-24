@@ -46,7 +46,7 @@ const TimerPage = () => {
         </button>
         <button
           onClick={handleReset}
-          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition-colors mx-2"
+          className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors mx-2"
         >
           Reset
         </button>
