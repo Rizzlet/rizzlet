@@ -30,7 +30,7 @@ jobs:
         working-directory: frontend
 
       - name: Check build
-        run: npx eslint .
+        run: npx eslint . --max-warnings 0
         working-directory: frontend
 
   eslint-backend:
@@ -49,5 +49,5 @@ jobs:
         working-directory: backend
 
       - name: Check build
-        run: npx eslint .
+        run: npx eslint . --max-warnings 0
         working-directory: backend

@@ -12,9 +12,6 @@ export async function calculateStreak(userID: string): Promise<number> {
   const lastLoginDate = new Date(lastAnsweredTimestamp);
   lastLoginDate.setHours(0, 0, 0, 0);
 
-  const timeDifference = today.getTime() - lastLoginDate.getTime();
-  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-
   // Check if the user has a streakStartTimestamp
   if (!user.streakStartTimestamp) {
     // If not, set the streakStartTimestamp to today

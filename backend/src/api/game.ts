@@ -2,7 +2,6 @@ import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import { Request, Response } from "express";
 import joi from "joi";
 import { getAllUsersInClass } from "../models/class.js";
-import { listenerCount } from "process";
 
 type GetUserGroup = {
   classId: string;
