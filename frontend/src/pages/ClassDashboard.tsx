@@ -6,7 +6,7 @@ import {
   RectangleStackIcon,
 } from "@heroicons/react/20/solid";
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import LeaderBoard from "./LeaderBoardPage";
 import FlashcardField from "./AnswerQuestion";
@@ -28,7 +28,7 @@ const ClassDashboard: React.FC = () => {
   async function fetchClasses() {
     try {
       const response = await axios.get<Classes[]>(
-        process.env.REACT_APP_BACKEND_URL + "/api/class",
+        process.env.REACT_APP_BACKEND_URL + "/api/class"
       );
       setAllClasses(response.data);
     } catch (error) {

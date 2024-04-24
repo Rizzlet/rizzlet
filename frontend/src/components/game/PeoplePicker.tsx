@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useAuth } from "../../context/auth/AuthContext";
-import axios from "axios";
 import HealthBar from "./HealthBar";
-import { PeoplePicker } from "./todo";
 
 interface PeoplePickerProps {
   selectedPerson: string | null; // Person's ID
@@ -12,7 +10,7 @@ interface PeoplePickerProps {
     id: string;
     name: string;
     health: number;
-    //there is a temporary profile color prop 
+    //there is a temporary profile color prop
   }[]; // Exactly 3
 }
 
@@ -24,10 +22,10 @@ const Select: React.FC<PeoplePickerProps> = ({
 }) => {
   const authData = useAuth();
 
-  console.log("selectedPerson", selectedPerson)
+  console.log("selectedPerson", selectedPerson);
   // console.log("onSelectPerson", onSelectPerson)
-  console.log("disabled", disabled)
-  console.log("people: ", people)
+  console.log("disabled", disabled);
+  console.log("people: ", people);
 
   return (
     <div className="">
@@ -96,12 +94,7 @@ const Select: React.FC<PeoplePickerProps> = ({
 };
 
 // style of the avatar icon
-function avatar(
-  user: any,
-  name: string,
-  isSelected: boolean,
-  health: number
-) {
+function avatar(user: any, name: string, isSelected: boolean, health: number) {
   const avatarStyle = {
     backgroundColor: user.profileColor,
     border: isSelected ? "4px solid red" : "none",
@@ -115,9 +108,7 @@ function avatar(
       >
         {name[0]}
       </div>
-      <div className="font-semibold">
-        {name}  
-      </div>
+      <div className="font-semibold">{name}</div>
       <div className="">
         <HealthBar health={health} />
       </div>

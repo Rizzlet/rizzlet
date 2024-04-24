@@ -60,11 +60,11 @@ export function SelectClass({
       const response = await axios.get(
         new URL(
           "/api/submitQuestion/classes",
-          process.env.REACT_APP_BACKEND_URL!,
+          process.env.REACT_APP_BACKEND_URL!
         ).href,
         {
           withCredentials: true,
-        },
+        }
       );
       return response.data;
     } catch (error) {
@@ -81,7 +81,7 @@ export function SelectClass({
         tempClassArray.push(
           <option value={classArray[i].classId}>
             {classArray[i].className}
-          </option>,
+          </option>
         );
       }
       setUserClasses(tempClassArray);
@@ -93,7 +93,7 @@ export function SelectClass({
     GetClasses().then((result) => {
       createClassOptions(result);
     });
-  }, []);
+  });
 
   return (
     <div className="absolute -mt-10 gap-10 px-5">
@@ -191,7 +191,7 @@ export function AnswerChoiceField({
 
   for (let i = 0; i < numOfAnswerChoice; i++) {
     answerChoiceArray.push(
-      <InputAnswer answerPosition={i} answerList={theAnswerList}></InputAnswer>,
+      <InputAnswer answerPosition={i} answerList={theAnswerList}></InputAnswer>
     );
   }
   return <div>{answerChoiceArray}</div>;
