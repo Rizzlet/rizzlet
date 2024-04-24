@@ -8,6 +8,7 @@ import {
   setScoreForUserByClass,
 } from "..//models/class.js";
 import joi from "joi";
+import { Class } from "../models/class.js";
 
 export async function GetIndividualUser(req: Request, res: Response) {
   const userData = verifyAndDecodeToken(req.cookies.token);
@@ -187,4 +188,35 @@ export async function getTopTenUsers(req: Request, res: Response) {
     topFour = sortedUsers.slice(0, 4);
   }
   return res.status(200).json({ topFour });
+}
+
+export async function updateHealthHandler(req: Request, Res: Response) {
+  const userData = verifyAndDecodeToken(req.cookies.token);
+  if (!userData) {
+    console.log("update health authorization failed");
+    return;
+  }
+  const { damageAmount, attackUser, classId } = req.body;
+
+  try {
+    const response = await Class.findByIdAndUpdate(
+      classId,
+      { $inc: { "scores.$[theElement].health": damageAmount } },
+      { arrayFilters: [{ "theElement.user": attackUser }] },
+    );
+
+    // const response = await Class.updateOne(
+    //   { _id: classId, "scores.user": attackUser },
+    //   { $inc: { "scores.$.health": damageAmount } },
+    // );
+
+    if (!response) {
+      console.log("Class doesn't exist");
+      return Res.status(403).json({ message: "Class does not exist" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  return Res.status(200).json({ request: true });
 }

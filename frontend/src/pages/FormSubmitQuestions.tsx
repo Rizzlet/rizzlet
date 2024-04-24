@@ -20,16 +20,15 @@ export default function QuestionSubmission() {
     type: "",
     createdBy: "",
     question: "",
-    answer: false,
     class: "",
   });
 
-  const answerList = [
+  const [answerList, setAnswerList] = useState([
     { answer: "", correct: false },
     { answer: "", correct: false },
     { answer: "", correct: false },
     { answer: "", correct: false },
-  ];
+  ]);
 
   // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -61,21 +60,34 @@ export default function QuestionSubmission() {
     setState({ ...state, class: value });
   };
 
+  // Changes what answers are to be submitted based on the type of question selected
   const onQuestionTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const value: (typeof state)["type"] = event.target.value;
     setState({ ...state, type: value });
+    if (value === "TrueAndFalse") {
+      answerList[0].answer = "True";
+      answerList[1].answer = "False";
+    } else {
+      setAnswerList([
+        { answer: "", correct: false },
+        { answer: "", correct: false },
+        { answer: "", correct: false },
+        { answer: "", correct: false },
+      ]);
+    }
   };
 
   // true and false button change
   const onTrueFalseButtonClick = (value: boolean) => {
-    setState({ ...state, answer: value });
+    answerList[Number(value)].correct = false;
+    answerList[Number(!value)].correct = true;
   };
 
   return (
     <div>
       <Title />
       <form className="flashcard" onSubmit={onSubmit}>
-        <div>
+        <div className="w-dvw">
           <SelectQuestion
             onQuestionTypeChange={onQuestionTypeChange}
             selectedType={state.type}
