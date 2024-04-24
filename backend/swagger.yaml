@@ -121,21 +121,19 @@ paths:
           description: Server Exception
         "401":
           description: Unauthorized
-  /class/getDailyGroup:
-    post:
+  /game/{classId}/group:
+    get:
+      parameters:
+        - in: path
+          name: classId
+          schema:
+            type: string
+            example: 65d679f08f3afb1b89eebfc3
+          required: true
+          description: Class ID
       tags:
-        - Class
-      summary: Get the group for that class for the user logged in
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                classId:
-                  type: string
-            example:
-              classId: "65d679f08f3afb1b89eebfc3"
+        - Game
+      summary: Get the group for that class game for the user logged in
       operationId: getUserGroup
       responses:
         "200":
