@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 interface TimerProps {
   start: boolean;
   reset: boolean;
-  onTimeUpdate: (centiseconds: number) => void;
+  timeInCentiseconds: number;
+  setTimeInCentiseconds: (value: number | ((val: number) => number)) => void;
 }
 
-export function Timer({ start, reset, onTimeUpdate }: TimerProps) {
-  const [timeInCentiseconds, setTimeInCentiseconds] = useState(0);
-
+export function Timer({ start, reset, timeInCentiseconds, setTimeInCentiseconds }: TimerProps) {
   useEffect(() => {
     let interval: number | null = null;
 
@@ -16,24 +15,20 @@ export function Timer({ start, reset, onTimeUpdate }: TimerProps) {
       interval = window.setInterval(() => {
         setTimeInCentiseconds(time => time + 1);
       }, 10);
-    } 
+    }
 
     return () => {
       if (interval !== null) {
         clearInterval(interval);
       }
     };
-  }, [start]);
+  }, [start, setTimeInCentiseconds]);
 
   useEffect(() => {
     if (reset) {
-      setTimeInCentiseconds(0); // Set time to zero then emit the update
+      setTimeInCentiseconds(0);
     }
-  }, [reset]);
-
-  useEffect(() => {
-    onTimeUpdate(timeInCentiseconds);
-  }, [timeInCentiseconds, onTimeUpdate]);
+  }, [reset, setTimeInCentiseconds]);
 
   return null;
 }

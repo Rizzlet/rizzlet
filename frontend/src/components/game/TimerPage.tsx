@@ -6,9 +6,8 @@ const TimerPage = () => {
   const [reset, setReset] = useState(false);
   const [timeInCentiseconds, setTimeInCentiseconds] = useState(0);
 
-
   const handleReset = () => {
-    setReset(true); // Signal a reset
+    setReset(true); // Signal a rest
     setTimeout(() => {
       setReset(false); // Reset the signal
       setTimeInCentiseconds(0); // Update the display only after the state has been cleared
@@ -27,7 +26,12 @@ const TimerPage = () => {
     <div className="flex flex-col h-screen justify-between">
       <div className="w-full flex justify-end items-center pt-20">
         <div className="mr-40">
-          <Timer start={start} reset={reset} onTimeUpdate={setTimeInCentiseconds} />
+          <Timer
+            start={start}
+            reset={reset}
+            timeInCentiseconds={timeInCentiseconds}
+            setTimeInCentiseconds={setTimeInCentiseconds}
+          />
           <div className="text-2xl">
             Time Elapsed: {formatTime(timeInCentiseconds)}
           </div>
@@ -36,13 +40,13 @@ const TimerPage = () => {
       <div className="flex justify-end mb-10 mr-40 pb-10">
         <button
           onClick={() => setStart(!start)}
-          className={`py-2 px-4 rounded transition-colors mx-2 ${start ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
+          className={`py-2 px-4 rounded transition-colors mx-2 ${start ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
         >
           {start ? 'Stop' : 'Start'}
         </button>
         <button
           onClick={handleReset}
-          className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors mx-2"
+          className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition-colors mx-2"
         >
           Reset
         </button>
