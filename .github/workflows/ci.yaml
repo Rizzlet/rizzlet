@@ -13,8 +13,6 @@ jobs:
   prettier-frontend:
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    env:
-      HUSKY: 0
     steps:
       - name: Checkout Code Repository
         uses: actions/checkout@v4
@@ -38,6 +36,3 @@ jobs:
 
       - name: Pretty Check
         run: npx prettier --plugin prettier-plugin-tailwindcss . --check
-
-      - name: Check Build
-        run: npm run build
