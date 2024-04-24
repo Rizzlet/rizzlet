@@ -55,10 +55,9 @@ export function AuthProvider({
 
   useEffect(() => {
     const fetchStreak = async () => {
-      console.log("AC: Step into fetching")
       try {
         if (!isLoggedIn) {
-          console.log('AC: User not logged in.');
+          console.log('User not logged in.');
         }
         else {
           const url = new URL(`/api/user/streak`, process.env.REACT_APP_BACKEND_URL!);
@@ -68,16 +67,12 @@ export function AuthProvider({
           setStreak(response.data.streak);
         }
       } catch (error) {
-        console.error('AC: Error fetching streak:', error);
+        console.error('Error fetching streak:', error);
       }
     };
 
     if (isLoggedIn) {
-      console.log("AC: Fetching shit")
       fetchStreak();
-    }
-    else {
-      console.log("AC: Not fetching shit")
     }
   }, [authUserId, isLoggedIn]);
 
