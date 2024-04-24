@@ -152,10 +152,10 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
                   .post(
                     new URL(
                       "/api/auth/logout",
-                      process.env.REACT_APP_BACKEND_URL!
+                      process.env.REACT_APP_BACKEND_URL!,
                     ).href,
                     {},
-                    { withCredentials: true }
+                    { withCredentials: true },
                   )
                   .then(() => {
                     window.location.href = "/";
