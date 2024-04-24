@@ -29,6 +29,6 @@ jobs:
         run: npm ci --no-audit
         working-directory: frontend
 
-      - name: Pretty Check
-        run: npm run check-format
+      - name: Check build
+        run: npm build
         working-directory: frontend
