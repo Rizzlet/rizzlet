@@ -39,6 +39,14 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  streakStartTimestamp: {
+    type: Date,
+    default: 0 // Initially set to 0 until a streak is started
+  },
+  streakCount: {
+    type: Number,
+    default: 0 // Initially set to 0
+  },
   classIds: [
     {
       type: mongoose.Schema.Types.ObjectId,
