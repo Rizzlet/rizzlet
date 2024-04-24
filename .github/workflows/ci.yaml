@@ -14,7 +14,7 @@ defaults:
     working-directory: frontend
 
 jobs:
-  prettier-frontend:
+  eslint-frontend:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -30,5 +30,24 @@ jobs:
         working-directory: frontend
 
       - name: Check build
-        run: npm run build
+        run: npx eslint .
         working-directory: frontend
+
+  eslint-backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install NPM dependencies
+        run: npm ci --no-audit
+        working-directory: backend
+
+      - name: Check build
+        run: npx eslint .
+        working-directory: backend
