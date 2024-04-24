@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+jobs:
+  prettier-frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      HUSKY: 0
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v3
+        working-directory: ./frontend
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache node_modules
+        id: cache-node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: node_modules-${{ matrix.os }}-${{ matrix.node-version }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install NPM dependencies
+        run: npm ci --no-audit
+
+      - name: ESLint - eslintrc
+        run: npx eslint .
+
+      - name: Pretty Check
+        run: npx prettier . --check
+
+      - name: Check Build
+        run: npm run build
