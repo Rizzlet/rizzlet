@@ -65,8 +65,6 @@ export async function getIdCreateOrUpdate(
   email: string,
   googleUserId: string,
   profileColor: string,
-  lastAnsweredTimestamp: Date,
-  streakCount: number,
 ): Promise<string | null> {
   const userDetails = {
     firstName,
@@ -74,8 +72,6 @@ export async function getIdCreateOrUpdate(
     googleUserId,
     email,
     profileColor,
-    lastAnsweredTimestamp,
-    streakCount,
   };
 
   // So we can either create a new user or update an existing one
