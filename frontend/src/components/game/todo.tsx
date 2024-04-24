@@ -62,5 +62,5 @@ interface DamageDealerProps {
 export function DamageDealer(props: DamageDealerProps) {
   // Deals with DB to actually deal damage
   //
-  return "Healthbar";
+  return <div style={{ visibility: "hidden" }}></div>;
 }

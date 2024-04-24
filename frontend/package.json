@@ -27,8 +27,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "pretty": "prettier --write src/**/*.{js,jsx,ts,tsx,json,css,scss,md} --plugin prettier-plugin-tailwindcss",
-    "eject": "react-scripts eject"
+    "lint": "eslint . --max-warnings 0",
+    "pretty": "prettier --write src/**/*.{ts,tsx,css} --plugin prettier-plugin-tailwindcss",
+    "eject": "react-scripts eject",
+    "check-format": "prettier --check --plugin prettier-plugin-tailwindcss src/**/*.{ts,tsx,css}"
   },
   "eslintConfig": {
     "extends": [

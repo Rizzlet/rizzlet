@@ -13,13 +13,6 @@ interface Question {
   answer: boolean;
 }
 
-interface User {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
-
 async function fetchQuestions(): Promise<Question[]> {
   try {
     const response = await axios.get("/api/question");

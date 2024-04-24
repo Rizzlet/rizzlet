@@ -67,7 +67,7 @@ export default function AddClassModal(props: {
                     </div>
                   </div>
 
-                  <div className="mt-4 right flex gap-3">
+                  <div className="right mt-4 flex gap-3">
                     <button
                       onClick={props.onClose}
                       className="inline-flex justify-center rounded-md border border-transparent 
@@ -80,13 +80,13 @@ export default function AddClassModal(props: {
                     <button
                       disabled={!selected}
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent 
-                        bg-green-100 px-4 py-2 text-sm font-medium 
-                        text-black-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 
+                      className="text-black-900 inline-flex justify-center rounded-md border 
+                        border-transparent bg-green-100 px-4 py-2 text-sm 
+                        font-medium hover:bg-green-200 focus:outline-none focus-visible:ring-2 
                         focus-visible:ring-green-500 focus-visible:ring-offset-2
-                          disabled:hover:bg-gray-200
                           disabled:bg-gray-200
-                          disabled:text-gray-500"
+                          disabled:text-gray-500
+                          disabled:hover:bg-gray-200"
                       onClick={() => {
                         props.onSubmit(selected!);
                         props.onClose();
@@ -120,7 +120,7 @@ function ClassComboBox(props: {
             classObj.name
               .toLowerCase()
               .replace(/\s+/g, "")
-              .includes(query.toLowerCase().replace(/\s+/g, ""))
+              .includes(query.toLowerCase().replace(/\s+/g, "")),
           )
           .slice(0, 5);
 
