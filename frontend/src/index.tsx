@@ -22,6 +22,7 @@ import LeaderBoard from "./pages/LeaderBoardPage";
 import NoClasses from "./pages/AnswerQuestionNoClasses";
 import HealthBarPage from "./components/game/HealthBarPage";
 import PeoplePicker from "./components/game/PeoplePickerPage";
+import GamePage from "./components/game/gamePage";
 
 const router = createBrowserRouter([
   {
@@ -117,6 +118,14 @@ const router = createBrowserRouter([
       </AuthGuard>
     ),
   },
+  {
+    path: "/gamePage",
+    element: (
+      <AuthGuard>
+        <GamePage />
+      </AuthGuard>
+    )
+  }
 ]);
 
 const root = ReactDOM.createRoot(
