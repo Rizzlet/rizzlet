@@ -7,50 +7,53 @@ interface Question {
   id: string;
   question: string;
   answer: string;
-  possibleAnswers: string[];
+  possibleAnswers: string[]; // We might want to change this to a IMultipleChoiceAnswers list so that we can house the answer object
 }
 
 interface IMultipleChoiceAnswers {
-    _id: string;
-    answer: string;
-    correct: boolean;
-    question: string;
-  }
+  _id: string;
+  answer: string;
+  correct: boolean;
+  question: string;
+}
 
-async function fetchQuestionsAndAnswers(classId: string | undefined): Promise<Question[]> {
+async function fetchQuestionsAndAnswers(
+  classId: string | undefined
+): Promise<Question[]> {
   try {
     const questionResponse = await axios.get<any>(
       new URL(`/api/class/${classId}`, process.env.REACT_APP_BACKEND_URL!).href,
       { withCredentials: true }
     );
 
-    const answerResponse = await axios.get<IMultipleChoiceAnswers[]> (
-        new URL("/api/question/multipleChoiceAnswers",
-            process.env.REACT_APP_BACKEND_URL!
-        ).href,
-        { withCredentials: true }
-        );
+    const answerResponse = await axios.get<IMultipleChoiceAnswers[]>(
+      new URL(
+        "/api/question/multipleChoiceAnswers",
+        process.env.REACT_APP_BACKEND_URL!
+      ).href,
+      { withCredentials: true }
+    );
 
     const questions: Question[] = questionResponse.data.map((question: any) => {
-        const mappedAnswers = [];
-        for (let i = 0; i < answerResponse.data.length; i++){
-            if (question.id === answerResponse.data[i].question){
-                mappedAnswers.push(answerResponse.data[i].answer);
-            }
+      const mappedAnswers = [];
+      for (let i = 0; i < answerResponse.data.length; i++) {
+        if (question._id === answerResponse.data[i].question) {
+          // REMINDER: reformat this to add the answer object and not just the name
+          mappedAnswers.push(answerResponse.data[i].answer);
         }
-        console.log(mappedAnswers);
-        // const answer = answerResponse.data.find((answer: IMultipleChoiceAnswers) => answer.question === question.id && answer.correct === question.answer);
-        return {
-            id: question.answer.question,
-            question: question.question,
-            possibleAnswers: mappedAnswers,
-        };
+      }
+      // const answer = answerResponse.data.find((answer: IMultipleChoiceAnswers) => answer.question === question.id && answer.correct === question.answer);
+      return {
+        id: question._id,
+        question: question.question,
+        possibleAnswers: mappedAnswers,
+      };
     });
     return questions;
-    } catch (error) {
-        console.log("Error fetching questions and answers", error);
-        return [];
-    }
+  } catch (error) {
+    console.log("Error fetching questions and answers", error);
+    return [];
+  }
 }
 
 interface GamePageProps {}
@@ -63,10 +66,9 @@ const GamePage: React.FC<GamePageProps> = () => {
   useEffect(() => {
     fetchQuestionsAndAnswers("65d679f08f3afb1b89eebfc3").then((questions) => {
       setQuestionSet(questions);
-      console.log(questions);
     });
     fetchUsersInClass();
-  }, []); 
+  }, []);
 
   async function fetchUsersInClass() {
     try {
@@ -93,14 +95,14 @@ const GamePage: React.FC<GamePageProps> = () => {
       {/* AutoFlashcard component */}
       {questionSet == null && <div>Loading...</div>}
       {!!questionSet && questionSet.length === 0 && <div>None questions?</div>}
-      {!!questionSet && questionSet.length !== 0 &&
-      <AutoFlashcard
-        questionSet={questionSet}
-        onQuestionAnswer={(lastQuestionRight: boolean) => {}}
-        currentQuestionIdx={0}
-        resultTimeSecs={10}
-      />
-}
+      {!!questionSet && questionSet.length !== 0 && (
+        <AutoFlashcard
+          questionSet={questionSet}
+          onQuestionAnswer={(lastQuestionRight: boolean) => {}}
+          currentQuestionIdx={0}
+          resultTimeSecs={10}
+        />
+      )}
       {/* PeoplePicker component */}
       <PeoplePicker
         selectedPerson={selectedPerson}
