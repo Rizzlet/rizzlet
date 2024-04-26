@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { AutoFlashcard } from "./AutoFlashcard"; // Assuming you have AutoFlashcard component
-import PeoplePicker from "./PeoplePicker"; // Assuming you have PeoplePicker component
+import { AutoFlashcard } from "./AutoFlashcard";
+import PeoplePicker from "./PeoplePicker";
 
 interface Question {
   id: string;
@@ -10,17 +10,47 @@ interface Question {
   possibleAnswers: string[];
 }
 
-async function fetchQuestions(classId: string | undefined): Promise<Question[]> {
+interface IMultipleChoiceAnswers {
+    _id: string;
+    answer: string;
+    correct: boolean;
+    question: string;
+  }
+
+async function fetchQuestionsAndAnswers(classId: string | undefined): Promise<Question[]> {
   try {
-    const response = await axios.get<any>(
+    const questionResponse = await axios.get<any>(
       new URL(`/api/class/${classId}`, process.env.REACT_APP_BACKEND_URL!).href,
       { withCredentials: true }
     );
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching questions:", error);
-    return [];
-  }
+
+    const answerResponse = await axios.get<IMultipleChoiceAnswers[]> (
+        new URL("/api/question/multipleChoiceAnswers",
+            process.env.REACT_APP_BACKEND_URL!
+        ).href,
+        { withCredentials: true }
+        );
+
+    const questions: Question[] = questionResponse.data.map((question: any) => {
+        const mappedAnswers = [];
+        for (let i = 0; i < answerResponse.data.length; i++){
+            if (question.id === answerResponse.data[i].question){
+                mappedAnswers.push(answerResponse.data[i].answer);
+            }
+        }
+        console.log(mappedAnswers);
+        // const answer = answerResponse.data.find((answer: IMultipleChoiceAnswers) => answer.question === question.id && answer.correct === question.answer);
+        return {
+            id: question.answer.question,
+            question: question.question,
+            possibleAnswers: mappedAnswers,
+        };
+    });
+    return questions;
+    } catch (error) {
+        console.log("Error fetching questions and answers", error);
+        return [];
+    }
 }
 
 interface GamePageProps {}
@@ -31,9 +61,9 @@ const GamePage: React.FC<GamePageProps> = () => {
   const [usersInClass, setUsersInClass] = useState<any[]>([]);
 
   useEffect(() => {
-    fetchQuestions("65d679f08f3afb1b89eebfc3").then((questions) => {
+    fetchQuestionsAndAnswers("65d679f08f3afb1b89eebfc3").then((questions) => {
       setQuestionSet(questions);
-      console.log("~~~")
+      console.log(questions);
     });
     fetchUsersInClass();
   }, []); 
@@ -57,9 +87,6 @@ const GamePage: React.FC<GamePageProps> = () => {
     setSelectedPerson(id);
     console.log("Selected person:", id);
   }
-
-  console.log("QS")
-  console.log(questionSet)
 
   return (
     <div className="grid grid-cols-2 gap-4">
