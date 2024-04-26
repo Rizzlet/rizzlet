@@ -23,9 +23,7 @@ function QuestionOverview() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
   const limit = searchParams.get("limit") || postsPerPage;
-  // const classID = useParams();
-  const classID = "65d679f08f3afb1b89eebfc3"
-
+  const classID = useParams();
 
   //sets current page
   useEffect(() => {
@@ -47,6 +45,9 @@ function QuestionOverview() {
     });
   }, [currentPage, limit]);
   // console.log("total pages: ", totalPages);
+
+
+  
 
   //fetches paginated data and the total pages of all questions
 async function fetchQuestions(page: number, limit: number) {
