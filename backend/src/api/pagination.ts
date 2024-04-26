@@ -44,6 +44,7 @@ async function paginatedResults<T>(
   };
 }
 
+//used for question overview for each class
 export async function paginatedQuestionsByClass(
   req: Request,
   res: Response,
@@ -71,13 +72,14 @@ export async function paginatedQuestionsByClass(
       return;
     }
 
+    console.log("questionsByClass", questionsByClass);
+
     // Pass the populated questions to the paginatedResults function
     const paginationAllQuestionsHandler = await paginatedResults(questionsByClass);
     await paginationAllQuestionsHandler(req, res, next); // Call the paginationHandler function
 
     // Access paginated results from res.locals.paginatedResults
     const paginatedData = res.locals.paginatedResults.results;
-    // console.log("allQuestions", allQuestions);
     const totalQuestions = questionsByClass.length;
     res.send({ paginatedData, totalQuestions }); //sent paginateddata and totalQuestion
   } catch (error) {
@@ -86,6 +88,7 @@ export async function paginatedQuestionsByClass(
   }
 }
 
+//used for profile page
 export async function paginatedQuestionsByUser(
   req: Request,
   res: Response,
