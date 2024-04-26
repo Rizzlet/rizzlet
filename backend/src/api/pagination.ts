@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { Question } from "../models/question.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
-import { getQuestionsFromClassForUser } from "../models/question.js";
 
 // documents is the data you want to paginate
 async function paginatedResults<T>(
@@ -51,26 +50,27 @@ export async function paginatedQuestionsByClass(
   next: NextFunction,
 ) {
   try {
-    // Populate the 'createdBy' field for all questions
+    console.log("hallo!!")
+
     const classId = req.params["id"];
-    const userData = verifyAndDecodeToken(req.cookies.token);
-  
-    if (!userData) {
-      res.status(401);
-      return;
-    }
-  
     if (!classId) {
       res.send({ message: "Missing Class Id" }).status(401);
       return;
     }
   
-    const questionsByClass = await getQuestionsFromClassForUser(userData.id, classId);
+    console.log("classId", classId);
+
+    const questionsByClass = await Question.find({ class: classId }).exec();
   
     if (!questionsByClass) {
       res.status(401);
       return;
     }
+
+    // try {
+    //   // Populate the 'createdBy' field for all questions
+    //   const questionsByClass = await Question.find().populate("createdBy").exec();
+  
 
     console.log("questionsByClass", questionsByClass);
 
@@ -81,6 +81,8 @@ export async function paginatedQuestionsByClass(
     // Access paginated results from res.locals.paginatedResults
     const paginatedData = res.locals.paginatedResults.results;
     const totalQuestions = questionsByClass.length;
+    console.log("paginatedData", paginatedData);
+    console.log("totalQuestions", totalQuestions)
     res.send({ paginatedData, totalQuestions }); //sent paginateddata and totalQuestion
   } catch (error) {
     console.error("Error paginating questions:", error);

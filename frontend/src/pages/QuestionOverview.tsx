@@ -50,18 +50,19 @@ function QuestionOverview() {
   
 
   //fetches paginated data and the total pages of all questions
-async function fetchQuestions(page: number, limit: number) {
-  try {
-    const response = await axios.get<any>(
-      `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?classId=${classID}&page=${page}&limit=${limit}`, // Include classId in the URL
-      { withCredentials: true }
-    );
-    return response.data;
-  } catch (error) {
-    console.log("fetch error: ", error);
-    return { paginatedData: [], totalQuestions: 0 };
+  async function fetchQuestions(page: number, limit: number) {
+    try {
+      const response = await axios.get<any>(
+        //fetches paginated data and the total pages of all questions
+        `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?classId=${classID}&page=${page}&limit=${limit}`, // Include classId in the URL
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("fetch error: ", error);
+      return { paginatedData: [], totalQuestions: 0 };
+    }
   }
-}
   console.log("paginatedData", questions)
   console.log("cur pages: ", currentPage);
 
