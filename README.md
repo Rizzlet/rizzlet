@@ -1,5 +1,6 @@
 # Rizzlet
 
+![CI](https://github.com/Rizzlet/rizzlet/actions/workflows/ci.yaml/badge.svg)
 ### Design
 
 Technical Spec - [Link](https://docs.google.com/document/d/1pt8KaxrR4H4lkDkm3iwLrpPXjrTpsPzHESjQOSDFHxA/edit?usp=sharing)
