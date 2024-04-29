@@ -121,16 +121,15 @@ const GamePage: React.FC<GamePageProps> = () => {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-       <div className="grid grid-cols-2 gap-2 h-screen overflow-hidden">
-      {/*left side of the screen */}
+    <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">
+      {/* Left side of the screen */}
       <div className="col-span-1 bg-[url('https://s3.amazonaws.com/spoonflower/public/design_thumbnails/0424/5908/1431605648965_shop_thumb.png')] p-4 pt-5">
         {/* PeoplePicker component */}
         <Select
-            selectedPerson={selectedPerson}
-            onSelectPerson={handleSelectPerson}
-            disabled={disabled}
-            people={usersInClass}
+          selectedPerson={selectedPerson}
+          onSelectPerson={handleSelectPerson}
+          disabled={disabled}
+          people={usersInClass}
         />
         {/* Attack Button */}
         <div className="flex justify-center items-center">
@@ -148,38 +147,36 @@ const GamePage: React.FC<GamePageProps> = () => {
               width="24"
               height="24"
               viewBox="0 0 24 24"
-              stroke-width="2"
+              strokeWidth="2"
               stroke="currentColor"
               fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              {" "}
-              <path stroke="none" d="M0 0h24v24H0z" />{" "}
+              <path stroke="none" d="M0 0h24v24H0z" />
               <path d="M18 15a6 6 0 1 1 -10.853 -3.529c1.926-2.338 4.763-3.327 3.848-8.47 2.355 1.761 5.84 5.38 2.022 9.406-1.136 1.091-.244 2.767 1.221 2.593.882-.105 2.023-.966 3.23-2.3.532.68.532 1.717.532 2.3z" />
             </svg>
-            <div className="text-base mr-2 ml-1">
-              Attack
-            </div>
+            <div className="text-base mr-2 ml-1">Attack</div>
           </button>
         </div>
       </div>
-      {/* right side of the screen */}
-      <div className="col-span-1 bg-gray-300 p-4"></div>
-    </div>
-          {/* AutoFlashcard component */}
-          {questionSet == null && <div>Loading...</div>}
-      {!!questionSet && questionSet.length === 0 && <div>None questions?</div>}
-      {!!questionSet && questionSet.length !== 0 && (
-        <AutoFlashcard
-          questionSet={questionSet}
-          onQuestionAnswer={(lastQuestionRight: boolean) => {}}
-          currentQuestionIdx={0}
-          resultTimeSecs={10}
-        />
-      )}
+      {/* Right side of the screen */}
+      <div className="col-span-1 bg-gray-300 p-4">
+        {/* AutoFlashcard component */}
+        {questionSet == null && <div>Loading...</div>}
+        {!!questionSet && questionSet.length === 0 && <div>None questions?</div>}
+        {!!questionSet && questionSet.length !== 0 && (
+          <AutoFlashcard
+            questionSet={questionSet}
+            onQuestionAnswer={(lastQuestionRight: boolean) => {}}
+            currentQuestionIdx={0}
+            resultTimeSecs={10}
+          />
+        )}
+      </div>
     </div>
   );
+  
 };
 
 export default GamePage;
