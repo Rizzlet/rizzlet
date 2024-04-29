@@ -3,6 +3,7 @@ import axios from "axios";
 import { AutoFlashcard } from "./AutoFlashcard";
 import PeoplePicker from "./PeoplePickerPage";
 import Select from "./PeoplePicker";
+import { Timer } from "./Timer";
 
 interface Question {
   id: string;
@@ -63,6 +64,9 @@ const GamePage: React.FC<GamePageProps> = () => {
   const [questionSet, setQuestionSet] = useState<Question[] | null>(null);
   const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
   const [usersInClass, setUsersInClass] = useState<any[]>([]);
+  const [start, setStart] = useState(false);
+  const [reset, setReset] = useState(false);
+  const [timeInCentiseconds, setTimeInCentiseconds] = useState(0);
 
   const classId = "65d679f08f3afb1b89eebfc3";
   const disabled = false;
@@ -119,6 +123,21 @@ const GamePage: React.FC<GamePageProps> = () => {
       console.log(error, "Error updating user health");
     }
   }
+  const handleReset = () => {
+    setReset(true); // Signal a rest
+    setTimeout(() => {
+      setReset(false); // Reset the signal
+      setTimeInCentiseconds(0); // Update the display only after the state has been cleared
+    }, 10);
+    setStart(false); // Stop the timer
+  };
+
+  const formatTime = (totalCentiseconds: number): string => {
+    const minutes = Math.floor(totalCentiseconds / 6000).toString().padStart(2, '0');
+    const seconds = Math.floor((totalCentiseconds % 6000) / 100).toString().padStart(2, '0');
+    const centiseconds = (totalCentiseconds % 100).toString().padStart(2, '0');
+    return `${minutes}:${seconds}:${centiseconds}`;
+  };
 
   return (
     <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">
@@ -161,22 +180,47 @@ const GamePage: React.FC<GamePageProps> = () => {
         </div>
       </div>
       {/* Right side of the screen */}
-      <div className="col-span-1 bg-gray-300 p-4">
-        {/* AutoFlashcard component */}
-        {questionSet == null && <div>Loading...</div>}
-        {!!questionSet && questionSet.length === 0 && <div>None questions?</div>}
-        {!!questionSet && questionSet.length !== 0 && (
-          <AutoFlashcard
-            questionSet={questionSet}
-            onQuestionAnswer={(lastQuestionRight: boolean) => {}}
-            currentQuestionIdx={0}
-            resultTimeSecs={10}
+      <div className="col-span-1 bg-gray-200 p-4">
+        {/* TimerPage and AutoFlashcard components */}
+        <div className="flex-grow flex flex-col justify-between">
+        <Timer
+            start={start}
+            reset={reset}
+            timeInCentiseconds={timeInCentiseconds}
+            setTimeInCentiseconds={setTimeInCentiseconds}
           />
-        )}
+          <div className="text-2xl">
+            Time Elapsed: {formatTime(timeInCentiseconds)}
+          </div>
+          
+          {questionSet == null && <div>Loading...</div>}
+          {!!questionSet && questionSet.length === 0 && <div>None questions?</div>}
+          {!!questionSet && questionSet.length !== 0 && (
+            <AutoFlashcard
+              questionSet={questionSet}
+              onQuestionAnswer={(lastQuestionRight: boolean) => {}}
+              currentQuestionIdx={0}
+              resultTimeSecs={10}
+            />
+          )}
+           <div className="flex justify-end mb-10 mr-40 pb-10">
+        <button
+          onClick={() => setStart(!start)}
+          className={`py-2 px-4 rounded transition-colors mx-2 ${start ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
+        >
+          {start ? 'Stop' : 'Start'}
+        </button>
+        <button
+          onClick={handleReset}
+          className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors mx-2"
+        >
+          Reset
+        </button>
+      </div>
+        </div>
       </div>
     </div>
   );
-  
 };
 
 export default GamePage;
