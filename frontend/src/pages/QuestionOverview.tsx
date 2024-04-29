@@ -54,7 +54,7 @@ function QuestionOverview() {
     try {
       const response = await axios.get<any>(
         //fetches paginated data and the total pages of all questions
-        `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?classId=${classID}&page=${page}&limit=${limit}`, // Include classId in the URL
+        `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?page=${page}&limit=${limit}`, // Include classId in the URL
         { withCredentials: true }
       );
       return response.data;
