@@ -28,87 +28,74 @@ const Select: React.FC<PeoplePickerProps> = ({
   console.log("people: ", people);
 
   return (
-    <div className="">
-      <div className="grid grid-cols-2 gap-2 h-screen overflow-hidden">
-        {/*left side of the screen */}
-        <div className="col-span-1 bg-[url('https://s3.amazonaws.com/spoonflower/public/design_thumbnails/0424/5908/1431605648965_shop_thumb.png')] p-4 pt-8">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
-          />
-          {/* rendering the "enemy" */}
-          <div className="">
-            {/* index 0 first*/}
-            <div className="">
-              {people[0] && (
-                <div
-                  key={people[0].id}
-                  onClick={() =>
-                    disabled === false && onSelectPerson(people[0].id)
-                  }
-                >
-                  {avatar(
-                    people[0],
-                    `${people[0].name}`,
-                    people[0].id === selectedPerson,
-                    75,
-                    disabled
-                  )}
-                </div>
+    <div>
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
+      />
+      {/* rendering the "enemy" */}
+      <div>
+        {/* index 0 first*/}
+        <div>
+          {people[0] && (
+            <div
+              key={people[0].id}
+              onClick={() => disabled === false && onSelectPerson(people[0].id)}
+            >
+              {avatar(
+                people[0],
+                `${people[0].name}`,
+                people[0].id === selectedPerson,
+                75,
+                disabled
               )}
             </div>
-            {/* index 1 second user*/}
-            <div className=" mt-6 grid grid-cols-2 col-span-1">
-              {people[1] && (
-                <div
-                  key={people[1].id}
-                  onClick={() =>
-                    disabled === false && onSelectPerson(people[1].id)
-                  }
-                >
-                  {avatar(
-                    people[1],
-                    `${people[1].name}`,
-                    people[1].id === selectedPerson,
-                    50,
-                    disabled
-                  )}
-                </div>
-              )}
-              {/* index 2: third user*/}
-              {people[2] && (
-                <div
-                  key={people[0].id}
-                  onClick={() =>
-                    disabled === false && onSelectPerson(people[2].id)
-                  }
-                >
-                  {avatar(
-                    people[2],
-                    `${people[2].name}`,
-                    people[2].id === selectedPerson,
-                    100,
-                    disabled
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-          {/* The user */}
-          <div className="pt-20">
-            {avatar(
-              authData,
-              `${authData.authUserFullName}`,
-              false,
-              25,
-              false //false so that the user icon is not grayed out (harcoded)
-            )}
-          </div>
+          )}
         </div>
-        {/* right side of the screen */}
-        <div className="col-span-1 bg-gray-300 p-4"></div>
+        {/* index 1 second user*/}
+        <div className=" mt-2 grid grid-cols-2 col-span-1">
+          {people[1] && (
+            <div
+              key={people[1].id}
+              onClick={() => disabled === false && onSelectPerson(people[1].id)}
+            >
+              {avatar(
+                people[1],
+                `${people[1].name}`,
+                people[1].id === selectedPerson,
+                50,
+                disabled
+              )}
+            </div>
+          )}
+          {/* index 2: third user*/}
+          {people[2] && (
+            <div
+              key={people[0].id}
+              onClick={() => disabled === false && onSelectPerson(people[2].id)}
+            >
+              {avatar(
+                people[2],
+                `${people[2].name}`,
+                people[2].id === selectedPerson,
+                100,
+                disabled
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+      {/* The user */}
+      <div className="mt-9 mb-4">
+        {avatar(
+          authData,
+          `${authData.authUserFullName}`,
+          false,
+          25,
+          false //false so that the user icon is not grayed out (harcoded)
+        )}
       </div>
     </div>
   );
