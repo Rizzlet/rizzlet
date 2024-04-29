@@ -28,7 +28,6 @@ const Select: React.FC<PeoplePickerProps> = ({
   console.log("people: ", people);
 
   return (
-<<<<<<< HEAD
     <div>
       <path
         stroke-linecap="round"
