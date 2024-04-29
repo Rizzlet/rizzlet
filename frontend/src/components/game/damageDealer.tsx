@@ -1,8 +1,6 @@
 import axios from "axios";
 import React, { ReactElement, useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
-
 interface Classes {
   id: string;
   name: string;
@@ -66,7 +64,7 @@ export default function DamageDealer<T extends DamageDealerProps>(props: T) {
 
   useEffect(() => {
     mapStudents();
-  }, []);
+  });
 
   return <div>{listOfStudents}</div>;
 }

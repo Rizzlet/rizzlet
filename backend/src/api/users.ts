@@ -5,7 +5,6 @@ import {
   getAllUsersScoreByClass,
   getClass,
   getUserClasses,
-  setScoreForUserByClass,
 } from "..//models/class.js";
 import joi from "joi";
 import { Class } from "../models/class.js";

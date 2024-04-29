@@ -14,7 +14,7 @@ export async function GetUser(): Promise<IUser | null> {
       new URL("/api/user", process.env.REACT_APP_BACKEND_URL!).href,
       {
         withCredentials: true,
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -37,7 +37,7 @@ export default function Profilebar() {
   }, []);
 
   return (
-    <nav className="flex justify-end items-center bg-white h-1/6 pl-5 pr-5">
+    <nav className="flex h-1/6 items-center justify-end bg-white pl-5 pr-5">
       <h1 className="text-4xl">{TheUser?.score}</h1>
     </nav>
   );

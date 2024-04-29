@@ -106,6 +106,7 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
     props.questionToRender,
     isItAnswered,
     props.updatePoints,
+    multipleChoiceAnswers,
   ]);
 
   useEffect(() => {
@@ -116,7 +117,7 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
 
   return (
     <div
-      className={`relative grid grid-rows-2 grid-cols-2 content-evenly h-1/2 w-full`}
+      className={`relative grid h-1/2 w-full grid-cols-2 grid-rows-2 content-evenly`}
     >
       {answersToRender}
     </div>

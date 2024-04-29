@@ -29,8 +29,6 @@ async function fetchQuestions(
 }
 
 export default function FlashcardField() {
-  const [points, setPoints] = useState<number>(0);
-
   // Used to determine what flashcards is shown on screen. Represents the index of the array of flashcards
   let [questionToRender, changeQuestionToRender] = useState(0);
 
@@ -41,10 +39,6 @@ export default function FlashcardField() {
 
   // id of class
   const { id } = useParams();
-
-  async function Sleep(ms: number) {
-    return await new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   // Generates flaschards to be rendered on screen
   function mapQuestions(questionArray: Question[]) {
@@ -73,26 +67,24 @@ export default function FlashcardField() {
 
   const updatePoints = async (newPoints: number) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         "/api/user/score",
         { points: newPoints },
         { withCredentials: true }
       );
-
-      setPoints(newPoints);
     } catch (error) {
       console.error("Error updating user points:", error);
     }
   };
 
   return (
-    <div className="relative flex flex-row justify-center h-svh items-center bg-white m-0 p-0">
-      <div className="relative h-4/5 w-2/5 flex flex-col justify-center items-center m-0 p-0">
-        <div className="relative flex flex-row justify-center items-center text-4xl h-full w-full">
+    <div className="relative m-0 flex h-svh flex-row items-center justify-center bg-white p-0">
+      <div className="relative m-0 flex h-4/5 w-2/5 flex-col items-center justify-center p-0">
+        <div className="relative flex h-full w-full flex-row items-center justify-center text-4xl">
           {mapQuestions(listOfQuestions)[questionToRender]}
 
           <button
-            className="absolute h-1/6 w-1/6 left-full"
+            className="absolute left-full h-1/6 w-1/6"
             onClick={() => {
               if (listOfQuestions.length !== 0) {
                 if (questionToRender === listOfQuestions.length - 1) {
@@ -110,7 +102,7 @@ export default function FlashcardField() {
           </button>
 
           <button
-            className="absolute h-1/6 w-1/6 right-full"
+            className="absolute right-full h-1/6 w-1/6"
             onClick={() => {
               if (listOfQuestions.length !== 0) {
                 if (questionToRender === 0) {

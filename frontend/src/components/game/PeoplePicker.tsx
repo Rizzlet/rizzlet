@@ -1,3 +1,4 @@
+import React from "react";
 import { useAuth } from "../../context/auth/AuthContext";
 import HealthBar from "./HealthBar";
 
@@ -27,6 +28,7 @@ const Select: React.FC<PeoplePickerProps> = ({
   console.log("people: ", people);
 
   return (
+<<<<<<< HEAD
     <div>
       <path
         stroke-linecap="round"

@@ -6,7 +6,7 @@ import {
   RectangleStackIcon,
 } from "@heroicons/react/20/solid";
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import LeaderBoard from "./LeaderBoardPage";
 import FlashcardField from "./AnswerQuestion";

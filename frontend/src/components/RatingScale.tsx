@@ -8,7 +8,7 @@ interface RatingScaleProps {
 
 export default function RatingScale(props: RatingScaleProps) {
   return (
-    <div className="flex items-center justify-center m-8 gap-8 flex-col">
+    <div className="m-8 flex flex-col items-center justify-center gap-8">
       <div className="w-full basis-full">
         <p>How difficult was this question?</p>
         <Likert
