@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AutoFlashcard } from "./AutoFlashcard";
-import PeoplePicker from "./PeoplePickerPage";
 import Select from "./PeoplePicker";
 import { Timer } from "./Timer";
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "./PeoplePicker"; // Import the Select component
-import DamageDealer from "./damageDealer";
 
 function PeoplePicker() {
   const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
