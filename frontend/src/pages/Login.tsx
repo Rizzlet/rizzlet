@@ -36,7 +36,7 @@ export default function LoginPage() {
       .post(
         new URL("/api/auth/google", process.env.REACT_APP_BACKEND_URL!).href,
         { authorizationCode },
-        { withCredentials: true }
+        { withCredentials: true },
       )
       .then((response) => {
         const data = response.data as BackendLoginResponse;

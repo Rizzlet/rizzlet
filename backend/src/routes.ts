@@ -29,6 +29,7 @@ import {} from "./models/user.js";
 import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
 import { getScore } from "./api/users.js";
+import { getUserGroup } from "./api/game.js";
 
 import { fetchMultipleChoiceAnswers } from "./api/answers.js";
 
@@ -56,7 +57,9 @@ export function addRoutes(app: Application) {
   app.get("/api/submitQuestion/classes", requireAuth, getUserClasses);
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.get("/api/user/classes", requireAuth, UserClasses);
+  app.get("/api/game/:classId/group", requireAuth, getUserGroup);
   app.post("/api/class/topFour", requireAuth, getTopTenUsers);
+  app.post("/api/class/", requireAuth, getTopTenUsers);
   app.get("/api/user/score", requireAuth, getScore);
   app.post("/api/user/streak", requireAuth, updateStreakHandler);
   app.get("/api/user/streak", requireAuth, fetchStreakHandler);

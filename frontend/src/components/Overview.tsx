@@ -26,14 +26,14 @@ const Pages: React.FC<PagesProps> = ({
           {totalPages}
         </span>{" "}
       </span>
-      <div className="inline-flex mt-2 xs:mt-0">
+      <div className="xs:mt-0 mt-2 inline-flex">
         <button
-          className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 rounded-s hover:bg-gray-900 dark:bg-teal-100 dark:border-gray-700 dark:text-gray-800 dark:hover:bg-gray-300 dark:hover:text-black"
+          className="flex h-8 items-center justify-center rounded-s bg-gray-800 px-3 text-sm font-medium text-white hover:bg-gray-900 dark:border-gray-700 dark:bg-teal-100 dark:text-gray-800 dark:hover:bg-gray-300 dark:hover:text-black"
           onClick={onPrevClick}
           disabled={currentPage === 1}
         >
           <svg
-            className="w-3.5 h-3.5 me-2 rtl:rotate-180"
+            className="me-2 h-3.5 w-3.5 rtl:rotate-180"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -50,13 +50,13 @@ const Pages: React.FC<PagesProps> = ({
           Prev
         </button>
         <button
-          className="flex items-center justify-center px-3 h-8 text-sm font-medium text-white bg-gray-800 border-0 border-s border-gray-700 rounded-e hover:bg-gray-900 dark:bg-teal-100 dark:border-gray-700 dark:text-gray-800 dark:hover:bg-gray-300 dark:hover:text-black"
+          className="flex h-8 items-center justify-center rounded-e border-0 border-s border-gray-700 bg-gray-800 px-3 text-sm font-medium text-white hover:bg-gray-900 dark:border-gray-700 dark:bg-teal-100 dark:text-gray-800 dark:hover:bg-gray-300 dark:hover:text-black"
           onClick={onNextClick}
           disabled={currentPage === totalPages}
         >
           Next
           <svg
-            className="w-3.5 h-3.5 ms-2 rtl:rotate-180"
+            className="ms-2 h-3.5 w-3.5 rtl:rotate-180"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -103,7 +103,7 @@ function Table(props: TableProps) {
 
 function TableHeader() {
   return (
-    <thead className="text-small bg-[#d3f1e2] text-gray-700 uppercase">
+    <thead className="text-small bg-[#d3f1e2] uppercase text-gray-700">
       <tr>
         <th scope="col" className="px-6 py-3">
           Type

@@ -121,6 +121,48 @@ paths:
           description: Server Exception
         "401":
           description: Unauthorized
+  /game/{classId}/group:
+    get:
+      parameters:
+        - in: path
+          name: classId
+          schema:
+            type: string
+            example: 65d679f08f3afb1b89eebfc3
+          required: true
+          description: Class ID
+      tags:
+        - Game
+      summary: Get the group for that class game for the user logged in
+      operationId: getUserGroup
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  topFour:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        user:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                        score:
+                          type: number
+        "422":
+          description: Validation exception
+        "500":
+          description: Server Exception
+        "401":
+          description: Unauthorized
   /hello:
     post:
       tags:
