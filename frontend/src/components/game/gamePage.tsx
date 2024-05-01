@@ -59,6 +59,12 @@ async function fetchQuestionsAndAnswers(
 
 interface GamePageProps {}
 
+enum GameState {
+  NotStarted = 1,
+  StartFlashcards,
+  SelectTarget,
+}
+
 const GamePage: React.FC<GamePageProps> = () => {
   const [questionSet, setQuestionSet] = useState<Question[] | null>(null);
   const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
@@ -66,6 +72,7 @@ const GamePage: React.FC<GamePageProps> = () => {
   const [start, setStart] = useState(false);
   const [reset, setReset] = useState(false);
   const [timeInCentiseconds, setTimeInCentiseconds] = useState(0);
+  const [notStarted, setNotStarted] = useState(true);
 
   const classId = "65d679f08f3afb1b89eebfc3";
   const disabled = false;
@@ -132,9 +139,13 @@ const GamePage: React.FC<GamePageProps> = () => {
   };
 
   const formatTime = (totalCentiseconds: number): string => {
-    const minutes = Math.floor(totalCentiseconds / 6000).toString().padStart(2, '0');
-    const seconds = Math.floor((totalCentiseconds % 6000) / 100).toString().padStart(2, '0');
-    const centiseconds = (totalCentiseconds % 100).toString().padStart(2, '0');
+    const minutes = Math.floor(totalCentiseconds / 6000)
+      .toString()
+      .padStart(2, "0");
+    const seconds = Math.floor((totalCentiseconds % 6000) / 100)
+      .toString()
+      .padStart(2, "0");
+    const centiseconds = (totalCentiseconds % 100).toString().padStart(2, "0");
     return `${minutes}:${seconds}:${centiseconds}`;
   };
 
@@ -179,44 +190,59 @@ const GamePage: React.FC<GamePageProps> = () => {
         </div>
       </div>
       {/* Right side of the screen */}
-      <div className="col-span-1 bg-gray-200 p-4">
+
+      <div className="col-span-1 bg-gray-200 p-4 flex">
         {/* TimerPage and AutoFlashcard components */}
-        <div className="flex-grow flex flex-col justify-between">
-        <Timer
-            start={start}
-            reset={reset}
-            timeInCentiseconds={timeInCentiseconds}
-            setTimeInCentiseconds={setTimeInCentiseconds}
-          />
-          <div className="text-2xl">
-            Time Elapsed: {formatTime(timeInCentiseconds)}
+        {notStarted && (
+          <div className="container py-10 px-10 min-w-full flex flex-col items-center justify-center">
+            <button
+              className="bg-green-600 text-white hover:bg-green-500 font-bold py-2 px-4 mt-3 w-2/3 h-20 rounded"
+              onClick={() => setNotStarted(false)}
+            >
+              Start Round!
+            </button>
           </div>
-          
-          {questionSet == null && <div>Loading...</div>}
-          {!!questionSet && questionSet.length === 0 && <div>None questions?</div>}
-          {!!questionSet && questionSet.length !== 0 && (
-            <AutoFlashcard
-              questionSet={questionSet}
-              onQuestionAnswer={(lastQuestionRight: boolean) => {}}
-              currentQuestionIdx={0}
-              resultTimeSecs={10}
+        )}
+        {!notStarted && (
+          <div className="flex-grow flex flex-col justify-between">
+            <Timer
+              start={start}
+              reset={reset}
+              timeInCentiseconds={timeInCentiseconds}
+              setTimeInCentiseconds={setTimeInCentiseconds}
             />
-          )}
-           <div className="flex justify-end mb-10 mr-40 pb-10">
-        <button
-          onClick={() => setStart(!start)}
-          className={`py-2 px-4 rounded transition-colors mx-2 ${start ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
-        >
-          {start ? 'Stop' : 'Start'}
-        </button>
-        <button
-          onClick={handleReset}
-          className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors mx-2"
-        >
-          Reset
-        </button>
-      </div>
-        </div>
+            <div className="text-2xl">
+              Time Elapsed: {formatTime(timeInCentiseconds)}
+            </div>
+
+            {questionSet == null && <div>Loading...</div>}
+            {!!questionSet && questionSet.length === 0 && (
+              <div>None questions?</div>
+            )}
+            {!!questionSet && questionSet.length !== 0 && (
+              <AutoFlashcard
+                questionSet={questionSet}
+                onQuestionAnswer={(lastQuestionRight: boolean) => {}}
+                currentQuestionIdx={0}
+                resultTimeSecs={10}
+              />
+            )}
+            <div className="flex justify-end mb-10 mr-40 pb-10">
+              <button
+                onClick={() => setStart(!start)}
+                className={`py-2 px-4 rounded transition-colors mx-2 ${start ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"} text-white`}
+              >
+                {start ? "Stop" : "Start"}
+              </button>
+              <button
+                onClick={handleReset}
+                className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors mx-2"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
