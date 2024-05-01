@@ -23,7 +23,7 @@ function QuestionOverview() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
   const limit = searchParams.get("limit") || postsPerPage;
-  const classID = useParams();
+  const classId = useParams();
 
   //sets current page
   useEffect(() => {
@@ -54,9 +54,10 @@ function QuestionOverview() {
     try {
       const response = await axios.get<any>(
         //fetches paginated data and the total pages of all questions
-        `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?page=${page}&limit=${limit}`, // Include classId in the URL
+        `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?classId=${classId}&page=${page}&limit=${limit}`,
         { withCredentials: true }
       );
+      console.log("classId", classId)
       return response.data;
     } catch (error) {
       console.log("fetch error: ", error);

@@ -52,16 +52,18 @@ export async function paginatedQuestionsByClass(
   try {
     console.log("hallo!!")
 
+    // const classId = "65d679f08f3afb1b89eebfc3";
     const classId = req.params["id"];
-    if (!classId) {
-      res.send({ message: "Missing Class Id" }).status(401);
-      return;
-    }
+    // if (!classId) {
+    //   res.send({ message: "Missing Class Id" }).status(401);
+    //   return;
+    // }
   
-    console.log("classId", classId);
+    // console.log("classId", classId);
 
-    const questionsByClass = await Question.find({ class: classId }).exec();
-  
+    const questionsByClass = await Question.find({ class: classId }).populate("createdBy").exec();
+    // const questionsByClass = await Question.find().populate("createdBy").exec();
+
     if (!questionsByClass) {
       res.status(401);
       return;
@@ -69,7 +71,6 @@ export async function paginatedQuestionsByClass(
 
     // try {
     //   // Populate the 'createdBy' field for all questions
-    //   const questionsByClass = await Question.find().populate("createdBy").exec();
   
 
     console.log("questionsByClass", questionsByClass);
