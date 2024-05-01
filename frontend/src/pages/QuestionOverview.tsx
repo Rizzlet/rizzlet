@@ -64,8 +64,6 @@ function QuestionOverview() {
       return { paginatedData: [], totalQuestions: 0 };
     }
   }
-  // console.log("paginatedData", questions)
-  // console.log("cur pages: ", currentPage);
 
   // decides what previous click does
   const handlePrevClick = () => {
@@ -86,7 +84,7 @@ function QuestionOverview() {
   };
 
   return (
-    <div className="container overflow-hidden">
+    <div className="container">
       <Table questionData={questions} />
       <Pages
         currentPage={currentPage}
