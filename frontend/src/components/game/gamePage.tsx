@@ -118,6 +118,7 @@ export default function GamePage(props: GamePageProps) {
   const [doingFlashcard, setDoingFlashcard] = useState(false);
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
   const [isAttacking, setIsAttacking] = useState(false);
+  const [correctQuestions, setCorrectQuestions] = useState(0);
 
   const classId = "65d679f68f3afb1b89eebfc5";
 
@@ -265,34 +266,47 @@ export default function GamePage(props: GamePageProps) {
           </div>
         )}
 
-        <div className="flex flex-col items-center">
-          <Timer
-            start={doingFlashcard}
-            reset={reset}
-            timeInCentiseconds={timeInCentiseconds}
-            setTimeInCentiseconds={setTimeInCentiseconds}
-          />
-          {(doingFlashcard || isAttacking) && (
+        {isAttacking && (
+          <div className="flex flex-col items-center">
             <div className="text-2xl">
               Time Elapsed: {formatTime(timeInCentiseconds)}
+              <br></br>
+              Questions Correct: {correctQuestions}/{NUMBER_OF_QUESTIONS}
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
         {doingFlashcard && questionSet && questionSet !== "never" && (
-          <AutoFlashcard
-            questionSet={questionSet}
-            onQuestionAnswer={(lastQuestionRight: boolean) => {
-              setCurrentQuestionIdx((last) => {
-                if (last + 1 === NUMBER_OF_QUESTIONS) {
-                  setDoingFlashcard(false);
-                  setIsAttacking(true);
+          <>
+            <div className="flex flex-col items-center">
+              <Timer
+                start={doingFlashcard}
+                reset={reset}
+                timeInCentiseconds={timeInCentiseconds}
+                setTimeInCentiseconds={setTimeInCentiseconds}
+              />
+              {(doingFlashcard || isAttacking) && (
+                <div className="text-2xl">{formatTime(timeInCentiseconds)}</div>
+              )}
+            </div>
+            <AutoFlashcard
+              questionSet={questionSet}
+              onQuestionAnswer={(lastQuestionRight: boolean) => {
+                if (lastQuestionRight) {
+                  setCorrectQuestions((cq) => cq + 1);
                 }
-                return Math.min(NUMBER_OF_QUESTIONS - 1, last + 1);
-              });
-            }}
-            currentQuestionIdx={currentQuestionIdx}
-            resultTimeSecs={0.5}
-          />
+                setCurrentQuestionIdx((last) => {
+                  if (last + 1 === NUMBER_OF_QUESTIONS) {
+                    setDoingFlashcard(false);
+                    setIsAttacking(true);
+                  }
+                  return Math.min(NUMBER_OF_QUESTIONS - 1, last + 1);
+                });
+              }}
+              currentQuestionIdx={currentQuestionIdx}
+              resultTimeSecs={0.5}
+            />
+          </>
         )}
       </div>
     </div>
