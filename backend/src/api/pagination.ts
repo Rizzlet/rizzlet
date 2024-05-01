@@ -50,40 +50,23 @@ export async function paginatedQuestionsByClass(
   next: NextFunction,
 ) {
   try {
-    console.log("hallo!!")
+    const classId = req.query.classId; //find class id from query
+    console.log("classId", classId);
 
-    // const classId = "65d679f08f3afb1b89eebfc3";
-    const classId = req.params["id"];
-    // if (!classId) {
-    //   res.send({ message: "Missing Class Id" }).status(401);
-    //   return;
-    // }
-  
-    // console.log("classId", classId);
-
+    //filter questions based on the class id 
     const questionsByClass = await Question.find({ class: classId }).populate("createdBy").exec();
-    // const questionsByClass = await Question.find().populate("createdBy").exec();
-
     if (!questionsByClass) {
       res.status(401);
       return;
     }
 
-    // try {
-    //   // Populate the 'createdBy' field for all questions
-  
-
-    console.log("questionsByClass", questionsByClass);
-
     // Pass the populated questions to the paginatedResults function
     const paginationAllQuestionsHandler = await paginatedResults(questionsByClass);
     await paginationAllQuestionsHandler(req, res, next); // Call the paginationHandler function
 
-    // Access paginated results from res.locals.paginatedResults
+    // Access paginated results 
     const paginatedData = res.locals.paginatedResults.results;
     const totalQuestions = questionsByClass.length;
-    console.log("paginatedData", paginatedData);
-    console.log("totalQuestions", totalQuestions)
     res.send({ paginatedData, totalQuestions }); //sent paginateddata and totalQuestion
   } catch (error) {
     console.error("Error paginating questions:", error);
@@ -111,7 +94,6 @@ export async function paginatedQuestionsByUser(
 
     const paginatedData = res.locals.paginatedResults.results;
     const totalQuestions = userQuestions.length;
-    console.log("pag user q", paginatedData); // log paginated data, not the handler
     res.send({ paginatedData, totalQuestions });
   } catch (error) {
     console.error("Error paginating user questions:", error);

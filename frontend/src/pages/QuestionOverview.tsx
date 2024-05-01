@@ -23,7 +23,11 @@ function QuestionOverview() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
   const limit = searchParams.get("limit") || postsPerPage;
-  const classId = useParams();
+
+  //get classId from the url
+  const { id } = useParams();
+  // console.log("classId", id); 
+  const classId = id;
 
   //sets current page
   useEffect(() => {
@@ -46,9 +50,6 @@ function QuestionOverview() {
   }, [currentPage, limit]);
   // console.log("total pages: ", totalPages);
 
-
-  
-
   //fetches paginated data and the total pages of all questions
   async function fetchQuestions(page: number, limit: number) {
     try {
@@ -57,15 +58,14 @@ function QuestionOverview() {
         `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?classId=${classId}&page=${page}&limit=${limit}`,
         { withCredentials: true }
       );
-      console.log("classId", classId)
       return response.data;
     } catch (error) {
       console.log("fetch error: ", error);
       return { paginatedData: [], totalQuestions: 0 };
     }
   }
-  console.log("paginatedData", questions)
-  console.log("cur pages: ", currentPage);
+  // console.log("paginatedData", questions)
+  // console.log("cur pages: ", currentPage);
 
   // decides what previous click does
   const handlePrevClick = () => {
@@ -86,7 +86,7 @@ function QuestionOverview() {
   };
 
   return (
-    <div className="container">
+    <div className="container overflow-hidden">
       <Table questionData={questions} />
       <Pages
         currentPage={currentPage}
