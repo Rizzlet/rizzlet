@@ -16,7 +16,7 @@ export default function MyClasses() {
   async function fetchClasses() {
     // Use axios to get the classes from the backend
     const response = await axios.get<ClassItem[]>(
-      process.env.REACT_APP_BACKEND_URL + "/api/class"
+      process.env.REACT_APP_BACKEND_URL + "/api/class",
     );
 
     if (response.status === 200) {
@@ -29,14 +29,14 @@ export default function MyClasses() {
     // Use axios to get the user's classes from the backend
     const userResponse = await axios.get<ClassItem[]>(
       process.env.REACT_APP_BACKEND_URL + "/api/user/classes",
-      { withCredentials: true }
+      { withCredentials: true },
     );
 
     if (userResponse.status === 200) {
       setUserClasses(userResponse.data);
       // Load colors from local storage
       const savedColors: Record<string, string> = {};
-      userResponse.data.forEach(cls => {
+      userResponse.data.forEach((cls) => {
         const savedColor = localStorage.getItem(cls.id);
         if (savedColor) {
           savedColors[cls.id] = savedColor;
@@ -58,7 +58,7 @@ export default function MyClasses() {
         {
           classIds: [classes.id, ...userClasses.map((c) => c.id)],
         },
-        { withCredentials: true }
+        { withCredentials: true },
       )
       .then((res) => {
         if (res.status === 200) {
@@ -81,7 +81,7 @@ export default function MyClasses() {
             .filter((c) => c.id !== classToRemove.id)
             .map((c) => c.id),
         },
-        { withCredentials: true }
+        { withCredentials: true },
       )
       .then((res) => {
         if (res.status === 200) {
@@ -99,9 +99,9 @@ export default function MyClasses() {
   }, []);
 
   const handleColorChange = (classId: string, color: string) => {
-    setClassColors(prevColors => ({
+    setClassColors((prevColors) => ({
       ...prevColors,
-      [classId]: color
+      [classId]: color,
     }));
     localStorage.setItem(classId, color);
   };
@@ -112,24 +112,24 @@ export default function MyClasses() {
         open={showAddClassModal}
         onClose={() => setShowAddClassModal(false)}
         newClasses={allClasses.filter(
-          (c) => !userClasses.some((uc) => uc.id === c.id)
+          (c) => !userClasses.some((uc) => uc.id === c.id),
         )}
         onSubmit={addClass}
       />
-      <div className="flex justify-between items-center">
-        <div className=" bg-primary mb-8 rounded-md items-center justify-center inline-flex">
-          <h1 className="text-4xl m-3 ">My Classes</h1>
+      <div className="flex items-center justify-between">
+        <div className=" mb-8 inline-flex items-center justify-center rounded-md bg-primary">
+          <h1 className="m-3 text-4xl ">My Classes</h1>
         </div>
         <div
-          className="w-10 h-10 rounded-2xl border-2 
-          border-black flex justify-center cursor-pointer 
-          hover:bg-gray-400 transition duration-100 ease-in-out"
+          className="flex h-10 w-10 cursor-pointer 
+          justify-center rounded-2xl border-2 border-black 
+          transition duration-100 ease-in-out hover:bg-gray-400"
           onClick={() => setShowAddClassModal(true)}
         >
-          <p className="text-2xl justify-end">+</p>
+          <p className="justify-end text-2xl">+</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {userClasses.map((cls) => {
           return (
             <ClassWidget

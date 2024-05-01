@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  eslint-frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install NPM dependencies
+        run: npm ci --no-audit
+        working-directory: frontend
+
+      - name: Check Eslint
+        run: npm run lint
+        working-directory: frontend
+
+      - name: Try Build
+        run: npm run build
+        working-directory: frontend
+
+  eslint-backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install NPM dependencies
+        run: npm ci --no-audit
+        working-directory: backend
+
+      - name: Check Eslint
+        run: npm run lint
+        working-directory: backend
+
+      - name: Try Build
+        run: npm run build
+        working-directory: backend

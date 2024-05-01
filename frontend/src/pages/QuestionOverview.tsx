@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Pages } from "../components/Overview";
 //import of router so that it will update URL with each page
+
 import { useParams, useSearchParams } from "react-router-dom";
 
 interface Question {
@@ -79,7 +80,7 @@ function QuestionOverview() {
   const handleNextClick = () => {
     setCurrentPage((prev) => prev + 1); //sets the current page
     if (currentPage < totalPages) {
-      searchParams.set("page", (currentPage + 1).toString()); //navigates to the next page 
+      searchParams.set("page", (currentPage + 1).toString()); //navigates to the next page
       setSearchParams(searchParams);
     }
   };

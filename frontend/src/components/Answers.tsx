@@ -24,7 +24,7 @@ export default function Answers<T extends IAnswer>(props: T) {
       new URL("/api/answeredquestions", process.env.REACT_APP_BACKEND_URL!)
         .href,
       { Question: props.questionAssociated },
-      { withCredentials: true }
+      { withCredentials: true },
     );
   }
 
@@ -40,7 +40,7 @@ export default function Answers<T extends IAnswer>(props: T) {
         {},
         {
           withCredentials: true,
-        }
+        },
       );
       props.updatePoints(1);
     } catch (error) {
@@ -51,7 +51,7 @@ export default function Answers<T extends IAnswer>(props: T) {
   return (
     <div className="flex items-center justify-center">
       <button
-        className={`${props.alreadyAnswered && props.rightAnswer === "true" ? AnswersVariant.correct : props.alreadyAnswered ? AnswersVariant.incorrect : "relative hover: cursor-pointer h-1/2 w-8/12 bg-teal-100 flex items-center justify-around rounded-lg"}`}
+        className={`${props.alreadyAnswered && props.rightAnswer === "true" ? AnswersVariant.correct : props.alreadyAnswered ? AnswersVariant.incorrect : "hover: relative flex h-1/2 w-8/12 cursor-pointer items-center justify-around rounded-lg bg-teal-100"}`}
         onClick={() => {
           if (props.rightAnswer === "true") {
             updateScore();

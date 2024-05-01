@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
 import axios from "axios";
-
 
 const links = [
   { to: "/", text: "Home" },
@@ -39,7 +38,7 @@ export default function NavBar() {
             >
               <span className="sr-only">Open user menu</span>
               <div
-                className="h-8 w-8 flex items-center justify-center rounded-full bg-gray-900 text-gray-50"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-900 text-gray-50"
                 style={{ backgroundColor: authData.profileColor }}
               >
                 {authData.authUserFullName[0]}
@@ -126,7 +125,7 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
           <hr></hr>
           <li>
             <button
-              className="pt-2 block whitespace-nowrap text-sm text-gray-700 hover:bg-gray-100"
+              className="block whitespace-nowrap pt-2 text-sm text-gray-700 hover:bg-gray-100"
               onClick={() => {
                 // redirects to profile page
                 navigate("/profilePage");

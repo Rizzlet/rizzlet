@@ -49,7 +49,7 @@ function ProfilePage() {
       const response = await axios.get<any>(
         process.env.REACT_APP_BACKEND_URL +
           `/api/paginate/question/user?page=${page}&limit=${limit}`,
-        { withCredentials: true }
+        { withCredentials: true },
       );
       return response.data;
     } catch (error) {
@@ -57,8 +57,6 @@ function ProfilePage() {
       return { paginatedData: [], totalQuestions: 0 };
     }
   }
-
-  
 
   return (
     <div className="container">

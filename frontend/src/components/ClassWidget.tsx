@@ -27,9 +27,9 @@ export default function ClassWidget(props: ClassWidgetProps) {
 
   return (
     <div
-      className={`${backgroundColor} border-gray-400 border-2 rounded-xl 
-      min-h-44 flex
-      justify-between max-w-screen-md`}
+      className={`${backgroundColor} flex min-h-44 max-w-screen-md 
+      justify-between rounded-xl
+      border-2 border-gray-400`}
     >
       <div className="m-5">
         <Link
@@ -77,7 +77,7 @@ function DotDotDotMenu(props: {
           <div className="px-1 py-1 ">
             <Menu.Item>
               <button
-                className="text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-200"
+                className="group flex w-full items-center rounded-md px-2 py-2 text-sm text-gray-900 hover:bg-gray-200"
                 onClick={toggleColorModal}
               >
                 <SwatchIcon className="mr-2 h-5 w-5" aria-hidden="true" />
@@ -137,18 +137,18 @@ function ColorModal(props: {
   };
 
   return (
-    <div className="fixed inset-0 overflow-y-auto z-50 flex justify-center items-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg p-4 w-64">
-        <div className="text-lg font-semibold mb-4">Choose Color</div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black bg-opacity-50">
+      <div className="w-64 rounded-lg bg-white p-4">
+        <div className="mb-4 text-lg font-semibold">Choose Color</div>
         <div className="space-y-2">
           {colors.map((color, index) => (
             <button
               key={index}
-              className="flex items-center space-x-2 text-gray-900 group w-full rounded-md px-2 py-2 text-sm hover:bg-gray-100"
+              className="group flex w-full items-center space-x-2 rounded-md px-2 py-2 text-sm text-gray-900 hover:bg-gray-100"
               onClick={() => selectColor(color.value)}
             >
               <div
-                className={`w-6 h-6 rounded-full ${color.value}`}
+                className={`h-6 w-6 rounded-full ${color.value}`}
                 style={{
                   border:
                     selectedColor === color.value ? "2px solid black" : "none",
