@@ -36,20 +36,6 @@ function QuestionOverview() {
 
   //assigns questions and totalPages from the response data
   useEffect(() => {
-    fetchQuestions(currentPage, Number(limit)).then((result) => {
-      if (result && result.paginatedData) {
-        setQuestionData(result.paginatedData);
-        if (Math.ceil(result.totalQuestions / postsPerPage) === 0) {
-          setTotalPages(1);
-        } else {
-          setTotalPages(Math.ceil(result.totalQuestions / postsPerPage));
-          // console.log("total question:", result.totalQuestions)
-        }
-      }
-    });
-  }, [currentPage, limit]);
-  // console.log("total pages: ", totalPages);
-
   //fetches paginated data and the total pages of all questions
   async function fetchQuestions(page: number, limit: number) {
     try {
@@ -64,6 +50,22 @@ function QuestionOverview() {
       return { paginatedData: [], totalQuestions: 0 };
     }
   }
+
+    fetchQuestions(currentPage, Number(limit)).then((result) => {
+      if (result && result.paginatedData) {
+        setQuestionData(result.paginatedData);
+        if (Math.ceil(result.totalQuestions / postsPerPage) === 0) {
+          setTotalPages(1);
+        } else {
+          setTotalPages(Math.ceil(result.totalQuestions / postsPerPage));
+          // console.log("total question:", result.totalQuestions)
+        }
+      }
+    });
+  }, [currentPage, limit, classId]);
+  // console.log("total pages: ", totalPages);
+
+
 
   // decides what previous click does
   const handlePrevClick = () => {
