@@ -4,6 +4,7 @@ import {
   PlayIcon,
   QuestionMarkCircleIcon,
   RectangleStackIcon,
+  BuildingStorefrontIcon,
 } from "@heroicons/react/20/solid";
 import React, { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -13,6 +14,7 @@ import FlashcardField from "./AnswerQuestion";
 import QuestionOverview from "./QuestionOverview";
 import QuestionSubmission from "./FormSubmitQuestions";
 import DamageDealer from "../components/game/damageDealer";
+import ItemShop from "../components/game/ItemShop";
 
 interface UserStats {
   user: string;
@@ -112,6 +114,13 @@ const ClassDashboard: React.FC = () => {
                 <QuestionMarkCircleIcon className="h-4 w-4"></QuestionMarkCircleIcon>
                 Submit Questions
               </button>
+              <button
+                className="flex items-start gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900 transition-all hover:text-gray-900"
+                onClick={(e) => handleLinkClick("itemshop")}
+              >
+                <BuildingStorefrontIcon className="h-4 w-4"></BuildingStorefrontIcon>
+                Item Shop
+              </button>
             </nav>
           </div>
         </div>
@@ -126,6 +135,7 @@ const ClassDashboard: React.FC = () => {
           {selectedLink === "flashcards" && <FlashcardField />}
           {selectedLink === "questions" && <QuestionOverview />}
           {selectedLink === "submit" && <QuestionSubmission />}
+          {selectedLink === "itemshop" && <ItemShop />}
         </div>
       </div>
     </div>
