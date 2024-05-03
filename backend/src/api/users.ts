@@ -203,8 +203,6 @@ export async function updateHealthHandler(req: Request, Res: Response) {
       { $inc: { "scores.$[theElement].health": damageAmount } },
       {
         arrayFilters: [{ "theElement.user": attackUser }],
-        upsert: true,
-        new: true,
       },
     );
 
