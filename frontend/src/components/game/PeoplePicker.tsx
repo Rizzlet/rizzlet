@@ -2,24 +2,18 @@ import React from "react";
 import { useAuth } from "../../context/auth/AuthContext";
 import HealthBar from "./HealthBar";
 
-interface PeoplePickerProps {
+interface PeoplePickerProps<
+  T extends { id: string; firstName: string; lastName: string; health: number },
+> {
   selectedPerson: string | null; // Person's ID
   onSelectPerson: (id: string) => void; // Assume this will change selectedPerson
   disabled: boolean; //disabled until finish answering questions
-  people: {
-    id: string;
-    name: string;
-    health: number;
-    //there is a temporary profile color prop
-  }[]; // Exactly 3
+  people: T[]; // Exactly 3
 }
 
-const Select: React.FC<PeoplePickerProps> = ({
-  selectedPerson,
-  onSelectPerson,
-  disabled,
-  people,
-}) => {
+export default function Select<
+  T extends { id: string; firstName: string; lastName: string; health: number },
+>({ selectedPerson, onSelectPerson, disabled, people }: PeoplePickerProps<T>) {
   const authData = useAuth();
 
   console.log("selectedPerson", selectedPerson);
@@ -46,7 +40,7 @@ const Select: React.FC<PeoplePickerProps> = ({
             >
               {avatar(
                 people[0],
-                `${people[0].name}`,
+                `${people[0].firstName} ${people[0].lastName}`,
                 people[0].id === selectedPerson,
                 75,
                 disabled
@@ -63,7 +57,7 @@ const Select: React.FC<PeoplePickerProps> = ({
             >
               {avatar(
                 people[1],
-                `${people[1].name}`,
+                `${people[0].firstName} ${people[0].lastName}`,
                 people[1].id === selectedPerson,
                 50,
                 disabled
@@ -78,7 +72,7 @@ const Select: React.FC<PeoplePickerProps> = ({
             >
               {avatar(
                 people[2],
-                `${people[2].name}`,
+                `${people[0].firstName} ${people[0].lastName}`,
                 people[2].id === selectedPerson,
                 100,
                 disabled
@@ -99,7 +93,7 @@ const Select: React.FC<PeoplePickerProps> = ({
       </div>
     </div>
   );
-};
+}
 
 // style of the avatar icon
 function avatar(
@@ -142,5 +136,3 @@ function avatar(
     </div>
   );
 }
-
-export default Select;

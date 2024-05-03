@@ -119,7 +119,7 @@ const ClassDashboard: React.FC = () => {
           <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 font-bold text-3xl">
             {selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}
           </header>
-          {selectedLink === "game" && <DamageDealer class={currentClass} />}
+          {selectedLink === "game" && <button>Go to Game!</button>}
           {selectedLink === "leaderboard" && (
             <LeaderBoard classId={params.id} />
           )}

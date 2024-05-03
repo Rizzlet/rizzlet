@@ -3,6 +3,8 @@ import axios from "axios";
 import { AutoFlashcard } from "./AutoFlashcard";
 import Select from "./PeoplePicker";
 import { Timer } from "./Timer";
+import DamageDealer from "./damageDealer";
+import { useAuth } from "../../context/auth/AuthContext";
 
 const NUMBER_OF_QUESTIONS = 5;
 
@@ -100,10 +102,12 @@ async function fetchQuestionsAndAnswers(classId: string | undefined) {
 
 interface GamePageProps {}
 
-enum GameState {
-  NotStarted = 1,
-  StartFlashcards,
-  SelectTarget,
+interface PersonGroupRecord {
+  id: string;
+  lastName: string;
+  firstName: string;
+  profileColor: string;
+  health: number;
 }
 
 export default function GamePage(props: GamePageProps) {
@@ -111,9 +115,7 @@ export default function GamePage(props: GamePageProps) {
     null
   );
   const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
-  const [usersInClass, setUsersInClass] = useState<any[]>([]);
-  const [start, setStart] = useState(false);
-  const [reset, setReset] = useState(false);
+  const [usersInClass, setUsersInClass] = useState<PersonGroupRecord[]>([]);
   const [timeInCentiseconds, setTimeInCentiseconds] = useState(0);
   const [doingFlashcard, setDoingFlashcard] = useState(false);
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
@@ -122,66 +124,33 @@ export default function GamePage(props: GamePageProps) {
 
   const classId = "65d679f68f3afb1b89eebfc5";
 
+  const authData = useAuth();
+
   useEffect(() => {
-    fetchQuestionsAndAnswers(classId).then((questions) => {
-      setQuestionSet(questions);
-    });
-    fetchUserByClass();
-  }, []);
+    async function fetchData() {
+      try {
+        const response = await axios.get<PersonGroupRecord[]>(
+          `${process.env.REACT_APP_BACKEND_URL}/api/game/${classId}/group`,
+          {
+            withCredentials: true,
+          }
+        );
 
-  async function fetchUserByClass() {
-    try {
-      const response = await axios.get<any>(
-        `${process.env.REACT_APP_BACKEND_URL}/api/class/65d679f68f3afb1b89eebfc5/user`,
-        {
-          withCredentials: true,
-        }
-      );
+        const peopleFormat = response.data.filter(
+          (u) => u.id !== authData.authUserId
+        );
 
-      const peopleFormat = response.data.slice(0, 3).map((user: any) => ({
-        id: user._id,
-        name: `${user.firstName} ${user.lastName}`,
-        profileColor: user.profileColor,
-        health: user.health,
-      }));
+        setUsersInClass(peopleFormat);
+      } catch (error) {
+        console.error("fetch error: ", error);
+      }
 
-      setUsersInClass(peopleFormat);
-    } catch (error) {
-      console.log("fetch error: ", error);
+      fetchQuestionsAndAnswers(classId).then((questions) => {
+        setQuestionSet(questions);
+      });
     }
-  }
-
-  function handleSelectPerson(id: string) {
-    if (isAttacking) {
-      setSelectedPerson(id);
-    }
-    console.log("Selected person:", id);
-  }
-
-  async function updateHealth(damage: Number, userToAttack: string) {
-    try {
-      await axios.post(
-        new URL("/api/user/updateHealth", process.env.REACT_APP_BACKEND_URL!)
-          .href,
-        {
-          damageAmount: damage,
-          attackUser: selectedPerson,
-          classId: classId,
-        },
-        { withCredentials: true }
-      );
-    } catch (error) {
-      console.log(error, "Error updating user health");
-    }
-  }
-  const handleReset = () => {
-    setReset(true); // Signal a rest
-    setTimeout(() => {
-      setReset(false); // Reset the signal
-      setTimeInCentiseconds(0); // Update the display only after the state has been cleared
-    }, 10);
-    setStart(false); // Stop the timer
-  };
+    fetchData();
+  }, [setUsersInClass, authData.authUserId]);
 
   const formatTime = (totalCentiseconds: number): string => {
     const minutes = Math.floor(totalCentiseconds / 6000)
@@ -201,42 +170,23 @@ export default function GamePage(props: GamePageProps) {
         {/* PeoplePicker component */}
         <Select
           selectedPerson={selectedPerson}
-          onSelectPerson={handleSelectPerson}
+          onSelectPerson={setSelectedPerson}
           disabled={!isAttacking}
           people={usersInClass}
         />
         {/* Attack Button */}
         <div className="flex justify-center items-center">
-          <button
-            type="button"
-            className={
-              "flex items-center focus:outline-none text-white  focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 " +
-              (isAttacking && selectedPerson
-                ? "bg-red-700 hover:bg-red-800"
-                : "bg-gray-400")
-            }
-            onClick={() =>
-              selectedPerson !== null && updateHealth(-2, selectedPerson)
-            }
-            disabled={!isAttacking}
-          >
-            {/* Fire Icon */}
-            <svg
-              className="h-6 w-6 text-white-600"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              strokeWidth="2"
-              stroke="currentColor"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" />
-              <path d="M18 15a6 6 0 1 1 -10.853 -3.529c1.926-2.338 4.763-3.327 3.848-8.47 2.355 1.761 5.84 5.38 2.022 9.406-1.136 1.091-.244 2.767 1.221 2.593.882-.105 2.023-.966 3.23-2.3.532.68.532 1.717.532 2.3z" />
-            </svg>
-            <div className="text-base mr-2 ml-1">Attack</div>
-          </button>
+          <DamageDealer
+            classId={classId}
+            disabled={!isAttacking || !selectedPerson}
+            targetId={selectedPerson}
+            onClick={() => {
+              setTimeInCentiseconds(0);
+              setIsAttacking(false);
+              setSelectedPerson(null);
+            }}
+            damage={5}
+          />
         </div>
       </div>
       {/* Right side of the screen */}
@@ -281,7 +231,6 @@ export default function GamePage(props: GamePageProps) {
             <div className="flex flex-col items-center">
               <Timer
                 start={doingFlashcard}
-                reset={reset}
                 timeInCentiseconds={timeInCentiseconds}
                 setTimeInCentiseconds={setTimeInCentiseconds}
               />
@@ -299,6 +248,7 @@ export default function GamePage(props: GamePageProps) {
                   if (last + 1 === NUMBER_OF_QUESTIONS) {
                     setDoingFlashcard(false);
                     setIsAttacking(true);
+                    setDoingFlashcard(false);
                   }
                   return Math.min(NUMBER_OF_QUESTIONS - 1, last + 1);
                 });
