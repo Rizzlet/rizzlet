@@ -110,7 +110,7 @@ const router = createBrowserRouter([
     element: <HealthBarPage />,
   },
   {
-    path: "/gamePage",
+    path: "/gamePage/:classId",
     element: (
       <AuthGuard>
         <GamePage />

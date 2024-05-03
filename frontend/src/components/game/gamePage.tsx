@@ -5,6 +5,7 @@ import Select from "./PeoplePicker";
 import { Timer } from "./Timer";
 import DamageDealer from "./damageDealer";
 import { useAuth } from "../../context/auth/AuthContext";
+import { useParams } from "react-router-dom";
 
 const NUMBER_OF_QUESTIONS = 5;
 
@@ -123,9 +124,11 @@ export default function GamePage(props: GamePageProps) {
   const [correctQuestions, setCorrectQuestions] = useState(0);
   const [userHealth, setUserHealth] = useState<null | number>(null);
 
-  const classId = "65d679f08f3afb1b89eebfc3";
-
   const authData = useAuth();
+
+  const params = useParams();
+
+  const classId = params.classId;
 
   useEffect(() => {
     async function fetchData() {
@@ -184,7 +187,7 @@ export default function GamePage(props: GamePageProps) {
         {/* Attack Button */}
         <div className="flex justify-center items-center">
           <DamageDealer
-            classId={classId}
+            classId={classId || ""}
             disabled={!isAttacking || !selectedPerson}
             targetId={selectedPerson}
             onClick={() => {
