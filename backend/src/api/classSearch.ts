@@ -1,6 +1,9 @@
 import joi from "joi";
 import { Request, Response } from "express";
-import { newClass } from "../models/class.js";
+import {
+  addUserRecordInClassIfDoesntAlreadyExist,
+  newClass,
+} from "../models/class.js";
 import { getClassNames } from "../models/class.js";
 import { User, setUserClasses } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
@@ -44,11 +47,15 @@ export async function classHandler(req: Request, res: Response) {
 }
 
 export async function updateUserClassesHandler(req: Request, res: Response) {
-  const { classIds } = req.body;
+  const { classIds } = req.body as { classIds: string[] };
   const userData = verifyAndDecodeToken(req.cookies.token)!;
 
   // Update the user's classIds with the new classes
   const updatedUser = setUserClasses(userData.id, classIds);
+
+  classIds.forEach(async (classId) => {
+    await addUserRecordInClassIfDoesntAlreadyExist(classId, userData.id);
+  });
 
   if (!updatedUser) {
     res.status(404).json({ error: "User not found" });
@@ -86,25 +93,25 @@ export async function fetchQuestionsByClass(req: Request, res: Response) {
 }
 
 export async function fetchUsersByClass(req: Request, res: Response) {
-    const classId = req.params["classId"];
-  
-    if (!classId) {
-      return res.status(400).send({ message: "Missing Class Id" });
-    }
-  
-    try {
-      const allUsersInClass = await getAllUsersInClass(classId);
-  
-      if (!allUsersInClass) {
-        return res.status(404).send({ message: "No users found in the class" });
-      }
-  
-      return res.status(200).json(allUsersInClass);
-    } catch (error) {
-      console.error("Error fetching users by class:", error);
-      return res.status(500).send({ message: "Internal Server Error" });
-    }
+  const classId = req.params["classId"];
+
+  if (!classId) {
+    return res.status(400).send({ message: "Missing Class Id" });
   }
+
+  try {
+    const allUsersInClass = await getAllUsersInClass(classId);
+
+    if (!allUsersInClass) {
+      return res.status(404).send({ message: "No users found in the class" });
+    }
+
+    return res.status(200).json(allUsersInClass);
+  } catch (error) {
+    console.error("Error fetching users by class:", error);
+    return res.status(500).send({ message: "Internal Server Error" });
+  }
+}
 
 export async function getUserClasses(req: Request, res: Response) {
   try {

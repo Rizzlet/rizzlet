@@ -8,12 +8,19 @@ interface PeoplePickerProps<
   selectedPerson: string | null; // Person's ID
   onSelectPerson: (id: string) => void; // Assume this will change selectedPerson
   disabled: boolean; //disabled until finish answering questions
+  userHealth: number;
   people: T[]; // Exactly 3
 }
 
 export default function Select<
   T extends { id: string; firstName: string; lastName: string; health: number },
->({ selectedPerson, onSelectPerson, disabled, people }: PeoplePickerProps<T>) {
+>({
+  selectedPerson,
+  onSelectPerson,
+  disabled,
+  people,
+  userHealth,
+}: PeoplePickerProps<T>) {
   const authData = useAuth();
 
   console.log("selectedPerson", selectedPerson);
@@ -42,7 +49,7 @@ export default function Select<
                 people[0],
                 `${people[0].firstName} ${people[0].lastName}`,
                 people[0].id === selectedPerson,
-                75,
+                people[0].health,
                 disabled
               )}
             </div>
@@ -57,9 +64,9 @@ export default function Select<
             >
               {avatar(
                 people[1],
-                `${people[0].firstName} ${people[0].lastName}`,
+                `${people[1].firstName} ${people[1].lastName}`,
                 people[1].id === selectedPerson,
-                50,
+                people[1].health,
                 disabled
               )}
             </div>
@@ -67,14 +74,14 @@ export default function Select<
           {/* index 2: third user*/}
           {people[2] && (
             <div
-              key={people[0].id}
+              key={people[2].id}
               onClick={() => disabled === false && onSelectPerson(people[2].id)}
             >
               {avatar(
                 people[2],
-                `${people[0].firstName} ${people[0].lastName}`,
+                `${people[2].firstName} ${people[2].lastName}`,
                 people[2].id === selectedPerson,
-                100,
+                people[2].health,
                 disabled
               )}
             </div>
@@ -87,7 +94,7 @@ export default function Select<
           authData,
           `${authData.authUserFullName}`,
           false,
-          25,
+          userHealth,
           false //false so that the user icon is not grayed out (harcoded)
         )}
       </div>

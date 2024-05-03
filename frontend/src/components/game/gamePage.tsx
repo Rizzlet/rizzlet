@@ -121,8 +121,9 @@ export default function GamePage(props: GamePageProps) {
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
   const [isAttacking, setIsAttacking] = useState(false);
   const [correctQuestions, setCorrectQuestions] = useState(0);
+  const [userHealth, setUserHealth] = useState<null | number>(null);
 
-  const classId = "65d679f68f3afb1b89eebfc5";
+  const classId = "65d679f08f3afb1b89eebfc3";
 
   const authData = useAuth();
 
@@ -136,9 +137,14 @@ export default function GamePage(props: GamePageProps) {
           }
         );
 
+        setUserHealth(
+          response.data.find((u) => u.id === authData.authUserId)!.health
+        );
         const peopleFormat = response.data.filter(
           (u) => u.id !== authData.authUserId
         );
+
+        console.log(`PeopleFormat: ${JSON.stringify(peopleFormat)}`);
 
         setUsersInClass(peopleFormat);
       } catch (error) {
@@ -173,6 +179,7 @@ export default function GamePage(props: GamePageProps) {
           onSelectPerson={setSelectedPerson}
           disabled={!isAttacking}
           people={usersInClass}
+          userHealth={userHealth || 100}
         />
         {/* Attack Button */}
         <div className="flex justify-center items-center">
@@ -184,8 +191,15 @@ export default function GamePage(props: GamePageProps) {
               setTimeInCentiseconds(0);
               setIsAttacking(false);
               setSelectedPerson(null);
+              setUsersInClass((oldUsersInClass) => {
+                oldUsersInClass.find((u) => u.id === selectedPerson)!.health -=
+                  5;
+                return oldUsersInClass;
+              });
+              setCurrentQuestionIdx(0);
+              setCorrectQuestions(0);
             }}
-            damage={5}
+            damage={-5}
           />
         </div>
       </div>
