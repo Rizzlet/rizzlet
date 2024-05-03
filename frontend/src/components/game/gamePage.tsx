@@ -191,15 +191,16 @@ export default function GamePage(props: GamePageProps) {
               setTimeInCentiseconds(0);
               setIsAttacking(false);
               setSelectedPerson(null);
-              setUsersInClass((oldUsersInClass) => {
-                oldUsersInClass.find((u) => u.id === selectedPerson)!.health -=
-                  5;
-                return oldUsersInClass;
-              });
+
+              let newUsers = [...usersInClass];
+              newUsers.find((u) => u.id === selectedPerson)!.health -=
+                calculateDamage(correctQuestions, timeInCentiseconds);
+              setUsersInClass(newUsers);
+
               setCurrentQuestionIdx(0);
               setCorrectQuestions(0);
             }}
-            damage={-5}
+            damage={-calculateDamage(correctQuestions, timeInCentiseconds)}
           />
         </div>
       </div>
@@ -233,9 +234,13 @@ export default function GamePage(props: GamePageProps) {
         {isAttacking && (
           <div className="flex flex-col items-center">
             <div className="text-2xl">
-              Time Elapsed: {formatTime(timeInCentiseconds)}
+              Time Elapsed: {formatTime(timeInCentiseconds)} (x
+              {calculateMultiplier(timeInCentiseconds).toFixed(1)} Multiplier)
               <br></br>
-              Questions Correct: {correctQuestions}/{NUMBER_OF_QUESTIONS}
+              Questions Correct: {correctQuestions}/{NUMBER_OF_QUESTIONS} (
+              {calculateBaseDamage(correctQuestions)} Base Damage)<br></br>
+              Total Damage:{" "}
+              {calculateDamage(correctQuestions, timeInCentiseconds)}
             </div>
           </div>
         )}
@@ -275,4 +280,18 @@ export default function GamePage(props: GamePageProps) {
       </div>
     </div>
   );
+}
+
+function calculateDamage(numberCorrect: number, timeCentiseconds: number) {
+  return Math.round(
+    calculateMultiplier(timeCentiseconds) * calculateBaseDamage(numberCorrect)
+  );
+}
+
+function calculateBaseDamage(numberCorrect: number) {
+  return numberCorrect * 3;
+}
+
+function calculateMultiplier(timeCentiseconds: number) {
+  return (15 - timeCentiseconds / 100) / 5;
 }
