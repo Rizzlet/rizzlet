@@ -12,7 +12,6 @@ import LeaderBoard from "./LeaderBoardPage";
 import FlashcardField from "./AnswerQuestion";
 import QuestionOverview from "./QuestionOverview";
 import QuestionSubmission from "./FormSubmitQuestions";
-import DamageDealer from "../components/game/damageDealer";
 
 interface UserStats {
   user: string;
@@ -28,11 +27,6 @@ interface Classes {
 const ClassDashboard: React.FC = () => {
   const [allClasses, setAllClasses] = useState<Classes[]>([]);
   const [className, setClassName] = useState<string>("");
-  const [currentClass, setCurrentClass] = useState<Classes>({
-    id: "",
-    name: "",
-    scores: [],
-  });
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedLink = searchParams.get("tab") || "game";
   const params = useParams<{ id: string }>();
@@ -56,7 +50,6 @@ const ClassDashboard: React.FC = () => {
     const selectedClass = allClasses.find((c) => c.id === params.id);
     if (selectedClass) {
       setClassName(selectedClass.name);
-      setCurrentClass(selectedClass);
     }
   }, [allClasses, params.id]);
 

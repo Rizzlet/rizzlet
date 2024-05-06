@@ -159,7 +159,7 @@ export default function GamePage(props: GamePageProps) {
       });
     }
     fetchData();
-  }, [setUsersInClass, authData.authUserId]);
+  }, [setUsersInClass, authData.authUserId, classId]);
 
   const formatTime = (totalCentiseconds: number): string => {
     const minutes = Math.floor(totalCentiseconds / 6000)
