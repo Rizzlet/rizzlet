@@ -3,7 +3,7 @@ import React from "react";
 const ItemShop = () => {
   const items = [
     { name: "Magic Wand", description: "Deal +5 damage", icon: "fa-magic", cost: "10 Gold" },
-    { name: "Flaming Sword", description: "Deal 8 damage over time", icon: "fa-fire", cost: "12 Gold" },
+    { name: "Flaming Sword", description: "Deal +8 damage", icon: "fa-fire", cost: "15 Gold" },
     { name: "Health Potion", description: "Heal 10 health", icon: "fa-heart", cost: "15 Gold" },
     { name: "Damage Potion", description: "Deal +5 damage, and take +5 incoming damage", icon: "fa-skull-crossbones", cost: "10 Gold" },
     { name: "Defense Potion", description: "-5 incoming damage, but deal -5 damage", icon: "fa-shield-alt", cost: "10 Gold" }
