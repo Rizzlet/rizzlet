@@ -19,6 +19,13 @@ interface IMultipleChoiceAnswers {
   question: string;
 }
 
+interface Item {
+  name: string;
+  description: string;
+  icon: string;
+  cost: string;
+}
+
 async function fetchQuestionsAndAnswers(
   classId: string | undefined
 ): Promise<Question[]> {
@@ -72,7 +79,7 @@ const GamePage: React.FC<GamePageProps> = () => {
   const classId = "65d679f08f3afb1b89eebfc3";
   const disabled = false;
 
-  const items = [
+  const items: Item[] = [
     { name: "Magic Wand", description: "Deal +5 damage", icon: "fa-magic", cost: "10 Gold" },
     { name: "Flaming Sword", description: "Deal +8 damage", icon: "fa-fire", cost: "15 Gold" },
     { name: "Health Potion", description: "Heal 10 health", icon: "fa-heart", cost: "15 Gold" },
@@ -116,7 +123,7 @@ const GamePage: React.FC<GamePageProps> = () => {
     console.log("Selected person:", id);
   }
 
-  const handleItemClick = (item) => {
+  const handleItemClick = (item: Item) => {
     console.log("Item clicked:", item.name);
   };
 
