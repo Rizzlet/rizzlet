@@ -26,27 +26,6 @@ export async function GetIndividualUser(req: Request, res: Response) {
   }
 }
 
-// Don't want the user to be able to update their score
-// Do this automatically
-//
-// export async function UpdateScore(req: Request, res: Response) {
-//   const userData = verifyAndDecodeToken(req.cookies.token);
-//   if (!userData) {
-//     console.log("update score authorization failed");
-//     return;
-//   }
-
-//   try {
-//     await User.findByIdAndUpdate(userData.id, { $inc: { score: 1 } });
-//     const newScore = await User.findById(userData.id);
-//     if (newScore != null) {
-//       res.send(JSON.stringify(newScore.score)).status(201);
-//     }
-//   } catch (error) {
-//     res.status(error);
-//   }
-// }
-
 export async function UserClasses(req: Request, res: Response) {
   const userData = verifyAndDecodeToken(req.cookies.token)!;
 
@@ -218,4 +197,30 @@ export async function updateHealthHandler(req: Request, Res: Response) {
   }
 
   return Res.status(200).json({ request: true });
+}
+
+export async function updateAttackerScoreHandler(req: Request, res: Response) {
+  const userData = verifyAndDecodeToken(req.cookies.token);
+  if (!userData) {
+    console.log("could not find user");
+    return res.status(401).json({ message: "Authorization failed" });;
+  }
+  const { damageAmount, attackUser, classId } = req.body;
+
+  try {
+    const response = await Class.findByIdAndUpdate(
+      classId,
+      { $inc: { "scores.$[theElement].score": damageAmount } },
+      { arrayFilters: [{ "theElement.user": attackUser }] },
+    );
+
+    if (!response) {
+      console.log("Class doesn't exist");
+      return res.status(403).json({ message: "Class does not exist" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  return res.status(200).json({ request: true });
 }

@@ -24,6 +24,7 @@ import {
   UserClasses,
   getTopTenUsers,
   updateHealthHandler,
+  updateAttackerScoreHandler,
 } from "./api/users.js";
 import {} from "./models/user.js";
 import { CheckAnswered } from "./api/answeredQuestion.js";
@@ -76,4 +77,5 @@ export function addRoutes(app: Application) {
   app.get("/api/paginate/question", requireAuth, paginatedAllQuestions);
   app.get("/api/paginate/question/user", paginatedQuestionsByUser);
   app.post("/api/user/updateHealth", requireAuth, updateHealthHandler);
+  app.post("/api/user/updateAttackerScore", requireAuth, updateAttackerScoreHandler);
 }

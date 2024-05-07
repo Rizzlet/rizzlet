@@ -67,7 +67,7 @@ const GamePage: React.FC<GamePageProps> = () => {
   const [reset, setReset] = useState(false);
   const [timeInCentiseconds, setTimeInCentiseconds] = useState(0);
 
-  const classId = "65d679f08f3afb1b89eebfc3";
+  const classId = "6639621b85a8eed2178506f6";
   const disabled = false;
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const GamePage: React.FC<GamePageProps> = () => {
   async function fetchUserByClass() {
     try {
       const response = await axios.get<any>(
-        `${process.env.REACT_APP_BACKEND_URL}/api/class/65d679f08f3afb1b89eebfc3/user`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
         {
           withCredentials: true,
         }
