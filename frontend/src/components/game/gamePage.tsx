@@ -3,6 +3,7 @@ import axios from "axios";
 import { AutoFlashcard } from "./AutoFlashcard";
 import Select from "./PeoplePicker";
 import { Timer } from "./Timer";
+import { useAuth } from "../../context/auth/AuthContext";
 
 interface Question {
   id: string;
@@ -69,6 +70,7 @@ const GamePage: React.FC<GamePageProps> = () => {
 
   const classId = "6639621b85a8eed2178506f6";
   const disabled = false;
+  const authData = useAuth();
 
   useEffect(() => {
     fetchQuestionsAndAnswers(classId).then((questions) => {
@@ -122,6 +124,27 @@ const GamePage: React.FC<GamePageProps> = () => {
       console.log(error, "Error updating user health");
     }
   }
+
+  //update the score of the attacker based on damage
+  async function updateAttackerScore(damage: Number, attacker: string) {
+    try {
+      await axios.post(
+        new URL(
+          "/api/user/updateAttackerScore",
+          process.env.REACT_APP_BACKEND_URL!
+        ).href,
+        {
+          damageAmount: damage,
+          attacker: authData,
+          classId: classId,
+        },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.log(error, "Error updating user health");
+    }
+  }
+
   const handleReset = () => {
     setReset(true); // Signal a rest
     setTimeout(() => {
@@ -132,9 +155,13 @@ const GamePage: React.FC<GamePageProps> = () => {
   };
 
   const formatTime = (totalCentiseconds: number): string => {
-    const minutes = Math.floor(totalCentiseconds / 6000).toString().padStart(2, '0');
-    const seconds = Math.floor((totalCentiseconds % 6000) / 100).toString().padStart(2, '0');
-    const centiseconds = (totalCentiseconds % 100).toString().padStart(2, '0');
+    const minutes = Math.floor(totalCentiseconds / 6000)
+      .toString()
+      .padStart(2, "0");
+    const seconds = Math.floor((totalCentiseconds % 6000) / 100)
+      .toString()
+      .padStart(2, "0");
+    const centiseconds = (totalCentiseconds % 100).toString().padStart(2, "0");
     return `${minutes}:${seconds}:${centiseconds}`;
   };
 
@@ -154,9 +181,12 @@ const GamePage: React.FC<GamePageProps> = () => {
           <button
             type="button"
             className="flex items-center focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-            onClick={() =>
-              selectedPerson !== null && updateHealth(-2, selectedPerson)
-            }
+            onClick={() => {
+              if (selectedPerson !== null) {
+                updateHealth(-2, selectedPerson);
+                updateAttackerScore(2, authData.authUserId);
+              }
+            }}
             disabled={disabled}
           >
             {/* Fire Icon */}
@@ -182,7 +212,7 @@ const GamePage: React.FC<GamePageProps> = () => {
       <div className="col-span-1 bg-gray-200 p-4">
         {/* TimerPage and AutoFlashcard components */}
         <div className="flex-grow flex flex-col justify-between">
-        <Timer
+          <Timer
             start={start}
             reset={reset}
             timeInCentiseconds={timeInCentiseconds}
@@ -191,9 +221,11 @@ const GamePage: React.FC<GamePageProps> = () => {
           <div className="text-2xl">
             Time Elapsed: {formatTime(timeInCentiseconds)}
           </div>
-          
+
           {questionSet == null && <div>Loading...</div>}
-          {!!questionSet && questionSet.length === 0 && <div>None questions?</div>}
+          {!!questionSet && questionSet.length === 0 && (
+            <div>None questions?</div>
+          )}
           {!!questionSet && questionSet.length !== 0 && (
             <AutoFlashcard
               questionSet={questionSet}
@@ -202,20 +234,20 @@ const GamePage: React.FC<GamePageProps> = () => {
               resultTimeSecs={10}
             />
           )}
-           <div className="flex justify-end mb-10 mr-40 pb-10">
-        <button
-          onClick={() => setStart(!start)}
-          className={`py-2 px-4 rounded transition-colors mx-2 ${start ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
-        >
-          {start ? 'Stop' : 'Start'}
-        </button>
-        <button
-          onClick={handleReset}
-          className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors mx-2"
-        >
-          Reset
-        </button>
-      </div>
+          <div className="flex justify-end mb-10 mr-40 pb-10">
+            <button
+              onClick={() => setStart(!start)}
+              className={`py-2 px-4 rounded transition-colors mx-2 ${start ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"} text-white`}
+            >
+              {start ? "Stop" : "Start"}
+            </button>
+            <button
+              onClick={handleReset}
+              className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition-colors mx-2"
+            >
+              Reset
+            </button>
+          </div>
         </div>
       </div>
     </div>
