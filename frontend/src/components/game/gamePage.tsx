@@ -79,14 +79,6 @@ const GamePage: React.FC<GamePageProps> = () => {
   const classId = "65d679f08f3afb1b89eebfc3";
   const disabled = false;
 
-  const items: Item[] = [
-    { name: "Magic Wand", description: "Deal +5 damage", icon: "fa-magic", cost: "10 Gold" },
-    { name: "Flaming Sword", description: "Deal +8 damage", icon: "fa-fire", cost: "15 Gold" },
-    { name: "Health Potion", description: "Heal 10 health", icon: "fa-heart", cost: "15 Gold" },
-    { name: "Damage Potion", description: "Deal +5 damage, and take +5 incoming damage", icon: "fa-skull-crossbones", cost: "10 Gold" },
-    { name: "Defense Potion", description: "-5 incoming damage, but deal -5 damage", icon: "fa-shield-alt", cost: "10 Gold" }
-];
-
   useEffect(() => {
     fetchQuestionsAndAnswers(classId).then((questions) => {
       setQuestionSet(questions);
@@ -123,10 +115,6 @@ const GamePage: React.FC<GamePageProps> = () => {
     console.log("Selected person:", id);
   }
 
-  const handleItemClick = (item: Item) => {
-    console.log("Item clicked:", item.name);
-  };
-
   async function updateHealth(damage: Number, userToAttack: string) {
     try {
       await axios.post(
@@ -143,6 +131,7 @@ const GamePage: React.FC<GamePageProps> = () => {
       console.log(error, "Error updating user health");
     }
   }
+
   const handleReset = () => {
     setReset(true); // Signal a rest
     setTimeout(() => {
@@ -199,34 +188,29 @@ const GamePage: React.FC<GamePageProps> = () => {
           </button>
         </div>
       </div>
+
+      {/*Shop button*/}
+      
       <button
-        className="fixed bottom-10 left-10 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-        onClick={() => setShowShop(true)}
-      >
+        className="fixed bottom-10 left-10 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => setShowShop(true)}>
         Shop
       </button>
+
+      {/*Shop popup*/}
+
       {showShop && (
-  <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center">
-    <div className="bg-white p-4 rounded-lg max-w-lg w-full">
-      <ItemShop />
-      <button
-        onClick={() => setShowShop(false)}
-        className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Close Shop
-      </button>
-      <div>
-    {items.map((item, index) => (
-      <div key={index} className="flex justify-between items-center p-2 hover:bg-gray-100 rounded cursor-pointer" onClick={() => handleItemClick(item)}>
-        <i className={`fas ${item.icon} fa-lg mr-2`}></i>
-        <span className="flex-1">{item.name}</span>
-        <span>{item.cost}</span>
-      </div>
-    ))}
-  </div>
-    </div>
-  </div>
-)}
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center z-50">
+          <div className="bg-white p-4 rounded-lg max-w-lg w-full">
+            <ItemShop />
+            <button
+              onClick={() => setShowShop(false)}
+              className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              Close Shop
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Right side of the screen */}
       <div className="col-span-1 bg-gray-200 p-4">
