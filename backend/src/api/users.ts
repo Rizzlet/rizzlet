@@ -205,7 +205,7 @@ export async function updateAttackerScoreHandler(req: Request, res: Response) {
     console.log("could not find user");
     return res.status(401).json({ message: "Authorization failed" });;
   }
-  const { damageAmount, attackUser, classId } = req.body;
+  const { damageAmount, attacker, classId } = req.body;
 
   console.log("Request Body:", req.body);
 
@@ -213,9 +213,11 @@ export async function updateAttackerScoreHandler(req: Request, res: Response) {
     const response = await Class.findByIdAndUpdate(
       classId,
       { $inc: { "scores.$[theElement].score": damageAmount } },
-      { arrayFilters: [{ "theElement.user": attackUser }] },
+      { arrayFilters: [{ "theElement.user": attacker }] },
     );
-
+    
+    // console.log("damageAmount", damageAmount)
+    // console.log("attacker", attacker)
     console.log("Response:", response);
 
     if (!response) {

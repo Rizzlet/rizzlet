@@ -135,7 +135,7 @@ const GamePage: React.FC<GamePageProps> = () => {
         ).href,
         {
           damageAmount: damage,
-          attacker: authData,
+          attacker: authData.authUserId,
           classId: classId,
         },
         { withCredentials: true }
