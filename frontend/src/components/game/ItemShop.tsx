@@ -7,6 +7,10 @@ interface Item {
   cost: string;
 }
 
+interface ItemShopProps {
+  onBuyItem: (item: Item) => void;  // Define a prop type for onBuyItem
+}
+
 const items = [
   { name: "Magic Wand", description: "Deal +5 damage", icon: "fa-magic", cost: "10 Gold" },
   { name: "Flaming Sword", description: "Deal +8 damage", icon: "fa-fire", cost: "15 Gold" },
@@ -15,9 +19,7 @@ const items = [
   { name: "Defense Potion", description: "-5 incoming damage, but deal -5 damage", icon: "fa-shield-alt", cost: "10 Gold" }
 ];
 
-const ItemShop: React.FC = () => {
-
-
+const ItemShop: React.FC<ItemShopProps> = ({ onBuyItem }) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const handleItemClick = (itemName: string) => {
@@ -47,14 +49,17 @@ const ItemShop: React.FC = () => {
             </div>
           </div>
         ))}
-        {selectedItem && (
-          <div className="flex justify-center mt-4">
-            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => console.log(`Buying: ${selectedItem}`)}>
-              Buy Item
-            </button>
-          </div>
-        )}
+    {selectedItem && (
+    <div className="flex justify-center mt-4">
+    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+      onClick={() => {
+      const item = items.find(item => item.name === selectedItem);
+        if (item) onBuyItem(item);
+    }}>
+      Buy Item
+    </button>
+  </div>
+)}
       </div>
     </div>
   );

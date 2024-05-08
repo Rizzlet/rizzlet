@@ -75,6 +75,7 @@ const GamePage: React.FC<GamePageProps> = () => {
   const [reset, setReset] = useState(false);
   const [timeInCentiseconds, setTimeInCentiseconds] = useState(0);
   const [showShop, setShowShop] = useState(false);
+  const [inventory, setInventory] = useState<Item[]>([]);
 
   const classId = "65d679f08f3afb1b89eebfc3";
   const disabled = false;
@@ -131,6 +132,14 @@ const GamePage: React.FC<GamePageProps> = () => {
       console.log(error, "Error updating user health");
     }
   }
+
+  const buyItem = (item: Item) => {
+    if (inventory.length < 3) {
+      setInventory(currentInventory => [...currentInventory, item]);
+    } else {
+      alert("Maximum 3 items allowed in inventory.");
+    }
+  };
 
   const handleReset = () => {
     setReset(true); // Signal a rest
@@ -192,7 +201,7 @@ const GamePage: React.FC<GamePageProps> = () => {
       {/*Shop button*/}
       
       <button
-        className="fixed bottom-10 left-10 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        className="fixed bottom-10 right-2/4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => setShowShop(true)}>
         Shop
       </button>
@@ -202,7 +211,7 @@ const GamePage: React.FC<GamePageProps> = () => {
       {showShop && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center z-50">
           <div className="bg-white p-4 rounded-lg max-w-lg w-full">
-            <ItemShop />
+            <ItemShop onBuyItem={buyItem} />
             <button
               onClick={() => setShowShop(false)}
               className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
@@ -211,6 +220,15 @@ const GamePage: React.FC<GamePageProps> = () => {
           </div>
         </div>
       )}
+
+      {/*Inventory*/}
+
+    <div className="fixed bottom-10 left-10">
+    <div className="text-xl font-bold mb-2">Inventory</div>
+      {inventory.map((item: Item, index: number) => (
+    <i key={index} className={`fas ${item.icon} fa-lg mr-2 p-2 rounded-full bg-gray-200`}></i>
+    ))}
+    </div>
 
       {/* Right side of the screen */}
       <div className="col-span-1 bg-gray-200 p-4">

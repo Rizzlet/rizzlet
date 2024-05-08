@@ -135,7 +135,7 @@ const ClassDashboard: React.FC = () => {
           {selectedLink === "flashcards" && <FlashcardField />}
           {selectedLink === "questions" && <QuestionOverview />}
           {selectedLink === "submit" && <QuestionSubmission />}
-          {selectedLink === "itemshop" && <ItemShop />}
+          {/*{selectedLink === "itemshop" && <ItemShop />}*/}
         </div>
       </div>
     </div>
