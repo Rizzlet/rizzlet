@@ -13,7 +13,6 @@ import LeaderBoard from "./LeaderBoardPage";
 import FlashcardField from "./AnswerQuestion";
 import QuestionOverview from "./QuestionOverview";
 import QuestionSubmission from "./FormSubmitQuestions";
-import DamageDealer from "../components/game/damageDealer";
 import Achievements from "../components/Achievements";
 
 
