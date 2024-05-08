@@ -36,7 +36,7 @@ export default function LoginPage() {
       .post(
         new URL("/api/auth/google", process.env.REACT_APP_BACKEND_URL!).href,
         { authorizationCode },
-        { withCredentials: true },
+        { withCredentials: true }
       )
       .then((response) => {
         const data = response.data as BackendLoginResponse;
@@ -85,7 +85,7 @@ export default function LoginPage() {
             <div className="flex items-center justify-center">
               <button
                 className="flex items-center rounded-lg border border-gray-300 bg-white px-6 py-2 text-sm font-medium text-gray-800 shadow-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                onClick={() => login()}
+                onClick={() => setTimeout(() => login(), 10)}
               >
                 <svg
                   className="mr-2 h-6 w-6"
