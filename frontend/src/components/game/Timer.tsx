@@ -2,18 +2,17 @@ import { useEffect } from "react";
 
 interface TimerProps {
   start: boolean;
-  reset: boolean;
   timeInCentiseconds: number;
   setTimeInCentiseconds: (value: number | ((val: number) => number)) => void;
 }
 
-export function Timer({ start, reset, timeInCentiseconds, setTimeInCentiseconds }: TimerProps) {
+export function Timer({ start, setTimeInCentiseconds }: TimerProps) {
   useEffect(() => {
     let interval: number | null = null;
 
     if (start) {
       interval = window.setInterval(() => {
-        setTimeInCentiseconds(time => time + 1);
+        setTimeInCentiseconds((time) => time + 1);
       }, 10);
     }
 
@@ -23,12 +22,6 @@ export function Timer({ start, reset, timeInCentiseconds, setTimeInCentiseconds 
       }
     };
   }, [start, setTimeInCentiseconds]);
-
-  useEffect(() => {
-    if (reset) {
-      setTimeInCentiseconds(0);
-    }
-  }, [reset, setTimeInCentiseconds]);
 
   return null;
 }

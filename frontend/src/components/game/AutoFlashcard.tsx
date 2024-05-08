@@ -5,7 +5,7 @@ interface AutoFlashcardProps {
   questionSet: {
     id: string;
     question: string;
-    answer: string;
+    answers: string[];
     possibleAnswers: string[];
   }[];
   onQuestionAnswer: (lastQuestionRight: boolean) => void;
@@ -39,7 +39,7 @@ export function AutoFlashcard(props: AutoFlashcardProps) {
     if (selectedAnswer === null) {
       setSelectedAnswer(text);
       setTimeout(function () {
-        props.onQuestionAnswer(text === currentQuestion.answer);
+        props.onQuestionAnswer(currentQuestion.answers.includes(text));
       }, props.resultTimeSecs * 1000);
     }
   }
@@ -57,12 +57,13 @@ export function AutoFlashcard(props: AutoFlashcardProps) {
             currentShuffledAnswers.map((possibleAnswer) => (
               <div
                 className={`grid grid-cols-10 border-slate-600 border-2 rounded-md justify-center ${!selectedAnswer ? "hover:bg-gray-300" : ""} ${
-                  !!selectedAnswer && possibleAnswer === currentQuestion.answer
+                  !!selectedAnswer &&
+                  currentQuestion.answers.includes(possibleAnswer)
                     ? "bg-green-300"
                     : ""
                 } ${
                   selectedAnswer === possibleAnswer &&
-                  currentQuestion.answer !== possibleAnswer
+                  !currentQuestion.answers.includes(possibleAnswer)
                     ? "bg-red-300"
                     : ""
                 }`}
@@ -70,13 +71,13 @@ export function AutoFlashcard(props: AutoFlashcardProps) {
               >
                 <div>
                   {!!selectedAnswer &&
-                  possibleAnswer === currentQuestion.answer ? (
+                  currentQuestion.answers.includes(possibleAnswer) ? (
                     <CheckIcon height={40} />
                   ) : (
                     <></>
                   )}
                   {selectedAnswer === possibleAnswer &&
-                  currentQuestion.answer !== possibleAnswer ? (
+                  !currentQuestion.answers.includes(possibleAnswer) ? (
                     <XMarkIcon height={40} />
                   ) : (
                     <></>
