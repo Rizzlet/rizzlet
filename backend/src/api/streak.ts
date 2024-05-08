@@ -20,18 +20,18 @@ export async function fetchStreakHandler(req: Request, res: Response) {
 }
 
 export async function updateStreakHandler(req: Request, res: Response) {
-    const userData = verifyAndDecodeToken(req.cookies.token);
-  
-    if (!userData) {
-      res.status(401).json({ error: "Unauthorized" });
-      return;
-    }
-  
-    try {
-      const streak = await calculateStreak(userData.id);
-      res.status(200).json({ streak });
-    } catch (error) {
-      console.error("Error updating streak:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
+  const userData = verifyAndDecodeToken(req.cookies.token);
+
+  if (!userData) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
   }
+
+  try {
+    const streak = await calculateStreak(userData.id);
+    res.status(200).json({ streak });
+  } catch (error) {
+    console.error("Error updating streak:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}

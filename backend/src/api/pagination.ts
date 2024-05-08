@@ -43,23 +43,30 @@ async function paginatedResults<T>(
   };
 }
 
-export async function paginatedAllQuestions(
+//used for question overview for each class
+export async function paginatedQuestionsByClass(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    // Populate the 'createdBy' field for all questions
-    const allQuestions = await Question.find().populate("createdBy").exec();
+    const classId = req.query.classId; //find class id from query
+    console.log("classId", classId);
+
+    //filter questions based on the class id 
+    const questionsByClass = await Question.find({ class: classId }).populate("createdBy").exec();
+    if (!questionsByClass) {
+      res.status(401);
+      return;
+    }
 
     // Pass the populated questions to the paginatedResults function
-    const paginationAllQuestionsHandler = await paginatedResults(allQuestions);
+    const paginationAllQuestionsHandler = await paginatedResults(questionsByClass);
     await paginationAllQuestionsHandler(req, res, next); // Call the paginationHandler function
 
-    // Access paginated results from res.locals.paginatedResults
+    // Access paginated results 
     const paginatedData = res.locals.paginatedResults.results;
-    // console.log("allQuestions", allQuestions);
-    const totalQuestions = allQuestions.length;
+    const totalQuestions = questionsByClass.length;
     res.send({ paginatedData, totalQuestions }); //sent paginateddata and totalQuestion
   } catch (error) {
     console.error("Error paginating questions:", error);
@@ -67,6 +74,7 @@ export async function paginatedAllQuestions(
   }
 }
 
+//used for profile page
 export async function paginatedQuestionsByUser(
   req: Request,
   res: Response,
@@ -86,7 +94,6 @@ export async function paginatedQuestionsByUser(
 
     const paginatedData = res.locals.paginatedResults.results;
     const totalQuestions = userQuestions.length;
-    console.log("pag user q", paginatedData); // log paginated data, not the handler
     res.send({ paginatedData, totalQuestions });
   } catch (error) {
     console.error("Error paginating user questions:", error);
