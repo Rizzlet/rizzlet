@@ -35,7 +35,7 @@ import { fetchMultipleChoiceAnswers } from "./api/answers.js";
 
 import {
   paginatedQuestionsByUser,
-  paginatedAllQuestions,
+  paginatedQuestionsByClass,
 } from "./api/pagination.js";
 import { fetchStreakHandler, updateStreakHandler } from "./api/streak.js";
 
@@ -73,7 +73,7 @@ export function addRoutes(app: Application) {
     fetchMultipleChoiceAnswers,
   );
 
-  app.get("/api/paginate/question", requireAuth, paginatedAllQuestions);
+  app.get("/api/paginate/question", requireAuth, paginatedQuestionsByClass);
   app.get("/api/paginate/question/user", paginatedQuestionsByUser);
   app.post("/api/user/updateHealth", requireAuth, updateHealthHandler);
 }
