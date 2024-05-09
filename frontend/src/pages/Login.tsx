@@ -1,4 +1,4 @@
-import { CodeResponse, useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useAuth } from "../context/auth/AuthContext";
 import { useEffect } from "react";
@@ -17,7 +17,6 @@ const DEFAULT_ROUTE_AFTER_LOGIN = "/";
 export default function LoginPage() {
   const auth = useAuth();
   const navigate = useNavigate();
-  const params = useParams();
 
   useEffect(() => {
     const code = new URLSearchParams(window.location.search).get("code");
