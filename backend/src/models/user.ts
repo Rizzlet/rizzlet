@@ -41,11 +41,11 @@ const userSchema = new mongoose.Schema({
   },
   streakStartTimestamp: {
     type: Date,
-    default: 0 // Initially set to 0 until a streak is started
+    default: 0, // Initially set to 0 until a streak is started
   },
   streakCount: {
     type: Number,
-    default: 0 // Initially set to 0
+    default: 0, // Initially set to 0
   },
   classIds: [
     {

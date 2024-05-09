@@ -45,7 +45,11 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 addRoutes(app);
 
 app.listen(process.env.PORT || getEnvVars().PORT, () => {
-  console.log(
-    `Server running : http://${getEnvVars().HOST}:${getEnvVars().PORT}/api-docs`,
-  );
+  if (process.env.PORT) {
+    console.log(`Server running on port: ${process.env.PORT}`);
+  } else {
+    console.log(
+      `Server running : http://${getEnvVars().HOST}:${getEnvVars().PORT}/api-docs`,
+    );
+  }
 });

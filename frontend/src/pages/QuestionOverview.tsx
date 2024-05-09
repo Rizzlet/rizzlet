@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Table, Pages } from "../components/Overview";
 //import of router so that it will update URL with each page
-import { useSearchParams } from "react-router-dom";
-
+import { useParams, useSearchParams } from "react-router-dom";
 interface Question {
   _id: string;
   type: string;
@@ -24,6 +23,11 @@ function QuestionOverview() {
   const page = searchParams.get("page") || 1;
   const limit = searchParams.get("limit") || postsPerPage;
 
+  //get classId from the url
+  const { id } = useParams();
+  // console.log("classId", id); 
+  const classId = id;
+
   //sets current page
   useEffect(() => {
     setCurrentPage(Number(page));
@@ -31,6 +35,21 @@ function QuestionOverview() {
 
   //assigns questions and totalPages from the response data
   useEffect(() => {
+  //fetches paginated data and the total pages of all questions
+  async function fetchQuestions(page: number, limit: number) {
+    try {
+      const response = await axios.get<any>(
+        //fetches paginated data and the total pages of all questions
+        `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?classId=${classId}&page=${page}&limit=${limit}`,
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      console.log("fetch error: ", error);
+      return { paginatedData: [], totalQuestions: 0 };
+    }
+  }
+
     fetchQuestions(currentPage, Number(limit)).then((result) => {
       if (result && result.paginatedData) {
         setQuestionData(result.paginatedData);
@@ -42,24 +61,10 @@ function QuestionOverview() {
         }
       }
     });
-  }, [currentPage, limit]);
+  }, [currentPage, limit, classId]);
   // console.log("total pages: ", totalPages);
 
-  //fetches paginated data and the total pages of all questions
-  async function fetchQuestions(page: number, limit: number) {
-    try {
-      const response = await axios.get<any>(
-        `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?page=${page}&limit=${limit}`,
-        { withCredentials: true }
-      );
-      return response.data;
-    } catch (error) {
-      console.log("fetch error: ", error);
-      return { paginatedData: [], totalQuestions: 0 };
-    }
-  }
 
-  console.log("cur pages: ", currentPage);
 
   // decides what previous click does
   const handlePrevClick = () => {

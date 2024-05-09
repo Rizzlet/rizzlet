@@ -2,24 +2,25 @@ import React from "react";
 import { useAuth } from "../../context/auth/AuthContext";
 import HealthBar from "./HealthBar";
 
-interface PeoplePickerProps {
+interface PeoplePickerProps<
+  T extends { id: string; firstName: string; lastName: string; health: number },
+> {
   selectedPerson: string | null; // Person's ID
   onSelectPerson: (id: string) => void; // Assume this will change selectedPerson
   disabled: boolean; //disabled until finish answering questions
-  people: {
-    id: string;
-    name: string;
-    health: number;
-    //there is a temporary profile color prop
-  }[]; // Exactly 3
+  userHealth: number;
+  people: T[]; // Exactly 3
 }
 
-const Select: React.FC<PeoplePickerProps> = ({
+export default function Select<
+  T extends { id: string; firstName: string; lastName: string; health: number },
+>({
   selectedPerson,
   onSelectPerson,
   disabled,
   people,
-}) => {
+  userHealth,
+}: PeoplePickerProps<T>) {
   const authData = useAuth();
 
   console.log("selectedPerson", selectedPerson);
@@ -46,9 +47,9 @@ const Select: React.FC<PeoplePickerProps> = ({
             >
               {avatar(
                 people[0],
-                `${people[0].name}`,
+                `${people[0].firstName} ${people[0].lastName}`,
                 people[0].id === selectedPerson,
-                75,
+                people[0].health,
                 disabled
               )}
             </div>
@@ -63,9 +64,9 @@ const Select: React.FC<PeoplePickerProps> = ({
             >
               {avatar(
                 people[1],
-                `${people[1].name}`,
+                `${people[1].firstName} ${people[1].lastName}`,
                 people[1].id === selectedPerson,
-                50,
+                people[1].health,
                 disabled
               )}
             </div>
@@ -73,14 +74,14 @@ const Select: React.FC<PeoplePickerProps> = ({
           {/* index 2: third user*/}
           {people[2] && (
             <div
-              key={people[0].id}
+              key={people[2].id}
               onClick={() => disabled === false && onSelectPerson(people[2].id)}
             >
               {avatar(
                 people[2],
-                `${people[2].name}`,
+                `${people[2].firstName} ${people[2].lastName}`,
                 people[2].id === selectedPerson,
-                100,
+                people[2].health,
                 disabled
               )}
             </div>
@@ -93,13 +94,13 @@ const Select: React.FC<PeoplePickerProps> = ({
           authData,
           `${authData.authUserFullName}`,
           false,
-          25,
+          userHealth,
           false //false so that the user icon is not grayed out (harcoded)
         )}
       </div>
     </div>
   );
-};
+}
 
 // style of the avatar icon
 function avatar(
@@ -142,5 +143,3 @@ function avatar(
     </div>
   );
 }
-
-export default Select;

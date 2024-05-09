@@ -1,7 +1,7 @@
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import { Request, Response } from "express";
 import joi from "joi";
-import { getAllUsersInClass } from "../models/class.js";
+import { getAllUsersInClass, getClass } from "../models/class.js";
 
 type GetUserGroup = {
   classId: string;
@@ -39,8 +39,13 @@ export async function getUserGroup(req: Request, res: Response) {
     return;
   }
 
+  const scores = (await getClass(body.classId))!.scores;
+
   const users = usersInClass.map((u) => {
     return {
+      health:
+        scores.find((su) => su.user.toString() === u._id.toString())?.health ||
+        100,
       id: u._id.toString(),
       firstName: u.firstName,
       lastName: u.lastName,

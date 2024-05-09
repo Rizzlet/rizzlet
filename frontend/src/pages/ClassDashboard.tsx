@@ -6,13 +6,12 @@ import {
   RectangleStackIcon,
 } from "@heroicons/react/20/solid";
 import React, { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import LeaderBoard from "./LeaderBoardPage";
 import FlashcardField from "./AnswerQuestion";
 import QuestionOverview from "./QuestionOverview";
 import QuestionSubmission from "./FormSubmitQuestions";
-import DamageDealer from "../components/game/damageDealer";
 
 interface UserStats {
   user: string;
@@ -28,11 +27,6 @@ interface Classes {
 const ClassDashboard: React.FC = () => {
   const [allClasses, setAllClasses] = useState<Classes[]>([]);
   const [className, setClassName] = useState<string>("");
-  const [currentClass, setCurrentClass] = useState<Classes>({
-    id: "",
-    name: "",
-    scores: [],
-  });
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedLink = searchParams.get("tab") || "game";
   const params = useParams<{ id: string }>();
@@ -56,7 +50,6 @@ const ClassDashboard: React.FC = () => {
     const selectedClass = allClasses.find((c) => c.id === params.id);
     if (selectedClass) {
       setClassName(selectedClass.name);
-      setCurrentClass(selectedClass);
     }
   }, [allClasses, params.id]);
 
@@ -119,7 +112,16 @@ const ClassDashboard: React.FC = () => {
           <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-gray-100/40 px-6 font-bold text-3xl">
             {selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}
           </header>
-          {selectedLink === "game" && <DamageDealer class={currentClass} />}
+          {selectedLink === "game" && (
+            <div className="container py-10 px-10 min-w-full flex flex-col items-center justify-center ti">
+              <Link
+                className="text-white font-bold py-2 px-4 mt-3 w-2/3 h-20 rounded bg-green-600 hover:bg-green-500 text-center align-middle"
+                to={`/gamePage/${params.id}`}
+              >
+                Open Game!
+              </Link>
+            </div>
+          )}
           {selectedLink === "leaderboard" && (
             <LeaderBoard classId={params.id} />
           )}
