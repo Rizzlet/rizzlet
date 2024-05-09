@@ -2,7 +2,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useAuth } from "../context/auth/AuthContext";
 import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type BackendLoginResponse = {
   firstName: string;
