@@ -163,33 +163,35 @@ export default function GamePage(props: GamePageProps) {
   
 
    useEffect(() => {
+    async function fetchUserByClass() {
+      try {
+        const response = await axios.get<any>(
+          `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
+          {
+            withCredentials: true,
+          }
+        );
+  
+        const peopleFormat = response.data.slice(0, 3).map((user: any) => ({
+          id: user._id,
+          name: `${user.firstName} ${user.lastName}`,
+          profileColor: user.profileColor,
+          health: user.health,
+        }));
+  
+        setUsersInClass(peopleFormat);
+      } catch (error) {
+        console.log("fetch error: ", error);
+      }
+    }
+
     fetchQuestionsAndAnswers(classId).then((questions) => {
       setQuestionSet(questions);
     });
     fetchUserByClass();
-  }, []);
+  }, [classId]);
 
-  async function fetchUserByClass() {
-    try {
-      const response = await axios.get<any>(
-        `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
-        {
-          withCredentials: true,
-        }
-      );
-
-      const peopleFormat = response.data.slice(0, 3).map((user: any) => ({
-        id: user._id,
-        name: `${user.firstName} ${user.lastName}`,
-        profileColor: user.profileColor,
-        health: user.health,
-      }));
-
-      setUsersInClass(peopleFormat);
-    } catch (error) {
-      console.log("fetch error: ", error);
-    }
-  }
+  
         
   //update the score of the attacker based on damage
   async function updateAttackerScore(damage: Number, attacker: string) {
