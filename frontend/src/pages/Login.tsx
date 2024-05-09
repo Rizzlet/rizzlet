@@ -38,6 +38,7 @@ export default function LoginPage() {
             new URLSearchParams(window.location.search).get("code")
           )
       );
+
       axios
         .post(
           new URL("/api/auth/google", process.env.REACT_APP_BACKEND_URL!).href,
