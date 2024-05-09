@@ -2,7 +2,7 @@ import { CodeResponse, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useAuth } from "../context/auth/AuthContext";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 type BackendLoginResponse = {
   firstName: string;
@@ -17,48 +17,66 @@ const DEFAULT_ROUTE_AFTER_LOGIN = "/";
 export default function LoginPage() {
   const auth = useAuth();
   const navigate = useNavigate();
+  const params = useParams();
 
   useEffect(() => {
-    const locationToGoTo =
-      new URLSearchParams(window.location.search).get("from") ||
-      DEFAULT_ROUTE_AFTER_LOGIN;
+    const code = new URLSearchParams(window.location.search).get("code");
+    const state = new URLSearchParams(window.location.search).get("state");
 
     if (auth.isLoggedIn) {
-      navigate(locationToGoTo, { replace: true });
+      navigate(
+        new URLSearchParams(window.location.search).get("from") ||
+          state ||
+          DEFAULT_ROUTE_AFTER_LOGIN,
+        { replace: true }
+      );
     }
-  }, [auth.isLoggedIn, navigate]);
 
-  const handleSuccess = (credentialResponse: CodeResponse) => {
-    const authorizationCode = credentialResponse.code;
+    if (code && !auth.isLoggedIn) {
+      console.log(
+        "Logged in!: " +
+          JSON.stringify(
+            new URLSearchParams(window.location.search).get("code")
+          )
+      );
+      axios
+        .post(
+          new URL("/api/auth/google", process.env.REACT_APP_BACKEND_URL!).href,
+          {
+            authorizationCode: new URLSearchParams(window.location.search).get(
+              "code"
+            ),
+          },
+          { withCredentials: true }
+        )
+        .then((response) => {
+          const data = response.data as BackendLoginResponse;
 
-    // Set the token in local storage so we can persist reload
-    axios
-      .post(
-        new URL("/api/auth/google", process.env.REACT_APP_BACKEND_URL!).href,
-        { authorizationCode },
-        { withCredentials: true }
-      )
-      .then((response) => {
-        const data = response.data as BackendLoginResponse;
+          console.log("Logged in!", response.data);
+          auth.setIsLoggedIn(true);
 
-        console.log("Logged in!", response.data);
-        auth.setIsLoggedIn(true);
+          auth.setAuthUserFullName(`${data.firstName} ${data.lastName}`);
+          localStorage.setItem(
+            "fullName",
+            `${data.firstName} ${data.lastName}`
+          );
 
-        auth.setAuthUserFullName(`${data.firstName} ${data.lastName}`);
-        localStorage.setItem("fullName", `${data.firstName} ${data.lastName}`);
+          auth.setAuthUserId(`${data.id}`);
+          localStorage.setItem("authUserId", data.id);
 
-        auth.setAuthUserId(`${data.id}`);
-        localStorage.setItem("authUserId", data.id);
-      })
-      .catch((error) => {
-        console.error("Unable to contact backend for log in", error);
-      });
-  };
+          navigate(state || DEFAULT_ROUTE_AFTER_LOGIN, { replace: true });
+        })
+        .catch((error) => {
+          console.error("Unable to contact backend for log in", error);
+        });
+    }
+  }, [auth, auth.isLoggedIn, navigate]);
 
   const login = useGoogleLogin({
-    onSuccess: handleSuccess,
     onError: () => console.error("Error logging in"),
     flow: "auth-code",
+    state: new URLSearchParams(window.location.search).get("from") || "",
+    ux_mode: "redirect",
   });
 
   // return

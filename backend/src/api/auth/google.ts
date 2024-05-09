@@ -28,7 +28,7 @@ export async function googleAuthHandler(req: Request, res: Response) {
     code: body.authorizationCode,
     client_id: process.env.GOOGLE_CLIENT_ID,
     client_secret: process.env.GOOGLE_CLIENT_SECRET,
-    redirect_uri: process.env.FRONTEND_BASE_URL + "/oauth2/redirect/google",
+    redirect_uri: process.env.FRONTEND_BASE_URL + "/login",
     grant_type: "authorization_code",
   });
 
