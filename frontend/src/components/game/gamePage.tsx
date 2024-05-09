@@ -160,7 +160,7 @@ export default function GamePage(props: GamePageProps) {
     }
     fetchData();
   }, [setUsersInClass, authData.authUserId, classId]);
-  }
+  
 
    useEffect(() => {
     fetchQuestionsAndAnswers(classId).then((questions) => {
