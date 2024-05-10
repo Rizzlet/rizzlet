@@ -79,5 +79,6 @@ export async function googleAuthHandler(req: Request, res: Response) {
     maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
+  res.header("Access-Control-Allow-Origin", process.env.FRONTEND_BASE_URL);
   res.status(200).json(tokenData);
 }
