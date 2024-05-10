@@ -246,7 +246,7 @@ export default function GamePage(props: GamePageProps) {
               setTimeInCentiseconds(0);
               setIsAttacking(false);
               setSelectedPerson(null);
-              updateAttackerScore(2, authData.authUserId);
+              updateAttackerScore(calculateDamage(correctQuestions, timeInCentiseconds), authData.authUserId);
 
               let newUsers = [...usersInClass];
               newUsers.find((u) => u.id === selectedPerson)!.health -=
