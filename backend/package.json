@@ -6,7 +6,7 @@
   "target": "ES2022",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc || ./node_modules/typescript/bin/tsc",
     "prestart": "npm run build",
     "start": "node .",
     "nodemon": "nodemon -w .env -w swagger.yaml -w src/ -e ts --exec \"yarn start\"",
