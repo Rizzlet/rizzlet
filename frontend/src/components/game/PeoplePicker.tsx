@@ -45,13 +45,15 @@ export default function Select<
               key={people[0].id}
               onClick={() => disabled === false && onSelectPerson(people[0].id)}
             >
-              {avatar(
-                people[0],
-                `${people[0].firstName} ${people[0].lastName}`,
-                people[0].id === selectedPerson,
-                people[0].health,
-                disabled
-              )}
+              {people[0].health <= 0
+                ? ghost(`${people[0].firstName} ${people[0].lastName}`)
+                : avatar(
+                    people[0],
+                    `${people[0].firstName} ${people[0].lastName}`,
+                    people[0].id === selectedPerson,
+                    people[0].health,
+                    disabled
+                  )}
             </div>
           )}
         </div>
@@ -62,7 +64,9 @@ export default function Select<
               key={people[1].id}
               onClick={() => disabled === false && onSelectPerson(people[1].id)}
             >
-              {avatar(
+              {people[1].health <= 0
+                ? ghost(`${people[1].firstName} ${people[1].lastName}`)
+                : avatar(
                 people[1],
                 `${people[1].firstName} ${people[1].lastName}`,
                 people[1].id === selectedPerson,
@@ -77,7 +81,9 @@ export default function Select<
               key={people[2].id}
               onClick={() => disabled === false && onSelectPerson(people[2].id)}
             >
-              {avatar(
+              {people[2].health <= 0
+                ? ghost(`${people[2].firstName} ${people[2].lastName}`)
+                : avatar(
                 people[2],
                 `${people[2].firstName} ${people[2].lastName}`,
                 people[2].id === selectedPerson,
@@ -97,6 +103,31 @@ export default function Select<
           userHealth,
           false //false so that the user icon is not grayed out (harcoded)
         )}
+      </div>
+    </div>
+  );
+}
+
+//style of ghost when the person.health <=0
+function ghost(name: string) {
+  return (
+    <div className="flex flex-col items-center justify-center m-4 mt-8">
+      <svg
+        className="h-20 w-20 text-white flex items-center justify-center animate-pulse"
+        width="60"
+        height="60"
+        viewBox="0 0 24 24"
+        stroke-width="1.25"
+        stroke="currentColor"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" />
+        <path d="M16.882 7.842a4.882 4.882 0 0 0 -9.764 0c0 4.273-.213 6.409-4.118 8.118 2 .882 2 .882 3 3 3 0 4 2 6 2s3-2 6-2c1-2.118 1-2.118 3-3-3.906-1.709-4.118-3.845-4.118-8.118h0zM3 15.961c4-2.118 4-4.118 1-7.118m17 7.118c-4-2.118-4-4.118-1-7.118" />
+      </svg>
+      <div className="font-semibold">
+        {name}
       </div>
     </div>
   );
