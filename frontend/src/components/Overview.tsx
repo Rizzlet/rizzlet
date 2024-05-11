@@ -93,7 +93,7 @@ interface TableProps {
 function Table(props: TableProps) {
   return (
     <div className="relative sm:rounded-lg ">
-      <table className="min-h-[75dvh] w-screen py-2 text-left text-gray-500 rtl:text-right">
+      <table className="w-full min-h-[75dvh] py-2 text-left rtl:text-right text-gray-500">
         <TableHeader />
         <TableBody questionData={props.questionData} />
       </table>

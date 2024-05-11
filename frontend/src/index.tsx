@@ -21,118 +21,106 @@ import RatingPage from "./pages/RatingPage";
 import LeaderBoard from "./pages/LeaderBoardPage";
 import NoClasses from "./pages/AnswerQuestionNoClasses";
 import HealthBarPage from "./components/game/HealthBarPage";
-import PeoplePicker from "./components/game/PeoplePickerPage";
 import GamePage from "./components/game/gamePage";
-import TimerPage from "./components/game/TimerPage";
 
-
-const router = createBrowserRouter([
-  {
-    element: <NavbarWrapper />,
-    children: [
-      {
-        path: "/",
-        element: <HomePage />,
-      },
-      {
-        path: "/myclasses",
-        element: (
-          <AuthGuard>
-            <MyClasses />
-          </AuthGuard>
-        ),
-      },
-      {
-        path: "/submitQuestion",
-        element: (
-          <AuthGuard>
-            <QuestionSubmission />
-          </AuthGuard>
-        ),
-      },
-      {
-        children: [
-          {
-            path: "/classDashboard/:id",
-            element: (
-              <AuthGuard>
-                <ClassDashboard />
-              </AuthGuard>
-            ),
-          },
-        ],
-      },
-      {
-        path: "/answerQuestions",
-        element: (
-          <AuthGuard>
-            <NoClasses />
-          </AuthGuard>
-        ),
-      },
-      {
-        path: "/answerQuestions/:id",
-        element: (
-          <AuthGuard>
-            <FlashcardField />
-          </AuthGuard>
-        ),
-      },
-      {
-        path: "/ratingSample",
-        element: (
-          <AuthGuard>
-            <RatingPage />
-          </AuthGuard>
-        ),
-      },
-      {
-        path: "/overview",
-        element: <QuestionOverview />,
-      },
-      {
-        path: "/leaderBoard/:classId",
-        element: (
-          <AuthGuard>
-            <LeaderBoard />
-          </AuthGuard>
-        ),
-      },
-      {
-        path: "/profilePage",
-        element: <ProfilePage />,
-      },
-    ],
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/healthBar",
-    element: <HealthBarPage />,
-  },
-  {
-  path: "/timer",
-  element: <TimerPage />,
-  },
-  {
-    path: "/peoplePicker",
-    element: (
-      <AuthGuard>
-        <PeoplePicker />
-      </AuthGuard>
-    ),
-  },
-  {
-    path: "/gamePage",
-    element: (
-      <AuthGuard>
-        <GamePage />
-      </AuthGuard>
-    )
-  }
-]);
+const router = createBrowserRouter(
+  [
+    {
+      element: <NavbarWrapper />,
+      children: [
+        {
+          path: "/",
+          element: <HomePage />,
+        },
+        {
+          path: "/myclasses",
+          element: (
+            <AuthGuard>
+              <MyClasses />
+            </AuthGuard>
+          ),
+        },
+        {
+          path: "/submitQuestion",
+          element: (
+            <AuthGuard>
+              <QuestionSubmission />
+            </AuthGuard>
+          ),
+        },
+        {
+          children: [
+            {
+              path: "/classDashboard/:id",
+              element: (
+                <AuthGuard>
+                  <ClassDashboard />
+                </AuthGuard>
+              ),
+            },
+          ],
+        },
+        {
+          path: "/answerQuestions",
+          element: (
+            <AuthGuard>
+              <NoClasses />
+            </AuthGuard>
+          ),
+        },
+        {
+          path: "/answerQuestions/:id",
+          element: (
+            <AuthGuard>
+              <FlashcardField />
+            </AuthGuard>
+          ),
+        },
+        {
+          path: "/ratingSample",
+          element: (
+            <AuthGuard>
+              <RatingPage />
+            </AuthGuard>
+          ),
+        },
+        {
+          path: "/overview",
+          element: <QuestionOverview />,
+        },
+        {
+          path: "/leaderBoard/:classId",
+          element: (
+            <AuthGuard>
+              <LeaderBoard />
+            </AuthGuard>
+          ),
+        },
+        {
+          path: "/profilePage",
+          element: <ProfilePage />,
+        },
+      ],
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/healthBar",
+      element: <HealthBarPage />,
+    },
+    {
+      path: "/gamePage/:classId",
+      element: (
+        <AuthGuard>
+          <GamePage />
+        </AuthGuard>
+      ),
+    },
+  ],
+  { basename: process.env.REACT_APP_BASE_URL }
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

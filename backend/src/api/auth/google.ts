@@ -28,7 +28,7 @@ export async function googleAuthHandler(req: Request, res: Response) {
     code: body.authorizationCode,
     client_id: process.env.GOOGLE_CLIENT_ID,
     client_secret: process.env.GOOGLE_CLIENT_SECRET,
-    redirect_uri: "http://localhost:3000",
+    redirect_uri: process.env.FRONTEND_BASE_URL + "/login",
     grant_type: "authorization_code",
   });
 
@@ -79,5 +79,7 @@ export async function googleAuthHandler(req: Request, res: Response) {
     maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
+  res.header("Access-Control-Allow-Origin", process.env.FRONTEND_BASE_URL);
+  res.header("Referrer-Policy", "no-referrer-when-downgrade");
   res.status(200).json(tokenData);
 }

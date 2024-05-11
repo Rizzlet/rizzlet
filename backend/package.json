@@ -6,9 +6,9 @@
   "target": "ES2022",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc || ./node_modules/typescript/bin/tsc",
     "prestart": "npm run build",
-    "start": "node .",
+    "start": "node dist/index.js",
     "nodemon": "nodemon -w .env -w swagger.yaml -w src/ -e ts --exec \"yarn start\"",
     "pretty": "prettier --write .",
     "lint": "eslint --ignore-path .eslintignore src",

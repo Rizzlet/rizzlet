@@ -201,7 +201,9 @@ export async function updateHealthHandler(req: Request, Res: Response) {
     const response = await Class.findByIdAndUpdate(
       classId,
       { $inc: { "scores.$[theElement].health": damageAmount } },
-      { arrayFilters: [{ "theElement.user": attackUser }] },
+      {
+        arrayFilters: [{ "theElement.user": attackUser }],
+      },
     );
 
     // const response = await Class.updateOne(

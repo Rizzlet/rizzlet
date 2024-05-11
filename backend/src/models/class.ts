@@ -84,13 +84,30 @@ export async function setScoreForUserByClass(
   const userScore = classEntry.scores.find((s) => s.user.toString() === userId);
 
   if (!userScore) {
-    classEntry.scores.push({ user: userId, score });
+    classEntry.scores.push({ user: userId, health: 0, score });
   } else {
     userScore.score = score;
   }
 
   await classEntry.save();
   return true;
+}
+
+export async function addUserRecordInClassIfDoesntAlreadyExist(
+  classId: string,
+  userId: string,
+) {
+  const classEntry = await Class.findById(classId).exec();
+  if (classEntry === null) {
+    return;
+  }
+
+  const userScore = classEntry.scores.find((s) => s.user.toString() === userId);
+
+  if (!userScore) {
+    classEntry.scores.push({ user: userId, health: 0, score: 0 });
+    await classEntry.save();
+  }
 }
 
 function mongooseArrayToArray<T>(mongooseArray: T[]) {
@@ -102,7 +119,6 @@ function mongooseArrayToArray<T>(mongooseArray: T[]) {
 }
 
 export async function getAllUsersInClass(classId: string) {
-
   const classEntry = await Class.findById(classId).exec();
 
   if (classEntry === null) {
@@ -111,4 +127,3 @@ export async function getAllUsersInClass(classId: string) {
   const usersInClass = await User.find({ classIds: classId }).exec();
   return usersInClass;
 }
-
