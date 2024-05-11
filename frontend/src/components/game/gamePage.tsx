@@ -33,6 +33,13 @@ interface QuestionResponse {
   type: string;
 }
 
+interface Item {
+  name: string;
+  description: string;
+  icon: string;
+  cost: string;
+}
+
 async function fetchQuestionsAndAnswers(classId: string | undefined) {
   try {
     const questionResponse = await axios.get<QuestionResponse[]>(
@@ -124,6 +131,8 @@ export default function GamePage(props: GamePageProps) {
   const [isAttacking, setIsAttacking] = useState(false);
   const [correctQuestions, setCorrectQuestions] = useState(0);
   const [userHealth, setUserHealth] = useState<null | number>(null);
+  const [showShop, setShowShop] = useState(false);
+  const [inventory, setInventory] = useState<Item[]>([]);
 
   const authData = useAuth();
 
@@ -171,6 +180,14 @@ export default function GamePage(props: GamePageProps) {
       .padStart(2, "0");
     const centiseconds = (totalCentiseconds % 100).toString().padStart(2, "0");
     return `${minutes}:${seconds}:${centiseconds}`;
+  };
+
+  const buyItem = (item: Item) => {
+    if (inventory.length < 3) {
+      setInventory(currentInventory => [...currentInventory, item]);
+    } else {
+      alert("Maximum 3 items allowed in inventory.");
+    }
   };
 
   return (
