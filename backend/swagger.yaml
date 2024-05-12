@@ -544,18 +544,3 @@ components:
           type: number
           minimum: 1
           maximum: 5
-    Item:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The item ID
-        name:
-          type: string
-          description: The name of the item
-        description:
-          type: string
-          description: The description of the item
-        cost:
-          type: integer
-          description: The cost of the item
