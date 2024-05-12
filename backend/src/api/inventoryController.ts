@@ -2,15 +2,25 @@ import { Request, Response } from 'express';
 import { Inventory } from '../models/inventory.js';
 import { Item } from '../models/item.js';
 import { addItem as addItemToDB } from '../models/item.js';
+import { getAllItems } from '../models/item.js';
 import { verifyAndDecodeToken } from './auth/sharedAuth.js';
 
 export async function addItem(req: Request, res: Response) {
   try {
-      const { name, description, cost } = req.body;
-      const newItem = await addItemToDB(name, description, cost);
+      const { name, description, cost, icon } = req.body;
+      const newItem = await addItemToDB(name, description, cost, icon);
       res.status(201).json(newItem);
   } catch (error) {
       res.status(500).json({ message: "Failed to add item", error: error.message });
+  }
+}
+
+export async function fetchItems(req: Request, res: Response) {
+  try {
+      const items = await getAllItems();
+      res.status(200).json(items);
+  } catch (error) {
+      res.status(500).json({ message: "Failed to fetch items", error: error.message });
   }
 }
 

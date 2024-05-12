@@ -38,7 +38,7 @@ import {
   paginatedQuestionsByClass,
 } from "./api/pagination.js";
 import { fetchStreakHandler, updateStreakHandler } from "./api/streak.js";
-import { addItem, updateItem, addToInventory, getInventory, removeFromInventory } from "./api/inventoryController.js";  
+import { addItem, fetchItems, updateItem, addToInventory, getInventory, removeFromInventory } from "./api/inventoryController.js";  
 
 
 export function addRoutes(app: Application) {
@@ -81,6 +81,7 @@ export function addRoutes(app: Application) {
 
 
   app.post('/api/items', addItem);
+  app.get('/api/items', fetchItems);
   app.put('/api/items/:itemId', updateItem);
   
   app.post('/api/inventory', addToInventory);

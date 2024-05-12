@@ -1,26 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 interface Item {
+  id: string
   name: string;
   description: string;
   icon: string;
-  cost: string;
+  cost: number;
 }
 
 interface ItemShopProps {
-  onBuyItem: (item: Item) => void;  // Define a prop type for onBuyItem
+  onBuyItem: (item: Item) => void;
 }
 
-const items = [
-  { name: "Magic Wand", description: "Deal +5 damage", icon: "fa-magic", cost: "10 Gold" },
-  { name: "Flaming Sword", description: "Deal +8 damage", icon: "fa-fire", cost: "15 Gold" },
-  { name: "Health Potion", description: "Heal 10 health", icon: "fa-heart", cost: "15 Gold" },
-  { name: "Damage Potion", description: "Deal +5 damage, and take +5 incoming damage", icon: "fa-skull-crossbones", cost: "10 Gold" },
-  { name: "Defense Potion", description: "-5 incoming damage, but deal -5 damage", icon: "fa-shield-alt", cost: "10 Gold" }
-];
-
 const ItemShop: React.FC<ItemShopProps> = ({ onBuyItem }) => {
+  const [items, setItems] = useState<Item[]>([]);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const { data } = await axios.get<Item[]>(`${process.env.REACT_APP_BACKEND_URL}/api/items`);
+        setItems(data);
+      } catch (error) {
+        console.error('Failed to fetch items:', error);
+      }
+    };
+
+    fetchItems();
+  }, []);
 
   const handleItemClick = (itemName: string) => {
     setSelectedItem(selectedItem === itemName ? null : itemName);
@@ -33,11 +41,11 @@ const ItemShop: React.FC<ItemShopProps> = ({ onBuyItem }) => {
           <div className="font-bold text-lg">Items</div>
           <div className="font-bold text-lg">Cost</div>
         </div>
-        {items.map((item, index) => (
-          <div key={index} className={`flex justify-between border-b py-2 items-center ${selectedItem === item.name ? 'bg-gray-200' : ''}`}
-            onClick={() => handleItemClick(item.name)}>
+        {items.map((item) => (
+          <div key={item.id} className={`flex justify-between border-b py-2 items-center ${selectedItem === item.id ? 'bg-gray-200' : ''}`}
+          onClick={() => handleItemClick(item.name)}>
             <div className="flex-1 flex items-center pr-4">
-              <i className={`fas ${item.icon} fa-lg mr-2 rounded-full bg-gray-200 p-2 ${selectedItem === item.name ? 'animate-slow-ping' : ''}`}></i>
+              <i className={`fas ${item.icon} fa-lg mr-2 rounded-full bg-gray-200 p-2 ${selectedItem === item.id ? 'animate-slow-ping' : ''}`}></i>
               <div>
                 <div className="font-bold">{item.name}</div>
                 <div>{item.description}</div>
@@ -45,21 +53,21 @@ const ItemShop: React.FC<ItemShopProps> = ({ onBuyItem }) => {
             </div>
             <div className="w-32 text-right font-bold flex items-center">
               <i className="fas fa-coins text-yellow-400 mr-1"></i>
-              {item.cost}
+              {item.cost} Gold
             </div>
           </div>
         ))}
-    {selectedItem && (
-    <div className="flex justify-center mt-4">
-    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-      onClick={() => {
-      const item = items.find(item => item.name === selectedItem);
-        if (item) onBuyItem(item);
-    }}>
-      Buy Item
-    </button>
-  </div>
-)}
+        {selectedItem && (
+          <div className="flex justify-center mt-4">
+            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+              onClick={() => {
+                const item = items.find(item => item.id === selectedItem);
+                if (item) onBuyItem(item);
+              }}>
+              Buy Item
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

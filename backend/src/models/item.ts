@@ -15,6 +15,10 @@ const itemSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  icon: {
+    type: String,
+    required: true
+  }
 });
 
 type ItemUpdate = {
@@ -29,14 +33,19 @@ export const Item = (await getConnection()).model(
   itemSchema,
 );
 
-export async function addItem(name: string, description: string, cost: number) {
+export async function addItem(name: string, description: string, cost: number, icon: string) {
   const newItem = new Item({
     name,
     description,
-    cost
+    cost, 
+    icon
   });
   await newItem.save();
   return newItem;
+}
+
+export const getAllItems = async () => {
+  return await Item.find({});  
 }
 
 // Function to update an existing item

@@ -34,10 +34,11 @@ interface QuestionResponse {
 }
 
 interface Item {
+  id: string;
   name: string;
   description: string;
   icon: string;
-  cost: string;
+  cost: number;  
 }
 
 async function fetchQuestionsAndAnswers(classId: string | undefined) {
@@ -182,13 +183,29 @@ export default function GamePage(props: GamePageProps) {
     return `${minutes}:${seconds}:${centiseconds}`;
   };
 
-  const buyItem = (item: Item) => {
+  const buyItem = async (item: Item) => {
     if (inventory.length < 3) {
-      setInventory(currentInventory => [...currentInventory, item]);
+      try {
+        await axios.post(  
+          `${process.env.REACT_APP_BACKEND_URL}/api/inventory`,
+          {
+            userId: authData.authUserId,
+            classId: classId,
+            itemId: item.name,
+            quantity: 1
+          },
+          { withCredentials: true }
+        );
+        setInventory(currentInventory => [...currentInventory, item]);
+        alert("Item added to inventory!");
+      } catch (error) {
+        alert("Failed to add item to inventory. Please try again.");
+        console.error("Error adding item to inventory:", error);
+      }
     } else {
       alert("Maximum 3 items allowed in inventory.");
     }
-  };
+  };  
 
   return (
     <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">

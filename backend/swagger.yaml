@@ -411,7 +411,7 @@ paths:
           description: Item not found in inventory
         "500":
           description: Server error
-  /items:
+  /addItems:
     post:
       tags:
         - Items
@@ -446,6 +446,36 @@ paths:
           description: Invalid input
         '500':
           description: Server error
+  /items:
+    get:
+      tags:
+        - Items
+      summary: Retrieve all items
+      operationId: getAllItems
+      responses:
+        '200':
+          description: Successfully retrieved all items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    cost:
+                      type: number
+                    icon:
+                      type: string
+        '422':
+          description: Validation exception
+        '500':
+          description: Server Exception
   /items/{itemId}:
     put:
       tags:
@@ -487,6 +517,7 @@ paths:
           description: Item not found
         '500':
           description: Internal server error
+  
 
 components:
   schemas:
@@ -516,6 +547,7 @@ components:
               type: string
             lastName:
               type: string
+  
     Question:
       required:
         - question
