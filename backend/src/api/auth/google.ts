@@ -80,6 +80,10 @@ export async function googleAuthHandler(req: Request, res: Response) {
   });
 
   res.header("Access-Control-Allow-Origin", getEnvVars().FRONTEND_BASE_URL);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept",
+  );
   res.header("Referrer-Policy", "no-referrer-when-downgrade");
   res.status(200).json(tokenData);
 }
