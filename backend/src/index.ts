@@ -34,11 +34,10 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use(
-  // cors({
-  //   credentials: true,
-  //   origin: getEnvVars().FRONTEND_BASE_URL,
-  // }),
-  cors(),
+  cors({
+    credentials: true,
+    origin: getEnvVars().FRONTEND_BASE_URL,
+  }),
 );
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
