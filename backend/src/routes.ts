@@ -38,6 +38,8 @@ import {
   paginatedQuestionsByClass,
 } from "./api/pagination.js";
 import { fetchStreakHandler, updateStreakHandler } from "./api/streak.js";
+import { addItem, updateItem, addToInventory, getInventory, removeFromInventory } from "./api/inventoryController.js";  
+
 
 export function addRoutes(app: Application) {
   app.post("/api/hello", requireAuth, helloWorldHandler);
@@ -76,4 +78,13 @@ export function addRoutes(app: Application) {
   app.get("/api/paginate/question", requireAuth, paginatedQuestionsByClass);
   app.get("/api/paginate/question/user", paginatedQuestionsByUser);
   app.post("/api/user/updateHealth", requireAuth, updateHealthHandler);
+
+
+  app.post('/api/items', addItem);
+  app.put('/api/items/:itemId', updateItem);
+  
+  app.post('/api/inventory', addToInventory);
+  app.get('/api/inventory/:userId/:classId', getInventory);
+  app.delete('/api/inventory/:id', removeFromInventory);
+
 }
