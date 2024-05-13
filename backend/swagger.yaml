@@ -411,12 +411,13 @@ paths:
           description: Item not found in inventory
         "500":
           description: Server error
-  /addItems:
+
+  /items:
     post:
       tags:
         - Items
       summary: Add a new item
-      description: Create a new item with a name, description, and cost.
+      description: Create a new item with a name, description, cost, and icon.
       operationId: addItem
       requestBody:
         required: true
@@ -431,22 +432,35 @@ paths:
                   type: string
                 cost:
                   type: integer
+                icon:
+                  type: string
               required:
                 - name
                 - description
                 - cost
+                - icon
       responses:
         '201':
           description: Item created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Item'
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  cost:
+                    type: integer
+                  icon:
+                    type: string
         '400':
           description: Invalid input
         '500':
           description: Server error
-  /items:
     get:
       tags:
         - Items
@@ -469,13 +483,12 @@ paths:
                     description:
                       type: string
                     cost:
-                      type: number
+                      type: integer
                     icon:
                       type: string
-        '422':
-          description: Validation exception
         '500':
           description: Server Exception
+
   /items/{itemId}:
     put:
       tags:
@@ -506,6 +519,8 @@ paths:
                   type: string
                 cost:
                   type: number
+                icon:
+                  type: string
       responses:
         '200':
           description: Successfully updated the item

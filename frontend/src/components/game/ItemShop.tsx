@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 interface Item {
-  id: string
+  _id: string
   name: string;
   description: string;
   icon: string;
@@ -15,53 +15,51 @@ interface ItemShopProps {
 
 const ItemShop: React.FC<ItemShopProps> = ({ onBuyItem }) => {
   const [items, setItems] = useState<Item[]>([]);
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const { data } = await axios.get<Item[]>(`${process.env.REACT_APP_BACKEND_URL}/api/items`);
-        setItems(data);
+        const response = await axios.get<Item[]>(`${process.env.REACT_APP_BACKEND_URL}/api/items`);
+        console.log("Fetched items:", response.data); // Log to check data structure
+        setItems(response.data);
       } catch (error) {
-        console.error('Failed to fetch items:', error);
+        console.error("Failed to fetch items:", error);
       }
     };
 
     fetchItems();
   }, []);
 
-  const handleItemClick = (itemName: string) => {
-    setSelectedItem(selectedItem === itemName ? null : itemName);
+  const handleItemClick = (itemId: string) => {
+    console.log("Item clicked:", itemId); // Log the clicked item ID
+    setSelectedItemId(selectedItemId === itemId ? null : itemId);
   };
   
   return (
     <div className="container mx-auto mt-10">
       <div className="flex flex-col">
-        <div className="flex justify-between mb-4">
-          <div className="font-bold text-lg">Items</div>
-          <div className="font-bold text-lg">Cost</div>
-        </div>
         {items.map((item) => (
-          <div key={item.id} className={`flex justify-between border-b py-2 items-center ${selectedItem === item.id ? 'bg-gray-200' : ''}`}
-          onClick={() => handleItemClick(item.name)}>
-            <div className="flex-1 flex items-center pr-4">
-              <i className={`fas ${item.icon} fa-lg mr-2 rounded-full bg-gray-200 p-2 ${selectedItem === item.id ? 'animate-slow-ping' : ''}`}></i>
+          <div key={item._id} className={`flex justify-between border-b py-2 items-center ${selectedItemId === item._id ? 'bg-gray-200' : ''}`}
+            onClick={() => handleItemClick(item._id)}>
+            <div className="flex-1 flex items-center">
+              <i className={`ml-2 fas ${item.icon} fa-2x mr-5`}></i>
               <div>
                 <div className="font-bold">{item.name}</div>
                 <div>{item.description}</div>
               </div>
             </div>
             <div className="w-32 text-right font-bold flex items-center">
-              <i className="fas fa-coins text-yellow-400 mr-1"></i>
+              <i className="fas fa-coins text-yellow-500 mr-1"></i>
               {item.cost} Gold
             </div>
           </div>
         ))}
-        {selectedItem && (
+        {selectedItemId && (
           <div className="flex justify-center mt-4">
             <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => {
-                const item = items.find(item => item.id === selectedItem);
+                const item = items.find(item => item._id === selectedItemId);
                 if (item) onBuyItem(item);
               }}>
               Buy Item

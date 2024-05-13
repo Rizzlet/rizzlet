@@ -7,11 +7,11 @@ import { verifyAndDecodeToken } from './auth/sharedAuth.js';
 
 export async function addItem(req: Request, res: Response) {
   try {
-      const { name, description, cost, icon } = req.body;
-      const newItem = await addItemToDB(name, description, cost, icon);
-      res.status(201).json(newItem);
+    const { name, description, cost, icon } = req.body;
+    const newItem = await addItemToDB(name, description, cost, icon);
+    res.status(201).json(newItem);
   } catch (error) {
-      res.status(500).json({ message: "Failed to add item", error: error.message });
+    res.status(500).json({ message: "Failed to add item", error: error.message });
   }
 }
 
@@ -54,13 +54,14 @@ export async function addToInventory(req: Request, res: Response) {
 
 export async function updateItem(req: Request, res: Response): Promise<void> {
   const { itemId } = req.params;
-  const { name, description, cost } = req.body;
+  const { name, description, cost, icon } = req.body;  
 
   try {
+      const updates = { name, description, cost, icon }; 
       const updatedItem = await Item.findByIdAndUpdate(
           itemId,
-          { name, description, cost },
-          { new: true }
+          updates,
+          { new: true }  
       );
 
       if (!updatedItem) {

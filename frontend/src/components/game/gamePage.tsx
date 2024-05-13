@@ -34,11 +34,19 @@ interface QuestionResponse {
 }
 
 interface Item {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   icon: string;
   cost: number;  
+}
+
+interface Inventory {
+  _id: string;
+  userId: string;
+  classId: string;
+  itemId: Item;
+  quantity: number;
 }
 
 async function fetchQuestionsAndAnswers(classId: string | undefined) {
@@ -133,13 +141,30 @@ export default function GamePage(props: GamePageProps) {
   const [correctQuestions, setCorrectQuestions] = useState(0);
   const [userHealth, setUserHealth] = useState<null | number>(null);
   const [showShop, setShowShop] = useState(false);
-  const [inventory, setInventory] = useState<Item[]>([]);
+  const [inventory, setInventory] = useState<Inventory[]>([]);
 
   const authData = useAuth();
 
   const params = useParams();
 
   const classId = params.classId;
+
+  useEffect(() => {
+    async function fetchInventory() {
+      if (!authData.authUserId || !classId) return;
+      try {
+        const { data } = await axios.get<Inventory[]>(`${process.env.REACT_APP_BACKEND_URL}/api/inventory/${authData.authUserId}/${classId}`, {
+          withCredentials: true
+        });
+        setInventory(data);
+      } catch (error) {
+        console.error("Failed to fetch inventory:", error);
+        setInventory([]);
+      }
+    }
+
+    fetchInventory();
+  }, [authData.authUserId, classId]);
 
   useEffect(() => {
     async function fetchData() {
@@ -185,27 +210,24 @@ export default function GamePage(props: GamePageProps) {
 
   const buyItem = async (item: Item) => {
     if (inventory.length < 3) {
-      try {
-        await axios.post(  
-          `${process.env.REACT_APP_BACKEND_URL}/api/inventory`,
-          {
-            userId: authData.authUserId,
-            classId: classId,
-            itemId: item.name,
-            quantity: 1
-          },
-          { withCredentials: true }
-        );
-        setInventory(currentInventory => [...currentInventory, item]);
-        alert("Item added to inventory!");
-      } catch (error) {
-        alert("Failed to add item to inventory. Please try again.");
-        console.error("Error adding item to inventory:", error);
-      }
+        try {
+            const response = await axios.post<Inventory>(`${process.env.REACT_APP_BACKEND_URL}/api/inventory`, {
+                userId: authData.authUserId,
+                classId: classId,
+                itemId: item._id,  
+                quantity: 1
+            }, { withCredentials: true });
+
+            setInventory(currentInventory => [...currentInventory, response.data]);  // assuming response.data is the new Inventory object
+            alert("Item added to inventory!");
+        } catch (error) {
+            alert("Failed to add item to inventory. Please try again.");
+            console.error("Error adding item to inventory:", error);
+        }
     } else {
-      alert("Maximum 3 items allowed in inventory.");
+        alert("Maximum 3 items allowed in inventory.");
     }
-  };  
+};
 
   return (
     <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">
@@ -246,7 +268,7 @@ export default function GamePage(props: GamePageProps) {
       {/*Shop button*/}
       
       <button
-        className="fixed bottom-10 right-2/4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        className="fixed bottom-10 right-1/2 transform translate-x-[-50%] bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => setShowShop(true)}>
         Shop
       </button>
@@ -268,12 +290,16 @@ export default function GamePage(props: GamePageProps) {
 
       {/*Inventory*/}
 
-    <div className="fixed bottom-10 left-10">
-    <div className="text-xl font-bold mb-2">Inventory</div>
-      {inventory.map((item: Item, index: number) => (
-    <i key={index} className={`fas ${item.icon} fa-lg mr-2 p-2 rounded-full bg-gray-200`}></i>
-    ))}
-    </div>
+      <div className="fixed bottom-10 left-10">
+        <div className="text-xl font-bold mb-2">Inventory</div>
+        <div className="flex items-center space-x-2">
+          {inventory.map((item, index) => (
+            <div key={index} className="flex justify-center items-center w-12 h-12 bg-gray-200 rounded-full">
+              <i className={`fas ${item.itemId.icon} text-xl`}></i> 
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Right side of the screen */}
 
