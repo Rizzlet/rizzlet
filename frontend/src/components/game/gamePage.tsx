@@ -160,6 +160,58 @@ export default function GamePage(props: GamePageProps) {
     }
     fetchData();
   }, [setUsersInClass, authData.authUserId, classId]);
+  
+
+   useEffect(() => {
+    async function fetchUserByClass() {
+      try {
+        const response = await axios.get<any>(
+          `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
+          {
+            withCredentials: true,
+          }
+        );
+  
+        const peopleFormat = response.data.slice(0, 3).map((user: any) => ({
+          id: user._id,
+          name: `${user.firstName} ${user.lastName}`,
+          profileColor: user.profileColor,
+          health: user.health,
+        }));
+  
+        setUsersInClass(peopleFormat);
+      } catch (error) {
+        console.log("fetch error: ", error);
+      }
+    }
+
+    fetchQuestionsAndAnswers(classId).then((questions) => {
+      setQuestionSet(questions);
+    });
+    fetchUserByClass();
+  }, [classId]);
+
+  
+        
+  //update the score of the attacker based on damage
+  async function updateAttackerScore(damage: Number, attacker: string) {
+    try {
+      await axios.post(
+        new URL(
+          "/api/user/updateAttackerScore",
+          process.env.REACT_APP_BACKEND_URL!
+        ).href,
+        {
+          damageAmount: damage,
+          attacker: authData.authUserId,
+          classId: classId,
+        },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.log(error, "Error updating user health");
+    }
+  }
 
   const formatTime = (totalCentiseconds: number): string => {
     const minutes = Math.floor(totalCentiseconds / 6000)
@@ -194,6 +246,7 @@ export default function GamePage(props: GamePageProps) {
               setTimeInCentiseconds(0);
               setIsAttacking(false);
               setSelectedPerson(null);
+              updateAttackerScore(calculateDamage(correctQuestions, timeInCentiseconds), authData.authUserId);
 
               let newUsers = [...usersInClass];
               newUsers.find((u) => u.id === selectedPerson)!.health -=
