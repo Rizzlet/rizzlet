@@ -13,6 +13,8 @@ const config = {
         "answer-visibility-off": "answer-visibility-off linear 1s",
         "left-next-appear": "left-next-appear ease-out 1s",
         "right-next-appear": "right-next-appear ease-out 1s",
+        "slow-ping": "slowping 3s cubic-bezier(0, 0, 0.2, 1) infinite",
+        
       },
 
       keyframes: {
@@ -40,6 +42,11 @@ const config = {
           "0%": { opacity: "0%", transform: "translateX(30px)" },
           "100%": { opacity: "100%", transform: "translateX(0px)" },
         },
+        "slowping": {
+          "0%": { transform: "scale(0.8)", opacity: "1" },
+          "50%": { transform: "scale(1)", opacity: "0.5" },
+          "100%": { transform: "scale(1.2)", opacity: "0" }
+        }
       },
 
       colors: {

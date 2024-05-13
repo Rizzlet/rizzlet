@@ -322,6 +322,217 @@ paths:
       responses:
         "204":
           description: Logout Success
+  /inventory:
+    post:
+      tags:
+        - Inventory
+      summary: Add an item to a user's inventory
+      operationId: addToInventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                classId:
+                  type: string
+                itemId:
+                  type: string
+                quantity:
+                  type: integer
+                  default: 1
+            example:
+              userId: "user123"
+              classId: "class456"
+              itemId: "item789"
+              quantity: 1
+      responses:
+        "201":
+          description: Item added to inventory successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryItem'
+        "400":
+          description: Invalid request parameters
+        "500":
+          description: Server error
+
+  /inventory/{userId}/{classId}:
+    get:
+      tags:
+        - Inventory
+      summary: Get the inventory of a user for a specific class
+      operationId: getInventory
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InventoryItem'
+        "404":
+          description: Inventory not found
+        "500":
+          description: Server error
+
+  /inventory/{id}:
+    delete:
+      tags:
+        - Inventory
+      summary: Remove an item from inventory
+      operationId: removeFromInventory
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Item removed from inventory successfully
+        "404":
+          description: Item not found in inventory
+        "500":
+          description: Server error
+
+  /items:
+    post:
+      tags:
+        - Items
+      summary: Add a new item
+      description: Create a new item with a name, description, cost, and icon.
+      operationId: addItem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                cost:
+                  type: integer
+                icon:
+                  type: string
+              required:
+                - name
+                - description
+                - cost
+                - icon
+      responses:
+        '201':
+          description: Item created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  cost:
+                    type: integer
+                  icon:
+                    type: string
+        '400':
+          description: Invalid input
+        '500':
+          description: Server error
+    get:
+      tags:
+        - Items
+      summary: Retrieve all items
+      operationId: getAllItems
+      responses:
+        '200':
+          description: Successfully retrieved all items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    cost:
+                      type: integer
+                    icon:
+                      type: string
+        '500':
+          description: Server Exception
+
+  /items/{itemId}:
+    put:
+      tags:
+        - Items
+      summary: Update an existing item
+      operationId: updateItem
+      parameters:
+        - in: path
+          name: itemId
+          required: true
+          schema:
+            type: string
+          description: The ID of the item to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+                - cost
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                cost:
+                  type: number
+                icon:
+                  type: string
+      responses:
+        '200':
+          description: Successfully updated the item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+        '404':
+          description: Item not found
+        '500':
+          description: Internal server error
+  
 
 components:
   schemas:
@@ -351,6 +562,7 @@ components:
               type: string
             lastName:
               type: string
+  
     Question:
       required:
         - question
