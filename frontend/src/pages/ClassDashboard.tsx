@@ -4,6 +4,7 @@ import {
   PlayIcon,
   QuestionMarkCircleIcon,
   RectangleStackIcon,
+  StarIcon,
 } from "@heroicons/react/20/solid";
 import React, { useEffect, useState } from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
@@ -12,6 +13,8 @@ import LeaderBoard from "./LeaderBoardPage";
 import FlashcardField from "./AnswerQuestion";
 import QuestionOverview from "./QuestionOverview";
 import QuestionSubmission from "./FormSubmitQuestions";
+import Achievements from "../components/Achievements";
+
 
 interface UserStats {
   user: string;
@@ -105,6 +108,11 @@ const ClassDashboard: React.FC = () => {
                 <QuestionMarkCircleIcon className="h-4 w-4"></QuestionMarkCircleIcon>
                 Submit Questions
               </button>
+              <button className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900" onClick={(e) => handleLinkClick("achievements")}
+              >
+                <StarIcon className="h-4 w-4"></StarIcon>
+                Achievements
+              </button>
             </nav>
           </div>
         </div>
@@ -128,6 +136,7 @@ const ClassDashboard: React.FC = () => {
           {selectedLink === "flashcards" && <FlashcardField />}
           {selectedLink === "questions" && <QuestionOverview />}
           {selectedLink === "submit" && <QuestionSubmission />}
+          {selectedLink === "achievements" && <Achievements />}
         </div>
       </div>
     </div>
