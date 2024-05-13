@@ -40,6 +40,15 @@ app.use(
   }),
 );
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", getEnvVars().FRONTEND_BASE_URL);
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept",
+  );
+  next();
+});
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 addRoutes(app);

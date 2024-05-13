@@ -5,7 +5,7 @@ import {
   submitQuestionHandler,
 } from "./api/questions.js";
 
-import { helloWorldHandler } from "./api/helloWorld.js";
+import { helloWorldHandler, rootRouteHelloWorld } from "./api/helloWorld.js";
 import {
   classHandler,
   fetchQuestionsByClass,
@@ -24,6 +24,7 @@ import {
   UserClasses,
   getTopTenUsers,
   updateHealthHandler,
+  updateAttackerScoreHandler,
 } from "./api/users.js";
 import {} from "./models/user.js";
 import { CheckAnswered } from "./api/answeredQuestion.js";
@@ -42,6 +43,7 @@ import { addItem, fetchItems, updateItem, addToInventory, getInventory, removeFr
 
 
 export function addRoutes(app: Application) {
+  app.get("/", rootRouteHelloWorld);
   app.post("/api/hello", requireAuth, helloWorldHandler);
   app.post("/api/auth/google", googleAuthHandler);
   app.post("/api/auth/logout", logoutHandler);
@@ -78,14 +80,11 @@ export function addRoutes(app: Application) {
   app.get("/api/paginate/question", requireAuth, paginatedQuestionsByClass);
   app.get("/api/paginate/question/user", paginatedQuestionsByUser);
   app.post("/api/user/updateHealth", requireAuth, updateHealthHandler);
-
-
   app.post('/api/items', addItem);
   app.get('/api/items', fetchItems);
   app.put('/api/items/:itemId', updateItem);
-  
   app.post('/api/inventory', addToInventory);
   app.get('/api/inventory/:userId/:classId', getInventory);
   app.delete('/api/inventory/:id', removeFromInventory);
-
+  app.post("/api/user/updateAttackerScore", requireAuth, updateAttackerScoreHandler);
 }
