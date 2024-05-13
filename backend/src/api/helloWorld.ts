@@ -22,3 +22,7 @@ export async function helloWorldHandler(req: Request, res: Response) {
 
   res.send(`Hello ${body.name}!`);
 }
+
+export function rootRouteHelloWorld(req: Request, res: Response) {
+  res.send("Hello from the root");
+}
