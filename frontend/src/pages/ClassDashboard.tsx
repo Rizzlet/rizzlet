@@ -4,7 +4,6 @@ import {
   PlayIcon,
   QuestionMarkCircleIcon,
   RectangleStackIcon,
-  BuildingStorefrontIcon,
   StarIcon,
 } from "@heroicons/react/20/solid";
 import React, { useEffect, useState } from "react";
