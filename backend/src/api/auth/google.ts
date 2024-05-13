@@ -79,11 +79,6 @@ export async function googleAuthHandler(req: Request, res: Response) {
     maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
-  res.setHeader("Access-Control-Allow-Origin", getEnvVars().FRONTEND_BASE_URL);
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept",
-  );
   res.header("Referrer-Policy", "no-referrer-when-downgrade");
   res.status(200).json(tokenData);
 }
