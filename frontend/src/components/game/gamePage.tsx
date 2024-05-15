@@ -142,12 +142,27 @@ export default function GamePage(props: GamePageProps) {
   const [userHealth, setUserHealth] = useState<null | number>(null);
   const [showShop, setShowShop] = useState(false);
   const [inventory, setInventory] = useState<Inventory[]>([]);
+  const [allItems, setAllItems] = useState<Item[]>([]);
 
   const authData = useAuth();
 
   const params = useParams();
 
   const classId = params.classId;
+
+  useEffect(() => {
+    const fetchAllItems = async () => {
+        try {
+            const response = await axios.get<Item[]>(`${process.env.REACT_APP_BACKEND_URL}/api/items`, {
+                withCredentials: true
+            });
+            setAllItems(response.data);
+        } catch (error) {
+            console.error("Failed to fetch items:", error);
+        }
+    };
+    fetchAllItems();
+  }, []);
 
   useEffect(() => {
     async function fetchInventory() {
@@ -263,15 +278,24 @@ export default function GamePage(props: GamePageProps) {
   const buyItem = async (item: Item) => {
     if (inventory.length < 3) {
         try {
-            const response = await axios.post<Inventory>(`${process.env.REACT_APP_BACKEND_URL}/api/inventory`, {
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/inventory`, {
                 userId: authData.authUserId,
                 classId: classId,
-                itemId: item._id,  
+                itemId: item._id,
                 quantity: 1
             }, { withCredentials: true });
 
-            setInventory(currentInventory => [...currentInventory, response.data]);  // assuming response.data is the new Inventory object
-            alert("Item added to inventory!");
+            const fullItemDetails = allItems.find(i => i._id === item._id);
+            if (fullItemDetails) {
+                const newItem = {
+                    ...response.data,
+                    itemId: fullItemDetails  
+                };
+                setInventory(currentInventory => [...currentInventory, newItem]);
+                alert("Item added to inventory!");
+            } else {
+                console.error("Item details not found in allItems.");
+            }
         } catch (error) {
             alert("Failed to add item to inventory. Please try again.");
             console.error("Error adding item to inventory:", error);
