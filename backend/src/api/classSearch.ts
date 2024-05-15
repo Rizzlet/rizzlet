@@ -1,11 +1,8 @@
 import joi from "joi";
 import { Request, Response } from "express";
-import {
-  addUserRecordInClassIfDoesntAlreadyExist,
-  newClass,
-} from "../models/class.js";
+import { getUserClassesFromDB, newClass } from "../models/class.js";
 import { getClassNames } from "../models/class.js";
-import { User, setUserClasses } from "../models/user.js";
+import { User } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import mongoose from "mongoose";
 import { Class } from "../models/class.js";
@@ -52,10 +49,6 @@ export async function updateUserClassesHandler(req: Request, res: Response) {
 
   // Update the user's classIds with the new classes
   const updatedUser = setUserClasses(userData.id, classIds);
-
-  classIds.forEach(async (classId) => {
-    await addUserRecordInClassIfDoesntAlreadyExist(classId, userData.id);
-  });
 
   if (!updatedUser) {
     res.status(404).json({ error: "User not found" });
@@ -129,27 +122,62 @@ export async function getUserClasses(req: Request, res: Response) {
 
     // Gets the user from the database
     const foundUser = await User.findById(userData.id).exec();
+    const userClasses = await getUserClassesFromDB(userData.id);
 
     if (foundUser != null) {
       const sendClasses: classesWithName[] = [];
-      for (let i = 0; i < foundUser.classIds.length; i++) {
+      userClasses.forEach(async (userClass) => {
         const mappedClass: classesWithName = {
           className: "",
-          classId: foundUser.classIds[i],
+          classId: userClass._id,
         };
 
-        const foundClassName = await Class.findById(foundUser.classIds[i])
+        const foundClassName = await Class.findById(userClass._id)
           .select("name")
           .exec();
         if (foundClassName != null) {
           mappedClass.className = foundClassName.name;
         }
         sendClasses.push(mappedClass);
-      }
+      });
       res.send(sendClasses);
     }
   } catch (error) {
     console.error();
     res.status(500).json({ error: "Internal server error" });
   }
+}
+
+export async function setUserClasses(userId: string, classIds: string[]) {
+  const classesUserAlreadyIn = await getUserClassesFromDB(userId);
+
+  classIds.forEach(async (classId) => {
+    if (classesUserAlreadyIn.find((u) => u._id.toString() === classId)) {
+      // Already in class
+    } else {
+      // Add the class
+      const classEntry = await Class.findById(classId).exec();
+      if (classEntry === null) {
+        return;
+      }
+
+      classEntry.scores.push({ user: userId, health: 100, score: 0 });
+      await classEntry.save();
+    }
+  });
+
+  classesUserAlreadyIn.forEach(async (classId) => {
+    if (classIds.find((u) => u === classId._id.toString())) {
+      // Should be added, no change
+    } else {
+      // Remove the user entry
+      const classEntry = await Class.findById(classId).exec();
+      if (classEntry === null) {
+        return;
+      }
+
+      classEntry.scores.remove({ user: userId });
+      await classEntry.save();
+    }
+  });
 }
