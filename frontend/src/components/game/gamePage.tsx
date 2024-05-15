@@ -294,7 +294,7 @@ export default function GamePage(props: GamePageProps) {
           userHealth={userHealth || 100}
         />
         {/* Attack Button */}
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center mt-4">
           <DamageDealer
             classId={classId || ""}
             disabled={!isAttacking || !selectedPerson}

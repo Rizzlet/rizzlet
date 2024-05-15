@@ -38,15 +38,8 @@ export default function Select<
   }
 
   return (
-    <div>
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M19 13l-7 7-7-7m14-8l-7 7-7-7"
-      />
+    <div className="grid grid-rows-3 grid-flow-col gap-4">
       {/* rendering the "enemy" */}
-      <div>
         {/* index 0 first*/}
         <div>
           {people[0] && (
@@ -54,9 +47,7 @@ export default function Select<
               key={people[0].id}
               onClick={() => disabled === false && onSelectPerson(people[0].id)}
             >
-              {people[0].health <= 0
-                ? ghost(`${people[0].firstName} ${people[0].lastName}`)
-                : avatar(
+              {avatar(
                     people[0],
                     `${people[0].firstName} ${people[0].lastName}`,
                     people[0].id === selectedPerson,
@@ -67,7 +58,7 @@ export default function Select<
           )}
         </div>
         {/* index 1 second user*/}
-        <div className=" mt-2 grid grid-cols-2 col-span-1">
+        <div className="grid grid-cols-2 col-span-1">
           {people[1] && (
             <div
               key={people[1].id}
@@ -102,9 +93,8 @@ export default function Select<
             </div>
           )}
         </div>
-      </div>
       {/* The user */}
-      <div className="mt-9 mb-4">
+      <div className="">
         {avatar(
           authData,
           `${authData.authUserFullName}`,
@@ -120,7 +110,7 @@ export default function Select<
 //style of ghost when the person.health <=0
 function ghost(name: string) {
   return (
-    <div className="flex flex-col items-center justify-center m-4 mt-8">
+    <div className="flex flex-col items-center justify-center m-4 mt-10">
       <svg
         className="h-20 w-20 text-white flex items-center justify-center animate-pulse"
         width="60"
