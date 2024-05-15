@@ -5,7 +5,7 @@ import Select from "./PeoplePicker";
 import { Timer } from "./Timer";
 import DamageDealer from "./damageDealer";
 import { useAuth } from "../../context/auth/AuthContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ItemShop from "./ItemShop";
 
 const NUMBER_OF_QUESTIONS = 5;
@@ -149,6 +149,8 @@ export default function GamePage(props: GamePageProps) {
 
   const classId = params.classId;
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     async function fetchInventory() {
       if (!authData.authUserId || !classId) return;
@@ -226,8 +228,6 @@ export default function GamePage(props: GamePageProps) {
     });
     fetchUserByClass();
   }, [classId]);
-
-  
         
   //update the score of the attacker based on damage
   async function updateAttackerScore(damage: Number, attacker: string) {
@@ -283,6 +283,13 @@ export default function GamePage(props: GamePageProps) {
 
   return (
     <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">
+      {/* Back Button */}
+      <button
+        className="absolute top-4 left-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => navigate(`/classDashboard/${classId}`)}
+      >
+        Back
+      </button>
       {/* Left side of the screen */}
       <div className="col-span-1 bg-[url('https://s3.amazonaws.com/spoonflower/public/design_thumbnails/0424/5908/1431605648965_shop_thumb.png')] p-4 pt-5">
         {/* PeoplePicker component */}
