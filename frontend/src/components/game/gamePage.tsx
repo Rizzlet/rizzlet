@@ -73,7 +73,7 @@ async function fetchQuestionsAndAnswers(classId: string | undefined) {
     if (NUMBER_OF_QUESTIONS > questionResponse.data.length) {
       while (unmappedQuestionSet.length < NUMBER_OF_QUESTIONS) {
         console.log(unmappedQuestionSet);
-        console.log("hi");
+        // console.log("hi");
         unmappedQuestionSet = unmappedQuestionSet.concat(
           questionResponse.data
             .sort(() => Math.random() - Math.random())
@@ -183,7 +183,7 @@ export default function GamePage(props: GamePageProps) {
           (u) => u.id !== authData.authUserId
         );
 
-        console.log(`PeopleFormat: ${JSON.stringify(peopleFormat)}`);
+        // console.log(`PeopleFormat: ${JSON.stringify(peopleFormat)}`);
 
         setUsersInClass(peopleFormat);
       } catch (error) {

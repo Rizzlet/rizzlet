@@ -23,10 +23,19 @@ export default function Select<
 }: PeoplePickerProps<T>) {
   const authData = useAuth();
 
-  console.log("selectedPerson", selectedPerson);
+  // console.log("selectedPerson", selectedPerson);
   // console.log("onSelectPerson", onSelectPerson)
-  console.log("disabled", disabled);
+  // console.log("disabled", disabled);
   console.log("people: ", people);
+
+  //make sure the data is properly rendered (fixes undefined)
+  const isDataAvailable =
+    people.length === 3 &&
+    people.every(person => person && person.id && person.firstName && person.lastName && person.health !== undefined);
+
+  if (!isDataAvailable) {
+    return <div></div>;
+  }
 
   return (
     <div>
