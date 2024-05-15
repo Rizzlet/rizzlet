@@ -4,7 +4,6 @@ import { getUserClassesFromDB, newClass } from "../models/class.js";
 import { getClassNames } from "../models/class.js";
 import { User } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
-import mongoose from "mongoose";
 import { Class } from "../models/class.js";
 import { getQuestionsFromClassForUser } from "../models/question.js";
 import { getAllUsersInClass } from "../models/class.js";

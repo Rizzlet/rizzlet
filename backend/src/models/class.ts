@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import { getConnection } from "./db.js";
 import { User } from "./user.js";
 
