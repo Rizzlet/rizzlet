@@ -532,8 +532,63 @@ paths:
           description: Item not found
         '500':
           description: Internal server error
-  
 
+  /gold/{userId}/{classId}:
+    get:
+      tags:
+        - Gold
+      summary: Get or create gold for a specific class and user
+      operationId: getGoldPerClass
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: classId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successfully retrieved or created gold info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoldInfo'
+        '500':
+          description: Server error
+
+  /gold/update:
+    put:
+      tags:
+        - Gold
+      summary: Update gold for a specific class and user
+      operationId: updateGold
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                classId:
+                  type: string
+                amount:
+                  type: number
+      responses:
+        '200':
+          description: Successfully updated gold info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoldInfo'
+        '500':
+          description: Server error
+  
 components:
   schemas:
     QuestionWithName:

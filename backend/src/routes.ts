@@ -40,6 +40,7 @@ import {
 } from "./api/pagination.js";
 import { fetchStreakHandler, updateStreakHandler } from "./api/streak.js";
 import { addItem, fetchItems, updateItem, addToInventory, getInventory, removeFromInventory } from "./api/inventoryController.js";  
+import { getGoldPerClass, updateGold } from "./api/goldController.js";
 
 
 export function addRoutes(app: Application) {
@@ -86,5 +87,7 @@ export function addRoutes(app: Application) {
   app.post('/api/inventory', addToInventory);
   app.get('/api/inventory/:userId/:classId', getInventory);
   app.delete('/api/inventory/:id', removeFromInventory);
+  app.get('/api/gold/:userId/:classId', getGoldPerClass);
+  app.put('/api/gold/update', updateGold);
   app.post("/api/user/updateAttackerScore", requireAuth, updateAttackerScoreHandler);
 }

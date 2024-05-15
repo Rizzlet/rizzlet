@@ -143,12 +143,30 @@ export default function GamePage(props: GamePageProps) {
   const [showShop, setShowShop] = useState(false);
   const [inventory, setInventory] = useState<Inventory[]>([]);
   const [allItems, setAllItems] = useState<Item[]>([]);
+  const [goldAmount, setGoldAmount] = useState(0);
 
   const authData = useAuth();
 
   const params = useParams();
 
   const classId = params.classId;
+
+  useEffect(() => {
+    const fetchGoldAmount = async () => {
+        if (authData.authUserId && classId) {
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/gold/${authData.authUserId}/${classId}`, {
+                    withCredentials: true
+                });
+                setGoldAmount(response.data.gold);
+            } catch (error) {
+                console.error("Failed to fetch gold amount:", error);
+            }
+        }
+    };
+
+    fetchGoldAmount();
+}, [authData.authUserId, classId]);
 
   useEffect(() => {
     const fetchAllItems = async () => {
@@ -242,8 +260,6 @@ export default function GamePage(props: GamePageProps) {
     fetchUserByClass();
   }, [classId]);
 
-  
-        
   //update the score of the attacker based on damage
   async function updateAttackerScore(damage: Number, attacker: string) {
     try {
@@ -277,33 +293,46 @@ export default function GamePage(props: GamePageProps) {
 
   const buyItem = async (item: Item) => {
     if (inventory.length < 3) {
+      if (goldAmount >= item.cost) { // Check if user has enough gold
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/inventory`, {
-                userId: authData.authUserId,
-                classId: classId,
-                itemId: item._id,
-                quantity: 1
-            }, { withCredentials: true });
-
-            const fullItemDetails = allItems.find(i => i._id === item._id);
-            if (fullItemDetails) {
-                const newItem = {
-                    ...response.data,
-                    itemId: fullItemDetails  
-                };
-                setInventory(currentInventory => [...currentInventory, newItem]);
-                alert("Item added to inventory!");
-            } else {
-                console.error("Item details not found in allItems.");
-            }
+          const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/inventory`, {
+            userId: authData.authUserId,
+            classId: classId,
+            itemId: item._id,
+            quantity: 1
+          }, { withCredentials: true });
+  
+          // Deduct the cost of the item from gold
+          const goldResponse = await axios.put(`${process.env.REACT_APP_BACKEND_URL}/api/gold/update`, {
+            userId: authData.authUserId,
+            classId: classId,
+            amount: item.cost 
+          }, { withCredentials: true });
+  
+          setGoldAmount(goldResponse.data.gold); // Update the state with the new gold amount
+  
+          const fullItemDetails = allItems.find(i => i._id === item._id);
+          if (fullItemDetails) {
+            const newItem = {
+              ...response.data,
+              itemId: fullItemDetails  
+            };
+            setInventory(currentInventory => [...currentInventory, newItem]);
+            alert("Item added to inventory!");
+          } else {
+            console.error("Item details not found in allItems.");
+          }
         } catch (error) {
-            alert("Failed to add item to inventory. Please try again.");
-            console.error("Error adding item to inventory:", error);
+          alert("Failed to add item to inventory. Please try again.");
+          console.error("Error adding item to inventory:", error);
         }
+      } else {
+        alert("Not enough gold to purchase this item.");
+      }
     } else {
-        alert("Maximum 3 items allowed in inventory.");
+      alert("Maximum 3 items allowed in inventory.");
     }
-};
+  };
 
   return (
     <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">
@@ -341,14 +370,21 @@ export default function GamePage(props: GamePageProps) {
           />
         </div>
       </div>
-
-      {/*Shop button*/}
       
-      <button
-        className="fixed bottom-10 right-1/2 transform translate-x-[-50%] bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => setShowShop(true)}>
-        Shop
-      </button>
+      <div className="fixed bottom-10 right-10 flex items-center space-x-5">
+        {/* Shop Button */}
+        <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => setShowShop(true)}>
+            Shop
+        </button>
+
+        {/* Gold Display */}
+        <div className="flex items-center bg-yellow-400 text-white font-bold py-2 px-4 rounded-full">
+            <i className="fas fa-coins"></i> 
+            <span className="ml-2">{goldAmount} Gold</span>
+        </div>
+      </div>
 
       {/*Shop popup*/}
 
