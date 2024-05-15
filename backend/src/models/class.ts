@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { getConnection } from "./db.js";
 import { User } from "./user.js";
 
@@ -58,7 +58,10 @@ export async function getClass(classId: string) {
 }
 
 export async function getAllUsersScoreByClass(classId: string) {
-  const classEntry = await Class.findById(classId)
+  const classEntry = await (
+    (await getConnection()).model(Class.modelName) as typeof Class
+  )
+    .findById(classId)
     .select({ scores: 1 })
     .populate("scores.user")
     .exec();

@@ -110,11 +110,6 @@ export async function getUserClasses(req: Request, res: Response) {
   try {
     const userData = verifyAndDecodeToken(req.cookies.token);
 
-    type classesWithName = {
-      className: string;
-      classId: mongoose.Types.ObjectId | undefined;
-    };
-
     if (!userData) {
       res.status(401);
       return;
@@ -125,22 +120,14 @@ export async function getUserClasses(req: Request, res: Response) {
     const userClasses = await getUserClassesFromDB(userData.id);
 
     if (foundUser != null) {
-      const sendClasses: classesWithName[] = [];
-      userClasses.forEach(async (userClass) => {
-        const mappedClass: classesWithName = {
-          className: "",
-          classId: userClass._id,
-        };
-
-        const foundClassName = await Class.findById(userClass._id)
-          .select("name")
-          .exec();
-        if (foundClassName != null) {
-          mappedClass.className = foundClassName.name;
-        }
-        sendClasses.push(mappedClass);
-      });
-      res.send(sendClasses);
+      res.send(
+        userClasses.map((u) => {
+          return {
+            className: u.name,
+            classId: u._id.toString(),
+          };
+        }),
+      );
     }
   } catch (error) {
     console.error();

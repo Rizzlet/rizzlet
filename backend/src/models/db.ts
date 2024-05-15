@@ -16,7 +16,7 @@ export async function getConnection() {
       connectionUri = getEnvVars().DB_URL;
     }
 
-    connection = await mongoose.createConnection(connectionUri);
+    connection = mongoose.createConnection(connectionUri);
   }
   return connection;
 }

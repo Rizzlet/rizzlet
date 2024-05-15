@@ -109,7 +109,7 @@ const topTenUsersSchema = joi.object<GetTopTenUsers, true>({
   classId: joi.string().hex({ prefix: false }).length(24).required(),
 });
 
-export async function getTopTenUsers(req: Request, res: Response) {
+export async function topFour(req: Request, res: Response) {
   //verify tokens for authentication
   const userData = verifyAndDecodeToken(req.cookies.token);
   if (!userData) {
