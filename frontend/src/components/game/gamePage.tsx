@@ -7,6 +7,7 @@ import DamageDealer from "./damageDealer";
 import { useAuth } from "../../context/auth/AuthContext";
 import { useParams } from "react-router-dom";
 import ItemShop from "./ItemShop";
+import ConfirmUseModal from "../ConfirmUseModal";
 
 const NUMBER_OF_QUESTIONS = 5;
 
@@ -144,6 +145,8 @@ export default function GamePage(props: GamePageProps) {
   const [inventory, setInventory] = useState<Inventory[]>([]);
   const [allItems, setAllItems] = useState<Item[]>([]);
   const [goldAmount, setGoldAmount] = useState(0);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedInventoryItem, setSelectedInventoryItem] = useState<Item | null>(null);
 
   const authData = useAuth();
 
@@ -334,6 +337,21 @@ export default function GamePage(props: GamePageProps) {
     }
   };
 
+  const handleItemClick = (item: Item) => {
+    setSelectedInventoryItem(item);
+    setShowConfirmModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowConfirmModal(false);
+  };
+
+  const handleUseItem = () => {
+    if (selectedInventoryItem) {
+      console.log(`Using item: ${selectedInventoryItem.name}`);
+    }
+  };
+
   return (
     <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">
       {/* Left side of the screen */}
@@ -404,15 +422,27 @@ export default function GamePage(props: GamePageProps) {
       {/*Inventory*/}
 
       <div className="fixed bottom-10 left-10">
-        <div className="text-xl font-bold mb-2">Inventory</div>
-        <div className="flex items-center space-x-2">
-          {inventory.map((item, index) => (
-            <div key={index} className="flex justify-center items-center w-12 h-12 bg-gray-200 rounded-full">
-              <i className={`fas ${item.itemId.icon} text-xl`}></i> 
-            </div>
-          ))}
-        </div>
+      <div className="text-xl font-bold mb-2">Inventory</div>
+      <div className="flex items-center space-x-2">
+        {inventory.map((item, index) => (
+          <button
+            key={index}
+            onClick={() => handleItemClick(item.itemId)}
+            className="flex justify-center items-center w-12 h-12 bg-gray-200 rounded-full"
+          >
+            <i className={`fas ${item.itemId.icon} text-xl`}></i>
+          </button>
+        ))}
       </div>
+    </div>
+
+    {/* Modal for confirming item use */}
+    
+    <ConfirmUseModal
+      isOpen={showConfirmModal}
+      onClose={handleCloseModal}
+      onConfirm={handleUseItem}
+    />
 
       {/* Right side of the screen */}
 
@@ -505,3 +535,4 @@ function calculateBaseDamage(numberCorrect: number) {
 function calculateMultiplier(timeCentiseconds: number) {
   return (15 - timeCentiseconds / 100) / 5;
 }
+
