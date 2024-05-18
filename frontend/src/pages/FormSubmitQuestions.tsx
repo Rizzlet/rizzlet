@@ -16,19 +16,22 @@ export interface MultipleChoiceAnswer {
 }
 
 export default function QuestionSubmission() {
-  const [state, setState] = useState({
+  const initialFormState = {
     type: "",
     createdBy: "",
     question: "",
     class: "",
-  });
+  };
 
-  const [answerList, setAnswerList] = useState([
+  const initalAnswerListState = [
     { answer: "", correct: false },
     { answer: "", correct: false },
     { answer: "", correct: false },
     { answer: "", correct: false },
-  ]);
+  ];
+
+  const [state, setState] = useState(initialFormState);
+  const [answerList, setAnswerList] = useState(initalAnswerListState);
 
   // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -46,21 +49,20 @@ export default function QuestionSubmission() {
         { state, answerList },
         {
           withCredentials: true,
-        },
+        }
       );
+      // clear the form after clicking submit
+      setState(initialFormState);
+      setAnswerList(initalAnswerListState);
+
       console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Classes dropdown change
-  // const onClassChange = (event: ChangeEvent<HTMLSelectElement>) => {
-  //   const value: (typeof state)["class"] = event.target.value;
-  //   setState({ ...state, class: value });
-  // };
-  const { id: classId } = useParams(); // Assuming the parameter is named id
-
+  // Classes based on the url
+  const { id: classId } = useParams();
   useEffect(() => {
     if (classId) {
       setState((prevState) => ({ ...prevState, class: classId }));
@@ -100,7 +102,7 @@ export default function QuestionSubmission() {
             selectedType={state.type}
           />
         </div>
-        <InputQuestion onFieldChange={onFieldChange} />
+        <InputQuestion value={state.question} onFieldChange={onFieldChange} />
         {state.type === "TrueAndFalse" ? (
           <TrueAndFalseButtons
             onTrueFalseButtonClick={onTrueFalseButtonClick}
