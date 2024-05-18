@@ -146,7 +146,9 @@ export default function GamePage(props: GamePageProps) {
   const [allItems, setAllItems] = useState<Item[]>([]);
   const [goldAmount, setGoldAmount] = useState(0);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [selectedInventoryItem, setSelectedInventoryItem] = useState<Item | null>(null);
+  const [selectedInventoryItem, setSelectedInventoryItem] = useState<Inventory | null>(null);
+  const [activeItemBonus, setActiveItemBonus] = useState(0);
+  const [activeItemName, setActiveItemName] = useState<string | null>(null);
 
   const authData = useAuth();
 
@@ -337,18 +339,42 @@ export default function GamePage(props: GamePageProps) {
     }
   };
 
-  const handleItemClick = (item: Item) => {
-    setSelectedInventoryItem(item);
+  const handleItemClick = (inventoryItem: Inventory) => {
+    console.log("Selected Inventory Item:", inventoryItem);
+    setSelectedInventoryItem(inventoryItem);
     setShowConfirmModal(true);
   };
-
-  const handleCloseModal = () => {
+  
+  const handleUseItem = (inventoryItem: Inventory) => {
+    if (!inventoryItem) return;
+    setActiveItemBonus(determineItemBonus(inventoryItem.itemId));
+    setActiveItemName(inventoryItem.itemId.name); 
+    removeItemFromInventory(inventoryItem._id);
     setShowConfirmModal(false);
   };
 
-  const handleUseItem = () => {
-    if (selectedInventoryItem) {
-      console.log(`Using item: ${selectedInventoryItem.name}`);
+
+  const removeItemFromInventory = async (inventoryId: string) => {
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/inventory/${inventoryId}`;
+    console.log("Attempting to delete inventory item at:", url);  
+    try {
+      const response = await axios.delete(url, { withCredentials: true });
+      if (response.status === 200) {
+        setInventory(currentInventory => currentInventory.filter(item => item._id !== inventoryId));
+      } else {
+        alert("Failed to remove the item.");
+      }
+    } catch (error) {
+      console.error("Error removing item from inventory:", error);
+      alert("Error removing item from inventory.");
+    }
+  };
+
+  const determineItemBonus = (item: Item) => {
+    switch (item.name) {
+      case 'Magic Wand': return 5;
+      case 'Flame Spell': return 8;
+      default: return 0;
     }
   };
 
@@ -374,23 +400,27 @@ export default function GamePage(props: GamePageProps) {
               setTimeInCentiseconds(0);
               setIsAttacking(false);
               setSelectedPerson(null);
-              updateAttackerScore(calculateDamage(correctQuestions, timeInCentiseconds), authData.authUserId);
+              updateAttackerScore(calculateDamage(correctQuestions, timeInCentiseconds, activeItemBonus), authData.authUserId);
 
               let newUsers = [...usersInClass];
               newUsers.find((u) => u.id === selectedPerson)!.health -=
-                calculateDamage(correctQuestions, timeInCentiseconds);
+                calculateDamage(correctQuestions, timeInCentiseconds, activeItemBonus);
               setUsersInClass(newUsers);
+
+              setActiveItemBonus(0);    
+              setActiveItemName(null);  
 
               setCurrentQuestionIdx(0);
               setCorrectQuestions(0);
             }}
-            damage={-calculateDamage(correctQuestions, timeInCentiseconds)}
+            damage={-calculateDamage(correctQuestions, timeInCentiseconds, activeItemBonus)}
           />
         </div>
       </div>
+
+      {/* Shop Button */}
       
-      <div className="fixed bottom-10 right-10 flex items-center space-x-5">
-        {/* Shop Button */}
+      <div className="fixed bottom-10 right-10 flex items-center space-x-5"> 
         <button
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => setShowShop(true)}>
@@ -422,27 +452,33 @@ export default function GamePage(props: GamePageProps) {
       {/*Inventory*/}
 
       <div className="fixed bottom-10 left-10">
-      <div className="text-xl font-bold mb-2">Inventory</div>
-      <div className="flex items-center space-x-2">
-        {inventory.map((item, index) => (
-          <button
-            key={index}
-            onClick={() => handleItemClick(item.itemId)}
-            className="flex justify-center items-center w-12 h-12 bg-gray-200 rounded-full"
-          >
-            <i className={`fas ${item.itemId.icon} text-xl`}></i>
-          </button>
-        ))}
+        <div className="text-xl font-bold mb-2">Inventory</div>
+        <div className="flex items-center space-x-2">
+          {inventory.map((inventoryItem, index) => (
+            <button
+              key={index}
+              onClick={() => handleItemClick(inventoryItem)}
+              className="flex justify-center items-center w-12 h-12 bg-gray-200 rounded-full"
+            >
+              <i className={`fas ${inventoryItem.itemId.icon} text-xl`}></i>
+            </button>
+          ))}
+        </div>
       </div>
-    </div>
 
     {/* Modal for confirming item use */}
-    
-    <ConfirmUseModal
-      isOpen={showConfirmModal}
-      onClose={handleCloseModal}
-      onConfirm={handleUseItem}
-    />
+  
+      {selectedInventoryItem && (
+        <ConfirmUseModal
+          isOpen={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          onConfirm={() => {
+            handleUseItem(selectedInventoryItem);
+            setShowConfirmModal(false);
+          }}
+          title={`Use ${selectedInventoryItem?.itemId.name}?`}
+        />
+      )}
 
       {/* Right side of the screen */}
 
@@ -472,15 +508,22 @@ export default function GamePage(props: GamePageProps) {
         )}
 
         {isAttacking && (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center pt-10">
             <div className="text-2xl">
-              Time Elapsed: {formatTime(timeInCentiseconds)} (x
-              {calculateMultiplier(timeInCentiseconds).toFixed(1)} Multiplier)
-              <br></br>
-              Questions Correct: {correctQuestions}/{NUMBER_OF_QUESTIONS} (
-              {calculateBaseDamage(correctQuestions)} Base Damage)<br></br>
-              Total Damage:{" "}
-              {calculateDamage(correctQuestions, timeInCentiseconds)}
+              <div className="mb-10"> 
+                Time Elapsed: {formatTime(timeInCentiseconds)} (x
+                {calculateMultiplier(timeInCentiseconds).toFixed(1)} Multiplier)
+              </div>
+              <div className="mb-10"> 
+                Questions Correct: {correctQuestions}/{NUMBER_OF_QUESTIONS} (
+                {calculateBaseDamage(correctQuestions)} Base Damage)
+              </div>
+              {activeItemBonus > 0 && (
+                <div className="mb-10">
+                  {activeItemName} Bonus: +{activeItemBonus} Damage
+                </div>
+              )}
+              <div>Total Damage: {calculateDamage(correctQuestions, timeInCentiseconds, activeItemBonus)}</div>
             </div>
           </div>
         )}
@@ -522,11 +565,12 @@ export default function GamePage(props: GamePageProps) {
   );
 }
 
-function calculateDamage(numberCorrect: number, timeCentiseconds: number) {
-  return Math.round(
-    calculateMultiplier(timeCentiseconds) * calculateBaseDamage(numberCorrect)
-  );
+function calculateDamage(numberCorrect: number, timeCentiseconds: number, itemBonus: number) {
+  const baseDamage = calculateBaseDamage(numberCorrect);
+  const multiplier = calculateMultiplier(timeCentiseconds);
+  return Math.round(multiplier * baseDamage + itemBonus); 
 }
+
 
 function calculateBaseDamage(numberCorrect: number) {
   return numberCorrect * 3;
@@ -535,4 +579,3 @@ function calculateBaseDamage(numberCorrect: number) {
 function calculateMultiplier(timeCentiseconds: number) {
   return (15 - timeCentiseconds / 100) / 5;
 }
-
