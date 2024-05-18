@@ -5,8 +5,7 @@ import axios from "axios";
 
 const links = [
   { to: "/", text: "Home" },
-  { to: "/myclasses", text: "Classes" },
-  { to: "/submitQuestion", text: "Submit Questions" },
+  { to: "/myclasses", text: "Classes" }
 ];
 
 export default function NavBar() {
