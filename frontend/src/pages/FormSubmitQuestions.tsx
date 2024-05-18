@@ -1,14 +1,14 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import axios from "axios";
 import {
   Title,
   SelectQuestion,
-  SelectClass,
   InputQuestion,
   TrueAndFalseButtons,
   Buttons,
   AnswerChoiceField,
 } from "../components/SubmitQuestion";
+import { useParams } from "react-router-dom";
 
 export interface MultipleChoiceAnswer {
   answer: string;
@@ -55,10 +55,17 @@ export default function QuestionSubmission() {
   };
 
   // Classes dropdown change
-  const onClassChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const value: (typeof state)["class"] = event.target.value;
-    setState({ ...state, class: value });
-  };
+  // const onClassChange = (event: ChangeEvent<HTMLSelectElement>) => {
+  //   const value: (typeof state)["class"] = event.target.value;
+  //   setState({ ...state, class: value });
+  // };
+  const { id: classId } = useParams(); // Assuming the parameter is named id
+
+  useEffect(() => {
+    if (classId) {
+      setState((prevState) => ({ ...prevState, class: classId }));
+    }
+  }, [classId]);
 
   // Changes what answers are to be submitted based on the type of question selected
   const onQuestionTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -87,15 +94,11 @@ export default function QuestionSubmission() {
     <div>
       <Title />
       <form className="flashcard" onSubmit={onSubmit}>
-        <div className="w-full">
+        <div className="w-full mt-5">
           <SelectQuestion
             onQuestionTypeChange={onQuestionTypeChange}
             selectedType={state.type}
           />
-          <SelectClass
-            onClassChange={onClassChange}
-            selectedType={state.class}
-          ></SelectClass>
         </div>
         <InputQuestion onFieldChange={onFieldChange} />
         {state.type === "TrueAndFalse" ? (
