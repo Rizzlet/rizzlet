@@ -55,45 +55,45 @@ export function SelectClass({
     classId: string;
   }
 
-  async function GetClasses(): Promise<IClasses[] | undefined> {
-    try {
-      const response = await axios.get(
-        new URL(
-          "/api/submitQuestion/classes",
-          process.env.REACT_APP_BACKEND_URL!
-        ).href,
-        {
-          withCredentials: true,
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.log("error fetching user classes", error);
-      return undefined;
-    }
-  }
-
-  // Creates options in selecting classes based on what the user classes are
-  function createClassOptions(classArray: IClasses[] | undefined): void {
-    if (classArray !== undefined) {
-      let tempClassArray: ReactElement[] = [];
-      for (let i = 0; i < classArray.length; i++) {
-        tempClassArray.push(
-          <option value={classArray[i].classId}>
-            {classArray[i].className}
-          </option>
-        );
-      }
-      setUserClasses(tempClassArray);
-    }
-  }
-
   let [userClasses, setUserClasses] = useState<ReactElement[] | undefined>([]);
+
   useEffect(() => {
+    // Creates options in selecting classes based on what the user classes are
+    function createClassOptions(classArray: IClasses[] | undefined): void {
+      if (classArray !== undefined) {
+        let tempClassArray: ReactElement[] = [];
+        for (let i = 0; i < classArray.length; i++) {
+          tempClassArray.push(
+            <option value={classArray[i].classId}>
+              {classArray[i].className}
+            </option>
+          );
+        }
+        setUserClasses(tempClassArray);
+      }
+    }
+    async function GetClasses(): Promise<IClasses[] | undefined> {
+      try {
+        const response = await axios.get(
+          new URL(
+            "/api/submitQuestion/classes",
+            process.env.REACT_APP_BACKEND_URL!
+          ).href,
+          {
+            withCredentials: true,
+          }
+        );
+        return response.data;
+      } catch (error) {
+        console.log("error fetching user classes", error);
+        return undefined;
+      }
+    }
+
     GetClasses().then((result) => {
       createClassOptions(result);
     });
-  });
+  }, []);
 
   return (
     <div className="absolute -mt-10 gap-10 px-5">
