@@ -12,7 +12,8 @@ interface Question {
 interface IAnswerField {
   questionlist: Question[];
   questionToRender: number;
-  updatePoints: (newPoints: number) => void;
+  isItAnswered: boolean;
+  setIsItAnswered: (answered: boolean) => void;
 }
 
 interface IMultipleChoiceAnswers {
@@ -22,23 +23,11 @@ interface IMultipleChoiceAnswers {
   question: string;
 }
 
-export default function AnswersField<T extends IAnswerField>(props: T) {
+export default function AnswersField(props: IAnswerField) {
   /**
    * @param questionlist: list of questions
    * @param questionToRender: selects which question is going to display (will determine what answers are rendered)
    */
-
-  async function checkForAlreadyAnswered(theQuestion: Question) {
-    const checked = (
-      await axios.put(
-        new URL("/api/answeredquestions", process.env.REACT_APP_BACKEND_URL!)
-          .href,
-        { questionId: theQuestion._id },
-        { withCredentials: true }
-      )
-    ).data;
-    setIsItAnswered(checked);
-  }
 
   async function fetchMultipleChoiceAnswers(): Promise<
     IMultipleChoiceAnswers[]
@@ -62,14 +51,12 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
 
   let [answersToRender, setAnswerstoRender] = useState<ReactNode[]>([]);
 
-  let [isItAnswered, setIsItAnswered] = useState(false);
-
   let [multipleChoiceAnswers, setMultipleChoiceAnswers] = useState<
     IMultipleChoiceAnswers[]
   >([]);
 
   function handleAnswered() {
-    setIsItAnswered(true);
+    props.setIsItAnswered(true);
   }
 
   useEffect(() => {
@@ -85,10 +72,9 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
             <Answers
               answerText={answersForSpecificQuestion[i].answer}
               rightAnswer={`${answersForSpecificQuestion[i].correct}`}
-              alreadyAnswered={isItAnswered}
+              alreadyAnswered={props.isItAnswered}
               questionAssociated={theQuestion._id}
               setAlreadyAnswered={handleAnswered}
-              updatePoints={props.updatePoints}
             ></Answers>
           );
         }
@@ -97,15 +83,12 @@ export default function AnswersField<T extends IAnswerField>(props: T) {
       }
     }
     if (props.questionlist.length !== 0) {
-      checkForAlreadyAnswered(props.questionlist[props.questionToRender]).then(
-        () => mapAnswers(props.questionlist[props.questionToRender])
-      );
+      mapAnswers(props.questionlist[props.questionToRender]);
     }
   }, [
     props.questionlist,
     props.questionToRender,
-    isItAnswered,
-    props.updatePoints,
+    props.isItAnswered,
     multipleChoiceAnswers,
   ]);
 
