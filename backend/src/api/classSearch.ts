@@ -6,7 +6,7 @@ import { User } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import { Class } from "../models/class.js";
 import { getQuestionsFromClassForUser } from "../models/question.js";
-import { getAllUsersInClass } from "../models/class.js";
+import { getAllUsersScoreByClass } from "../models/class.js";
 
 type classBody = {
   name: string;
@@ -92,13 +92,13 @@ export async function fetchUsersByClass(req: Request, res: Response) {
   }
 
   try {
-    const allUsersInClass = await getAllUsersInClass(classId);
+    const allUsersInClass = await getAllUsersScoreByClass(classId);
 
     if (!allUsersInClass) {
       return res.status(404).send({ message: "No users found in the class" });
     }
 
-    return res.status(200).json(allUsersInClass);
+    return res.status(200).json(allUsersInClass.map((u) => u.user));
   } catch (error) {
     console.error("Error fetching users by class:", error);
     return res.status(500).send({ message: "Internal Server Error" });

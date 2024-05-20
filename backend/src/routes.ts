@@ -10,7 +10,6 @@ import {
   classHandler,
   fetchQuestionsByClass,
   getUserClasses,
-  fetchUsersByClass,
 } from "./api/classSearch.js";
 import { fetchClassesHandler } from "./api/classSearch.js";
 import { updateUserClassesHandler } from "./api/classSearch.js";
@@ -62,7 +61,7 @@ export function addRoutes(app: Application) {
   app.post("/api/class", classHandler);
   app.get("/api/class", fetchClassesHandler);
   app.get("/api/class/:id", requireAuth, fetchQuestionsByClass);
-  app.get("/api/class/:classId/user", requireAuth, fetchUsersByClass);
+  // app.get("/api/class/:classId/user", requireAuth, fetchUsersByClass);
   app.get("/api/submitQuestion/classes", requireAuth, getUserClasses);
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.get("/api/user/classes", requireAuth, UserClasses);
