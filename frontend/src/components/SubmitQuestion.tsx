@@ -1,5 +1,4 @@
-import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
-import axios from "axios";
+import React, { ChangeEvent} from "react";
 import { MultipleChoiceAnswer } from "../pages/FormSubmitQuestions";
 
 export function Title() {
