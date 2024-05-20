@@ -16,7 +16,7 @@ export default function MyClasses() {
   async function fetchClasses() {
     // Use axios to get the classes from the backend
     const response = await axios.get<ClassItem[]>(
-      process.env.REACT_APP_BACKEND_URL + "/api/class",
+      process.env.REACT_APP_BACKEND_URL + "/api/class"
     );
 
     if (response.status === 200) {
@@ -29,7 +29,7 @@ export default function MyClasses() {
     // Use axios to get the user's classes from the backend
     const userResponse = await axios.get<ClassItem[]>(
       process.env.REACT_APP_BACKEND_URL + "/api/user/classes",
-      { withCredentials: true },
+      { withCredentials: true }
     );
 
     if (userResponse.status === 200) {
@@ -58,11 +58,11 @@ export default function MyClasses() {
         {
           classIds: [classes.id, ...userClasses.map((c) => c.id)],
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
       .then((res) => {
         if (res.status === 200) {
-          fetchClasses();
+          setUserClasses([...userClasses, classes]);
         }
       })
       .catch((err) => {
@@ -81,11 +81,13 @@ export default function MyClasses() {
             .filter((c) => c.id !== classToRemove.id)
             .map((c) => c.id),
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
       .then((res) => {
         if (res.status === 200) {
-          fetchClasses();
+          setUserClasses((u) => {
+            return u.filter((c) => c.id !== classToRemove.id);
+          });
         }
       })
       .catch((err) => {
@@ -112,7 +114,7 @@ export default function MyClasses() {
         open={showAddClassModal}
         onClose={() => setShowAddClassModal(false)}
         newClasses={allClasses.filter(
-          (c) => !userClasses.some((uc) => uc.id === c.id),
+          (c) => !userClasses.some((uc) => uc.id === c.id)
         )}
         onSubmit={addClass}
       />
@@ -133,6 +135,7 @@ export default function MyClasses() {
         {userClasses.map((cls) => {
           return (
             <ClassWidget
+              key={cls.id}
               name={cls.name}
               id={cls.id}
               onDelete={() => {
