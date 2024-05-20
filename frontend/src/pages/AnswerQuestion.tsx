@@ -3,6 +3,7 @@ import Flashcard from "../components/Flashcard";
 import axios from "axios";
 import AnswersField from "../components/AnswersField";
 import { useParams } from "react-router-dom";
+import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/20/solid";
 
 interface Question {
   _id: string;
@@ -35,6 +36,9 @@ export default function FlashcardField() {
   // The list of questions for a specific class
   let [listOfQuestions, setListofQuestions] = useState<Question[]>([]);
 
+   // New state for tracking if the question has been answered
+  let [isItAnswered, setIsItAnswered] = useState(false);
+
   let animationDirection = useRef("none");
 
   // id of class
@@ -45,12 +49,13 @@ export default function FlashcardField() {
     return questionArray.map((questionElement, index) => {
       return (
         <Flashcard
+          key={index}
           question={questionElement.question}
           rightAnswer={questionElement.answer}
           animation={animationDirection.current}
           currentCard={questionToRender}
           originalPosition={index}
-        ></Flashcard>
+        />
       );
     });
   }
@@ -65,67 +70,51 @@ export default function FlashcardField() {
     });
   }, [id]);
 
-  const updatePoints = async (newPoints: number) => {
-    try {
-      await axios.post(
-        "/api/user/score",
-        { points: newPoints },
-        { withCredentials: true }
-      );
-    } catch (error) {
-      console.error("Error updating user points:", error);
+  const handleNavigation = (direction: 'left' | 'right') => {
+    setIsItAnswered(false); // Reset the answered state when navigating
+    if (direction === 'left') {
+      if (questionToRender === 0) {
+        changeQuestionToRender(listOfQuestions.length - 1);
+      } else {
+        changeQuestionToRender((questionToRender) => questionToRender - 1);
+      }
+      animationDirection.current = "right";
+    } else {
+      if (questionToRender === listOfQuestions.length - 1) {
+        changeQuestionToRender(0);
+      } else {
+        changeQuestionToRender((questionToRender) => questionToRender + 1);
+      }
+      animationDirection.current = "left";
     }
   };
 
   return (
-    <div className="relative m-0 flex h-svh flex-row items-center justify-center bg-white p-0">
-      <div className="relative m-0 flex h-4/5 w-2/5 flex-col items-center justify-center p-0">
-        <div className="relative flex h-full w-full flex-row items-center justify-center text-4xl">
-          {mapQuestions(listOfQuestions)[questionToRender]}
+    <div className="relative flex h-screen flex-col items-center justify-center bg-gray-100">
+      <div className="relative flex items-center justify-center w-3/4 h-3/4">
+        <button
+          className="absolute left-0 top-1/2 transform -translate-y-1/2 text-black font-bold py-2 px-4 rounded-full"
+          onClick={() => handleNavigation('left')}
+        >
+          <ArrowLeftIcon className="h-6 w-6" />
+        </button>
 
-          <button
-            className="absolute left-full h-1/6 w-1/6"
-            onClick={() => {
-              if (listOfQuestions.length !== 0) {
-                if (questionToRender === listOfQuestions.length - 1) {
-                  changeQuestionToRender(0);
-                } else {
-                  changeQuestionToRender(
-                    (questionToRender) => questionToRender + 1
-                  );
-                }
-                animationDirection.current = "left";
-              }
-            }}
-          >
-            <h1>right</h1>
-          </button>
+        {mapQuestions(listOfQuestions)[questionToRender]}
 
-          <button
-            className="absolute right-full h-1/6 w-1/6"
-            onClick={() => {
-              if (listOfQuestions.length !== 0) {
-                if (questionToRender === 0) {
-                  changeQuestionToRender(listOfQuestions.length - 1);
-                } else {
-                  changeQuestionToRender(
-                    (questionToRender) => questionToRender - 1
-                  );
-                }
-                animationDirection.current = "right";
-              }
-            }}
-          >
-            <h1>left</h1>
-          </button>
-        </div>
-
-        <AnswersField
-          questionlist={listOfQuestions}
-          questionToRender={questionToRender}
-          updatePoints={updatePoints}
-        ></AnswersField>
+        <button
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 text-black font-bold py-2 px-4 rounded-full"
+          onClick={() => handleNavigation('right')}
+        >
+          <ArrowRightIcon className="h-6 w-6" />
+        </button>
       </div>
+
+      <AnswersField
+        questionlist={listOfQuestions}
+        questionToRender={questionToRender}
+        isItAnswered={isItAnswered}
+        setIsItAnswered={setIsItAnswered}
+      />
     </div>
   );
 }

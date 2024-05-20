@@ -5,7 +5,7 @@ import Select from "./PeoplePicker";
 import { Timer } from "./Timer";
 import DamageDealer from "./damageDealer";
 import { useAuth } from "../../context/auth/AuthContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ItemShop from "./ItemShop";
 
 const NUMBER_OF_QUESTIONS = 5;
@@ -38,7 +38,7 @@ interface Item {
   name: string;
   description: string;
   icon: string;
-  cost: number;  
+  cost: number;
 }
 
 interface Inventory {
@@ -73,7 +73,7 @@ async function fetchQuestionsAndAnswers(classId: string | undefined) {
     if (NUMBER_OF_QUESTIONS > questionResponse.data.length) {
       while (unmappedQuestionSet.length < NUMBER_OF_QUESTIONS) {
         console.log(unmappedQuestionSet);
-        console.log("hi");
+        // console.log("hi");
         unmappedQuestionSet = unmappedQuestionSet.concat(
           questionResponse.data
             .sort(() => Math.random() - Math.random())
@@ -149,13 +149,18 @@ export default function GamePage(props: GamePageProps) {
 
   const classId = params.classId;
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     async function fetchInventory() {
       if (!authData.authUserId || !classId) return;
       try {
-        const { data } = await axios.get<Inventory[]>(`${process.env.REACT_APP_BACKEND_URL}/api/inventory/${authData.authUserId}/${classId}`, {
-          withCredentials: true
-        });
+        const { data } = await axios.get<Inventory[]>(
+          `${process.env.REACT_APP_BACKEND_URL}/api/inventory/${authData.authUserId}/${classId}`,
+          {
+            withCredentials: true,
+          }
+        );
         setInventory(data);
       } catch (error) {
         console.error("Failed to fetch inventory:", error);
@@ -183,52 +188,22 @@ export default function GamePage(props: GamePageProps) {
           (u) => u.id !== authData.authUserId
         );
 
-        console.log(`PeopleFormat: ${JSON.stringify(peopleFormat)}`);
+        // console.log(`PeopleFormat: ${JSON.stringify(peopleFormat)}`);
 
         setUsersInClass(peopleFormat);
+
+        fetchQuestionsAndAnswers(classId).then((questions) => {
+          setQuestionSet(questions);
+        });
+        
       } catch (error) {
         console.error("fetch error: ", error);
       }
-
-      fetchQuestionsAndAnswers(classId).then((questions) => {
-        setQuestionSet(questions);
-      });
     }
+
     fetchData();
   }, [setUsersInClass, authData.authUserId, classId]);
-  
 
-   useEffect(() => {
-    async function fetchUserByClass() {
-      try {
-        const response = await axios.get<any>(
-          `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
-          {
-            withCredentials: true,
-          }
-        );
-  
-        const peopleFormat = response.data.slice(0, 3).map((user: any) => ({
-          id: user._id,
-          name: `${user.firstName} ${user.lastName}`,
-          profileColor: user.profileColor,
-          health: user.health,
-        }));
-  
-        setUsersInClass(peopleFormat);
-      } catch (error) {
-        console.log("fetch error: ", error);
-      }
-    }
-
-    fetchQuestionsAndAnswers(classId).then((questions) => {
-      setQuestionSet(questions);
-    });
-    fetchUserByClass();
-  }, [classId]);
-
-  
-        
   //update the score of the attacker based on damage
   async function updateAttackerScore(damage: Number, attacker: string) {
     try {
@@ -262,27 +237,41 @@ export default function GamePage(props: GamePageProps) {
 
   const buyItem = async (item: Item) => {
     if (inventory.length < 3) {
-        try {
-            const response = await axios.post<Inventory>(`${process.env.REACT_APP_BACKEND_URL}/api/inventory`, {
-                userId: authData.authUserId,
-                classId: classId,
-                itemId: item._id,  
-                quantity: 1
-            }, { withCredentials: true });
+      try {
+        const response = await axios.post<Inventory>(
+          `${process.env.REACT_APP_BACKEND_URL}/api/inventory`,
+          {
+            userId: authData.authUserId,
+            classId: classId,
+            itemId: item._id,
+            quantity: 1,
+          },
+          { withCredentials: true }
+        );
 
-            setInventory(currentInventory => [...currentInventory, response.data]);  // assuming response.data is the new Inventory object
-            alert("Item added to inventory!");
-        } catch (error) {
-            alert("Failed to add item to inventory. Please try again.");
-            console.error("Error adding item to inventory:", error);
-        }
+        setInventory((currentInventory) => [
+          ...currentInventory,
+          response.data,
+        ]); // assuming response.data is the new Inventory object
+        alert("Item added to inventory!");
+      } catch (error) {
+        alert("Failed to add item to inventory. Please try again.");
+        console.error("Error adding item to inventory:", error);
+      }
     } else {
-        alert("Maximum 3 items allowed in inventory.");
+      alert("Maximum 3 items allowed in inventory.");
     }
-};
+  };
 
   return (
     <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">
+      {/* Back Button */}
+      <button
+        className="absolute top-4 left-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => navigate(`/classDashboard/${classId}`)}
+      >
+        Back
+      </button>
       {/* Left side of the screen */}
       <div className="col-span-1 bg-[url('https://s3.amazonaws.com/spoonflower/public/design_thumbnails/0424/5908/1431605648965_shop_thumb.png')] p-4 pt-5">
         {/* PeoplePicker component */}
@@ -294,7 +283,7 @@ export default function GamePage(props: GamePageProps) {
           userHealth={userHealth || 100}
         />
         {/* Attack Button */}
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center mt-4">
           <DamageDealer
             classId={classId || ""}
             disabled={!isAttacking || !selectedPerson}
@@ -303,7 +292,10 @@ export default function GamePage(props: GamePageProps) {
               setTimeInCentiseconds(0);
               setIsAttacking(false);
               setSelectedPerson(null);
-              updateAttackerScore(calculateDamage(correctQuestions, timeInCentiseconds), authData.authUserId);
+              updateAttackerScore(
+                calculateDamage(correctQuestions, timeInCentiseconds),
+                authData.authUserId
+              );
 
               let newUsers = [...usersInClass];
               newUsers.find((u) => u.id === selectedPerson)!.health -=
@@ -319,10 +311,11 @@ export default function GamePage(props: GamePageProps) {
       </div>
 
       {/*Shop button*/}
-      
+
       <button
         className="fixed bottom-10 right-1/2 transform translate-x-[-50%] bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => setShowShop(true)}>
+        onClick={() => setShowShop(true)}
+      >
         Shop
       </button>
 
@@ -334,7 +327,8 @@ export default function GamePage(props: GamePageProps) {
             <ItemShop onBuyItem={buyItem} />
             <button
               onClick={() => setShowShop(false)}
-              className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
               Close Shop
             </button>
           </div>
@@ -347,8 +341,11 @@ export default function GamePage(props: GamePageProps) {
         <div className="text-xl font-bold mb-2">Inventory</div>
         <div className="flex items-center space-x-2">
           {inventory.map((item, index) => (
-            <div key={index} className="flex justify-center items-center w-12 h-12 bg-gray-200 rounded-full">
-              <i className={`fas ${item.itemId.icon} text-xl`}></i> 
+            <div
+              key={index}
+              className="flex justify-center items-center w-12 h-12 bg-gray-200 rounded-full"
+            >
+              <i className={`fas ${item.itemId.icon} text-xl`}></i>
             </div>
           ))}
         </div>
