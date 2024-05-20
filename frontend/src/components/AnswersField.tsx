@@ -1,5 +1,5 @@
 import Answers from "./Answers";
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 interface Question {
@@ -55,9 +55,9 @@ export default function AnswersField(props: IAnswerField) {
     IMultipleChoiceAnswers[]
   >([]);
 
-  function handleAnswered() {
+  const handleAnswered = useCallback(() => {
     props.setIsItAnswered(true);
-  }
+  }, [props]);
 
   useEffect(() => {
     // Generates answers to be rendered on screen
@@ -90,6 +90,7 @@ export default function AnswersField(props: IAnswerField) {
     props.questionToRender,
     props.isItAnswered,
     multipleChoiceAnswers,
+    handleAnswered,
   ]);
 
   useEffect(() => {
