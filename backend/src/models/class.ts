@@ -65,6 +65,9 @@ export async function getAllUsersScoreByClass(classId: string) {
     .select({ scores: 1 })
     .populate("scores.user")
     .exec();
+  if (!classEntry) {
+    return null;
+  }
   return mongooseArrayToArray(classEntry!.scores);
 }
 
@@ -96,14 +99,4 @@ function mongooseArrayToArray<T>(mongooseArray: T[]) {
     array.push(mongooseArray[i]);
   }
   return array;
-}
-
-export async function getAllUsersInClass(classId: string) {
-  const classEntry = await Class.findById(classId).exec();
-
-  if (classEntry === null) {
-    return null;
-  }
-  const usersInClass = await User.find({ classIds: classId }).exec();
-  return usersInClass;
 }

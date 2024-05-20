@@ -1,7 +1,7 @@
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import { Request, Response } from "express";
 import joi from "joi";
-import { getAllUsersInClass, getClass } from "../models/class.js";
+import { getAllUsersScoreByClass, getClass } from "../models/class.js";
 
 type GetUserGroup = {
   classId: string;
@@ -32,7 +32,7 @@ export async function getUserGroup(req: Request, res: Response) {
   const now_day = now.getDay();
   const day = now_month * 31 + now_day;
 
-  const usersInClass = await getAllUsersInClass(body.classId);
+  const usersInClass = await getAllUsersScoreByClass(body.classId);
 
   if (!usersInClass) {
     res.status(400).json({ message: "User is not in class" });
@@ -43,21 +43,26 @@ export async function getUserGroup(req: Request, res: Response) {
 
   const users = usersInClass.map((u) => {
     return {
-      health:
-        scores.find((su) => su.user.toString() === u._id.toString())?.health ||
-        100,
-      id: u._id.toString(),
-      firstName: u.firstName,
-      lastName: u.lastName,
-      profileColor: u.profileColor,
+      health: scores.find((su) => su.user.toString() === u.user._id.toString())
+        ?.health,
+      id: u.user._id.toString(),
+      firstName: u.user.firstName,
+      lastName: u.user.lastName,
+      profileColor: u.user.profileColor,
     };
   });
+
+  console.log(users);
 
   shuffle(users, day);
 
   const userIdx = users.findIndex((u) => u.id === userData.id)!;
 
   const group = Math.floor(userIdx / 4);
+
+  console.log(group);
+  console.log(userIdx);
+  console.log(userData.id);
 
   // TODO: This will return <4 users for the last group. So we will need some kind of padding
   res.send(users.slice(group * 4, group * 4 + 4));

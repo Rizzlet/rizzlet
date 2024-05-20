@@ -9,7 +9,7 @@ interface PeoplePickerProps<
   onSelectPerson: (id: string) => void; // Assume this will change selectedPerson
   disabled: boolean; //disabled until finish answering questions
   userHealth: number;
-  people: T[]; // Exactly 3
+  people: T[]; // Exactly <=3
 }
 
 export default function Select<
@@ -30,14 +30,14 @@ export default function Select<
 
   //make sure the data is properly rendered (fixes undefined)
   const isDataAvailable =
-    people.length === 3 &&
+    people.length <= 3 &&
     people.every(
       (person) =>
         person &&
         person.id &&
         person.firstName &&
         person.lastName &&
-        person.health !== undefined
+        person.health
     );
 
   if (!isDataAvailable) {
