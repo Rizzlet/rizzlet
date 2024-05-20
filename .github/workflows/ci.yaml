@@ -59,3 +59,7 @@ jobs:
       - name: Try Build
         run: npm run build
         working-directory: backend
+
+      - name: Unit Testing
+        run: npm run test
+        working-directory: backend
