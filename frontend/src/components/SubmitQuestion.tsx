@@ -37,7 +37,6 @@ export function SelectQuestion({
         <option value="">Choose a Question Type</option>
         <option value="TrueAndFalse">True and False</option>
         <option value="Multiple Choice">Multiple Choice</option>
-        <option value="Fill-in">Fill-In the Blank</option>
       </select>
     </div>
   );
