@@ -22,11 +22,10 @@ import { submitQuestionRatingHandler } from "./api/questionRating.js";
 import {
   GetIndividualUser,
   UserClasses,
-  getTopTenUsers,
+  topFour,
   updateHealthHandler,
   updateAttackerScoreHandler,
 } from "./api/users.js";
-import {} from "./models/user.js";
 import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
 import { getScore } from "./api/users.js";
@@ -39,8 +38,14 @@ import {
   paginatedQuestionsByClass,
 } from "./api/pagination.js";
 import { fetchStreakHandler, updateStreakHandler } from "./api/streak.js";
-import { addItem, fetchItems, updateItem, addToInventory, getInventory, removeFromInventory } from "./api/inventoryController.js";  
-
+import {
+  addItem,
+  fetchItems,
+  updateItem,
+  addToInventory,
+  getInventory,
+  removeFromInventory,
+} from "./api/inventoryController.js";
 
 export function addRoutes(app: Application) {
   app.get("/", rootRouteHelloWorld);
@@ -62,8 +67,8 @@ export function addRoutes(app: Application) {
   app.get("/api/user", requireAuth, GetIndividualUser);
   app.get("/api/user/classes", requireAuth, UserClasses);
   app.get("/api/game/:classId/group", requireAuth, getUserGroup);
-  app.post("/api/class/topFour", requireAuth, getTopTenUsers);
-  app.post("/api/class/", requireAuth, getTopTenUsers);
+  app.post("/api/class/topFour", requireAuth, topFour);
+  app.post("/api/class/", requireAuth, topFour);
   app.get("/api/user/score", requireAuth, getScore);
   app.post("/api/user/streak", requireAuth, updateStreakHandler);
   app.get("/api/user/streak", requireAuth, fetchStreakHandler);
@@ -80,11 +85,15 @@ export function addRoutes(app: Application) {
   app.get("/api/paginate/question", requireAuth, paginatedQuestionsByClass);
   app.get("/api/paginate/question/user", paginatedQuestionsByUser);
   app.post("/api/user/updateHealth", requireAuth, updateHealthHandler);
-  app.post('/api/items', addItem);
-  app.get('/api/items', fetchItems);
-  app.put('/api/items/:itemId', updateItem);
-  app.post('/api/inventory', addToInventory);
-  app.get('/api/inventory/:userId/:classId', getInventory);
-  app.delete('/api/inventory/:id', removeFromInventory);
-  app.post("/api/user/updateAttackerScore", requireAuth, updateAttackerScoreHandler);
+  app.post("/api/items", addItem);
+  app.get("/api/items", fetchItems);
+  app.put("/api/items/:itemId", updateItem);
+  app.post("/api/inventory", addToInventory);
+  app.get("/api/inventory/:userId/:classId", getInventory);
+  app.delete("/api/inventory/:id", removeFromInventory);
+  app.post(
+    "/api/user/updateAttackerScore",
+    requireAuth,
+    updateAttackerScoreHandler,
+  );
 }
