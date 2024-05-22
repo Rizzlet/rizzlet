@@ -1,17 +1,5 @@
 import mongoose from "mongoose";
 import { getConnection } from "./db.js";
-
-// Hack to get Class.modelName to work, otherwise we get a MissingSchemaError
-const classSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-});
-
-export const Class = (await getConnection()).model("Class", classSchema);
-
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -47,13 +35,6 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0, // Initially set to 0
   },
-  classIds: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      required: false,
-      ref: Class.modelName,
-    },
-  ],
 });
 
 export const User = (await getConnection()).model("User", userSchema);
@@ -82,15 +63,4 @@ export async function getIdCreateOrUpdate(
   });
 
   return results.id;
-}
-
-export async function setUserClasses(userId: string, classIds: string[]) {
-  // Update the user's classIds with the new classes
-  const updatedUser = await User.findByIdAndUpdate(
-    userId,
-    { $set: { classIds: classIds } },
-    { new: true, runValidators: true },
-  );
-
-  return updatedUser;
 }
