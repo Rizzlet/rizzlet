@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
-import axios from "axios";
 
 const links = [
   { to: "/", text: "Home" },
