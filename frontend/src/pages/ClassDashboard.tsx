@@ -123,13 +123,23 @@ const ClassDashboard: React.FC = () => {
           {selectedLink === "game" && (
             <div className="container py-10 px-10 flex flex-col items-center justify-center">
               <Link
-                className="w-3/4 h-96 mt-3 rounded-lg text-center flex items-center justify-center bg-cover bg-center"
-                style={{ backgroundImage: `url(${gameImage})`, color: 'black', textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8)' }}
+                className="w-3/4 h-96 mt-3 rounded-lg text-center flex items-center justify-center relative overflow-hidden"
+                style={{ 
+                  color: 'black',
+                  textShadow: '1px 1px 2px rgba(255, 255, 255, 1)'
+                }}
                 to={`/gamePage/${params.id}`}
               >
-                <span className="bg-white bg-opacity-70 px-4 py-2 rounded-lg font-bold text-lg">
+                <span className="bg-white bg-opacity-70 px-4 py-2 rounded-lg font-bold text-lg z-10">
                   Open Game!
                 </span>
+                <div 
+                  className="absolute inset-0 bg-cover bg-center blur-sm"
+                  style={{ 
+                    backgroundImage: `url(${gameImage})`,
+                    filter: 'blur(10px)'
+                  }}
+                />
               </Link>
             </div>
           )}
