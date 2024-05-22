@@ -374,6 +374,7 @@ export default function GamePage(props: GamePageProps) {
     switch (item.name) {
       case 'Magic Wand': return 5;
       case 'Flame Spell': return 8;
+      case 'Damage Spell': return 15;
       default: return 0;
     }
   };

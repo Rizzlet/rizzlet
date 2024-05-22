@@ -26,7 +26,6 @@ import {
   updateHealthHandler,
   updateAttackerScoreHandler,
 } from "./api/users.js";
-import {} from "./models/user.js";
 import { CheckAnswered } from "./api/answeredQuestion.js";
 import { SubmitAnsweredQuestion } from "./api/answeredQuestion.js";
 import { getScore } from "./api/users.js";
