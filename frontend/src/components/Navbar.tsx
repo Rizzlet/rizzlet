@@ -148,21 +148,10 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
               // Clear cookies
               {
                 // Clear cookie
-                axios
-                  .post(
-                    new URL(
-                      "/api/auth/logout",
-                      process.env.REACT_APP_BACKEND_URL!
-                    ).href,
-                    {},
-                    { withCredentials: true }
-                  )
-                  .then(() => {
-                    window.location.href = "/";
-                  })
-                  .finally(() => {
-                    authData.setIsLoggedIn(false);
-                  });
+
+                authData.setIsLoggedIn(false);
+                eraseCookie("token");
+                window.location.reload();
               }
             }
           >
@@ -172,4 +161,8 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
       </ul>
     </div>
   );
+}
+
+function eraseCookie(name: string) {
+  document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }

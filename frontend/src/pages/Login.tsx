@@ -46,11 +46,11 @@ export default function LoginPage() {
             authorizationCode: new URLSearchParams(window.location.search).get(
               "code"
             ),
-          },
-          { withCredentials: true }
+          }
         )
         .then((response) => {
           const data = response.data as BackendLoginResponse;
+          setCookie("token", response.headers["x-token-set"], 2);
 
           console.log("Logged in!", response.data);
           auth.setIsLoggedIn(true);
@@ -175,4 +175,14 @@ export default function LoginPage() {
       </div>
     </section>
   );
+}
+
+function setCookie(name: string, value: string, days: number) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }

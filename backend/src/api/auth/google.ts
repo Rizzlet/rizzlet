@@ -75,11 +75,7 @@ export async function googleAuthHandler(req: Request, res: Response) {
 
   const encodedToken = jwt.sign(tokenData, getEnvVars().JWT_SECRET);
 
-  res.cookie("token", encodedToken, {
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-    sameSite: "none",
-    secure: true,
-  });
+  res.header("X-Token-Set", encodedToken);
 
   res.header("Referrer-Policy", "no-referrer-when-downgrade");
   res.status(200).json(tokenData);
