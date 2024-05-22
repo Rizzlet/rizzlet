@@ -7,15 +7,24 @@ interface Question {
   _id: string;
   type: string;
   question: string;
-  answer: boolean;
   createdBy: {
     firstName: string;
     lastName: string;
   };
 }
 
+interface Answers {
+  _id: string;
+  answer: string;
+}
+
+export interface QuestionMappedAnswers {
+  questions: Question;
+  answer: Answers[];
+}
+
 function ProfilePage() {
-  const [questions, setQuestionData] = useState<Question[]>([]);
+  const [questions, setQuestionData] = useState<QuestionMappedAnswers[]>([]);
 
   //pagination const
   const [totalPages, setTotalPages] = useState(1); //determines the total # of pages
@@ -60,7 +69,7 @@ function ProfilePage() {
 
   return (
     <div className="container">
-      <Table questionData={questions} />
+      <Table questions={questions} />
       <Pages
         currentPage={currentPage}
         postsPerPage={postsPerPage}
