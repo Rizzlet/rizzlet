@@ -347,12 +347,37 @@ export default function GamePage(props: GamePageProps) {
   
   const handleUseItem = (inventoryItem: Inventory) => {
     if (!inventoryItem) return;
-    setActiveItemBonus(determineItemBonus(inventoryItem.itemId));
-    setActiveItemName(inventoryItem.itemId.name); 
+
+    // Determine the bonus or effect of the item
+  const itemEffect = determineItemEffect(inventoryItem.itemId);
+
+    if (itemEffect.type === 'health') { //Health items
+        const currentHealth = userHealth || 0;
+        const addHealth = itemEffect.value
+        const totalHealth = Math.min(addHealth + currentHealth, 100) //100 is the max health but backend doesnt reflect that
+        setUserHealth(totalHealth); // Update health in the state
+        updateHealthOnBackend(addHealth);
+    } else if (itemEffect.type === 'damage') { //Damage items
+        setActiveItemBonus(itemEffect.value);
+        setActiveItemName(inventoryItem.itemId.name); 
+    }
     removeItemFromInventory(inventoryItem._id);
     setShowConfirmModal(false);
   };
 
+  const updateHealthOnBackend = async (healthChange: number) => {
+    try {
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/user/updateHealth`, {
+            damageAmount: healthChange, 
+            attackUser: authData.authUserId,  // ID of yourself
+            classId: classId  
+        }, { withCredentials: true });
+
+        console.log("Health updated successfully!", healthChange);
+    } catch (error) {
+        console.error("Failed to update health on the server:", error);
+    }
+  };
 
   const removeItemFromInventory = async (inventoryId: string) => {
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/inventory/${inventoryId}`;
@@ -370,14 +395,22 @@ export default function GamePage(props: GamePageProps) {
     }
   };
 
-  const determineItemBonus = (item: Item) => {
+  const determineItemEffect = (item: Item) => {
     switch (item.name) {
-      case 'Magic Wand': return 5;
-      case 'Flame Spell': return 8;
-      case 'Damage Spell': return 15;
-      default: return 0;
+        case 'Magic Wand':
+            return { type: 'damage', value: 5 };
+        case 'Flame Spell':
+            return { type: 'damage', value: 8 };
+        case 'Damage Spell':
+            return { type: 'damage', value: 15 };
+        case 'Health Potion':
+            return { type: 'health', value: 10 };
+        case 'Health Spell':
+            return { type: 'health', value: 15 };
+        default:
+            return { type: 'none', value: 0 };
     }
-  };
+};
 
   return (
     <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">

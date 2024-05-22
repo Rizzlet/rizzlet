@@ -185,11 +185,6 @@ export async function updateHealthHandler(req: Request, Res: Response) {
       },
     );
 
-    // const response = await Class.updateOne(
-    //   { _id: classId, "scores.user": attackUser },
-    //   { $inc: { "scores.$.health": damageAmount } },
-    // );
-
     if (!response) {
       console.log("Class doesn't exist");
       return Res.status(403).json({ message: "Class does not exist" });
@@ -197,7 +192,6 @@ export async function updateHealthHandler(req: Request, Res: Response) {
   } catch (error) {
     console.log(error);
   }
-
   return Res.status(200).json({ request: true });
 }
 
