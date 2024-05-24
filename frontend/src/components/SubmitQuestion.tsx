@@ -1,5 +1,4 @@
-import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
-import axios from "axios";
+import React, { ChangeEvent} from "react";
 import { MultipleChoiceAnswer } from "../pages/FormSubmitQuestions";
 
 export function Title() {
@@ -21,7 +20,7 @@ export function SelectQuestion({
   selectedType: string;
 }) {
   return (
-    <div className="absolute right-0 -mt-10 gap-10 px-5">
+    <div className="absolute right-0 -mt-20 gap-10 px-5">
       <label
         htmlFor="questions"
         className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -37,102 +36,24 @@ export function SelectQuestion({
         <option value="">Choose a Question Type</option>
         <option value="TrueAndFalse">True and False</option>
         <option value="Multiple Choice">Multiple Choice</option>
-        <option value="Fill-in">Fill-In the Blank</option>
-      </select>
-    </div>
-  );
-}
-
-export function SelectClass({
-  onClassChange,
-  selectedType,
-}: {
-  onClassChange: (event: ChangeEvent<HTMLSelectElement>) => void;
-  selectedType: string;
-}) {
-  interface IClasses {
-    className: string;
-    classId: string;
-  }
-
-  let [userClasses, setUserClasses] = useState<ReactElement[] | undefined>([]);
-
-  useEffect(() => {
-    // Creates options in selecting classes based on what the user classes are
-    function createClassOptions(classArray: IClasses[] | undefined): void {
-      if (classArray !== undefined) {
-        let tempClassArray: ReactElement[] = [];
-        for (let i = 0; i < classArray.length; i++) {
-          tempClassArray.push(
-            <option value={classArray[i].classId}>
-              {classArray[i].className}
-            </option>
-          );
-        }
-        setUserClasses(tempClassArray);
-      }
-    }
-    async function GetClasses(): Promise<IClasses[] | undefined> {
-      try {
-        const response = await axios.get(
-          new URL(
-            "/api/submitQuestion/classes",
-            process.env.REACT_APP_BACKEND_URL!
-          ).href,
-          {
-            withCredentials: true,
-          }
-        );
-        return response.data;
-      } catch (error) {
-        console.log("error fetching user classes", error);
-        return undefined;
-      }
-    }
-
-    GetClasses().then((result) => {
-      createClassOptions(result);
-    });
-  }, []);
-
-  return (
-    <div className="absolute -mt-10 gap-10 px-5">
-      <label
-        htmlFor="questions"
-        className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-      >
-        Select an option
-      </label>
-      <select
-        id="type"
-        onChange={onClassChange}
-        value={selectedType}
-        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-white dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-      >
-        <option value="">Choose a Class</option>
-        {userClasses}
       </select>
     </div>
   );
 }
 
 export function InputQuestion({
-  onFieldChange,
+  value,
+  onFieldChange
 }: {
+  value: string, 
   onFieldChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
     <div className="mt-20 px-5">
-      {/* message */}
-      <label
-        htmlFor="question"
-        className="mb-2 block text-2xl font-medium text-gray-900 dark:text-black"
-      >
-        Question
-      </label>
       {/* textbox has blue border when clicked on*/}
       <input
         id="question"
+        value={value}
         onChange={onFieldChange}
         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-white dark:text-black dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
         placeholder="Type Your Question Here..."
@@ -207,12 +128,6 @@ export function Buttons() {
           className="mb-2 me-2 rounded-lg bg-gray-300 px-8 py-2.5 text-sm font-medium text-black hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-600 dark:bg-gray-300 dark:hover:bg-gray-600 dark:focus:ring-gray-600"
         >
           Submit
-        </button>
-        <button
-          type="button"
-          className="mb-2 me-2 rounded-lg bg-gray-300 px-8 py-2.5 text-sm font-medium text-black hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-600 dark:bg-gray-300 dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-        >
-          Close
         </button>
       </div>
     </div>
