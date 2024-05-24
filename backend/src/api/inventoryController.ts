@@ -39,7 +39,7 @@ export async function addToInventory(req: Request, res: Response) {
       const existingItem = await Inventory.findOne({ userId, classId, itemId });
 
       if (existingItem) {
-          existingItem.quantity += quantity; // Make sure to handle cases where existingItem might be null
+          existingItem.quantity += quantity; 
           await existingItem.save();
           return res.status(200).json(existingItem);
       } else {
