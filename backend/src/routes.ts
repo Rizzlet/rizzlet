@@ -15,7 +15,10 @@ import {
 import { fetchClassesHandler } from "./api/classSearch.js";
 import { updateUserClassesHandler } from "./api/classSearch.js";
 
-import { googleAuthHandler } from "./api/auth/google.js";
+import {
+  googleAuthHandler,
+  googleRefreshAuthHandler,
+} from "./api/auth/google.js";
 import { logoutHandler } from "./api/auth/logout.js";
 import { requireAuth } from "./api/auth/sharedAuth.js";
 import { submitQuestionRatingHandler } from "./api/questionRating.js";
@@ -39,13 +42,20 @@ import {
   paginatedQuestionsByClass,
 } from "./api/pagination.js";
 import { fetchStreakHandler, updateStreakHandler } from "./api/streak.js";
-import { addItem, fetchItems, updateItem, addToInventory, getInventory, removeFromInventory } from "./api/inventoryController.js";  
-
+import {
+  addItem,
+  fetchItems,
+  updateItem,
+  addToInventory,
+  getInventory,
+  removeFromInventory,
+} from "./api/inventoryController.js";
 
 export function addRoutes(app: Application) {
   app.get("/", rootRouteHelloWorld);
   app.post("/api/hello", requireAuth, helloWorldHandler);
   app.post("/api/auth/google", googleAuthHandler);
+  app.post("/api/auth/google/refresh", googleRefreshAuthHandler);
   app.post("/api/auth/logout", logoutHandler);
   app.post("/api/question", requireAuth, submitQuestionHandler);
   app.get("/api/question", fetchAllQuestionsHandler);
@@ -80,11 +90,15 @@ export function addRoutes(app: Application) {
   app.get("/api/paginate/question", requireAuth, paginatedQuestionsByClass);
   app.get("/api/paginate/question/user", paginatedQuestionsByUser);
   app.post("/api/user/updateHealth", requireAuth, updateHealthHandler);
-  app.post('/api/items', addItem);
-  app.get('/api/items', fetchItems);
-  app.put('/api/items/:itemId', updateItem);
-  app.post('/api/inventory', addToInventory);
-  app.get('/api/inventory/:userId/:classId', getInventory);
-  app.delete('/api/inventory/:id', removeFromInventory);
-  app.post("/api/user/updateAttackerScore", requireAuth, updateAttackerScoreHandler);
+  app.post("/api/items", addItem);
+  app.get("/api/items", fetchItems);
+  app.put("/api/items/:itemId", updateItem);
+  app.post("/api/inventory", addToInventory);
+  app.get("/api/inventory/:userId/:classId", getInventory);
+  app.delete("/api/inventory/:id", removeFromInventory);
+  app.post(
+    "/api/user/updateAttackerScore",
+    requireAuth,
+    updateAttackerScoreHandler,
+  );
 }

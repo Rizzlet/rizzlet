@@ -84,3 +84,77 @@ export async function googleAuthHandler(req: Request, res: Response) {
   res.header("Referrer-Policy", "no-referrer-when-downgrade");
   res.status(200).json(tokenData);
 }
+
+type GoogleAuthRefreshBody = {
+  refreshToken: string;
+};
+
+const bodyRefreshSchema = joi.object<GoogleAuthRefreshBody, true>({
+  refreshToken: joi.string().required(),
+});
+
+export async function googleRefreshAuthHandler(req: Request, res: Response) {
+  const { error, value: body } = bodyRefreshSchema.validate(req.body);
+
+  if (error) {
+    res.status(422).send(error.message);
+    return;
+  }
+
+  const {
+    data: { id_token },
+  } = await axios.post("https://www.googleapis.com/oauth2/v4/token", {
+    refresh_token: body.refreshToken,
+    client_id: process.env.GOOGLE_CLIENT_ID,
+    client_secret: process.env.GOOGLE_CLIENT_SECRET,
+    grant_type: "refresh_token",
+  });
+
+  if (!id_token) {
+    console.error("Auth failure from google");
+    res.status(400).send("Auth Error");
+    return;
+  }
+
+  const data = jwt.decode(id_token);
+
+  if (data === null || typeof data === "string") {
+    console.error("Unable to decode JWT");
+    res.status(500).send("Auth Error");
+    return;
+  }
+
+  const user = {
+    firstName: data.given_name,
+    lastName: data.family_name,
+    email: data.email,
+    sub: data.sub!,
+    profileColor: "#FFA500",
+  };
+
+  // We assume that the sub field always exists on google tokens
+  const userId = data.sub!;
+
+  const results = await getIdCreateOrUpdate(
+    user.firstName,
+    user.lastName,
+    user.email,
+    userId,
+    user.profileColor,
+  );
+
+  if (results === null) {
+    console.error("Failed to create or update user");
+    res.status(500).send("Auth Error");
+    return;
+  }
+
+  const tokenData: ClientTokenData = { ...user, id: results };
+
+  const encodedToken = jwt.sign(tokenData, getEnvVars().JWT_SECRET);
+
+  res.header("X-Token-Set", encodedToken);
+
+  res.header("Referrer-Policy", "no-referrer-when-downgrade");
+  res.status(200).json(tokenData);
+}
