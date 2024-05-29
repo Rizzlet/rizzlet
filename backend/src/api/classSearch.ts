@@ -1,10 +1,13 @@
 import joi from "joi";
 import { Request, Response } from "express";
-import { getUserClassesFromDB, newClass } from "../models/class.js";
+import {
+  getUserClassesFromDB,
+  newClass,
+  setUserClasses,
+} from "../models/class.js";
 import { getClassNames } from "../models/class.js";
 import { User } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
-import { Class } from "../models/class.js";
 import { getQuestionsFromClassForUser } from "../models/question.js";
 import { getAllUsersScoreByClass } from "../models/class.js";
 
@@ -132,38 +135,4 @@ export async function getUserClasses(req: Request, res: Response) {
     console.error();
     res.status(500).json({ error: "Internal server error" });
   }
-}
-
-export async function setUserClasses(userId: string, classIds: string[]) {
-  const classesUserAlreadyIn = await getUserClassesFromDB(userId);
-
-  classIds.forEach(async (classId) => {
-    if (classesUserAlreadyIn.find((u) => u._id.toString() === classId)) {
-      // Already in class
-    } else {
-      // Add the class
-      const classEntry = await Class.findById(classId).exec();
-      if (classEntry === null) {
-        return;
-      }
-
-      classEntry.scores.push({ user: userId, health: 100, score: 0 });
-      await classEntry.save();
-    }
-  });
-
-  classesUserAlreadyIn.forEach(async (classId) => {
-    if (classIds.find((u) => u === classId._id.toString())) {
-      // Should be added, no change
-    } else {
-      // Remove the user entry
-      const classEntry = await Class.findById(classId).exec();
-      if (classEntry === null) {
-        return;
-      }
-
-      classEntry.scores.remove({ user: userId });
-      await classEntry.save();
-    }
-  });
 }
