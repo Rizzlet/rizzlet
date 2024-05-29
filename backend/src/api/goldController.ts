@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { GoldPerClass } from '../models/goldPerClass.js';
+import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 
 // Function to retrieve or auto-create gold for a specific class
 export async function getGoldPerClass(req: Request, res: Response) {
@@ -32,4 +33,29 @@ export async function updateGold(req: Request, res: Response) {
   } catch (error) {
     res.status(500).json({ message: "Error updating or creating gold", error: error.message });
   }
+}
+
+export async function receiveGold(req: Request, res: Response) {
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
+  if (!userData) {
+    console.log("could not find user");
+    return res.status(401).json({ message: "Authorization failed" });
+  }
+  const {attacker, classId } = req.body;
+
+  try {
+    const response = await GoldPerClass.findOneAndUpdate(
+    { attacker, classId },
+    { $inc: { gold: 5 } },
+  );
+
+  if (!response) {
+    console.log("Could not add gold, can't find gold");
+    return res.status(403).json({ message: "Could not add gold, can't find gold" });
+  }
+  } catch (error) {
+    console.log(error);
+  }
+
+  return res.status(200).json({ request: true });
 }
