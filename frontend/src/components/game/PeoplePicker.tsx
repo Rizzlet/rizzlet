@@ -23,6 +23,7 @@ export default function Select<
 }: PeoplePickerProps<T>) {
   const authData = useAuth();
 
+  console.log("health", userHealth);
   // console.log("selectedPerson", selectedPerson);
   // console.log("onSelectPerson", onSelectPerson)
   // console.log("disabled", disabled);
@@ -52,7 +53,7 @@ export default function Select<
         {people[0] && (
           <div
             key={people[0].id}
-            onClick={() => disabled === false && onSelectPerson(people[0].id)}
+            onClick={() => disabled === false && userHealth > 0 && onSelectPerson(people[0].id)}
           >
             {people[0].health <= 0
               ? ghost(`${people[0].firstName} ${people[0].lastName}`)
@@ -71,7 +72,7 @@ export default function Select<
         {people[1] && (
           <div
             key={people[1].id}
-            onClick={() => disabled === false && onSelectPerson(people[1].id)}
+            onClick={() => disabled === false && userHealth > 0 && onSelectPerson(people[1].id)}
           >
             {people[1].health <= 0
               ? ghost(`${people[1].firstName} ${people[1].lastName}`)
@@ -88,7 +89,7 @@ export default function Select<
         {people[2] && (
           <div
             key={people[2].id}
-            onClick={() => disabled === false && onSelectPerson(people[2].id)}
+            onClick={() => disabled === false && userHealth > 0 && onSelectPerson(people[2].id)}
           >
             {people[2].health <= 0
               ? ghost(`${people[2].firstName} ${people[2].lastName}`)
@@ -104,13 +105,15 @@ export default function Select<
       </div>
       {/* The user */}
       <div className="">
-        {avatar(
-          authData,
-          `${authData.authUserFullName}`,
-          false,
-          userHealth,
-          false //false so that the user icon is not grayed out (harcoded)
-        )}
+        {userHealth <= 0
+          ? (ghost(`${authData.authUserFullName}`))
+          : avatar(
+              authData,
+              `${authData.authUserFullName}`,
+              false,
+              userHealth,
+              false //false so that the user icon is not grayed out (harcoded)
+            )}
       </div>
     </div>
   );
