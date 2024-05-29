@@ -2,6 +2,13 @@ import React from "react";
 import { useAuth } from "../../context/auth/AuthContext";
 import HealthBar from "./HealthBar";
 
+interface Person {
+  id: string;
+  firstName: string;
+  lastName: string;
+  health: number;
+}
+
 interface PeoplePickerProps<
   T extends { id: string; firstName: string; lastName: string; health: number },
 > {
@@ -45,68 +52,39 @@ export default function Select<
     return <div></div>;
   }
 
+  const renderEnemy = (person: Person) => {
+    return (
+      <div
+        key={person.id}
+        onClick={() =>
+          disabled === false && userHealth > 0 && onSelectPerson(person.id)
+        }
+      >
+        {person.health <= 0
+          ? ghost(`${person.firstName} ${person.lastName}`)
+          : avatar(
+              person,
+              `${person.firstName} ${person.lastName}`,
+              person.id === selectedPerson,
+              person.health,
+              disabled
+            )}
+      </div>
+    );
+  };
+
   return (
     <div className="grid grid-rows-3 grid-flow-col gap-4">
-      {/* rendering the "enemy" */}
-      {/* index 0 first*/}
-      <div>
-        {people[0] && (
-          <div
-            key={people[0].id}
-            onClick={() => disabled === false && userHealth > 0 && onSelectPerson(people[0].id)}
-          >
-            {people[0].health <= 0
-              ? ghost(`${people[0].firstName} ${people[0].lastName}`)
-              : avatar(
-                  people[0],
-                  `${people[0].firstName} ${people[0].lastName}`,
-                  people[0].id === selectedPerson,
-                  people[0].health,
-                  disabled
-                )}
-          </div>
-        )}
-      </div>
-      {/* index 1 second user*/}
+      {/* rendering the "enemy" using index 0, 1, 2*/}
+      <div>{people[0] && renderEnemy(people[0])}</div>
       <div className="grid grid-cols-2 col-span-1">
-        {people[1] && (
-          <div
-            key={people[1].id}
-            onClick={() => disabled === false && userHealth > 0 && onSelectPerson(people[1].id)}
-          >
-            {people[1].health <= 0
-              ? ghost(`${people[1].firstName} ${people[1].lastName}`)
-              : avatar(
-                  people[1],
-                  `${people[1].firstName} ${people[1].lastName}`,
-                  people[1].id === selectedPerson,
-                  people[1].health,
-                  disabled
-                )}
-          </div>
-        )}
-        {/* index 2: third user*/}
-        {people[2] && (
-          <div
-            key={people[2].id}
-            onClick={() => disabled === false && userHealth > 0 && onSelectPerson(people[2].id)}
-          >
-            {people[2].health <= 0
-              ? ghost(`${people[2].firstName} ${people[2].lastName}`)
-              : avatar(
-                  people[2],
-                  `${people[2].firstName} ${people[2].lastName}`,
-                  people[2].id === selectedPerson,
-                  people[2].health,
-                  disabled
-                )}
-          </div>
-        )}
+        {people[1] && renderEnemy(people[1])}
+        {people[2] && renderEnemy(people[2])}
       </div>
       {/* The user */}
       <div className="">
         {userHealth <= 0
-          ? (ghost(`${authData.authUserFullName}`))
+          ? ghost(`${authData.authUserFullName}`)
           : avatar(
               authData,
               `${authData.authUserFullName}`,
