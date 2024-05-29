@@ -12,9 +12,7 @@ export async function GetUser(): Promise<IUser | null> {
   try {
     const response = await axios.get(
       new URL("/api/user", process.env.REACT_APP_BACKEND_URL!).href,
-      {
-        withCredentials: true,
-      },
+      { headers: { "X-token": localStorage.getItem("token") } }
     );
     return response.data;
   } catch (error) {

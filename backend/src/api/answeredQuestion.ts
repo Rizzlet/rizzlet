@@ -6,7 +6,7 @@ import {
 } from "../models/answeredQuestion.js";
 
 export async function CheckAnswered(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   const { questionId } = req.body;
   if (!userData) {
     console.log("checking answers authorization failed");
@@ -17,7 +17,7 @@ export async function CheckAnswered(req: Request, res: Response) {
 }
 
 export async function SubmitAnsweredQuestion(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
 
   if (!userData) {
     res.status(401);

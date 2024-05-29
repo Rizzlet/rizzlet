@@ -58,7 +58,7 @@ function ProfilePage() {
       const response = await axios.get<any>(
         process.env.REACT_APP_BACKEND_URL +
           `/api/paginate/question/user?page=${page}&limit=${limit}`,
-        { withCredentials: true }
+        { headers: { "X-token": localStorage.getItem("token") } }
       );
       return response.data;
     } catch (error) {

@@ -39,7 +39,7 @@ export default function AnswersField(props: IAnswerField) {
             "/api/question/multipleChoiceAnswers",
             process.env.REACT_APP_BACKEND_URL!
           ).href,
-          { withCredentials: true }
+          { headers: { "X-token": localStorage.getItem("token") } }
         )
       ).data;
       return theAnswers;

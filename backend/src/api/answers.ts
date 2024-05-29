@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Answer } from "../models/answers.js";
 
 export async function fetchMultipleChoiceAnswers(req: Request, res: Response) {
-  const userData = req.cookies.token;
+  const userData = req.get("X-token")!;
 
   if (!userData) {
     res.status(404);

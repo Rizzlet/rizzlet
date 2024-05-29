@@ -44,7 +44,7 @@ export async function classHandler(req: Request, res: Response) {
 
 export async function updateUserClassesHandler(req: Request, res: Response) {
   const { classIds } = req.body as { classIds: string[] };
-  const userData = verifyAndDecodeToken(req.cookies.token)!;
+  const userData = verifyAndDecodeToken(req.get("X-token")!)!;
 
   // Update the user's classIds with the new classes
   const updatedUser = setUserClasses(userData.id, classIds);
@@ -61,7 +61,7 @@ export async function updateUserClassesHandler(req: Request, res: Response) {
 
 export async function fetchQuestionsByClass(req: Request, res: Response) {
   const classId = req.params["id"];
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
 
   if (!userData) {
     res.status(401);
@@ -107,7 +107,7 @@ export async function fetchUsersByClass(req: Request, res: Response) {
 
 export async function getUserClasses(req: Request, res: Response) {
   try {
-    const userData = verifyAndDecodeToken(req.cookies.token);
+    const userData = verifyAndDecodeToken(req.get("X-token")!);
 
     if (!userData) {
       res.status(401);
