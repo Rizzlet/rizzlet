@@ -80,7 +80,7 @@ const router = createBrowserRouter(
           path: "/submit-rating/:questionId",
           element: (
             <AuthGuard>
-              <SubmitRating questionId={""} />
+              <SubmitRating />
             </AuthGuard>
           ),
         },

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { QuestionMappedAnswers } from "../pages/QuestionOverview";
+import { FlagIcon } from "@heroicons/react/20/solid";
 
 //Creating the Pagination
 interface PagesProps {
@@ -127,17 +128,18 @@ function TableBody(props: TableProps) {
       lastName: "",
     };
     return (
-      <tr key={index} className=" border-b border-gray-200 hover:bg-gray-200">
+      <tr key={index} className=" border-b border-gray-200">
         <td className="px-6 py-3">{row.questions.type}</td>
         <td className="px-6 py-3">{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td>
         <td className="px-6 py-3">{row.questions.question}</td>
         <td className="px-6 py-3">{row.answer[0]?.answer}</td>
-        <td className="px-6 py-3">          
+        <td className="px-6 py-3">
           <Link to={`/submit-rating/${row.questions._id}`}>
-            <button className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">
+            <FlagIcon className=" text-red-600 px-9 py-1 rounded hover:text-red-800">
               Feedback
-            </button>
-          </Link></td>
+            </FlagIcon>
+          </Link>
+        </td>
       </tr>
     );
   });
