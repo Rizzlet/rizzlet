@@ -47,9 +47,7 @@ export default function QuestionSubmission() {
       const response = await axios.post(
         process.env.REACT_APP_BACKEND_URL + "/api/question",
         { state, answerList },
-        {
-          withCredentials: true,
-        }
+        { headers: { "X-token": localStorage.getItem("token") } }
       );
       // clear the form after clicking submit
       setState(initialFormState);

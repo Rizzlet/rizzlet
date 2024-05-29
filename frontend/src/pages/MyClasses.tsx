@@ -29,7 +29,7 @@ export default function MyClasses() {
     // Use axios to get the user's classes from the backend
     const userResponse = await axios.get<ClassItem[]>(
       process.env.REACT_APP_BACKEND_URL + "/api/user/classes",
-      { withCredentials: true }
+      { headers: { "X-token": localStorage.getItem("token") } }
     );
 
     if (userResponse.status === 200) {
@@ -58,7 +58,7 @@ export default function MyClasses() {
         {
           classIds: [classes.id, ...userClasses.map((c) => c.id)],
         },
-        { withCredentials: true }
+        { headers: { "X-token": localStorage.getItem("token") } }
       )
       .then((res) => {
         if (res.status === 200) {
@@ -81,7 +81,7 @@ export default function MyClasses() {
             .filter((c) => c.id !== classToRemove.id)
             .map((c) => c.id),
         },
-        { withCredentials: true }
+        { headers: { "X-token": localStorage.getItem("token") } }
       )
       .then((res) => {
         if (res.status === 200) {

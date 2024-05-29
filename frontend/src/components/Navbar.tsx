@@ -4,7 +4,7 @@ import { useAuth } from "../context/auth/AuthContext";
 
 const links = [
   { to: "/", text: "Home" },
-  { to: "/myclasses", text: "Classes" }
+  { to: "/myclasses", text: "Classes" },
 ];
 
 export default function NavBar() {
@@ -142,16 +142,13 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
         <li>
           <button
             className="block whitespace-nowrap px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            onClick={() =>
-              // Clear cookies
-              {
-                // Clear cookie
+            onClick={() => {
+              // Clear token in storage
 
-                authData.setIsLoggedIn(false);
-                eraseCookie("token");
-                window.location.reload();
-              }
-            }
+              authData.setIsLoggedIn(false);
+              localStorage.removeItem("token");
+              window.location.reload();
+            }}
           >
             Sign out
           </button>
@@ -159,8 +156,4 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
       </ul>
     </div>
   );
-}
-
-function eraseCookie(name: string) {
-  document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
 }

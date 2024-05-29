@@ -12,7 +12,7 @@ const getUserGroupBodySchema = joi.object<GetUserGroup, true>({
 });
 
 export async function getUserGroup(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     res.status(401).json({ message: "Unauthorized" });
     return;

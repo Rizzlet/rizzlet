@@ -20,7 +20,7 @@ async function fetchQuestions(
   try {
     const response = await axios.get(
       new URL(`/api/class/${classId}`, process.env.REACT_APP_BACKEND_URL!).href,
-      { withCredentials: true }
+      { headers: { "X-token": localStorage.getItem("token") } }
     );
     return response.data;
   } catch (error) {
@@ -36,7 +36,7 @@ export default function FlashcardField() {
   // The list of questions for a specific class
   let [listOfQuestions, setListofQuestions] = useState<Question[]>([]);
 
-   // New state for tracking if the question has been answered
+  // New state for tracking if the question has been answered
   let [isItAnswered, setIsItAnswered] = useState(false);
 
   let animationDirection = useRef("none");
@@ -70,9 +70,9 @@ export default function FlashcardField() {
     });
   }, [id]);
 
-  const handleNavigation = (direction: 'left' | 'right') => {
+  const handleNavigation = (direction: "left" | "right") => {
     setIsItAnswered(false); // Reset the answered state when navigating
-    if (direction === 'left') {
+    if (direction === "left") {
       if (questionToRender === 0) {
         changeQuestionToRender(listOfQuestions.length - 1);
       } else {
@@ -94,7 +94,7 @@ export default function FlashcardField() {
       <div className="relative flex items-center justify-center w-3/4 h-3/4">
         <button
           className="absolute left-0 top-1/2 transform -translate-y-1/2 text-black font-bold py-2 px-4 rounded-full"
-          onClick={() => handleNavigation('left')}
+          onClick={() => handleNavigation("left")}
         >
           <ArrowLeftIcon className="h-6 w-6" />
         </button>
@@ -103,7 +103,7 @@ export default function FlashcardField() {
 
         <button
           className="absolute right-0 top-1/2 transform -translate-y-1/2 text-black font-bold py-2 px-4 rounded-full"
-          onClick={() => handleNavigation('right')}
+          onClick={() => handleNavigation("right")}
         >
           <ArrowRightIcon className="h-6 w-6" />
         </button>

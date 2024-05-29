@@ -3,7 +3,7 @@ import { calculateStreak } from "../models/streakCalculation.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 
 export async function fetchStreakHandler(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
 
   if (!userData) {
     res.status(401).json({ error: "Unauthorized" });
@@ -20,7 +20,7 @@ export async function fetchStreakHandler(req: Request, res: Response) {
 }
 
 export async function updateStreakHandler(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
 
   if (!userData) {
     res.status(401).json({ error: "Unauthorized" });

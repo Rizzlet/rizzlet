@@ -10,7 +10,7 @@ import joi from "joi";
 import { Class } from "../models/class.js";
 
 export async function GetIndividualUser(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     console.log("backend authentication failed");
     return;
@@ -27,7 +27,7 @@ export async function GetIndividualUser(req: Request, res: Response) {
 }
 
 export async function UserClasses(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token)!;
+  const userData = verifyAndDecodeToken(req.get("X-token")!)!;
 
   // GEt all classes that the user is enrolled in
   const classes = await getUserClassesFromDB(userData.id);
@@ -56,7 +56,7 @@ const getScoreSchema = joi.object<GetScoreBody, true>({
 });
 
 export async function getScore(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     console.log("Authorization failed");
     return res.status(401).json({ message: "Authorization failed" });
@@ -111,7 +111,7 @@ const topTenUsersSchema = joi.object<GetTopTenUsers, true>({
 
 export async function topFour(req: Request, res: Response) {
   //verify tokens for authentication
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     console.log("update score authorization failed");
     return;
@@ -170,7 +170,7 @@ export async function topFour(req: Request, res: Response) {
 }
 
 export async function updateHealthHandler(req: Request, Res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     console.log("update health authorization failed");
     return;
@@ -197,7 +197,7 @@ export async function updateHealthHandler(req: Request, Res: Response) {
 }
 
 export async function updateAttackerScoreHandler(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     console.log("could not find user");
     return res.status(401).json({ message: "Authorization failed" });

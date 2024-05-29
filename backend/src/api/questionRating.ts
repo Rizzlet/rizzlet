@@ -28,7 +28,7 @@ export async function submitQuestionRatingHandler(req: Request, res: Response) {
 
   const questionId = req.params.questionId!;
 
-  const userData = verifyAndDecodeToken(req.cookies.token)!;
+  const userData = verifyAndDecodeToken(req.get("X-token")!)!;
 
   await addQuestionRating(
     questionId,

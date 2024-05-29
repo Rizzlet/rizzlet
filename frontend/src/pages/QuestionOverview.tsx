@@ -50,7 +50,7 @@ function QuestionOverview() {
         const response = await axios.get<any>(
           //fetches paginated data and the total pages of all questions
           `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?classId=${classId}&page=${page}&limit=${limit}`,
-          { withCredentials: true }
+          { headers: { "X-token": localStorage.getItem("token") } }
         );
         return response.data;
       } catch (error) {

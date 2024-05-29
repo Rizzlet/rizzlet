@@ -101,7 +101,7 @@ export async function paginatedQuestionsByUser(
   next: NextFunction,
 ) {
   try {
-    const userData = verifyAndDecodeToken(req.cookies.token);
+    const userData = verifyAndDecodeToken(req.get("X-token")!);
     if (!userData) {
       res.status(401).json({ error: "Unauthorized" });
       return;

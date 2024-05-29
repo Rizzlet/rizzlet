@@ -29,9 +29,7 @@ function LeaderBoard(props: { classId?: string }) {
           {
             classId: classId,
           },
-          {
-            withCredentials: true,
-          }
+          { headers: { "X-token": localStorage.getItem("token") } }
         );
         return response.data.topFour;
       } catch (error) {

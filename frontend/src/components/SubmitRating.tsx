@@ -16,9 +16,7 @@ export default function SubmitRating(props: { questionId: string }) {
           difficultyRating,
           relevancyRating,
         },
-        {
-          withCredentials: true,
-        },
+        { headers: { "X-token": localStorage.getItem("token") } }
       )
       .then(() => {
         navigate("/");
