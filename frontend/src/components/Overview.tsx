@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { QuestionMappedAnswers } from "../pages/QuestionOverview";
 
 //Creating the Pagination
@@ -110,6 +111,9 @@ function TableHeader() {
         <th scope="col" className="px-6 py-3">
           Answer
         </th>
+        <th scope="col" className="px-6 py-3">
+          Feedback
+        </th>
       </tr>
     </thead>
   );
@@ -128,6 +132,12 @@ function TableBody(props: TableProps) {
         <td className="px-6 py-3">{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td>
         <td className="px-6 py-3">{row.questions.question}</td>
         <td className="px-6 py-3">{row.answer[0]?.answer}</td>
+        <td className="px-6 py-3">          
+          <Link to={`/submit-rating/${row.questions._id}`}>
+            <button className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">
+              Feedback
+            </button>
+          </Link></td>
       </tr>
     );
   });
