@@ -45,7 +45,11 @@ import {
   getInventory,
   removeFromInventory,
 } from "./api/inventoryController.js";
-import { getGoldPerClass, updateGold } from "./api/goldController.js";
+import {
+  getGoldPerClass,
+  updateGold,
+  receiveGold,
+} from "./api/goldController.js";
 
 export function addRoutes(app: Application) {
   app.get("/", rootRouteHelloWorld);
@@ -91,8 +95,9 @@ export function addRoutes(app: Application) {
   app.post("/api/inventory", addToInventory);
   app.get("/api/inventory/:userId/:classId", getInventory);
   app.delete("/api/inventory/:id", removeFromInventory);
-  app.get('/api/gold/:userId/:classId', getGoldPerClass);
-  app.put('/api/gold/update', updateGold);
+  app.get("/api/gold/:userId/:classId", getGoldPerClass);
+  app.put("/api/gold/update", updateGold);
+  app.post("/api/gold/receiveGold", receiveGold)
   app.post(
     "/api/user/updateAttackerScore",
     requireAuth,
