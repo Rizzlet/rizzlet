@@ -100,3 +100,38 @@ function mongooseArrayToArray<T>(mongooseArray: T[]) {
   }
   return array;
 }
+
+export async function setUserClasses(userId: string, classIds: string[]) {
+  const classesUserAlreadyIn = await getUserClassesFromDB(userId);
+
+  for (const classId of classIds) {
+    if (classesUserAlreadyIn.find((u) => u._id.toString() === classId)) {
+      // Already in class
+    } else {
+      // Add the class
+      console.log("need to add class");
+      const classEntry = await Class.findById(classId).exec();
+      if (classEntry === null) {
+        return;
+      }
+
+      classEntry.scores.push({ user: userId, health: 100, score: 0 });
+      await classEntry.save();
+    }
+  }
+
+  classesUserAlreadyIn.forEach(async (classId) => {
+    if (classIds.find((u) => u === classId._id.toString())) {
+      // Should be added, no change
+    } else {
+      // Remove the user entry
+      const classEntry = await Class.findById(classId).exec();
+      if (classEntry === null) {
+        return;
+      }
+
+      classEntry.scores.remove({ user: userId });
+      await classEntry.save();
+    }
+  });
+}
