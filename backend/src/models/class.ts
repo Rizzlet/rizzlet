@@ -48,7 +48,6 @@ export async function newClass(name: string) {
 
 export async function getUserClassesFromDB(userId: string) {
   const classes = await Class.find({ "scores.user": userId }).exec();
-  console.log(classes);
 
   return classes as unknown as { name: string; _id: mongoose.Types.ObjectId }[];
 }
@@ -109,7 +108,6 @@ export async function setUserClasses(userId: string, classIds: string[]) {
       // Already in class
     } else {
       // Add the class
-      console.log("need to add class");
       const classEntry = await Class.findById(classId).exec();
       if (classEntry === null) {
         return;

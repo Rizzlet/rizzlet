@@ -24,7 +24,6 @@ test("get user classes returns the correct classes", async () => {
   await setUserClasses(userId!, [classId]);
 
   const classes = await getUserClassesFromDB(userId!)!;
-  console.log(classes);
 
   expect(classes![0]!.name).toBe("test");
   expect(classes![0]!._id.toString()).toBe(classId);
