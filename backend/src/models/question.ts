@@ -61,6 +61,7 @@ export async function getQuestionsFromClassForUser(
   const userClasses = await getUserClassesFromDB(userId);
 
   if (foundUser === null) {
+    console.log("Cant find user");
     return null;
   }
 
@@ -79,6 +80,7 @@ export async function getQuestionsFromClassForUser(
   if (isUserInClass) {
     return foundQuestions.filter((question) => !question.isHidden);
   } else {
+    console.log("User not in class");
     return null;
   }
 }
