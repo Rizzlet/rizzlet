@@ -4,8 +4,6 @@ import {
   fetchAllQuestionsHandler,
   submitQuestionHandler,
 } from "./api/questions.js";
-
-import { helloWorldHandler, rootRouteHelloWorld } from "./api/helloWorld.js";
 import {
   classHandler,
   fetchQuestionsByClass,
@@ -48,8 +46,6 @@ import {
 import { getGoldPerClass, updateGold } from "./api/goldController.js";
 
 export function addRoutes(app: Application) {
-  app.get("/", rootRouteHelloWorld);
-  app.post("/api/hello", requireAuth, helloWorldHandler);
   app.post("/api/auth/google", googleAuthHandler);
   app.post("/api/auth/logout", logoutHandler);
   app.post("/api/question", requireAuth, submitQuestionHandler);

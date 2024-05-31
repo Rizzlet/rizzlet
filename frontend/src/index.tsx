@@ -17,11 +17,11 @@ import ClassDashboard from "./pages/ClassDashboard";
 import ProfilePage from "./pages/ProfilePage";
 
 import "./index.css";
-import RatingPage from "./pages/RatingPage";
 import LeaderBoard from "./pages/LeaderBoardPage";
 import NoClasses from "./pages/AnswerQuestionNoClasses";
 import HealthBarPage from "./components/game/HealthBarPage";
 import GamePage from "./components/game/gamePage";
+import SubmitRating from "./components/SubmitRating";
 
 const router = createBrowserRouter(
   [
@@ -77,10 +77,10 @@ const router = createBrowserRouter(
           ),
         },
         {
-          path: "/ratingSample",
+          path: "/submit-rating/:questionId",
           element: (
             <AuthGuard>
-              <RatingPage />
+              <SubmitRating />
             </AuthGuard>
           ),
         },

@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import { QuestionMappedAnswers } from "../pages/QuestionOverview";
+import { FlagIcon } from "@heroicons/react/20/solid";
 
 //Creating the Pagination
 interface PagesProps {
@@ -110,6 +112,9 @@ function TableHeader() {
         <th scope="col" className="px-6 py-3">
           Answer
         </th>
+        <th scope="col" className="px-6 py-3">
+          Feedback
+        </th>
       </tr>
     </thead>
   );
@@ -123,11 +128,21 @@ function TableBody(props: TableProps) {
       lastName: "",
     };
     return (
-      <tr key={index} className=" border-b border-gray-200 hover:bg-gray-200">
+      <tr key={index} className=" border-b border-gray-200">
         <td className="px-6 py-3">{row.questions.type}</td>
         <td className="px-6 py-3">{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td>
         <td className="px-6 py-3">{row.questions.question}</td>
         <td className="px-6 py-3">{row.answer[0]?.answer}</td>
+        <td className="px-6 py-3">
+          <Link to={`/submit-rating/${row.questions._id}`}>
+            <button className="flex items-center bg-primary text-black px-5 py-2 rounded hover:bg-teal-600">
+              <div style={{ paddingRight: '8px' }}>
+                <FlagIcon className="text-gray-500 rounded" style={{ width: '20px', height: '20px'}} />
+              </div>
+              Feedback
+            </button>
+          </Link>
+        </td>
       </tr>
     );
   });
