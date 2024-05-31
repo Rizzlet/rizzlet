@@ -135,9 +135,12 @@ function TableBody(props: TableProps) {
         <td className="px-6 py-3">{row.answer[0]?.answer}</td>
         <td className="px-6 py-3">
           <Link to={`/submit-rating/${row.questions._id}`}>
-            <FlagIcon className=" text-red-600 px-9 py-1 rounded hover:text-red-800">
+            <button className="flex items-center bg-primary text-black px-5 py-2 rounded hover:bg-teal-600">
+              <div style={{ paddingRight: '8px' }}>
+                <FlagIcon className="text-gray-500 rounded" style={{ width: '20px', height: '20px'}} />
+              </div>
               Feedback
-            </FlagIcon>
+            </button>
           </Link>
         </td>
       </tr>
