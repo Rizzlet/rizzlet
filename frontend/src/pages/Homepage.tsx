@@ -75,8 +75,7 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </section>
-
-
+        
         <section className="grid w-full grid-cols-2-uneven">
           <div className="grid items-center justify-center gap-4 px-4 py-12 text-center md:px-6 md:py-40">
             <div className="space-y-3">
