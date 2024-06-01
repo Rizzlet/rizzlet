@@ -36,11 +36,11 @@ const HomePage: React.FC = () => {
         </section>
         <section className="w-full bg-gray-800 py-12 md:py-32 lg:py-40">
           <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
-            <div className="space-y-3">
+            <div className="space-y-3 bg-gray-700 p-6 rounded-lg shadow-2xl"> 
               <h2 className="text-3xl font-bold tracking-tighter text-white sm:text-4xl md:text-5xl">
                 Study Efficiently
               </h2>
-              <p className="mx-auto max-w-[700px] text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="mx-auto max-w-[700px] text-gray-100 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Rizzlet's platform is designed to make studying more efficient
                 and effective. Our interactive flashcards allow you to focus on
                 the most important concepts, and our spaced repetition algorithm
@@ -49,6 +49,7 @@ const HomePage: React.FC = () => {
             </div>
           </div>
         </section>
+
         <section className="relative w-full py-12 md:py-32 lg:py-40">
           {/* Background image */}
           <div
@@ -57,9 +58,11 @@ const HomePage: React.FC = () => {
           ></div>
 
           {/* White overlay */}
-          <div className="absolute inset-0 bg-white opacity-60"></div>
+          <div className="absolute inset-0 bg-white opacity-20"></div>
+
+          {/* Text container with white bubble background */}
           <div className="relative z-10 grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
-            <div className="space-y-3">
+            <div className="space-y-3 bg-white p-6 rounded-lg shadow-xl">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                 Personalized Learning
               </h2>
@@ -67,11 +70,12 @@ const HomePage: React.FC = () => {
                 With Rizzlet, you can create your own custom flashcards to match
                 your learning style. You can answer your own questions and one's
                 that your classmates have made. Each question answered correctly
-                answered moves you up the leaderboard!
+                moves you up the leaderboard!
               </p>
             </div>
           </div>
         </section>
+
 
         <section className="grid w-full grid-cols-2-uneven">
           <div className="grid items-center justify-center gap-4 px-4 py-12 text-center md:px-6 md:py-40">
