@@ -297,6 +297,13 @@ export default function GamePage(props: GamePageProps) {
   };
 
   const buyItem = async (item: Item) => {
+    const existingItem = inventory.find(invItem => invItem.itemId._id === item._id);
+
+    if (existingItem) {
+      alert(`You already have ${item.name} in your inventory.`);
+      return;
+    }
+
     if (inventory.length < 3) {
       if (goldAmount >= item.cost) { // Check if user has enough gold
         try {
