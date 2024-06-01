@@ -46,17 +46,10 @@ export async function newClass(name: string) {
   return await newClass.save();
 }
 
-export async function getUserClasses(userId: string) {
-  const user = await User.findById(userId)
-    .populate({
-      path: "classIds",
-      select: { name: 1, _id: 1 },
-    })
-    .exec();
-  if (user === null) {
-    return null;
-  }
-  return user.classIds as unknown as { name: string; _id: string }[];
+export async function getUserClassesFromDB(userId: string) {
+  const classes = await Class.find({ "scores.user": userId }).exec();
+
+  return classes as unknown as { name: string; _id: mongoose.Types.ObjectId }[];
 }
 
 export async function getClass(classId: string) {
@@ -64,10 +57,16 @@ export async function getClass(classId: string) {
 }
 
 export async function getAllUsersScoreByClass(classId: string) {
-  const classEntry = await Class.findById(classId)
+  const classEntry = await (
+    (await getConnection()).model(Class.modelName) as typeof Class
+  )
+    .findById(classId)
     .select({ scores: 1 })
     .populate("scores.user")
     .exec();
+  if (!classEntry) {
+    return null;
+  }
   return mongooseArrayToArray(classEntry!.scores);
 }
 
@@ -93,23 +92,6 @@ export async function setScoreForUserByClass(
   return true;
 }
 
-export async function addUserRecordInClassIfDoesntAlreadyExist(
-  classId: string,
-  userId: string,
-) {
-  const classEntry = await Class.findById(classId).exec();
-  if (classEntry === null) {
-    return;
-  }
-
-  const userScore = classEntry.scores.find((s) => s.user.toString() === userId);
-
-  if (!userScore) {
-    classEntry.scores.push({ user: userId, health: 0, score: 0 });
-    await classEntry.save();
-  }
-}
-
 function mongooseArrayToArray<T>(mongooseArray: T[]) {
   const array = [];
   for (let i = 0; i < mongooseArray.length; i += 1) {
@@ -118,12 +100,36 @@ function mongooseArrayToArray<T>(mongooseArray: T[]) {
   return array;
 }
 
-export async function getAllUsersInClass(classId: string) {
-  const classEntry = await Class.findById(classId).exec();
+export async function setUserClasses(userId: string, classIds: string[]) {
+  const classesUserAlreadyIn = await getUserClassesFromDB(userId);
 
-  if (classEntry === null) {
-    return null;
+  for (const classId of classIds) {
+    if (classesUserAlreadyIn.find((u) => u._id.toString() === classId)) {
+      // Already in class
+    } else {
+      // Add the class
+      const classEntry = await Class.findById(classId).exec();
+      if (classEntry === null) {
+        return;
+      }
+
+      classEntry.scores.push({ user: userId, health: 100, score: 0 });
+      await classEntry.save();
+    }
   }
-  const usersInClass = await User.find({ classIds: classId }).exec();
-  return usersInClass;
+
+  classesUserAlreadyIn.forEach(async (classId) => {
+    if (classIds.find((u) => u === classId._id.toString())) {
+      // Should be added, no change
+    } else {
+      // Remove the user entry
+      const classEntry = await Class.findById(classId).exec();
+      if (classEntry === null) {
+        return;
+      }
+
+      classEntry.scores.remove({ user: userId });
+      await classEntry.save();
+    }
+  });
 }

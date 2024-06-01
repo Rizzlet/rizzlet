@@ -1,3 +1,5 @@
+import { QuestionMappedAnswers } from "../pages/ProfilePage";
+
 //Creating the Pagination
 interface PagesProps {
   currentPage: number;
@@ -78,16 +80,7 @@ const Pages: React.FC<PagesProps> = ({
 
 //Creating the Table with Questions
 interface TableProps {
-  questionData: {
-    _id: string;
-    type: string;
-    question: string;
-    answer: boolean;
-    createdBy: {
-      firstName: string;
-      lastName: string;
-    };
-  }[];
+  questions: QuestionMappedAnswers[];
 }
 
 function Table(props: TableProps) {
@@ -101,7 +94,7 @@ function Table(props: TableProps) {
       <div className="items-h-screen relative flex items-center justify-center pt-3 sm:rounded-lg ">
         <table className="min-h-[74dvh] w-11/12 border border-gray-300 py-2 text-left text-sm text-gray-500 rtl:text-right">
           <TableHeader />
-          <TableBody questionData={props.questionData} />
+          <TableBody questions={props.questions} />
         </table>
       </div>
     </div>
@@ -127,15 +120,15 @@ function TableHeader() {
 }
 
 function TableBody(props: TableProps) {
-  const rows = props.questionData.map((row, index) => {
+  const rows = props.questions.map((row, index) => {
     return (
       <tr
         key={index}
         className=" border-b dark:border-gray-200 dark:hover:bg-gray-200"
       >
-        <td className="px-6 py-3">{row.type}</td>
-        <td className="px-6 py-3">{row.question}</td>
-        <td className="px-6 py-3">{row.answer ? "True" : "False"}</td>
+        <td className="px-6 py-3">{row.questions.type}</td>
+        <td className="px-6 py-3">{row.questions.question}</td>
+        <td className="px-6 py-3">{row.answer[0].answer}</td>
       </tr>
     );
   });

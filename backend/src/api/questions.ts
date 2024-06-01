@@ -16,7 +16,7 @@ export async function fetchAllQuestionsHandler(_req: Request, res: Response) {
 export async function submitQuestionHandler(req: Request, res: Response) {
   const { state, answerList } = req.body;
 
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
 
   if (!userData) {
     res.status(401).json({ error: "Unauthorized" });

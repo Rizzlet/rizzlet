@@ -7,15 +7,24 @@ interface Question {
   _id: string;
   type: string;
   question: string;
-  answer: boolean;
   createdBy: {
     firstName: string;
     lastName: string;
   };
 }
 
+interface Answers {
+  _id: string;
+  answer: string;
+}
+
+export interface QuestionMappedAnswers {
+  questions: Question;
+  answer: Answers[];
+}
+
 function QuestionOverview() {
-  const [questions, setQuestionData] = useState<Question[]>([]);
+  const [questions, setQuestionData] = useState<QuestionMappedAnswers[]>([]);
   const [totalPages, setTotalPages] = useState(1); //determines # of total pages
   const [currentPage, setCurrentPage] = useState(1); //keeps track of current page
   const postsPerPage = 5;
@@ -25,7 +34,7 @@ function QuestionOverview() {
 
   //get classId from the url
   const { id } = useParams();
-  // console.log("classId", id); 
+  // console.log("classId", id);
   const classId = id;
 
   //sets current page
@@ -35,20 +44,20 @@ function QuestionOverview() {
 
   //assigns questions and totalPages from the response data
   useEffect(() => {
-  //fetches paginated data and the total pages of all questions
-  async function fetchQuestions(page: number, limit: number) {
-    try {
-      const response = await axios.get<any>(
-        //fetches paginated data and the total pages of all questions
-        `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?classId=${classId}&page=${page}&limit=${limit}`,
-        { withCredentials: true }
-      );
-      return response.data;
-    } catch (error) {
-      console.log("fetch error: ", error);
-      return { paginatedData: [], totalQuestions: 0 };
+    //fetches paginated data and the total pages of all questions
+    async function fetchQuestions(page: number, limit: number) {
+      try {
+        const response = await axios.get<any>(
+          //fetches paginated data and the total pages of all questions
+          `${process.env.REACT_APP_BACKEND_URL}/api/paginate/question?classId=${classId}&page=${page}&limit=${limit}`,
+          { headers: { "X-token": localStorage.getItem("token") } }
+        );
+        return response.data;
+      } catch (error) {
+        console.log("fetch error: ", error);
+        return { paginatedData: [], totalQuestions: 0 };
+      }
     }
-  }
 
     fetchQuestions(currentPage, Number(limit)).then((result) => {
       if (result && result.paginatedData) {
@@ -63,8 +72,6 @@ function QuestionOverview() {
     });
   }, [currentPage, limit, classId]);
   // console.log("total pages: ", totalPages);
-
-
 
   // decides what previous click does
   const handlePrevClick = () => {
@@ -86,7 +93,7 @@ function QuestionOverview() {
 
   return (
     <div className="container">
-      <Table questionData={questions} />
+      <Table questions={questions} />
       <Pages
         currentPage={currentPage}
         postsPerPage={postsPerPage}

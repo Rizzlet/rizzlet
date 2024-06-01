@@ -1,9 +1,10 @@
 import { useState } from "react";
 import RatingScale from "./RatingScale";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function SubmitRating(props: { questionId: string }) {
+export default function SubmitRating() {
+  const { questionId } = useParams(); // Get the questionId from the route params
   const [difficultyRating, setDifficultyRating] = useState<number | null>(null);
   const [relevancyRating, setRelevancyRating] = useState<number | null>(null);
   const navigate = useNavigate();
@@ -11,17 +12,16 @@ export default function SubmitRating(props: { questionId: string }) {
   const onSubmit = async () => {
     await axios
       .post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/question/${props.questionId}/rating`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/question/${questionId}/rating`,
         {
           difficultyRating,
           relevancyRating,
         },
-        {
-          withCredentials: true,
-        },
+        { headers: { "X-token": localStorage.getItem("token") }, 
+          withCredentials: true }
       )
       .then(() => {
-        navigate("/");
+        navigate(-1);
       })
       .catch((err) => {
         console.error(err);

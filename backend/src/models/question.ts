@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { User } from "./user.js";
 import { getConnection } from "./db.js";
-import { Class } from "./class.js";
+import { Class, getUserClassesFromDB } from "./class.js";
 
 export const questionSchema = new mongoose.Schema({
   type: {
@@ -58,8 +58,10 @@ export async function getQuestionsFromClassForUser(
   classId: string,
 ) {
   const foundUser = await User.findById(userId).exec();
+  const userClasses = await getUserClassesFromDB(userId);
 
   if (foundUser === null) {
+    console.log("Cant find user");
     return null;
   }
 
@@ -67,11 +69,18 @@ export async function getQuestionsFromClassForUser(
   const foundQuestions = await Question.find({ class: classId }).exec();
 
   // Checks to see if the user is registered with the classid
-  for (let i = 0; i < foundUser.classIds.length; i++) {
-    if (foundUser.classIds[i]?.toString() === classId) {
-      return foundQuestions.filter((question) => !question.isHidden);
-    }
-  }
+  const isUserInClass =
+    userClasses.find((userClass) => {
+      if (userClass._id.toString() === classId) {
+        return true;
+      }
+      return false;
+    }) != null;
 
-  return null;
+  if (isUserInClass) {
+    return foundQuestions.filter((question) => !question.isHidden);
+  } else {
+    console.log("User not in class");
+    return null;
+  }
 }

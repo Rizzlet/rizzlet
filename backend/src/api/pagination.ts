@@ -1,6 +1,12 @@
 import { Request, Response, NextFunction } from "express";
 import { Question } from "../models/question.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
+import { Answer } from "../models/answers.js";
+
+type PaginatedQuestions = {
+  _id: string;
+  answer: object[];
+};
 
 // documents is the data you want to paginate
 async function paginatedResults<T>(
@@ -53,20 +59,34 @@ export async function paginatedQuestionsByClass(
     const classId = req.query.classId; //find class id from query
     console.log("classId", classId);
 
-    //filter questions based on the class id 
-    const questionsByClass = await Question.find({ class: classId }).populate("createdBy").exec();
+    //filter questions based on the class id
+    const questionsByClass = await Question.find({ class: classId })
+      .populate("createdBy")
+      .exec();
     if (!questionsByClass) {
       res.status(401);
       return;
     }
 
     // Pass the populated questions to the paginatedResults function
-    const paginationAllQuestionsHandler = await paginatedResults(questionsByClass);
+    const paginationAllQuestionsHandler =
+      await paginatedResults(questionsByClass);
     await paginationAllQuestionsHandler(req, res, next); // Call the paginationHandler function
 
-    // Access paginated results 
-    const paginatedData = res.locals.paginatedResults.results;
+    // Access paginated results
+    let paginatedData = res.locals.paginatedResults.results;
     const totalQuestions = questionsByClass.length;
+    // maps multiple choice answers to the paginated questions
+    const questionWithAnswer = paginatedData.map(
+      async (questions: PaginatedQuestions) => {
+        const foundAnswer = await Answer.find({
+          question: questions._id,
+          correct: true,
+        }).exec();
+        return { questions, answer: foundAnswer };
+      },
+    );
+    paginatedData = await Promise.all(questionWithAnswer);
     res.send({ paginatedData, totalQuestions }); //sent paginateddata and totalQuestion
   } catch (error) {
     console.error("Error paginating questions:", error);
@@ -81,7 +101,7 @@ export async function paginatedQuestionsByUser(
   next: NextFunction,
 ) {
   try {
-    const userData = verifyAndDecodeToken(req.cookies.token);
+    const userData = verifyAndDecodeToken(req.get("X-token")!);
     if (!userData) {
       res.status(401).json({ error: "Unauthorized" });
       return;
@@ -92,7 +112,19 @@ export async function paginatedQuestionsByUser(
     const paginatedUserQuestionsHandler = await paginatedResults(userQuestions);
     await paginatedUserQuestionsHandler(req, res, next);
 
-    const paginatedData = res.locals.paginatedResults.results;
+    let paginatedData = res.locals.paginatedResults.results;
+
+    const questionWithAnswer = paginatedData.map(
+      async (questions: PaginatedQuestions) => {
+        const foundAnswer = await Answer.find({
+          question: questions._id,
+          correct: true,
+        }).exec();
+        return { questions, answer: foundAnswer };
+      },
+    );
+
+    paginatedData = await Promise.all(questionWithAnswer);
     const totalQuestions = userQuestions.length;
     res.send({ paginatedData, totalQuestions });
   } catch (error) {

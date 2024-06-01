@@ -23,7 +23,7 @@ export default function DamageDealer<T extends DamageDealerProps>(props: T) {
           attackUser: props.targetId,
           classId: props.classId,
         },
-        { withCredentials: true }
+        { headers: { "X-token": localStorage.getItem("token") } }
       );
     } catch (error) {
       console.log(error, "Error updating user health");

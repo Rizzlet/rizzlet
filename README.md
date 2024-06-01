@@ -1,5 +1,7 @@
 # Rizzlet
 [![CI](https://github.com/Rizzlet/rizzlet/actions/workflows/ci.yaml/badge.svg)](https://github.com/Rizzlet/rizzlet/actions/workflows/ci.yaml)
+[![Frontend](https://github.com/Rizzlet/rizzlet/actions/workflows/azure-static-web-apps-icy-rock-018e11d1e.yml/badge.svg)](https://github.com/Rizzlet/rizzlet/actions/workflows/azure-static-web-apps-icy-rock-018e11d1e.yml)
+[![Backend](https://github.com/Rizzlet/rizzlet/actions/workflows/main_rizzlet.yml/badge.svg)](https://github.com/Rizzlet/rizzlet/actions/workflows/main_rizzlet.yml)
 ### Design
 
 Technical Spec - [Link](https://docs.google.com/document/d/1pt8KaxrR4H4lkDkm3iwLrpPXjrTpsPzHESjQOSDFHxA/edit?usp=sharing)

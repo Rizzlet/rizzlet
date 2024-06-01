@@ -1,14 +1,14 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import axios from "axios";
 import {
   Title,
   SelectQuestion,
-  SelectClass,
   InputQuestion,
   TrueAndFalseButtons,
   Buttons,
   AnswerChoiceField,
 } from "../components/SubmitQuestion";
+import { useParams } from "react-router-dom";
 
 export interface MultipleChoiceAnswer {
   answer: string;
@@ -16,19 +16,22 @@ export interface MultipleChoiceAnswer {
 }
 
 export default function QuestionSubmission() {
-  const [state, setState] = useState({
+  const initialFormState = {
     type: "",
     createdBy: "",
     question: "",
     class: "",
-  });
+  };
 
-  const [answerList, setAnswerList] = useState([
+  const initalAnswerListState = [
     { answer: "", correct: false },
     { answer: "", correct: false },
     { answer: "", correct: false },
     { answer: "", correct: false },
-  ]);
+  ];
+
+  const [state, setState] = useState(initialFormState);
+  const [answerList, setAnswerList] = useState(initalAnswerListState);
 
   // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,21 +47,25 @@ export default function QuestionSubmission() {
       const response = await axios.post(
         process.env.REACT_APP_BACKEND_URL + "/api/question",
         { state, answerList },
-        {
-          withCredentials: true,
-        },
+        { headers: { "X-token": localStorage.getItem("token") } }
       );
+      // clear the form after clicking submit
+      setState(initialFormState);
+      setAnswerList(initalAnswerListState);
+
       console.log(response.data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Classes dropdown change
-  const onClassChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const value: (typeof state)["class"] = event.target.value;
-    setState({ ...state, class: value });
-  };
+  // Classes based on the url
+  const { id: classId } = useParams();
+  useEffect(() => {
+    if (classId) {
+      setState((prevState) => ({ ...prevState, class: classId }));
+    }
+  }, [classId]);
 
   // Changes what answers are to be submitted based on the type of question selected
   const onQuestionTypeChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -87,17 +94,13 @@ export default function QuestionSubmission() {
     <div>
       <Title />
       <form className="flashcard" onSubmit={onSubmit}>
-        <div className="w-full">
+        <div className="w-full mt-5">
           <SelectQuestion
             onQuestionTypeChange={onQuestionTypeChange}
             selectedType={state.type}
           />
-          <SelectClass
-            onClassChange={onClassChange}
-            selectedType={state.class}
-          ></SelectClass>
         </div>
-        <InputQuestion onFieldChange={onFieldChange} />
+        <InputQuestion value={state.question} onFieldChange={onFieldChange} />
         {state.type === "TrueAndFalse" ? (
           <TrueAndFalseButtons
             onTrueFalseButtonClick={onTrueFalseButtonClick}

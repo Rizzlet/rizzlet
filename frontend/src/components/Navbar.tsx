@@ -1,12 +1,10 @@
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth/AuthContext";
-import axios from "axios";
 
 const links = [
   { to: "/", text: "Home" },
   { to: "/myclasses", text: "Classes" },
-  { to: "/submitQuestion", text: "Submit Questions" },
 ];
 
 export default function NavBar() {
@@ -144,27 +142,13 @@ function UserDropDown(props: { showUserDropDown: boolean }) {
         <li>
           <button
             className="block whitespace-nowrap px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            onClick={() =>
-              // Clear cookies
-              {
-                // Clear cookie
-                axios
-                  .post(
-                    new URL(
-                      "/api/auth/logout",
-                      process.env.REACT_APP_BACKEND_URL!
-                    ).href,
-                    {},
-                    { withCredentials: true }
-                  )
-                  .then(() => {
-                    window.location.href = "/";
-                  })
-                  .finally(() => {
-                    authData.setIsLoggedIn(false);
-                  });
-              }
-            }
+            onClick={() => {
+              // Clear token in storage
+
+              authData.setIsLoggedIn(false);
+              localStorage.removeItem("token");
+              window.location.reload();
+            }}
           >
             Sign out
           </button>
