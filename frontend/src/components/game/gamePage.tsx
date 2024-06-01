@@ -341,7 +341,6 @@ export default function GamePage(props: GamePageProps) {
               itemId: fullItemDetails,
             };
             setInventory((currentInventory) => [...currentInventory, newItem]);
-            alert("Item added to inventory!");
           } else {
             console.error("Item details not found in allItems.");
           }
