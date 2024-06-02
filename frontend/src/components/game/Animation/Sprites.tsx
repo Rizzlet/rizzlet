@@ -1,12 +1,40 @@
-import React from "react";
+import React from 'react';
 import { Link } from "react-router-dom";
-import backgroundImage from "./slime_frames_all.png";
+import { SpriteAnimator } from 'react-sprite-animator';
+// import { AutoFlashcard } from "./AutoFlashcard";
+// import backgroundImage from "./slime_frames_all.png";
+
+
 const WitchIdle: React.FC = () => {
+
+const WitchIdle = ({ active }: { active: boolean }) => {
+  console.log("witch")
   return (
-    <div style={{ backgroundImage: `url(./vecteezy_esoteric-witchcraft-attributes-doodle-set-collection-of_21937338.jpg)` }}>
-      {/* Your other components or JSX here */}
-    </div>
+      <SpriteAnimator 
+        sprite="./slime_frames_all.png" // Update this path to your sprite image path
+        width={100} //width of viewbox
+        height={100}
+        scale={0.3} //scale the sprite
+        shouldAnimate={active}
+        direction='vertical' //direction of reading img
+        frameCount={6} //how many frames to animate
+        fps={8} //how fast
+      />
   );
 };
+
+  console.log("WitchIdle", WitchIdle)
+  return (
+    <div className="bg-[url('./slime_frames_all.png')]">
+    <p>hellos</p>
+    <div className='flex align-middle justify-center'>
+      <WitchIdle active={true} />
+    </div>
+    <p>hellos2</p>
+    <p>hellos3</p>
+    </div>
+  );
+
+}
 
 export default WitchIdle;
