@@ -3,17 +3,21 @@ import { Link } from "react-router-dom";
 import { SpriteAnimator } from 'react-sprite-animator';
 // import { AutoFlashcard } from "./AutoFlashcard";
 import slime from "./slime_frames_all.png";
-
+import witchIdle from "./witchSprites/B_witch_idle.png";
+import witchCharge from "./witchSprites/B_witch_charge.png"
+import witchAttack from "./witchSprites/B_witch_attack.png"
+import witchDefeat from "./witchSprites/B_witch_death.png"
 
 const WitchIdle: React.FC = () => {
 
+
+//Witch Animations
 const WitchIdle = ({ active }: { active: boolean }) => {
-  console.log("witch")
   return (
       <SpriteAnimator 
-        sprite="url(${slime})" // Update this path to your sprite image path
-        width={100} //width of viewbox
-        height={100}
+        sprite={witchIdle} // Update this path to your sprite image path
+        width={32} //width of viewbox
+        height={48}
         scale={0.3} //scale the sprite
         shouldAnimate={active}
         direction='vertical' //direction of reading img
@@ -23,12 +27,112 @@ const WitchIdle = ({ active }: { active: boolean }) => {
   );
 };
 
-  console.log("WitchIdle", WitchIdle)
+const WitchCharge = ({ active }: { active: boolean }) => {
   return (
-    <div style={{ backgroundImage: `url(${slime})` }}>
+      <SpriteAnimator 
+        sprite={witchCharge} // Update this path to your sprite image path
+        width={46} //width of viewbox
+        height={48}
+        scale={0.3} //scale the sprite
+        shouldAnimate={active}
+        direction='vertical' //direction of reading img
+        frameCount={5} //how many frames to animate
+        fps={8} //how fast
+      />
+  );
+};
+
+const WitchAttack = ({ active }: { active: boolean }) => {
+  console.log("witch")
+  return (
+      <SpriteAnimator 
+        sprite={witchAttack} // Update this path to your sprite image path
+        width={103} //width of viewbox
+        height={46}
+        scale={0.3} //scale the sprite
+        shouldAnimate={active}
+        direction='vertical' //direction of reading img
+        frameCount={9} //how many frames to animate
+        fps={8} //how fast
+      />
+  );
+};
+
+//more like a png rather than a png since u wont see your enemy attacking you
+const WitchDefeat = ({ active }: { active: boolean }) => {
+  return (
+      <SpriteAnimator 
+        sprite={witchDefeat} // Update this path to your sprite image path
+        width={32} //width of viewbox
+        height={30}
+        scale={0.3} //scale the sprite
+        shouldAnimate={active}
+        direction='vertical' //direction of reading img
+        frameCount={30} //how many frames to animate
+        startFrame={30}
+        fps={1} //how fast
+      />
+  );
+};
+
+//Slime Animations
+const SlimeIdle = ({ active }: { active: boolean }) => {
+  return (
+      <SpriteAnimator 
+        sprite={slime} // Update this path to your sprite image path
+        width={32} //width of viewbox
+        height={32}
+        scale={0.3} //scale the sprite
+        shouldAnimate={active}
+        direction='horizontal' //direction of reading img
+        frameCount={4} //how many frames to animate
+        startFrame={2}
+        wrapAfter={2}
+        fps={4} //how fast
+      />
+  );
+};
+
+const SlimeTakeDamage = ({ active }: { active: boolean }) => {
+  return (
+      <SpriteAnimator 
+        sprite={slime} // Update this path to your sprite image path
+        width={32} //width of viewbox
+        height={32}
+        scale={0.3} //scale the sprite
+        shouldAnimate={active}
+        direction='horizontal' //direction of reading img
+        frameCount={13} //how many frames to animate
+        startFrame={11}
+        wrapAfter={2}
+        fps={3} //how fast
+      />
+  );
+};
+
+const SlimeDeath = ({ active }: { active: boolean }) => {
+  return (
+      <SpriteAnimator 
+        sprite={slime} // Update this path to your sprite image path
+        width={32} //width of viewbox
+        height={32}
+        scale={0.3} //scale the sprite
+        shouldAnimate={active}
+        direction='horizontal' //direction of reading img
+        frameCount={30} //how many frames to animate
+        startFrame={24}
+        wrapAfter={6}
+        fps={8} //how fast
+      />
+  );
+};
+
+  console.log("WitchDefeat", WitchIdle)
+  return (
+    <div>
       <p>hellos</p>
       <div className='flex align-middle justify-center'>
-        <WitchIdle active={true} />
+        <SlimeDeath active={true} />
       </div>
       <p>hellos2</p>
       <p>hellos3</p>
