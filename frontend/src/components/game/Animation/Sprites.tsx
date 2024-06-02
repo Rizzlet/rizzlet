@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { SpriteAnimator } from 'react-sprite-animator';
 // import { AutoFlashcard } from "./AutoFlashcard";
-// import backgroundImage from "./slime_frames_all.png";
+import slime from "./slime_frames_all.png";
 
 
 const WitchIdle: React.FC = () => {
@@ -11,7 +11,7 @@ const WitchIdle = ({ active }: { active: boolean }) => {
   console.log("witch")
   return (
       <SpriteAnimator 
-        sprite="./slime_frames_all.png" // Update this path to your sprite image path
+        sprite="url(${slime})" // Update this path to your sprite image path
         width={100} //width of viewbox
         height={100}
         scale={0.3} //scale the sprite
@@ -25,13 +25,13 @@ const WitchIdle = ({ active }: { active: boolean }) => {
 
   console.log("WitchIdle", WitchIdle)
   return (
-    <div className="bg-[url('./slime_frames_all.png')]">
-    <p>hellos</p>
-    <div className='flex align-middle justify-center'>
-      <WitchIdle active={true} />
-    </div>
-    <p>hellos2</p>
-    <p>hellos3</p>
+    <div style={{ backgroundImage: `url(${slime})` }}>
+      <p>hellos</p>
+      <div className='flex align-middle justify-center'>
+        <WitchIdle active={true} />
+      </div>
+      <p>hellos2</p>
+      <p>hellos3</p>
     </div>
   );
 
