@@ -8,8 +8,7 @@ import witchCharge from "./witchSprites/B_witch_charge.png"
 import witchAttack from "./witchSprites/B_witch_attack.png"
 import witchDefeat from "./witchSprites/B_witch_death.png"
 
-const WitchIdle: React.FC = () => {
-
+const witchScale = 0.4
 
 //Witch Animations
 const WitchIdle = ({ active }: { active: boolean }) => {
@@ -18,7 +17,7 @@ const WitchIdle = ({ active }: { active: boolean }) => {
         sprite={witchIdle} // Update this path to your sprite image path
         width={32} //width of viewbox
         height={48}
-        scale={0.3} //scale the sprite
+        scale={witchScale} //scale the sprite
         shouldAnimate={active}
         direction='vertical' //direction of reading img
         frameCount={6} //how many frames to animate
@@ -33,7 +32,7 @@ const WitchCharge = ({ active }: { active: boolean }) => {
         sprite={witchCharge} // Update this path to your sprite image path
         width={46} //width of viewbox
         height={48}
-        scale={0.3} //scale the sprite
+        scale={witchScale} //scale the sprite
         shouldAnimate={active}
         direction='vertical' //direction of reading img
         frameCount={5} //how many frames to animate
@@ -49,7 +48,7 @@ const WitchAttack = ({ active }: { active: boolean }) => {
         sprite={witchAttack} // Update this path to your sprite image path
         width={103} //width of viewbox
         height={46}
-        scale={0.3} //scale the sprite
+        scale={witchScale} //scale the sprite
         shouldAnimate={active}
         direction='vertical' //direction of reading img
         frameCount={9} //how many frames to animate
@@ -65,7 +64,7 @@ const WitchDefeat = ({ active }: { active: boolean }) => {
         sprite={witchDefeat} // Update this path to your sprite image path
         width={32} //width of viewbox
         height={30}
-        scale={0.3} //scale the sprite
+        scale={witchScale} //scale the sprite
         shouldAnimate={active}
         direction='vertical' //direction of reading img
         frameCount={30} //how many frames to animate
@@ -127,18 +126,5 @@ const SlimeDeath = ({ active }: { active: boolean }) => {
   );
 };
 
-  console.log("WitchDefeat", WitchIdle)
-  return (
-    <div>
-      <p>hellos</p>
-      <div className='flex align-middle justify-center'>
-        <SlimeDeath active={true} />
-      </div>
-      <p>hellos2</p>
-      <p>hellos3</p>
-    </div>
-  );
 
-}
-
-export default WitchIdle;
+export { WitchIdle, WitchCharge, WitchAttack, WitchDefeat, SlimeIdle, SlimeTakeDamage, SlimeDeath};

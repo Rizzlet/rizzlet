@@ -18,7 +18,6 @@ const HealthBar: React.FC<HealthBarProps> = ({ health }) => {
 
   return (
     <div>
-      <h2>Health Bar</h2>
       <div
         style={{
           border: "1px solid black",
