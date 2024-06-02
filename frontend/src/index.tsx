@@ -22,6 +22,7 @@ import NoClasses from "./pages/AnswerQuestionNoClasses";
 import HealthBarPage from "./components/game/HealthBarPage";
 import GamePage from "./components/game/gamePage";
 import SubmitRating from "./components/SubmitRating";
+import WitchIdle from "./components/game/Animation/Sprites";
 
 const router = createBrowserRouter(
   [
@@ -117,6 +118,10 @@ const router = createBrowserRouter(
           <GamePage />
         </AuthGuard>
       ),
+    },
+    {
+      path: "/witch",
+      element: <WitchIdle active={true} />,
     },
   ],
   { basename: process.env.REACT_APP_BASE_URL }
