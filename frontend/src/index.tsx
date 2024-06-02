@@ -121,7 +121,7 @@ const router = createBrowserRouter(
     },
     {
       path: "/witch",
-      element: <WitchIdle active={true} />,
+      element: <WitchIdle />,
     },
   ],
   { basename: process.env.REACT_APP_BASE_URL }
