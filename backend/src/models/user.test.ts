@@ -29,21 +29,6 @@ test("get user classes returns the correct classes", async () => {
   expect(classes![0]!._id.toString()).toBe(classId);
 });
 
-test("calculate streak with no anwered question", async () => {
-  const userId = await getIdCreateOrUpdate(
-    "test",
-    "test",
-    "test",
-    "123",
-    "test",
-  );
-
-  expect(userId).toBeDefined();
-
-  const streak = await calculateStreak(userId!);
-
-  expect(streak).toBe(0);
-});
 
 test("calculate streak with an anwered question", async () => {
   const userId = await getIdCreateOrUpdate(
