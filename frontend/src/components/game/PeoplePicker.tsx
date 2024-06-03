@@ -40,14 +40,19 @@ export default function Select<
 
   // State to keep track of previous health values and damage animation
   const [prevHealths, setPrevHealths] = useState<{ [key: string]: number }>({});
-  const [damageAnimations, setDamageAnimations] = useState<{ [key: string]: boolean }>({});
+  const [damageAnimations, setDamageAnimations] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   useEffect(() => {
     // Update previous health values whenever `people` changes
-    const newPrevHealths = people.reduce((acc, person) => {
-      acc[person.id] = person.health;
-      return acc;
-    }, {} as { [key: string]: number });
+    const newPrevHealths = people.reduce(
+      (acc, person) => {
+        acc[person.id] = person.health;
+        return acc;
+      },
+      {} as { [key: string]: number }
+    );
 
     // Trigger damage animations for people whose health has changed
     people.forEach((person) => {
@@ -111,16 +116,12 @@ export default function Select<
       </div>
       {/* The user */}
       <div className="">
-        {userHealth <= 0 ? (
-          <WitchDefeat active={true} />
-        ) : (
-          witch(
-            authData,
-            `${authData.authUserFullName}`,
-            false,
-            userHealth,
-            disabled //false so that the user icon is not grayed out (hardcoded)
-          )
+        {witch(
+          authData,
+          `${authData.authUserFullName}`,
+          false,
+          userHealth,
+          disabled //false so that the user icon is not grayed out (hardcoded)
         )}
       </div>
     </div>
@@ -135,6 +136,15 @@ function witch(
   health: number,
   disabled: boolean
 ) {
+  if (health <= 0) {
+    return (
+      <div className="flex flex-col items-center justify-center pt-10">
+        <WitchDefeat active={true} />
+        <div className="font-bold text-white">{name}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div
@@ -173,9 +183,9 @@ function slime(
       <div className="flex flex-col items-center justify-center pt-6">
         <SlimeTakeDamage active={true} />
         <div className="font-bold text-white">{name}</div>
-      <div className="">
-        <HealthBar health={health} />
-      </div>
+        <div className="">
+          <HealthBar health={health} />
+        </div>
       </div>
     );
   }
