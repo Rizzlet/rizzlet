@@ -88,9 +88,9 @@ async function fetchQuestionsAndAnswers(classId: string | undefined) {
         );
       }
     } else {
-      unmappedQuestionSet = questionResponse.data
-        .sort(() => Math.random() - Math.random())
-        .slice(0, NUMBER_OF_QUESTIONS);
+      unmappedQuestionSet = questionResponse.data;
+      shuffleArray(unmappedQuestionSet);
+      unmappedQuestionSet = unmappedQuestionSet.slice(0, NUMBER_OF_QUESTIONS);
     }
 
     const questions: Question[] = unmappedQuestionSet.map((question) => {
@@ -240,33 +240,6 @@ export default function GamePage(props: GamePageProps) {
     fetchData();
   }, [setUsersInClass, authData.authUserId, classId]);
 
-  useEffect(() => {
-    async function fetchUserByClass() {
-      try {
-        const response = await axios.get<any>(
-          `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
-          { headers: { "X-token": localStorage.getItem("token") } }
-        );
-
-        const peopleFormat = response.data.slice(0, 3).map((user: any) => ({
-          id: user._id,
-          name: `${user.firstName} ${user.lastName}`,
-          profileColor: user.profileColor,
-          health: user.health,
-        }));
-
-        setUsersInClass(peopleFormat);
-      } catch (error) {
-        console.log("fetch error: ", error);
-      }
-    }
-
-    fetchQuestionsAndAnswers(classId).then((questions) => {
-      setQuestionSet(questions);
-    });
-    fetchUserByClass();
-  }, [classId]);
-
   //update the score of the attacker based on damage
   async function updateAttackerScore(damage: Number, attacker: string) {
     try {
@@ -296,6 +269,26 @@ export default function GamePage(props: GamePageProps) {
       .padStart(2, "0");
     const centiseconds = (totalCentiseconds % 100).toString().padStart(2, "0");
     return `${minutes}:${seconds}:${centiseconds}`;
+  };
+
+  const receiveGold = async () => {
+    try {
+          // Deduct the cost of the item from gold
+          const goldResponse = await axios.put(
+            `${process.env.REACT_APP_BACKEND_URL}/api/gold/update`,
+            {
+              userId: authData.authUserId,
+              classId: classId,
+              amount: -5, // since the orginal function uses a -, we use -5 so that it is +5 gold
+            },
+            { headers: { "X-token": localStorage.getItem("token") } }
+          );
+
+          setGoldAmount(goldResponse.data.gold); // Update the state with the new gold amount
+
+    } catch (error) {
+      console.error("Failed to update health on the server:", error);
+    }
   };
 
   const buyItem = async (item: Item) => {
@@ -366,7 +359,7 @@ export default function GamePage(props: GamePageProps) {
       //Health items
       const currentHealth = userHealth || 0;
       const addHealth = itemEffect.value;
-      const totalHealth = Math.min(addHealth + currentHealth, 100); //100 is the max health but backend doesnt reflect that
+      const totalHealth = Math.min(addHealth + currentHealth, 56); //100 is the max health but backend doesnt reflect that'
       setUserHealth(totalHealth); // Update health in the state
       updateHealthOnBackend(addHealth);
     } else if (itemEffect.type === "damage") {
@@ -450,7 +443,7 @@ export default function GamePage(props: GamePageProps) {
           onSelectPerson={setSelectedPerson}
           disabled={!isAttacking}
           people={usersInClass}
-          userHealth={userHealth || 100}
+          userHealth={userHealth || 0}
         />
         {/* Attack Button */}
         <div className="flex justify-center items-center mt-4">
@@ -462,6 +455,7 @@ export default function GamePage(props: GamePageProps) {
               setTimeInCentiseconds(0);
               setIsAttacking(false);
               setSelectedPerson(null);
+              receiveGold();
               updateAttackerScore(
                 calculateDamage(
                   correctQuestions,
@@ -679,4 +673,13 @@ function calculateBaseDamage(numberCorrect: number) {
 
 function calculateMultiplier(timeCentiseconds: number) {
   return (15 - timeCentiseconds / 100) / 5;
+}
+
+function shuffleArray<T>(array: T[]) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
 }
