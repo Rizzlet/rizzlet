@@ -11,8 +11,10 @@ import { Class } from "../models/class.js";
 
 export async function GetIndividualUser(req: Request, res: Response) {
   const userData = verifyAndDecodeToken(req.cookies.token);
+  console.log("hi");
   if (!userData) {
     console.log("backend authentication failed");
+    res.status(401).send("backend authentication failed");
     return;
   }
 
@@ -205,7 +207,7 @@ export async function updateAttackerScoreHandler(req: Request, res: Response) {
   const userData = verifyAndDecodeToken(req.cookies.token);
   if (!userData) {
     console.log("could not find user");
-    return res.status(401).json({ message: "Authorization failed" });;
+    return res.status(401).json({ message: "Authorization failed" });
   }
   const { damageAmount, attacker, classId } = req.body;
 
@@ -217,7 +219,7 @@ export async function updateAttackerScoreHandler(req: Request, res: Response) {
       { $inc: { "scores.$[theElement].score": damageAmount } },
       { arrayFilters: [{ "theElement.user": attacker }] },
     );
-    
+
     // console.log("damageAmount", damageAmount)
     // console.log("attacker", attacker)
     console.log("Response:", response);
