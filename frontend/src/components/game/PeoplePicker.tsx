@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth/AuthContext";
 import HealthBar from "./HealthBar";
 import {
   WitchIdle,
   WitchCharge,
-  WitchAttack,
   WitchDefeat,
   SlimeIdle,
   SlimeTakeDamage,
@@ -39,10 +38,20 @@ export default function Select<
 }: PeoplePickerProps<T>) {
   const authData = useAuth();
 
+  // State to keep track of previous health values
+  const [prevHealths, setPrevHealths] = useState<{ [key: string]: number }>({});
+
+  useEffect(() => {
+    // Update previous health values whenever `people` changes
+    const newPrevHealths = people.reduce((acc, person) => {
+      acc[person.id] = person.health;
+      return acc;
+    }, {} as { [key: string]: number });
+
+    setPrevHealths(newPrevHealths);
+  }, [people]);
+
   console.log("health", userHealth);
-  // console.log("selectedPerson", selectedPerson);
-  // console.log("onSelectPerson", onSelectPerson)
-  // console.log("disabled", disabled);
   console.log("people: ", people);
 
   //make sure the data is properly rendered (fixes undefined)
@@ -54,7 +63,7 @@ export default function Select<
         person.id &&
         person.firstName &&
         person.lastName &&
-        person.health
+        person.health !== undefined
     );
 
   if (!isDataAvailable) {
@@ -62,6 +71,8 @@ export default function Select<
   }
 
   const renderEnemy = (person: Person) => {
+    const prevHealth = prevHealths[person.id];
+
     return (
       <div
         key={person.id}
@@ -71,6 +82,8 @@ export default function Select<
       >
         {person.health <= 0 ? (
           <SlimeDeath active={true} />
+        ) : prevHealth !== person.health ? (
+          <SlimeTakeDamage active={true} />
         ) : (
           slime(
             person,
@@ -85,7 +98,7 @@ export default function Select<
   };
 
   return (
-    <div className="grid grid-rows-3 grid-flow-col gap-4">
+    <div className="grid grid-rows-[175px_minmax(175px,_1fr)_200px] col-span-1 grid-flow-col gap-4">
       {/* rendering the "enemy" using index 0, 1, 2*/}
       <div>{people[0] && renderEnemy(people[0])}</div>
       <div className="grid grid-cols-2 col-span-1">
@@ -125,7 +138,7 @@ function witch(
         style={{ visibility: isSelected ? "visible" : "hidden" }}
       ></div>
       {disabled ? <WitchIdle active={true} /> : <WitchCharge active={true} />}
-      <div className="font-semibold">{name}</div>
+      <div className="font-bold text-white">{name}</div>
       <div className="">
         <HealthBar health={health} />
       </div>
@@ -148,7 +161,7 @@ function slime(
         style={{ visibility: isSelected ? "visible" : "hidden" }}
       >
         <svg
-          className="text-cyan-600 w-8 h-8"
+          className="text-teal-300 w-9 h-9"
           xmlns="http://www.w3.org/2000/svg"
           fill="currentColor"
           viewBox="0 0 400 200"
@@ -162,7 +175,7 @@ function slime(
         </svg>
       </div>
       <SlimeIdle active={true} />
-      <div className="font-semibold">{name}</div>
+      <div className="font-bold text-white">{name}</div>
       <div className="">
         <HealthBar health={health} />
       </div>

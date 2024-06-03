@@ -8,6 +8,7 @@ import { useAuth } from "../../context/auth/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import ItemShop from "./ItemShop";
 import ConfirmUseModal from "../ConfirmUseModal";
+import { WitchAttack, SlimeTakeDamage } from "./Animation/Sprites";
 
 const NUMBER_OF_QUESTIONS = 5;
 
@@ -443,14 +444,18 @@ export default function GamePage(props: GamePageProps) {
         Back
       </button>
       {/* Left side of the screen */}
-      <div className="col-span-1 bg-[url('https://s3.amazonaws.com/spoonflower/public/design_thumbnails/0424/5908/1431605648965_shop_thumb.png')] p-4 pt-5">
+      {/* <div className="col-span-1 bg-[center_44rem] bg-[length:2300px_2000px] bg-[url('https://as2.ftcdn.net/v2/jpg/08/01/19/13/1000_F_801191306_7rNIQXEkn7ymWgK89Baz6jKtanrcH1Zy.jpg')] p-4 pt-5"> */}
+      {/* <div className="col-span-1 bg-[center_44rem] bg-[length:800px_1600px] bg-[url('https://image.cdn2.seaart.ai/2023-09-08/16595283448225797/341cc5d93cf84d95ad11d2df3cab43f095eecc22_high.webp')] p-4 pt-5"> */}
+      <div className="col-span-1 bg-[center_44rem] bg-[length:800px_1800px] bg-[url('https://image.cdn2.seaart.ai/2023-10-04/18966380939376645/5599a21f44f8f2705fa0e2b945382ee6cf4bb901_high.webp')] p-4 pt-5">
+      {/* <div className="col-span-1 bg-[center_55rem] bg-[length:1000px_1600px] bg-[url('https://img.craftpix.net/2022/12/Free-Forest-Battle-Backgrounds6.jpg')] p-4 pt-5"> */}
+
         {/* PeoplePicker component */}
         <Select
           selectedPerson={selectedPerson}
           onSelectPerson={setSelectedPerson}
           disabled={!isAttacking}
           people={usersInClass}
-          userHealth={userHealth || 100}
+          userHealth={userHealth || 0}
         />
         {/* Attack Button */}
         <div className="flex justify-center items-center mt-4">

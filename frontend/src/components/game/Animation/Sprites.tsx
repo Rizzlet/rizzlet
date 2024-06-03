@@ -8,8 +8,8 @@ import witchCharge from "./witchSprites/B_witch_charge.png"
 import witchAttack from "./witchSprites/B_witch_attack.png"
 import witchDefeat from "./witchSprites/B_witch_death.png"
 
-const witchScale = 0.4;
-const slimeScale = 0.3;
+const witchScale = 0.35;
+const slimeScale = 0.35;
 
 //Witch Animations
 const WitchIdle = ({ active }: { active: boolean }) => {
@@ -81,7 +81,7 @@ const SlimeIdle = ({ active }: { active: boolean }) => {
       <SpriteAnimator 
         sprite={slime} // Update this path to your sprite image path
         width={32} //width of viewbox
-        height={32}
+        height={25}
         scale={slimeScale} //scale the sprite
         shouldAnimate={active}
         direction='horizontal' //direction of reading img
@@ -98,14 +98,14 @@ const SlimeTakeDamage = ({ active }: { active: boolean }) => {
       <SpriteAnimator 
         sprite={slime} // Update this path to your sprite image path
         width={32} //width of viewbox
-        height={32}
+        height={25}
         scale={slimeScale} //scale the sprite
         shouldAnimate={active}
         direction='horizontal' //direction of reading img
         frameCount={13} //how many frames to animate
-        startFrame={11}
+        startFrame={13}
         wrapAfter={2}
-        fps={3} //how fast
+        fps={2} //how fast
       />
   );
 };
@@ -115,7 +115,7 @@ const SlimeDeath = ({ active }: { active: boolean }) => {
       <SpriteAnimator 
         sprite={slime} // Update this path to your sprite image path
         width={32} //width of viewbox
-        height={32}
+        height={25}
         scale={slimeScale} //scale the sprite
         shouldAnimate={active}
         direction='horizontal' //direction of reading img
