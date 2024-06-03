@@ -46,8 +46,7 @@ export default function LoginPage() {
             authorizationCode: new URLSearchParams(window.location.search).get(
               "code"
             ),
-          },
-          { withCredentials: true }
+          }
         )
         .then((response) => {
           const data = response.data as BackendLoginResponse;
@@ -63,6 +62,7 @@ export default function LoginPage() {
 
           auth.setAuthUserId(`${data.id}`);
           localStorage.setItem("authUserId", data.id);
+          localStorage.setItem("token", response.headers["x-token-set"]);
 
           navigate(state || DEFAULT_ROUTE_AFTER_LOGIN, { replace: true });
         })

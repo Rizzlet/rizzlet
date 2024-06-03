@@ -21,31 +21,30 @@ function LeaderBoard(props: { classId?: string }) {
 
   //fetch the users
   useEffect(() => {
+    async function fetchUsers() {
+      try {
+        // TODO: Change this to include classId
+        const response = await axios.post<{ topFour: UserRecord[] }>(
+          process.env.REACT_APP_BACKEND_URL + "/api/class/topFour",
+          {
+            classId: classId,
+          },
+          { headers: { "X-token": localStorage.getItem("token") } }
+        );
+        return response.data.topFour;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
+    }
+
     fetchUsers().then((result) => {
       if (result) setUsers(result);
       console.log(result);
     });
-  });
+  }, [classId]);
 
   //getting top ten users from backend
-  async function fetchUsers() {
-    try {
-      // TODO: Change this to include classId
-      const response = await axios.post<{ topFour: UserRecord[] }>(
-        process.env.REACT_APP_BACKEND_URL + "/api/class/topFour",
-        {
-          classId: classId,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-      return response.data.topFour;
-    } catch (error) {
-      console.log(error);
-      return false;
-    }
-  }
 
   return (
     <div className="container ">

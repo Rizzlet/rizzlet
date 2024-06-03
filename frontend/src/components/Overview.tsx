@@ -1,3 +1,7 @@
+import { Link } from "react-router-dom";
+import { QuestionMappedAnswers } from "../pages/QuestionOverview";
+import { FlagIcon } from "@heroicons/react/20/solid";
+
 //Creating the Pagination
 interface PagesProps {
   currentPage: number;
@@ -78,16 +82,7 @@ const Pages: React.FC<PagesProps> = ({
 
 //Creating the Table with Questions
 interface TableProps {
-  questionData: {
-    _id: string;
-    type: string;
-    question: string;
-    answer: boolean;
-    createdBy: {
-      firstName: string;
-      lastName: string;
-    };
-  }[];
+  questions: QuestionMappedAnswers[];
 }
 
 function Table(props: TableProps) {
@@ -95,7 +90,7 @@ function Table(props: TableProps) {
     <div className="relative sm:rounded-lg ">
       <table className="w-full min-h-[75dvh] py-2 text-left rtl:text-right text-gray-500">
         <TableHeader />
-        <TableBody questionData={props.questionData} />
+        <TableBody questions={props.questions} />
       </table>
     </div>
   );
@@ -117,21 +112,37 @@ function TableHeader() {
         <th scope="col" className="px-6 py-3">
           Answer
         </th>
+        <th scope="col" className="px-6 py-3">
+          Feedback
+        </th>
       </tr>
     </thead>
   );
 }
 
 function TableBody(props: TableProps) {
-  const rows = props.questionData.map((row, index) => {
+  const rows = props.questions.map((row, index) => {
     //to resolve is createdBy is NULL
-    const createdByInfo = row.createdBy || { firstName: "", lastName: "" };
+    const createdByInfo = row.questions.createdBy || {
+      firstName: "",
+      lastName: "",
+    };
     return (
-      <tr key={index} className=" border-b border-gray-200 hover:bg-gray-200">
-        <td className="px-6 py-3">{row.type}</td>
+      <tr key={index} className=" border-b border-gray-200">
+        <td className="px-6 py-3">{row.questions.type}</td>
         <td className="px-6 py-3">{`${createdByInfo.firstName} ${createdByInfo.lastName}`}</td>
-        <td className="px-6 py-3">{row.question}</td>
-        <td className="px-6 py-3">{row.answer ? "True" : "False"}</td>
+        <td className="px-6 py-3">{row.questions.question}</td>
+        <td className="px-6 py-3">{row.answer[0]?.answer}</td>
+        <td className="px-6 py-3">
+          <Link to={`/submit-rating/${row.questions._id}`}>
+            <button className="flex items-center bg-primary text-black px-5 py-2 rounded hover:bg-teal-600">
+              <div style={{ paddingRight: '8px' }}>
+                <FlagIcon className="text-gray-500 rounded" style={{ width: '20px', height: '20px'}} />
+              </div>
+              Feedback
+            </button>
+          </Link>
+        </td>
       </tr>
     );
   });

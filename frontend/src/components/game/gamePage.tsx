@@ -5,8 +5,9 @@ import Select from "./PeoplePicker";
 import { Timer } from "./Timer";
 import DamageDealer from "./damageDealer";
 import { useAuth } from "../../context/auth/AuthContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ItemShop from "./ItemShop";
+import ConfirmUseModal from "../ConfirmUseModal";
 
 const NUMBER_OF_QUESTIONS = 5;
 
@@ -38,7 +39,7 @@ interface Item {
   name: string;
   description: string;
   icon: string;
-  cost: number;  
+  cost: number;
 }
 
 interface Inventory {
@@ -53,7 +54,7 @@ async function fetchQuestionsAndAnswers(classId: string | undefined) {
   try {
     const questionResponse = await axios.get<QuestionResponse[]>(
       new URL(`/api/class/${classId}`, process.env.REACT_APP_BACKEND_URL!).href,
-      { withCredentials: true }
+      { headers: { "X-token": localStorage.getItem("token") } }
     );
 
     const answerResponse = await axios.get<IMultipleChoiceAnswers[]>(
@@ -61,7 +62,7 @@ async function fetchQuestionsAndAnswers(classId: string | undefined) {
         "/api/question/multipleChoiceAnswers",
         process.env.REACT_APP_BACKEND_URL!
       ).href,
-      { withCredentials: true }
+      { headers: { "X-token": localStorage.getItem("token") } }
     );
 
     let unmappedQuestionSet = [] as QuestionResponse[];
@@ -73,7 +74,7 @@ async function fetchQuestionsAndAnswers(classId: string | undefined) {
     if (NUMBER_OF_QUESTIONS > questionResponse.data.length) {
       while (unmappedQuestionSet.length < NUMBER_OF_QUESTIONS) {
         console.log(unmappedQuestionSet);
-        console.log("hi");
+        // console.log("hi");
         unmappedQuestionSet = unmappedQuestionSet.concat(
           questionResponse.data
             .sort(() => Math.random() - Math.random())
@@ -87,9 +88,9 @@ async function fetchQuestionsAndAnswers(classId: string | undefined) {
         );
       }
     } else {
-      unmappedQuestionSet = questionResponse.data
-        .sort(() => Math.random() - Math.random())
-        .slice(0, NUMBER_OF_QUESTIONS);
+      unmappedQuestionSet = questionResponse.data;
+      shuffleArray(unmappedQuestionSet);
+      unmappedQuestionSet = unmappedQuestionSet.slice(0, NUMBER_OF_QUESTIONS);
     }
 
     const questions: Question[] = unmappedQuestionSet.map((question) => {
@@ -142,6 +143,13 @@ export default function GamePage(props: GamePageProps) {
   const [userHealth, setUserHealth] = useState<null | number>(null);
   const [showShop, setShowShop] = useState(false);
   const [inventory, setInventory] = useState<Inventory[]>([]);
+  const [allItems, setAllItems] = useState<Item[]>([]);
+  const [goldAmount, setGoldAmount] = useState(0);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedInventoryItem, setSelectedInventoryItem] =
+    useState<Inventory | null>(null);
+  const [activeItemBonus, setActiveItemBonus] = useState(0);
+  const [activeItemName, setActiveItemName] = useState<string | null>(null);
 
   const authData = useAuth();
 
@@ -149,13 +157,49 @@ export default function GamePage(props: GamePageProps) {
 
   const classId = params.classId;
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchGoldAmount = async () => {
+      if (authData.authUserId && classId) {
+        try {
+          const response = await axios.get(
+            `${process.env.REACT_APP_BACKEND_URL}/api/gold/${authData.authUserId}/${classId}`,
+            { headers: { "X-token": localStorage.getItem("token") } }
+          );
+          setGoldAmount(response.data.gold);
+        } catch (error) {
+          console.error("Failed to fetch gold amount:", error);
+        }
+      }
+    };
+
+    fetchGoldAmount();
+  }, [authData.authUserId, classId]);
+
+  useEffect(() => {
+    const fetchAllItems = async () => {
+      try {
+        const response = await axios.get<Item[]>(
+          `${process.env.REACT_APP_BACKEND_URL}/api/items`,
+          { headers: { "X-token": localStorage.getItem("token") } }
+        );
+        setAllItems(response.data);
+      } catch (error) {
+        console.error("Failed to fetch items:", error);
+      }
+    };
+    fetchAllItems();
+  }, []);
+
   useEffect(() => {
     async function fetchInventory() {
       if (!authData.authUserId || !classId) return;
       try {
-        const { data } = await axios.get<Inventory[]>(`${process.env.REACT_APP_BACKEND_URL}/api/inventory/${authData.authUserId}/${classId}`, {
-          withCredentials: true
-        });
+        const { data } = await axios.get<Inventory[]>(
+          `${process.env.REACT_APP_BACKEND_URL}/api/inventory/${authData.authUserId}/${classId}`,
+          { headers: { "X-token": localStorage.getItem("token") } }
+        );
         setInventory(data);
       } catch (error) {
         console.error("Failed to fetch inventory:", error);
@@ -171,9 +215,7 @@ export default function GamePage(props: GamePageProps) {
       try {
         const response = await axios.get<PersonGroupRecord[]>(
           `${process.env.REACT_APP_BACKEND_URL}/api/game/${classId}/group`,
-          {
-            withCredentials: true,
-          }
+          { headers: { "X-token": localStorage.getItem("token") } }
         );
 
         setUserHealth(
@@ -183,52 +225,21 @@ export default function GamePage(props: GamePageProps) {
           (u) => u.id !== authData.authUserId
         );
 
-        console.log(`PeopleFormat: ${JSON.stringify(peopleFormat)}`);
+        // console.log(`PeopleFormat: ${JSON.stringify(peopleFormat)}`);
 
         setUsersInClass(peopleFormat);
+
+        fetchQuestionsAndAnswers(classId).then((questions) => {
+          setQuestionSet(questions);
+        });
       } catch (error) {
         console.error("fetch error: ", error);
       }
-
-      fetchQuestionsAndAnswers(classId).then((questions) => {
-        setQuestionSet(questions);
-      });
     }
+
     fetchData();
   }, [setUsersInClass, authData.authUserId, classId]);
-  
 
-   useEffect(() => {
-    async function fetchUserByClass() {
-      try {
-        const response = await axios.get<any>(
-          `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
-          {
-            withCredentials: true,
-          }
-        );
-  
-        const peopleFormat = response.data.slice(0, 3).map((user: any) => ({
-          id: user._id,
-          name: `${user.firstName} ${user.lastName}`,
-          profileColor: user.profileColor,
-          health: user.health,
-        }));
-  
-        setUsersInClass(peopleFormat);
-      } catch (error) {
-        console.log("fetch error: ", error);
-      }
-    }
-
-    fetchQuestionsAndAnswers(classId).then((questions) => {
-      setQuestionSet(questions);
-    });
-    fetchUserByClass();
-  }, [classId]);
-
-  
-        
   //update the score of the attacker based on damage
   async function updateAttackerScore(damage: Number, attacker: string) {
     try {
@@ -242,7 +253,7 @@ export default function GamePage(props: GamePageProps) {
           attacker: authData.authUserId,
           classId: classId,
         },
-        { withCredentials: true }
+        { headers: { "X-token": localStorage.getItem("token") } }
       );
     } catch (error) {
       console.log(error, "Error updating user health");
@@ -262,27 +273,148 @@ export default function GamePage(props: GamePageProps) {
 
   const buyItem = async (item: Item) => {
     if (inventory.length < 3) {
+      if (goldAmount >= item.cost) {
+        // Check if user has enough gold
         try {
-            const response = await axios.post<Inventory>(`${process.env.REACT_APP_BACKEND_URL}/api/inventory`, {
-                userId: authData.authUserId,
-                classId: classId,
-                itemId: item._id,  
-                quantity: 1
-            }, { withCredentials: true });
+          const response = await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/api/inventory`,
+            {
+              userId: authData.authUserId,
+              classId: classId,
+              itemId: item._id,
+              quantity: 1,
+            },
+            { headers: { "X-token": localStorage.getItem("token") } }
+          );
 
-            setInventory(currentInventory => [...currentInventory, response.data]);  // assuming response.data is the new Inventory object
+          // Deduct the cost of the item from gold
+          const goldResponse = await axios.put(
+            `${process.env.REACT_APP_BACKEND_URL}/api/gold/update`,
+            {
+              userId: authData.authUserId,
+              classId: classId,
+              amount: item.cost,
+            },
+            { headers: { "X-token": localStorage.getItem("token") } }
+          );
+
+          setGoldAmount(goldResponse.data.gold); // Update the state with the new gold amount
+
+          const fullItemDetails = allItems.find((i) => i._id === item._id);
+          if (fullItemDetails) {
+            const newItem = {
+              ...response.data,
+              itemId: fullItemDetails,
+            };
+            setInventory((currentInventory) => [...currentInventory, newItem]);
             alert("Item added to inventory!");
+          } else {
+            console.error("Item details not found in allItems.");
+          }
         } catch (error) {
-            alert("Failed to add item to inventory. Please try again.");
-            console.error("Error adding item to inventory:", error);
+          alert("Failed to add item to inventory. Please try again.");
+          console.error("Error adding item to inventory:", error);
         }
+      } else {
+        alert("Not enough gold to purchase this item.");
+      }
     } else {
-        alert("Maximum 3 items allowed in inventory.");
+      alert("Maximum 3 items allowed in inventory.");
     }
-};
+  };
+
+  const handleItemClick = (inventoryItem: Inventory) => {
+    console.log("Selected Inventory Item:", inventoryItem);
+    setSelectedInventoryItem(inventoryItem);
+    setShowConfirmModal(true);
+  };
+
+  const handleUseItem = (inventoryItem: Inventory) => {
+    if (!inventoryItem) return;
+
+    // Determine the bonus or effect of the item
+    const itemEffect = determineItemEffect(inventoryItem.itemId);
+
+    if (itemEffect.type === "health") {
+      //Health items
+      const currentHealth = userHealth || 0;
+      const addHealth = itemEffect.value;
+      const totalHealth = Math.min(addHealth + currentHealth, 56); //100 is the max health but backend doesnt reflect that'
+      setUserHealth(totalHealth); // Update health in the state
+      updateHealthOnBackend(addHealth);
+    } else if (itemEffect.type === "damage") {
+      //Damage items
+      setActiveItemBonus(itemEffect.value);
+      setActiveItemName(inventoryItem.itemId.name);
+    }
+    removeItemFromInventory(inventoryItem._id);
+    setShowConfirmModal(false);
+  };
+
+  const updateHealthOnBackend = async (healthChange: number) => {
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/user/updateHealth`,
+        {
+          damageAmount: healthChange,
+          attackUser: authData.authUserId, // ID of yourself
+          classId: classId,
+        },
+        { headers: { "X-token": localStorage.getItem("token") } }
+      );
+
+      console.log("Health updated successfully!", healthChange);
+    } catch (error) {
+      console.error("Failed to update health on the server:", error);
+    }
+  };
+
+  const removeItemFromInventory = async (inventoryId: string) => {
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/inventory/${inventoryId}`;
+    console.log("Attempting to delete inventory item at:", url);
+    try {
+      const response = await axios.delete(url, {
+        headers: { "X-token": localStorage.getItem("token") },
+      });
+      if (response.status === 200) {
+        setInventory((currentInventory) =>
+          currentInventory.filter((item) => item._id !== inventoryId)
+        );
+      } else {
+        alert("Failed to remove the item.");
+      }
+    } catch (error) {
+      console.error("Error removing item from inventory:", error);
+      alert("Error removing item from inventory.");
+    }
+  };
+
+  const determineItemEffect = (item: Item) => {
+    switch (item.name) {
+      case "Magic Wand":
+        return { type: "damage", value: 5 };
+      case "Flame Spell":
+        return { type: "damage", value: 8 };
+      case "Damage Spell":
+        return { type: "damage", value: 15 };
+      case "Health Potion":
+        return { type: "health", value: 10 };
+      case "Health Spell":
+        return { type: "health", value: 15 };
+      default:
+        return { type: "none", value: 0 };
+    }
+  };
 
   return (
     <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">
+      {/* Back Button */}
+      <button
+        className="absolute top-4 left-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => navigate(`/classDashboard/${classId}`)}
+      >
+        Back
+      </button>
       {/* Left side of the screen */}
       <div className="col-span-1 bg-[url('https://s3.amazonaws.com/spoonflower/public/design_thumbnails/0424/5908/1431605648965_shop_thumb.png')] p-4 pt-5">
         {/* PeoplePicker component */}
@@ -291,10 +423,10 @@ export default function GamePage(props: GamePageProps) {
           onSelectPerson={setSelectedPerson}
           disabled={!isAttacking}
           people={usersInClass}
-          userHealth={userHealth || 100}
+          userHealth={userHealth || 0}
         />
         {/* Attack Button */}
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center mt-4">
           <DamageDealer
             classId={classId || ""}
             disabled={!isAttacking || !selectedPerson}
@@ -303,28 +435,57 @@ export default function GamePage(props: GamePageProps) {
               setTimeInCentiseconds(0);
               setIsAttacking(false);
               setSelectedPerson(null);
-              updateAttackerScore(calculateDamage(correctQuestions, timeInCentiseconds), authData.authUserId);
+              updateAttackerScore(
+                calculateDamage(
+                  correctQuestions,
+                  timeInCentiseconds,
+                  activeItemBonus
+                ),
+                authData.authUserId
+              );
 
               let newUsers = [...usersInClass];
               newUsers.find((u) => u.id === selectedPerson)!.health -=
-                calculateDamage(correctQuestions, timeInCentiseconds);
+                calculateDamage(
+                  correctQuestions,
+                  timeInCentiseconds,
+                  activeItemBonus
+                );
               setUsersInClass(newUsers);
+
+              setActiveItemBonus(0);
+              setActiveItemName(null);
 
               setCurrentQuestionIdx(0);
               setCorrectQuestions(0);
             }}
-            damage={-calculateDamage(correctQuestions, timeInCentiseconds)}
+            damage={
+              -calculateDamage(
+                correctQuestions,
+                timeInCentiseconds,
+                activeItemBonus
+              )
+            }
           />
         </div>
       </div>
 
-      {/*Shop button*/}
-      
-      <button
-        className="fixed bottom-10 right-1/2 transform translate-x-[-50%] bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => setShowShop(true)}>
-        Shop
-      </button>
+      {/* Shop Button */}
+
+      <div className="fixed bottom-10 right-10 flex items-center space-x-5">
+        <button
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => setShowShop(true)}
+        >
+          Shop
+        </button>
+
+        {/* Gold Display */}
+        <div className="flex items-center bg-yellow-400 text-white font-bold py-2 px-4 rounded-full">
+          <i className="fas fa-coins"></i>
+          <span className="ml-2">{goldAmount} Gold</span>
+        </div>
+      </div>
 
       {/*Shop popup*/}
 
@@ -334,7 +495,8 @@ export default function GamePage(props: GamePageProps) {
             <ItemShop onBuyItem={buyItem} />
             <button
               onClick={() => setShowShop(false)}
-              className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            >
               Close Shop
             </button>
           </div>
@@ -346,13 +508,31 @@ export default function GamePage(props: GamePageProps) {
       <div className="fixed bottom-10 left-10">
         <div className="text-xl font-bold mb-2">Inventory</div>
         <div className="flex items-center space-x-2">
-          {inventory.map((item, index) => (
-            <div key={index} className="flex justify-center items-center w-12 h-12 bg-gray-200 rounded-full">
-              <i className={`fas ${item.itemId.icon} text-xl`}></i> 
-            </div>
+          {inventory.map((inventoryItem, index) => (
+            <button
+              key={index}
+              onClick={() => handleItemClick(inventoryItem)}
+              className="flex justify-center items-center w-12 h-12 bg-gray-200 rounded-full"
+            >
+              <i className={`fas ${inventoryItem.itemId.icon} text-xl`}></i>
+            </button>
           ))}
         </div>
       </div>
+
+      {/* Modal for confirming item use */}
+
+      {selectedInventoryItem && (
+        <ConfirmUseModal
+          isOpen={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          onConfirm={() => {
+            handleUseItem(selectedInventoryItem);
+            setShowConfirmModal(false);
+          }}
+          title={`Use ${selectedInventoryItem?.itemId.name}?`}
+        />
+      )}
 
       {/* Right side of the screen */}
 
@@ -382,15 +562,29 @@ export default function GamePage(props: GamePageProps) {
         )}
 
         {isAttacking && (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center pt-10">
             <div className="text-2xl">
-              Time Elapsed: {formatTime(timeInCentiseconds)} (x
-              {calculateMultiplier(timeInCentiseconds).toFixed(1)} Multiplier)
-              <br></br>
-              Questions Correct: {correctQuestions}/{NUMBER_OF_QUESTIONS} (
-              {calculateBaseDamage(correctQuestions)} Base Damage)<br></br>
-              Total Damage:{" "}
-              {calculateDamage(correctQuestions, timeInCentiseconds)}
+              <div className="mb-10">
+                Time Elapsed: {formatTime(timeInCentiseconds)} (x
+                {calculateMultiplier(timeInCentiseconds).toFixed(1)} Multiplier)
+              </div>
+              <div className="mb-10">
+                Questions Correct: {correctQuestions}/{NUMBER_OF_QUESTIONS} (
+                {calculateBaseDamage(correctQuestions)} Base Damage)
+              </div>
+              {activeItemBonus > 0 && (
+                <div className="mb-10">
+                  {activeItemName} Bonus: +{activeItemBonus} Damage
+                </div>
+              )}
+              <div>
+                Total Damage:{" "}
+                {calculateDamage(
+                  correctQuestions,
+                  timeInCentiseconds,
+                  activeItemBonus
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -432,10 +626,14 @@ export default function GamePage(props: GamePageProps) {
   );
 }
 
-function calculateDamage(numberCorrect: number, timeCentiseconds: number) {
-  return Math.round(
-    calculateMultiplier(timeCentiseconds) * calculateBaseDamage(numberCorrect)
-  );
+function calculateDamage(
+  numberCorrect: number,
+  timeCentiseconds: number,
+  itemBonus: number
+) {
+  const baseDamage = calculateBaseDamage(numberCorrect);
+  const multiplier = calculateMultiplier(timeCentiseconds);
+  return Math.round(multiplier * baseDamage + itemBonus);
 }
 
 function calculateBaseDamage(numberCorrect: number) {
@@ -444,4 +642,13 @@ function calculateBaseDamage(numberCorrect: number) {
 
 function calculateMultiplier(timeCentiseconds: number) {
   return (15 - timeCentiseconds / 100) / 5;
+}
+
+function shuffleArray<T>(array: T[]) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
 }

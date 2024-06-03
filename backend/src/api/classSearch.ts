@@ -1,16 +1,15 @@
 import joi from "joi";
 import { Request, Response } from "express";
 import {
-  addUserRecordInClassIfDoesntAlreadyExist,
+  getUserClassesFromDB,
   newClass,
+  setUserClasses,
 } from "../models/class.js";
 import { getClassNames } from "../models/class.js";
-import { User, setUserClasses } from "../models/user.js";
+import { User } from "../models/user.js";
 import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
-import mongoose from "mongoose";
-import { Class } from "../models/class.js";
 import { getQuestionsFromClassForUser } from "../models/question.js";
-import { getAllUsersInClass } from "../models/class.js";
+import { getAllUsersScoreByClass } from "../models/class.js";
 
 type classBody = {
   name: string;
@@ -48,14 +47,10 @@ export async function classHandler(req: Request, res: Response) {
 
 export async function updateUserClassesHandler(req: Request, res: Response) {
   const { classIds } = req.body as { classIds: string[] };
-  const userData = verifyAndDecodeToken(req.cookies.token)!;
+  const userData = verifyAndDecodeToken(req.get("X-token")!)!;
 
   // Update the user's classIds with the new classes
   const updatedUser = setUserClasses(userData.id, classIds);
-
-  classIds.forEach(async (classId) => {
-    await addUserRecordInClassIfDoesntAlreadyExist(classId, userData.id);
-  });
 
   if (!updatedUser) {
     res.status(404).json({ error: "User not found" });
@@ -69,7 +64,7 @@ export async function updateUserClassesHandler(req: Request, res: Response) {
 
 export async function fetchQuestionsByClass(req: Request, res: Response) {
   const classId = req.params["id"];
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
 
   if (!userData) {
     res.status(401);
@@ -100,13 +95,13 @@ export async function fetchUsersByClass(req: Request, res: Response) {
   }
 
   try {
-    const allUsersInClass = await getAllUsersInClass(classId);
+    const allUsersInClass = await getAllUsersScoreByClass(classId);
 
     if (!allUsersInClass) {
       return res.status(404).send({ message: "No users found in the class" });
     }
 
-    return res.status(200).json(allUsersInClass);
+    return res.status(200).json(allUsersInClass.map((u) => u.user));
   } catch (error) {
     console.error("Error fetching users by class:", error);
     return res.status(500).send({ message: "Internal Server Error" });
@@ -115,12 +110,7 @@ export async function fetchUsersByClass(req: Request, res: Response) {
 
 export async function getUserClasses(req: Request, res: Response) {
   try {
-    const userData = verifyAndDecodeToken(req.cookies.token);
-
-    type classesWithName = {
-      className: string;
-      classId: mongoose.Types.ObjectId | undefined;
-    };
+    const userData = verifyAndDecodeToken(req.get("X-token")!);
 
     if (!userData) {
       res.status(401);
@@ -129,24 +119,17 @@ export async function getUserClasses(req: Request, res: Response) {
 
     // Gets the user from the database
     const foundUser = await User.findById(userData.id).exec();
+    const userClasses = await getUserClassesFromDB(userData.id);
 
     if (foundUser != null) {
-      const sendClasses: classesWithName[] = [];
-      for (let i = 0; i < foundUser.classIds.length; i++) {
-        const mappedClass: classesWithName = {
-          className: "",
-          classId: foundUser.classIds[i],
-        };
-
-        const foundClassName = await Class.findById(foundUser.classIds[i])
-          .select("name")
-          .exec();
-        if (foundClassName != null) {
-          mappedClass.className = foundClassName.name;
-        }
-        sendClasses.push(mappedClass);
-      }
-      res.send(sendClasses);
+      res.send(
+        userClasses.map((u) => {
+          return {
+            className: u.name,
+            classId: u._id.toString(),
+          };
+        }),
+      );
     }
   } catch (error) {
     console.error();

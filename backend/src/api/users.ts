@@ -4,14 +4,15 @@ import { verifyAndDecodeToken } from "./auth/sharedAuth.js";
 import {
   getAllUsersScoreByClass,
   getClass,
-  getUserClasses,
+  getUserClassesFromDB,
 } from "..//models/class.js";
 import joi from "joi";
 import { Class } from "../models/class.js";
 
 export async function GetIndividualUser(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
-  console.log("hi");
+
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
+
   if (!userData) {
     console.log("backend authentication failed");
     res.status(401).send("backend authentication failed");
@@ -29,10 +30,10 @@ export async function GetIndividualUser(req: Request, res: Response) {
 }
 
 export async function UserClasses(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token)!;
+  const userData = verifyAndDecodeToken(req.get("X-token")!)!;
 
   // GEt all classes that the user is enrolled in
-  const classes = await getUserClasses(userData.id);
+  const classes = await getUserClassesFromDB(userData.id);
 
   if (classes === null) {
     res.status(500).send("Internal server error");
@@ -58,7 +59,7 @@ const getScoreSchema = joi.object<GetScoreBody, true>({
 });
 
 export async function getScore(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     console.log("Authorization failed");
     return res.status(401).json({ message: "Authorization failed" });
@@ -72,6 +73,7 @@ export async function getScore(req: Request, res: Response) {
 
   try {
     const user = await User.findById(userData.id);
+    const userClasses = await getUserClassesFromDB(userData.id);
     if (!user) {
       console.log("User not found");
       return res.status(404).json({ message: "User not found" });
@@ -84,7 +86,7 @@ export async function getScore(req: Request, res: Response) {
       return res.status(403).json({ message: "Class does not exist" });
     }
 
-    if (user.classIds.indexOf(classObj._id) === -1) {
+    if (userClasses.findIndex((c) => c._id === classObj._id) === -1) {
       console.log("User is not enrolled in this class");
       return res
         .status(403)
@@ -110,9 +112,9 @@ const topTenUsersSchema = joi.object<GetTopTenUsers, true>({
   classId: joi.string().hex({ prefix: false }).length(24).required(),
 });
 
-export async function getTopTenUsers(req: Request, res: Response) {
+export async function topFour(req: Request, res: Response) {
   //verify tokens for authentication
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     console.log("update score authorization failed");
     return;
@@ -171,7 +173,7 @@ export async function getTopTenUsers(req: Request, res: Response) {
 }
 
 export async function updateHealthHandler(req: Request, Res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     console.log("update health authorization failed");
     return;
@@ -187,11 +189,6 @@ export async function updateHealthHandler(req: Request, Res: Response) {
       },
     );
 
-    // const response = await Class.updateOne(
-    //   { _id: classId, "scores.user": attackUser },
-    //   { $inc: { "scores.$.health": damageAmount } },
-    // );
-
     if (!response) {
       console.log("Class doesn't exist");
       return Res.status(403).json({ message: "Class does not exist" });
@@ -199,12 +196,11 @@ export async function updateHealthHandler(req: Request, Res: Response) {
   } catch (error) {
     console.log(error);
   }
-
   return Res.status(200).json({ request: true });
 }
 
 export async function updateAttackerScoreHandler(req: Request, res: Response) {
-  const userData = verifyAndDecodeToken(req.cookies.token);
+  const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     console.log("could not find user");
     return res.status(401).json({ message: "Authorization failed" });

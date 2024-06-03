@@ -1,40 +1,27 @@
-import { useState } from "react";
+import React from "react";
 
 export default function Flashcard(props: any) {
   /**
    * @param question: the question that the user writes
-   * @param rightAnswer: passed down to answers component
    * @param animation: Will define what direction the animation will play when rendered
    * @param currentCard: Every flashcard keeps a reference to the current card being rendered which is just an index
-   * @param originalPosition: A flashcards unique index
+   * @param originalPosition: A flashcard's unique index
    */
-
-  // Because of how tailwind works, styles have to be predefined so that it can be dynamically changed
-  const enum selectedVariants {
-    selected = "bg-pink-400 rounded-lg size-4/5 shadow-2xl cursor-pointer absolute",
-    notSelected = "bg-red-50 rounded-lg size-4/5 shadow-2xl cursor-pointer absolute",
-  }
-
-  const enum questionFormattingVariants {
-    selected = "flex justify-center items-center h-1/6 animate-question-up",
-    notSelected = "flex justify-center items-center h-full animate-question-down",
-  }
-
-  // Checks to see if the user has selected this question or not
-  let [selected, setSelected] = useState(false);
 
   return (
     <div
-      onClick={() => {
-        setSelected(!selected);
-      }}
-      className={`${selected ? selectedVariants.selected : selectedVariants.notSelected} ${props.currentCard === props.originalPosition && props.animation === "right" ? "animate-right-next-appear" : props.currentCard === props.originalPosition && props.animation === "left" ? "animate-left-next-appear" : ""}`}
+      className={`bg-white rounded-lg p-4 shadow-lg flex items-center justify-center ${
+        props.currentCard === props.originalPosition &&
+        props.animation === "right"
+          ? "animate-right-next-appear"
+          : props.currentCard === props.originalPosition &&
+            props.animation === "left"
+          ? "animate-left-next-appear"
+          : ""
+      }`}
+      style={{ width: "80%", height: "70%", cursor: "pointer" }}
     >
-      <div
-        className={`${selected ? questionFormattingVariants.selected : questionFormattingVariants.notSelected}`}
-      >
-        <h1>{props.question}</h1>
-      </div>
+      <h1 className="text-2xl">{props.question}</h1>
     </div>
   );
 }

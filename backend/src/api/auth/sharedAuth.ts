@@ -15,14 +15,16 @@ export function requireAuth(
   res: Response,
   next: NextFunction,
 ) {
-  if (!req.cookies.token) {
+  const maybeToken = req.get("X-token");
+
+  if (!maybeToken) {
     console.log("No token provided");
     res.status(401).send("Unauthorized");
     return;
   }
 
   // Verify the token
-  const tokenData = verifyAndDecodeToken(req.cookies.token);
+  const tokenData = verifyAndDecodeToken(maybeToken);
 
   if (!tokenData) {
     console.log("Invalid token provided");

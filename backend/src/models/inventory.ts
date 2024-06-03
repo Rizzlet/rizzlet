@@ -27,10 +27,7 @@ export const inventorySchema = new mongoose.Schema({
     }
 })
 
-export const Inventory = (await getConnection()).model(
-  "Inventory",
-  inventorySchema,
-);
+export const Inventory = (await getConnection()).model("Inventory", inventorySchema);
 
 export async function addIventoryItem(
   userId: mongoose.Types.ObjectId,

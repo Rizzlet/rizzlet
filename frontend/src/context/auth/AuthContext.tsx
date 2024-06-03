@@ -28,7 +28,7 @@ export function AuthProvider({
     localStorage.getItem("fullName") || ""
   );
   const [isLoggedIn, setIsLoggedIn] = React.useState(
-    document.cookie.includes("token")
+    !!localStorage.getItem("token")
   );
 
   if (!localStorage.getItem("profileColor")) {
@@ -51,23 +51,25 @@ export function AuthProvider({
     localStorage.getItem("authUserId") || ""
   );
 
-  const [streak, setStreak] = React.useState<number | null>(null)
+  const [streak, setStreak] = React.useState<number | null>(null);
 
   useEffect(() => {
     const fetchStreak = async () => {
       try {
         if (!isLoggedIn) {
-          console.log('User not logged in.');
-        }
-        else {
-          const url = new URL(`/api/user/streak`, process.env.REACT_APP_BACKEND_URL!);
+          console.log("User not logged in.");
+        } else {
+          const url = new URL(
+            `/api/user/streak`,
+            process.env.REACT_APP_BACKEND_URL!
+          );
           const response = await axios.get<StreakResponse>(url.href, {
-            withCredentials: true,
+            headers: { "X-token": localStorage.getItem("token") },
           });
           setStreak(response.data.streak);
         }
       } catch (error) {
-        console.error('Error fetching streak:', error);
+        console.error("Error fetching streak:", error);
       }
     };
 

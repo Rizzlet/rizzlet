@@ -14,7 +14,7 @@ import FlashcardField from "./AnswerQuestion";
 import QuestionOverview from "./QuestionOverview";
 import QuestionSubmission from "./FormSubmitQuestions";
 import Achievements from "../components/Achievements";
-
+import gameImage from "../resources/game.png";
 
 interface UserStats {
   user: string;
@@ -121,12 +121,25 @@ const ClassDashboard: React.FC = () => {
             {selectedLink.charAt(0).toUpperCase() + selectedLink.slice(1)}
           </header>
           {selectedLink === "game" && (
-            <div className="container py-10 px-10 min-w-full flex flex-col items-center justify-center ti">
+            <div className="container py-10 px-10 flex flex-col items-center justify-center">
               <Link
-                className="text-white font-bold py-2 px-4 mt-3 w-2/3 h-20 rounded bg-green-600 hover:bg-green-500 text-center align-middle"
+                className="w-3/4 h-96 mt-3 rounded-lg text-center flex items-center justify-center relative overflow-hidden"
+                style={{ 
+                  color: 'black',
+                  textShadow: '1px 1px 2px rgba(255, 255, 255, 1)'
+                }}
                 to={`/gamePage/${params.id}`}
               >
-                Open Game!
+                <span className="bg-white bg-opacity-70 px-4 py-2 rounded-lg font-bold text-lg z-10">
+                  Open Game!
+                </span>
+                <div 
+                  className="absolute inset-0 bg-cover bg-center blur-sm"
+                  style={{ 
+                    backgroundImage: `url(${gameImage})`,
+                    filter: 'blur(10px)'
+                  }}
+                />
               </Link>
             </div>
           )}
