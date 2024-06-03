@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { AutoFlashcard } from "./AutoFlashcard";
 import Select from "./PeoplePicker";
@@ -10,6 +10,9 @@ import ItemShop from "./ItemShop";
 import ConfirmUseModal from "../ConfirmUseModal";
 
 const NUMBER_OF_QUESTIONS = 5;
+const ROUND_DURATION_MS = 1 * 60 * 1000; // 1 minute in milliseconds
+const DEFAULT_HEALTH = 100;
+const DEFAULT_GOLD = 100;
 
 interface Question {
   id: string;
@@ -151,12 +154,11 @@ export default function GamePage(props: GamePageProps) {
   const [activeItemBonus, setActiveItemBonus] = useState(0);
   const [activeItemName, setActiveItemName] = useState<string | null>(null);
 
+  const [roundStartTime, setRoundStartTime] = useState(Date.now());
+
   const authData = useAuth();
-
   const params = useParams();
-
   const classId = params.classId;
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -266,6 +268,73 @@ export default function GamePage(props: GamePageProps) {
     });
     fetchUserByClass();
   }, [classId]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axios.get<PersonGroupRecord[]>(
+          `${process.env.REACT_APP_BACKEND_URL}/api/game/${classId}/group`,
+          { headers: { "X-token": localStorage.getItem("token") } }
+        );
+
+        setUserHealth(response.data.find((u) => u.id === authData.authUserId)!.health);
+        const peopleFormat = response.data.filter((u) => u.id !== authData.authUserId);
+
+        setUsersInClass(peopleFormat);
+
+        fetchQuestionsAndAnswers(classId).then((questions) => {
+          setQuestionSet(questions);
+        });
+      } catch (error) {
+        console.error("fetch error: ", error);
+      }
+    }
+
+    fetchData();
+  }, [setUsersInClass, authData.authUserId, classId]);
+
+  const resetRound = useCallback(async () => {
+    setUserHealth(DEFAULT_HEALTH);
+    setGoldAmount(DEFAULT_GOLD);
+  
+    setCurrentQuestionIdx(0);
+    setCorrectQuestions(0);
+    setInventory([]);
+    setActiveItemBonus(0);
+    setActiveItemName(null);
+  
+    setRoundStartTime(Date.now());
+  
+    try {
+      await axios.post(
+        new URL(
+        "/api/resetRound",
+        process.env.REACT_APP_BACKEND_URL!
+        ).href,
+        {
+          userId: authData.authUserId,
+          classId: classId,
+          health: DEFAULT_HEALTH,
+          gold: DEFAULT_GOLD,
+        },
+        { headers: { "X-token": localStorage.getItem("token") } }
+      );
+    } catch (error) {
+      console.error("Failed to reset round on the server:", error);
+    }
+  },[authData.authUserId, classId]);
+  
+
+  useEffect(() => {
+    const currentTime = Date.now();
+    const timeUntilNextRound = ROUND_DURATION_MS - (currentTime - roundStartTime);
+  
+    const timer = setTimeout(() => {
+      resetRound();
+    }, timeUntilNextRound);
+  
+    return () => clearTimeout(timer);
+  }, [roundStartTime, resetRound]);  
 
   //update the score of the attacker based on damage
   async function updateAttackerScore(damage: Number, attacker: string) {
