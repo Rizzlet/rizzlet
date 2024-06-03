@@ -45,7 +45,8 @@ export function AutoFlashcard(props: AutoFlashcardProps) {
   }
 
   return (
-    <div className="flex justify-center">
+    
+    <div className="flex justify-center font-mono font-semibold">
       <div className="space-y-5 justify-center w-4/5 my-10">
         <div className="flex flex-col items-center justify-center">
           <div className="flex w-full overflow-y-auto h-40 p-4 justify-center items-center border border-gray-300 rounded-lg">

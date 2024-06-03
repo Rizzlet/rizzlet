@@ -435,20 +435,16 @@ export default function GamePage(props: GamePageProps) {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4 h-screen overflow-hidden">
+    <div className="grid grid-cols-2 gap-1 h-screen overflow-hidden bg-gray-800">
       {/* Back Button */}
       <button
-        className="absolute top-4 left-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+        className="absolute top-4 left-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded font-silkscreen"
         onClick={() => navigate(`/classDashboard/${classId}`)}
       >
         Back
       </button>
       {/* Left side of the screen */}
-      {/* <div className="col-span-1 bg-[center_44rem] bg-[length:2300px_2000px] bg-[url('https://as2.ftcdn.net/v2/jpg/08/01/19/13/1000_F_801191306_7rNIQXEkn7ymWgK89Baz6jKtanrcH1Zy.jpg')] p-4 pt-5"> */}
-      {/* <div className="col-span-1 bg-[center_44rem] bg-[length:800px_1600px] bg-[url('https://image.cdn2.seaart.ai/2023-09-08/16595283448225797/341cc5d93cf84d95ad11d2df3cab43f095eecc22_high.webp')] p-4 pt-5"> */}
-      {/* <div className="col-span-1 bg-[center_44rem] bg-[length:800px_1800px] bg-[url('https://image.cdn2.seaart.ai/2023-10-04/18966380939376645/5599a21f44f8f2705fa0e2b945382ee6cf4bb901_high.webp')] p-4 pt-5"> */}
-      <div className="col-span-1 bg-[center_55rem] bg-[length:1000px_1300px] bg-[url('https://img.craftpix.net/2022/12/Free-Forest-Battle-Backgrounds3.jpg')] p-4 pt-5">
-
+      <div className="col-span-1 bg-[center_55rem] bg-[length:1000px_1300px] bg-[url('https://img.craftpix.net/2022/12/Free-Forest-Battle-Backgrounds3.jpg')] p-4 pt-5 font-silkscreen">
         {/* PeoplePicker component */}
         <Select
           selectedPerson={selectedPerson}
@@ -504,7 +500,7 @@ export default function GamePage(props: GamePageProps) {
 
       {/* Shop Button */}
 
-      <div className="fixed bottom-10 right-10 flex items-center space-x-5">
+      <div className="fixed bottom-10 right-10 flex items-center space-x-5 font-silkscreen">
         <button
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => setShowShop(true)}
@@ -513,7 +509,7 @@ export default function GamePage(props: GamePageProps) {
         </button>
 
         {/* Gold Display */}
-        <div className="flex items-center bg-yellow-400 text-white font-bold py-2 px-4 rounded-full">
+        <div className="flex items-center bg-yellow-400 text-white font-bold py-2 px-4 rounded-full font-silkscreen">
           <i className="fas fa-coins"></i>
           <span className="ml-2">{goldAmount} Gold</span>
         </div>
@@ -522,12 +518,12 @@ export default function GamePage(props: GamePageProps) {
       {/*Shop popup*/}
 
       {showShop && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex justify-center items-center z-50 font-silkscreen">
           <div className="bg-white p-4 rounded-lg max-w-lg w-full">
             <ItemShop onBuyItem={buyItem} />
             <button
               onClick={() => setShowShop(false)}
-              className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              className="mt-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded font-silkscreen"
             >
               Close Shop
             </button>
@@ -537,7 +533,7 @@ export default function GamePage(props: GamePageProps) {
 
       {/*Inventory*/}
 
-      <div className="fixed bottom-10 left-10">
+      <div className="fixed bottom-10 left-10 font-silkscreen">
         <div className="text-xl font-bold mb-2 text-gray-300">Inventory</div>
         <div className="flex items-center space-x-2">
           {inventory.map((inventoryItem, index) => (
@@ -567,92 +563,96 @@ export default function GamePage(props: GamePageProps) {
       )}
 
       {/* Right side of the screen */}
+      <div className="col-span-1 bg-[center_45.5rem] bg-[length:800px_700px] bg-[url('https://pics.craiyon.com/2023-06-21/0855460af0e341feacee519f0d168140.webp')]">
+      <div className="col-span-1 p-4 flex flex-col content-center ">
+          {/* TimerPage and AutoFlashcard components */}
+          {!doingFlashcard && !isAttacking && (
+            <div className="container py-40 px-10 min-w-full flex flex-col items-center justify-center">
+              <button
+                className={
+                  " text-white font-bold py-2 px-4 mt-3 w-2/3 h-20 rounded " +
+                  (questionSet === null || questionSet === "never"
+                    ? "bg-gray-300"
+                    : "bg-teal-600 hover:bg-teal-800")
+                }
+                disabled={questionSet === null || questionSet === "never"}
+                onClick={() => setDoingFlashcard(true)}
+              >
+                {questionSet === null && "Loading..."}
 
-      <div className="col-span-1 bg-gray-200 p-4 flex flex-col content-center">
-        {/* TimerPage and AutoFlashcard components */}
-        {!doingFlashcard && !isAttacking && (
-          <div className="container py-10 px-10 min-w-full flex flex-col items-center justify-center">
-            <button
-              className={
-                " text-white font-bold py-2 px-4 mt-3 w-2/3 h-20 rounded " +
-                (questionSet === null || questionSet === "never"
-                  ? "bg-gray-300"
-                  : "bg-green-600 hover:bg-green-500")
-              }
-              disabled={questionSet === null || questionSet === "never"}
-              onClick={() => setDoingFlashcard(true)}
-            >
-              {questionSet === null && "Loading..."}
+                {questionSet === "never" && "No Questions Yet..."}
 
-              {questionSet === "never" && "No Questions Yet..."}
+                {questionSet !== null &&
+                  questionSet !== "never" &&
+                  "Start Round!"}
+              </button>
+            </div>
+          )}
 
-              {questionSet !== null &&
-                questionSet !== "never" &&
-                "Start Round!"}
-            </button>
-          </div>
-        )}
-
-        {isAttacking && (
-          <div className="flex flex-col items-center pt-10">
-            <div className="text-2xl">
-              <div className="mb-10">
-                Time Elapsed: {formatTime(timeInCentiseconds)} (x
-                {calculateMultiplier(timeInCentiseconds).toFixed(1)} Multiplier)
-              </div>
-              <div className="mb-10">
-                Questions Correct: {correctQuestions}/{NUMBER_OF_QUESTIONS} (
-                {calculateBaseDamage(correctQuestions)} Base Damage)
-              </div>
-              {activeItemBonus > 0 && (
+          {isAttacking && (
+            <div className="flex flex-col items-center pt-10">
+              <div className="text-2xl">
                 <div className="mb-10">
-                  {activeItemName} Bonus: +{activeItemBonus} Damage
+                  Time Elapsed: {formatTime(timeInCentiseconds)} (x
+                  {calculateMultiplier(timeInCentiseconds).toFixed(1)}{" "}
+                  Multiplier)
                 </div>
-              )}
-              <div>
-                Total Damage:{" "}
-                {calculateDamage(
-                  correctQuestions,
-                  timeInCentiseconds,
-                  activeItemBonus
+                <div className="mb-10">
+                  Questions Correct: {correctQuestions}/{NUMBER_OF_QUESTIONS} (
+                  {calculateBaseDamage(correctQuestions)} Base Damage)
+                </div>
+                {activeItemBonus > 0 && (
+                  <div className="mb-10">
+                    {activeItemName} Bonus: +{activeItemBonus} Damage
+                  </div>
+                )}
+                <div>
+                  Total Damage:{" "}
+                  {calculateDamage(
+                    correctQuestions,
+                    timeInCentiseconds,
+                    activeItemBonus
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {doingFlashcard && questionSet && questionSet !== "never" && (
+            <>
+              <div className="flex flex-col items-center font-silkscreen">
+                <Timer
+                  start={doingFlashcard}
+                  timeInCentiseconds={timeInCentiseconds}
+                  setTimeInCentiseconds={setTimeInCentiseconds}
+                />
+                {(doingFlashcard || isAttacking) && (
+                  <div className="text-2xl">
+                    {formatTime(timeInCentiseconds)}
+                  </div>
                 )}
               </div>
-            </div>
-          </div>
-        )}
-
-        {doingFlashcard && questionSet && questionSet !== "never" && (
-          <>
-            <div className="flex flex-col items-center">
-              <Timer
-                start={doingFlashcard}
-                timeInCentiseconds={timeInCentiseconds}
-                setTimeInCentiseconds={setTimeInCentiseconds}
-              />
-              {(doingFlashcard || isAttacking) && (
-                <div className="text-2xl">{formatTime(timeInCentiseconds)}</div>
-              )}
-            </div>
-            <AutoFlashcard
-              questionSet={questionSet}
-              onQuestionAnswer={(lastQuestionRight: boolean) => {
-                if (lastQuestionRight) {
-                  setCorrectQuestions((cq) => cq + 1);
-                }
-                setCurrentQuestionIdx((last) => {
-                  if (last + 1 === NUMBER_OF_QUESTIONS) {
-                    setDoingFlashcard(false);
-                    setIsAttacking(true);
-                    setDoingFlashcard(false);
+              <AutoFlashcard
+                questionSet={questionSet}
+                onQuestionAnswer={(lastQuestionRight: boolean) => {
+                  if (lastQuestionRight) {
+                    setCorrectQuestions((cq) => cq + 1);
                   }
-                  return Math.min(NUMBER_OF_QUESTIONS - 1, last + 1);
-                });
-              }}
-              currentQuestionIdx={currentQuestionIdx}
-              resultTimeSecs={0.5}
-            />
-          </>
-        )}
+                  setCurrentQuestionIdx((last) => {
+                    if (last + 1 === NUMBER_OF_QUESTIONS) {
+                      setDoingFlashcard(false);
+                      setIsAttacking(true);
+                      setDoingFlashcard(false);
+                    }
+                    return Math.min(NUMBER_OF_QUESTIONS - 1, last + 1);
+                  });
+                }}
+                currentQuestionIdx={currentQuestionIdx}
+                resultTimeSecs={0.5}
+              />
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
