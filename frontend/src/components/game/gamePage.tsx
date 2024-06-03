@@ -88,9 +88,9 @@ async function fetchQuestionsAndAnswers(classId: string | undefined) {
         );
       }
     } else {
-      unmappedQuestionSet = questionResponse.data
-        .sort(() => Math.random() - Math.random())
-        .slice(0, NUMBER_OF_QUESTIONS);
+      unmappedQuestionSet = questionResponse.data;
+      shuffleArray(unmappedQuestionSet);
+      unmappedQuestionSet = unmappedQuestionSet.slice(0, NUMBER_OF_QUESTIONS);
     }
 
     const questions: Question[] = unmappedQuestionSet.map((question) => {
@@ -239,33 +239,6 @@ export default function GamePage(props: GamePageProps) {
 
     fetchData();
   }, [setUsersInClass, authData.authUserId, classId]);
-
-  useEffect(() => {
-    async function fetchUserByClass() {
-      try {
-        const response = await axios.get<any>(
-          `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
-          { headers: { "X-token": localStorage.getItem("token") } }
-        );
-
-        const peopleFormat = response.data.slice(0, 3).map((user: any) => ({
-          id: user._id,
-          name: `${user.firstName} ${user.lastName}`,
-          profileColor: user.profileColor,
-          health: user.health,
-        }));
-
-        setUsersInClass(peopleFormat);
-      } catch (error) {
-        console.log("fetch error: ", error);
-      }
-    }
-
-    fetchQuestionsAndAnswers(classId).then((questions) => {
-      setQuestionSet(questions);
-    });
-    fetchUserByClass();
-  }, [classId]);
 
   //update the score of the attacker based on damage
   async function updateAttackerScore(damage: Number, attacker: string) {
@@ -669,4 +642,13 @@ function calculateBaseDamage(numberCorrect: number) {
 
 function calculateMultiplier(timeCentiseconds: number) {
   return (15 - timeCentiseconds / 100) / 5;
+}
+
+function shuffleArray<T>(array: T[]) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
 }
