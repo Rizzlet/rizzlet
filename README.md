@@ -40,6 +40,13 @@ In `backend/` run:
 npm start
 ```
 
+### Testing
+
+To run the unit tests, run in both `frontend/` and `backend/`: 
+```
+yarn test
+```
+
 ### Code Style
 
 Please install the recommended VSCode extensions to automatically style the code.
