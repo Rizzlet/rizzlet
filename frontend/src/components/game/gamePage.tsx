@@ -366,7 +366,7 @@ export default function GamePage(props: GamePageProps) {
       //Health items
       const currentHealth = userHealth || 0;
       const addHealth = itemEffect.value;
-      const totalHealth = Math.min(addHealth + currentHealth, 100); //100 is the max health but backend doesnt reflect that
+      const totalHealth = Math.min(addHealth + currentHealth, 56); //100 is the max health but backend doesnt reflect that'
       setUserHealth(totalHealth); // Update health in the state
       updateHealthOnBackend(addHealth);
     } else if (itemEffect.type === "damage") {
@@ -450,7 +450,7 @@ export default function GamePage(props: GamePageProps) {
           onSelectPerson={setSelectedPerson}
           disabled={!isAttacking}
           people={usersInClass}
-          userHealth={userHealth || 100}
+          userHealth={userHealth || 0}
         />
         {/* Attack Button */}
         <div className="flex justify-center items-center mt-4">
