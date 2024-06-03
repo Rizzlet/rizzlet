@@ -24,6 +24,10 @@ npm install
 
 ### Run Locally
 
+The environment variables must be set in order for Rizzlet to function. In both `backend/` and `frontend/` please copy .env.sample to .env and
+fill out the variables. This involves creating a Google project to enable Oauth and deploying a MongoDB instance. As well as getting the URL to
+the backend/frontend.
+
 In `frontend/` run:
 
 ```
