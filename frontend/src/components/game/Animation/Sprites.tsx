@@ -88,7 +88,7 @@ const SlimeIdle = ({ active }: { active: boolean }) => {
         frameCount={4} //how many frames to animate
         startFrame={2}
         wrapAfter={2}
-        fps={2.5} //how fast
+        fps={3} //how fast
       />
   );
 };
@@ -98,14 +98,14 @@ const SlimeTakeDamage = ({ active }: { active: boolean }) => {
       <SpriteAnimator 
         sprite={slime} // Update this path to your sprite image path
         width={32} //width of viewbox
-        height={25}
+        height={30}
         scale={slimeScale} //scale the sprite
         shouldAnimate={active}
         direction='horizontal' //direction of reading img
         frameCount={13} //how many frames to animate
-        startFrame={13}
+        startFrame={11}
         wrapAfter={2}
-        fps={2} //how fast
+        fps={3} //how fast
       />
   );
 };
@@ -115,7 +115,7 @@ const SlimeDeath = ({ active }: { active: boolean }) => {
       <SpriteAnimator 
         sprite={slime} // Update this path to your sprite image path
         width={32} //width of viewbox
-        height={25}
+        height={29}
         scale={slimeScale} //scale the sprite
         shouldAnimate={active}
         direction='horizontal' //direction of reading img
@@ -123,6 +123,7 @@ const SlimeDeath = ({ active }: { active: boolean }) => {
         startFrame={24}
         wrapAfter={6}
         fps={8} //how fast
+        stopLastFrame={true}
       />
   );
 };

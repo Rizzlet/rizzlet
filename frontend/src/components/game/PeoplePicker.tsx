@@ -38,8 +38,9 @@ export default function Select<
 }: PeoplePickerProps<T>) {
   const authData = useAuth();
 
-  // State to keep track of previous health values
+  // State to keep track of previous health values and damage animation
   const [prevHealths, setPrevHealths] = useState<{ [key: string]: number }>({});
+  const [damageAnimations, setDamageAnimations] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
     // Update previous health values whenever `people` changes
@@ -47,6 +48,16 @@ export default function Select<
       acc[person.id] = person.health;
       return acc;
     }, {} as { [key: string]: number });
+
+    // Trigger damage animations for people whose health has changed
+    people.forEach((person) => {
+      if (prevHealths[person.id] && prevHealths[person.id] > person.health) {
+        setDamageAnimations((prev) => ({ ...prev, [person.id]: true }));
+        setTimeout(() => {
+          setDamageAnimations((prev) => ({ ...prev, [person.id]: false }));
+        }, 500); // Duration of the damage animation
+      }
+    });
 
     setPrevHealths(newPrevHealths);
   }, [people]);
@@ -71,8 +82,6 @@ export default function Select<
   }
 
   const renderEnemy = (person: Person) => {
-    const prevHealth = prevHealths[person.id];
-
     return (
       <div
         key={person.id}
@@ -80,18 +89,13 @@ export default function Select<
           disabled === false && userHealth > 0 && onSelectPerson(person.id)
         }
       >
-        {person.health <= 0 ? (
-          <SlimeDeath active={true} />
-        ) : prevHealth !== person.health ? (
-          <SlimeTakeDamage active={true} />
-        ) : (
-          slime(
-            person,
-            `${person.firstName} ${person.lastName}`,
-            person.id === selectedPerson,
-            person.health,
-            disabled
-          )
+        {slime(
+          person,
+          `${person.firstName} ${person.lastName}`,
+          person.id === selectedPerson,
+          person.health,
+          disabled,
+          damageAnimations[person.id]
         )}
       </div>
     );
@@ -115,7 +119,7 @@ export default function Select<
             `${authData.authUserFullName}`,
             false,
             userHealth,
-            disabled //false so that the user icon is not grayed out (harcoded)
+            disabled //false so that the user icon is not grayed out (hardcoded)
           )
         )}
       </div>
@@ -152,8 +156,30 @@ function slime(
   name: string,
   isSelected: boolean,
   health: number,
-  disabled: boolean
+  disabled: boolean,
+  isTakingDamage: boolean
 ) {
+  if (health <= 0) {
+    return (
+      <div className="flex flex-col items-center justify-center pt-6">
+        <SlimeDeath active={true} />
+        <div className="font-bold text-white">{name}</div>
+      </div>
+    );
+  }
+
+  if (isTakingDamage) {
+    return (
+      <div className="flex flex-col items-center justify-center pt-6">
+        <SlimeTakeDamage active={true} />
+        <div className="font-bold text-white">{name}</div>
+      <div className="">
+        <HealthBar health={health} />
+      </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center justify-center">
       <div
