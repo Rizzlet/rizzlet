@@ -58,15 +58,15 @@ const HomePage: React.FC = () => {
           ></div>
 
           {/* White overlay */}
-          <div className="absolute inset-0 bg-white opacity-20"></div>
+          <div className="absolute inset-0 bg-white opacity-50"></div>
 
           {/* Text container with white bubble background */}
           <div className="relative z-10 grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
-            <div className="space-y-3 bg-white p-6 rounded-lg shadow-xl">
-              <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+            <div className="space-y-3 bg-black p-6 rounded-lg shadow-xl">
+              <h2 className="text-3xl font-bold tracking-tighter text-gray-50 sm:text-4xl md:text-5xl">
                 Personalized Learning
               </h2>
-              <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="mx-auto max-w-[700px] text-gray-50 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 With Rizzlet, you can create your own custom flashcards to match
                 your learning style. You can answer your own questions and one's
                 that your classmates have made. Each question answered correctly
@@ -82,47 +82,52 @@ const HomePage: React.FC = () => {
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
                 Study. Compete. Succeed.
               </h2>
-              <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed ">
+              <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Rizzlet lets you create flashcards, test your knowledge, and see
                 how you stack up against your peers. It's the fun way to study.
               </p>
             </div>
           </div>
           <div className="w-full py-10 md:py-20 lg:py-24">
-            <div className="space-y-4 text-center">
+            <div className="text-center">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
                 Leaderboard
               </h2>
-              <div className="mx-auto grid max-w-sm items-start gap-4 sm:max-w-4xl sm:grid-cols-2 md:gap-8 lg:max-w-5xl lg:grid-cols-3">
-                <div className="flex items-center space-x-4">
-                  <div className="text-2xl">
-                    <b>1.</b> Dylan <b>2500</b>
+              <div className="mt-4 inline-block text-left">
+                <div className="flex flex-col items-start space-y-2">
+                  <div className="flex items-center space-x-5">
+                    <span className="text-2xl font-bold">1.</span>
+                    <span className="text-2xl pl-1">Dylan</span>
+                    <span className="text-2xl font-bold">2500</span>           
+                    <i className="fas fa-crown text-yellow-500"></i>        
                   </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="text-2xl">
-                    <b>2.</b> San <b>2000</b>
+                  <div className="flex items-center space-x-5 space-y-1">
+                    <span className="text-2xl font-bold">2.</span>
+                    <span className="text-2xl pl-1">San</span>
+                    <span className="text-2xl font-bold">2000</span>
                   </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="text-2xl">
-                    <b>3.</b> Kevin <b>1500</b>
+                  <div className="flex items-center space-x-5 space-y-1">
+                    <span className="text-2xl font-bold">3.</span>
+                    <span className="text-2xl pl-1">Kevin</span>
+                    <span className="text-2xl font-bold">1500</span>
+                   
                   </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="text-2xl">
-                    <b>4.</b> Trycia <b>1000</b>
+                  <div className="flex items-center space-x-5 space-y-1">
+                    <span className="text-2xl font-bold">4.</span>
+                    <span className="text-2xl pl-1">Trycia</span>
+                    <span className="text-2xl font-bold">1000</span>                    
                   </div>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <div className="text-2xl">
-                    <b>5.</b> Naomi <b>500</b>
+                  <div className="flex items-center space-x-5 space-y-1">
+                    <span className="text-2xl font-bold">5.</span>
+                    <span className="text-2xl pl-1">Naomi</span>
+                    <span className="text-2xl font-bold">500</span>                   
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
+
       </main>
     </div>
   );
