@@ -149,7 +149,7 @@ export async function googleRefreshAuthHandler(req: Request, res: Response) {
 
   const encodedToken = jwt.sign(tokenData, getEnvVars().JWT_SECRET);
 
-  res.header("XToken", encodedToken);
+  res.header("x-token-set", encodedToken);
 
   res.header("Referrer-Policy", "no-referrer-when-downgrade");
   res.status(200).json(tokenData);
