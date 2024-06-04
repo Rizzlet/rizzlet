@@ -32,6 +32,7 @@ export default function QuestionSubmission() {
 
   const [state, setState] = useState(initialFormState);
   const [answerList, setAnswerList] = useState(initalAnswerListState);
+  const [notification, setNotification] = useState({ show: false, message: "" });
 
   // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -52,10 +53,12 @@ export default function QuestionSubmission() {
       // clear the form after clicking submit
       setState(initialFormState);
       setAnswerList(initalAnswerListState);
+      setNotification({ show: true, message: "Question Submitted!" });
 
       console.log(response.data);
     } catch (error) {
       console.error(error);
+      setNotification({ show: true, message: "Failed to submit question!" });
     }
   };
 
@@ -84,6 +87,15 @@ export default function QuestionSubmission() {
     }
   };
 
+  useEffect(() => {
+    if (notification.show) {
+      const timer = setTimeout(() => {
+        setNotification({ ...notification, show: false });
+      }, 5000); // Notification disappears after 5 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
+
   // true and false button change
   const onTrueFalseButtonClick = (value: boolean) => {
     answerList[Number(value)].correct = false;
@@ -93,6 +105,13 @@ export default function QuestionSubmission() {
   return (
     <div>
       <Title />
+
+      {notification.show && (
+        <div className="fixed top-5 right-5 z-50 bg-teal-500 text-white px-6 py-2 rounded-md shadow-lg text-sm">
+          <strong>{notification.message}</strong>
+        </div>
+      )}
+
       <form className="flashcard" onSubmit={onSubmit}>
         <div className="w-full mt-5">
           <SelectQuestion

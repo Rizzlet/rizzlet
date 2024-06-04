@@ -71,11 +71,11 @@ export function InputAnswer({
   answerList: MultipleChoiceAnswer[];
 }) {
   return (
-    <div className="px-5">
+    <div className="p-5">
       {/* message */}
       <label
         htmlFor={`answer${answerPosition}`}
-        className="mb-2 block text-2xl font-medium text-gray-900 dark:text-black"
+        className="mb-2 block text-2xl p-2 font-medium text-gray-900 dark:text-black"
       >
         {`Answer ${answerPosition + 1}`}
       </label>
