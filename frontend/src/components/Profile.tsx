@@ -17,7 +17,7 @@ const Pages: React.FC<PagesProps> = ({
   onNextClick,
 }) => {
   return (
-    <div className="flex flex-col items-center py-3">
+    <div className="flex flex-col items-center pl-96 py-5">
       <span className="text-sm text-gray-700 dark:text-gray-700">
         Showing Page{" "}
         <span className="font-semibold text-gray-900 dark:text-black">
@@ -88,11 +88,11 @@ function Table(props: TableProps) {
     //overflow-x-auto
     //"w-full py-12 md:py-32 lg:py-40 bg-no-repeat bg-cover relative"
     <div>
-      <h3 className="*:text-align-left m-4 mt-6 pl-8 text-4xl font-bold leading-none tracking-tight text-gray-700 md:mx-0 md:text-4xl lg:text-4xl">
+      <h3 className="m-4 mt-6 pl-8 text-4xl font-bold leading-none tracking-tight text-gray-700 md:mx-0 md:text-4xl lg:text-4xl">
         Your Submitted Questions
       </h3>
-      <div className="items-h-screen relative flex items-center justify-center pt-3 sm:rounded-lg ">
-        <table className="min-h-[74dvh] w-11/12 border border-gray-300 py-2 text-left text-sm text-gray-500 rtl:text-right">
+      <div className="translate-x-44 pt-5">
+        <table className="min-h-[74dvh] w-full border border-gray-300 text-gray-600 ">
           <TableHeader />
           <TableBody questions={props.questions} />
         </table>
