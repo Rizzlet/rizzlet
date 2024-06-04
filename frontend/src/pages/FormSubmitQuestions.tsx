@@ -50,8 +50,8 @@ export default function QuestionSubmission() {
         { state, answerList },
         { headers: { "X-token": localStorage.getItem("token") } }
       );
-      // clear the form after clicking submit
-      setState(initialFormState);
+      // clear the form except for the class after clicking submit
+      setState({ ...initialFormState, class: state.class });
       setAnswerList(initalAnswerListState);
       setNotification({ show: true, message: "Question Submitted!" });
 
