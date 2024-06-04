@@ -99,7 +99,7 @@ const HomePage: React.FC = () => {
                     <span className="text-2xl font-bold">1.</span>
                     <span className="text-2xl pl-1">Dylan</span>
                     <span className="text-2xl font-bold">2500</span>           
-                    <i className="fas fa-crown text-yellow-500"></i>        
+                    <i className="fas fa-crown text-yellow-500 text-2xl"></i>        
                   </div>
                   <div className="flex items-center space-x-5 space-y-1">
                     <span className="text-2xl font-bold">2.</span>
@@ -109,8 +109,7 @@ const HomePage: React.FC = () => {
                   <div className="flex items-center space-x-5 space-y-1">
                     <span className="text-2xl font-bold">3.</span>
                     <span className="text-2xl pl-1">Kevin</span>
-                    <span className="text-2xl font-bold">1500</span>
-                   
+                    <span className="text-2xl font-bold">1500</span>                  
                   </div>
                   <div className="flex items-center space-x-5 space-y-1">
                     <span className="text-2xl font-bold">4.</span>
