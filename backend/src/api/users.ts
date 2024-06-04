@@ -207,18 +207,12 @@ export async function updateAttackerScoreHandler(req: Request, res: Response) {
   }
   const { damageAmount, attacker, classId } = req.body;
 
-  console.log("Request Body:", req.body);
-
   try {
     const response = await Class.findByIdAndUpdate(
       classId,
       { $inc: { "scores.$[theElement].score": damageAmount } },
       { arrayFilters: [{ "theElement.user": attacker }] },
     );
-
-    // console.log("damageAmount", damageAmount)
-    // console.log("attacker", attacker)
-    console.log("Response:", response);
 
     if (!response) {
       console.log("Class doesn't exist");

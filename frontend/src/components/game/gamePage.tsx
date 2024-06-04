@@ -271,6 +271,26 @@ export default function GamePage(props: GamePageProps) {
     return `${minutes}:${seconds}:${centiseconds}`;
   };
 
+  const receiveGold = async () => {
+    try {
+          // Deduct the cost of the item from gold
+          const goldResponse = await axios.put(
+            `${process.env.REACT_APP_BACKEND_URL}/api/gold/update`,
+            {
+              userId: authData.authUserId,
+              classId: classId,
+              amount: -5, // since the orginal function uses a -, we use -5 so that it is +5 gold
+            },
+            { headers: { "X-token": localStorage.getItem("token") } }
+          );
+
+          setGoldAmount(goldResponse.data.gold); // Update the state with the new gold amount
+
+    } catch (error) {
+      console.error("Failed to update health on the server:", error);
+    }
+  };
+
   const buyItem = async (item: Item) => {
     if (inventory.length < 3) {
       if (goldAmount >= item.cost) {
@@ -435,6 +455,7 @@ export default function GamePage(props: GamePageProps) {
               setTimeInCentiseconds(0);
               setIsAttacking(false);
               setSelectedPerson(null);
+              receiveGold();
               updateAttackerScore(
                 calculateDamage(
                   correctQuestions,
