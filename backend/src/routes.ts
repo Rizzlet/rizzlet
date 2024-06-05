@@ -47,6 +47,7 @@ import {
   removeFromInventory,
 } from "./api/inventoryController.js";
 import { getGoldPerClass, updateGold } from "./api/goldController.js";
+import { resetRoundHandler } from "./api/resetRound.js";
 
 
 export function addRoutes(app: Application) {
@@ -101,4 +102,6 @@ export function addRoutes(app: Application) {
     requireAuth,
     updateAttackerScoreHandler,
   );
+
+  app.post('/api/resetRound', resetRoundHandler);
 }
