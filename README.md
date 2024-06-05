@@ -9,12 +9,6 @@ Check out our [Deployed Frontend](https://icy-rock-018e11d1e.5.azurestaticapps.n
 
 Technical Spec - [Link](https://docs.google.com/document/d/1pt8KaxrR4H4lkDkm3iwLrpPXjrTpsPzHESjQOSDFHxA/edit?usp=sharing)
 
-### Coverage Report
-
-On the backend we have achieved 100% coverage (except for the line in db.ts which will connect to the db defined in .env, which we do not want to do.)
-
-![coverage](media/coverage-3-16.png)
-
 ## Contributing
 
 ### Install Dependencies
@@ -55,3 +49,11 @@ yarn test
 Please install the recommended VSCode extensions to automatically style the code.
 
 Go to the extensions tab on the left, scroll down and install all workspace recommended extensions
+
+## CI/CD
+
+### Azure Deployment
+This app is deployed using two separate servers both on Azure. For the frontend, we hosted it as a static site that connected to the backend as a web app on
+another server. The static site should be pointing to frontend workspace and web app, the backend. Using secrets, on the frontend, ensure that you have set up your env variables when git deploys the static app. 
+In Azure, ensure both the static site which uses the frontend environment variables, and the web app which uses the backend variable are configured correctly. 
+Only difference now, is that instead having localhost be the backend url, it's the web app url. Ensure cors is also configured to accept the frontend url in the backend.

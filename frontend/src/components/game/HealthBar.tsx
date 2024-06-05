@@ -5,7 +5,7 @@ interface HealthBarProps {
 }
 
 const HealthBar: React.FC<HealthBarProps> = ({ health }) => {
-  // Calculate width of the health bar based on the health value
+  // Calculate width of the health bar based on the health value 
   const healthBarWidth = `${health}%`;
 
   // Define styles for the health bar
