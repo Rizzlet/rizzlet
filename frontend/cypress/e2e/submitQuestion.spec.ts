@@ -19,7 +19,7 @@ describe("GIVEN a user has a question they want to submit", () => {
     cy.visit("http://127.0.0.1:3000");
     cy.get("ul > li > a").eq(1).click();
     // make sure csc309 class is there and the first class
-    cy.get("div[class=m-5] > a").click();
+    cy.get("div[class=m-5] > a").eq(1).click();
     cy.get("button").eq(8).click();
 
     cy.get("select").should("be.visible").select("Multiple Choice");
