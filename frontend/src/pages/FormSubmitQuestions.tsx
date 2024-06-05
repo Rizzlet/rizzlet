@@ -32,7 +32,11 @@ export default function QuestionSubmission() {
 
   const [state, setState] = useState(initialFormState);
   const [answerList, setAnswerList] = useState(initalAnswerListState);
-  const [notification, setNotification] = useState({ show: false, message: "" });
+  const [notification, setNotification] = useState({
+    show: false,
+    isError: true,
+    message: "",
+  });
 
   // question input change
   const onFieldChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,6 +48,34 @@ export default function QuestionSubmission() {
   // submit button change
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (state.type === "") {
+      setNotification({
+        show: true,
+        isError: true,
+        message: "Please choose a question type",
+      });
+      return;
+    }
+
+    if (state.question === "") {
+      setNotification({
+        show: true,
+        isError: true,
+        message: "Please write a question",
+      });
+      return;
+    }
+
+    if (!answerList.some((a) => a.correct)) {
+      setNotification({
+        show: true,
+        isError: true,
+        message: "Please select at least 1 correct answer",
+      });
+      return;
+    }
+
     try {
       const response = await axios.post(
         process.env.REACT_APP_BACKEND_URL + "/api/question",
@@ -51,14 +83,23 @@ export default function QuestionSubmission() {
         { headers: { "X-token": localStorage.getItem("token") } }
       );
       // clear the form except for the class after clicking submit
+
       setState({ ...initialFormState, class: state.class });
       setAnswerList(initalAnswerListState);
-      setNotification({ show: true, message: "Question Submitted!" });
+      setNotification({
+        show: true,
+        isError: false,
+        message: "Question Submitted!",
+      });
 
       console.log(response.data);
     } catch (error) {
       console.error(error);
-      setNotification({ show: true, message: "Failed to submit question!" });
+      setNotification({
+        show: true,
+        isError: true,
+        message: "Failed to submit question!",
+      });
     }
   };
 
@@ -107,7 +148,12 @@ export default function QuestionSubmission() {
       <Title />
 
       {notification.show && (
-        <div className="fixed top-5 right-5 z-50 bg-teal-500 text-white px-6 py-2 rounded-md shadow-lg text-sm">
+        <div
+          className={
+            "fixed top-5 right-5 z-5 text-white px-6 py-2 rounded-md shadow-lg text-sm " +
+            (notification.isError ? "bg-red-500" : "bg-teal-500")
+          }
+        >
           <strong>{notification.message}</strong>
         </div>
       )}
