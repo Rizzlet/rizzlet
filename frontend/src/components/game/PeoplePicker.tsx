@@ -72,7 +72,7 @@ export default function Select<
     });
 
     setPrevHealths(newPrevHealths);
-  }, [people]);
+  }, [people, prevHealths]);
 
   console.log("health", userHealth);
 
