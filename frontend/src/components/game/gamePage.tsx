@@ -8,7 +8,6 @@ import { useAuth } from "../../context/auth/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import ItemShop from "./ItemShop";
 import ConfirmUseModal from "../ConfirmUseModal";
-import { WitchAttack, SlimeTakeDamage } from "./Animation/Sprites";
 
 const NUMBER_OF_QUESTIONS = 5;
 

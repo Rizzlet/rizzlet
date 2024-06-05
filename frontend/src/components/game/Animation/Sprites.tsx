@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from "react-router-dom";
 import { SpriteAnimator } from 'react-sprite-animator';
 // import { AutoFlashcard } from "./AutoFlashcard";
 import slime from "./slime_frames_all.png";
