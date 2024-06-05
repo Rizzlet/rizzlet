@@ -9,12 +9,6 @@ Check out our [Deployed Frontend](https://icy-rock-018e11d1e.5.azurestaticapps.n
 
 Technical Spec - [Link](https://docs.google.com/document/d/1pt8KaxrR4H4lkDkm3iwLrpPXjrTpsPzHESjQOSDFHxA/edit?usp=sharing)
 
-### Coverage Report
-
-On the backend we have achieved 100% coverage (except for the line in db.ts which will connect to the db defined in .env, which we do not want to do.)
-
-![coverage](media/coverage-3-16.png)
-
 ## Contributing
 
 ### Install Dependencies
