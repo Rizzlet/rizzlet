@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AutoFlashcard } from "./AutoFlashcard";
 import Select from "./PeoplePicker";
@@ -10,9 +10,6 @@ import ItemShop from "./ItemShop";
 import ConfirmUseModal from "../ConfirmUseModal";
 
 const NUMBER_OF_QUESTIONS = 5;
-const ROUND_DURATION_MS = 1 * 60 * 1000; // 1 minute in milliseconds
-const DEFAULT_HEALTH = 100;
-const DEFAULT_GOLD = 100;
 
 interface Question {
   id: string;
@@ -154,11 +151,12 @@ export default function GamePage(props: GamePageProps) {
   const [activeItemBonus, setActiveItemBonus] = useState(0);
   const [activeItemName, setActiveItemName] = useState<string | null>(null);
 
-  const [roundStartTime, setRoundStartTime] = useState(Date.now());
-
   const authData = useAuth();
+
   const params = useParams();
+
   const classId = params.classId;
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -466,7 +464,17 @@ export default function GamePage(props: GamePageProps) {
                 ),
                 authData.authUserId
               );
-
+              // update streak
+              axios
+                .post(
+                  new URL(
+                    "/api/user/streak",
+                    process.env.REACT_APP_BACKEND_URL!
+                  ).href,
+                  {},
+                  { headers: { "X-token": localStorage.getItem("token") } }
+                )
+                .then((response) => console.log(response));
               let newUsers = [...usersInClass];
               newUsers.find((u) => u.id === selectedPerson)!.health -=
                 calculateDamage(
