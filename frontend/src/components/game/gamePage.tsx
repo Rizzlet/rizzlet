@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AutoFlashcard } from "./AutoFlashcard";
 import Select from "./PeoplePicker";
@@ -292,13 +292,6 @@ export default function GamePage(props: GamePageProps) {
   };
 
   const buyItem = async (item: Item) => {
-    const existingItem = inventory.find(invItem => invItem.itemId._id === item._id);
-
-    if (existingItem) {
-      alert(`You already have ${item.name} in your inventory.`);
-      return;
-    }
-
     if (inventory.length < 3) {
       if (goldAmount >= item.cost) {
         // Check if user has enough gold
@@ -334,6 +327,7 @@ export default function GamePage(props: GamePageProps) {
               itemId: fullItemDetails,
             };
             setInventory((currentInventory) => [...currentInventory, newItem]);
+            alert("Item added to inventory!");
           } else {
             console.error("Item details not found in allItems.");
           }
@@ -358,7 +352,6 @@ export default function GamePage(props: GamePageProps) {
       alert("You cannot use items upon death.");
     }
   };
-  
 
   const handleUseItem = (inventoryItem: Inventory) => {
     if (!inventoryItem) return;
@@ -370,7 +363,7 @@ export default function GamePage(props: GamePageProps) {
       //Health items
       const currentHealth = userHealth || 0;
       const addHealth = itemEffect.value;
-      const totalHealth = Math.min(addHealth + currentHealth, 100); 
+      const totalHealth = Math.min(addHealth + currentHealth, 56); //100 is the max health but backend doesnt reflect that'
       setUserHealth(totalHealth); // Update health in the state
       updateHealthOnBackend(addHealth);
     } else if (itemEffect.type === "damage") {
