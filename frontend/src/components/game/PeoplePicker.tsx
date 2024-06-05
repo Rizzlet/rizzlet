@@ -45,7 +45,7 @@ export default function Select<
         person.id &&
         person.firstName &&
         person.lastName &&
-        person.health
+        person.health !== undefined
     );
 
   if (!isDataAvailable) {

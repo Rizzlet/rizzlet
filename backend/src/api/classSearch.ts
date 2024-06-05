@@ -40,9 +40,9 @@ export async function classHandler(req: Request, res: Response) {
     return;
   }
 
-  await newClass(body.name);
+  const createdClass = await newClass(body.name);
 
-  res.sendStatus(201);
+  res.status(201).send(createdClass);
 }
 
 export async function updateUserClassesHandler(req: Request, res: Response) {
