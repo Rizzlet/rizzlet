@@ -10,9 +10,12 @@ import joi from "joi";
 import { Class } from "../models/class.js";
 
 export async function GetIndividualUser(req: Request, res: Response) {
+
   const userData = verifyAndDecodeToken(req.get("X-token")!);
+
   if (!userData) {
     console.log("backend authentication failed");
+    res.status(401).send("backend authentication failed");
     return;
   }
 

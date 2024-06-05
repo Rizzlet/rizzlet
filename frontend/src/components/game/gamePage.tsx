@@ -475,7 +475,17 @@ export default function GamePage(props: GamePageProps) {
                 ),
                 authData.authUserId
               );
-
+              // update streak
+              axios
+                .post(
+                  new URL(
+                    "/api/user/streak",
+                    process.env.REACT_APP_BACKEND_URL!
+                  ).href,
+                  {},
+                  { headers: { "X-token": localStorage.getItem("token") } }
+                )
+                .then((response) => console.log(response));
               let newUsers = [...usersInClass];
               newUsers.find((u) => u.id === selectedPerson)!.health -=
                 calculateDamage(

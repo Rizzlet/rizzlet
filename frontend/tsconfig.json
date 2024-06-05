@@ -17,5 +17,5 @@
     "jsx": "react-jsx",
     "typeRoots": ["src/customTypes", "node_modules/@types"]
   },
-  "include": ["src", ".env"]
+  "include": ["src", ".env", "e2eTesting"]
 }
