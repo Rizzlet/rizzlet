@@ -19,9 +19,8 @@ const Achievements: React.FC = () => {
 
   useEffect(() => {
     const checkAchievementsRequirements = (achievements: Achievement[]) => {
-      authData.streak = 10;
-      const userSubmittedQuestions = 5;
-      const userAnsweredQuestions = 20;
+      const userSubmittedQuestions = 0;
+      const userAnsweredQuestions = 0;
       const userDefeatedEnemy = false;
       const userCompletedRound = false;
 
