@@ -10,9 +10,12 @@ import joi from "joi";
 import { Class } from "../models/class.js";
 
 export async function GetIndividualUser(req: Request, res: Response) {
+
   const userData = verifyAndDecodeToken(req.get("X-token")!);
+
   if (!userData) {
     console.log("backend authentication failed");
+    res.status(401).send("backend authentication failed");
     return;
   }
 
@@ -169,47 +172,31 @@ export async function topFour(req: Request, res: Response) {
   return res.status(200).json({ topFour });
 }
 
-export async function updateHealthHandler(req: Request, res: Response) {
+export async function updateHealthHandler(req: Request, Res: Response) {
   const userData = verifyAndDecodeToken(req.get("X-token")!);
   if (!userData) {
     console.log("update health authorization failed");
-    return res.status(401).json({ message: "Authorization failed" });
+    return;
   }
   const { damageAmount, attackUser, classId } = req.body;
 
   try {
-    const classObj = await getClass(classId);
-    if (!classObj) {
-      console.log("Class doesn't exist");
-      return res.status(403).json({ message: "Class does not exist" });
-    }
-
-    const userScore = classObj.scores.find(
-      (score) => score.user.toString() === attackUser
-    );
-
-    if (!userScore) {
-      console.log("User score doesn't exist in this class");
-      return res.status(404).json({ message: "User score not found" });
-    }
-
-    const newHealth = Math.max(0, Math.min(100, userScore.health + damageAmount));
-
-    // Update the health value
-    const response = await Class.updateOne(
-      { _id: classId, "scores.user": attackUser },
-      { $set: { "scores.$.health": newHealth } }
+    const response = await Class.findByIdAndUpdate(
+      classId,
+      { $inc: { "scores.$[theElement].health": damageAmount } },
+      {
+        arrayFilters: [{ "theElement.user": attackUser }],
+      },
     );
 
     if (!response) {
-      console.log("Failed to update health");
-      return res.status(500).json({ message: "Failed to update health" });
+      console.log("Class doesn't exist");
+      return Res.status(403).json({ message: "Class does not exist" });
     }
-    return res.status(200).json({ request: true, newHealth });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Internal server error" });
   }
+  return Res.status(200).json({ request: true });
 }
 
 export async function updateAttackerScoreHandler(req: Request, res: Response) {
