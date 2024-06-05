@@ -3,6 +3,9 @@ const config = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        silkscreen: ['Silkscreen', 'cursive'],
+      },
       gridTemplateColumns: {
         "2-uneven": "60% 40%",
       },

@@ -35,7 +35,7 @@ export default function DamageDealer<T extends DamageDealerProps>(props: T) {
       type="button"
       className={
         "flex items-center focus:outline-none text-white  focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 " +
-        (!props.disabled ? "bg-red-700 hover:bg-red-800" : "bg-gray-400")
+        (!props.disabled ? "bg-teal-600 hover:bg-teal-800" : "bg-gray-400")
       }
       onClick={() => {
         if (props.targetId) {
