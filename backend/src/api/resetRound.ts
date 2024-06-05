@@ -1,42 +1,20 @@
 import { Request, Response } from 'express';
-import { verifyAndDecodeToken } from './auth/sharedAuth.js';
-import { Class } from '../models/class.js';
-import { GoldPerClass } from '../models/goldPerClass.js';
+import { User } from '../models/user';
 
-type UserData = {
-  id: string;
-  // Add other properties from the token if needed
-};
+export async function resetRoundHandler(req: Request, res: Response) {
+    const { classId } = req.body;
 
-export async function resetRoundHandler(req: Request, res: Response): Promise<Response> {
-  const userData: UserData | null = verifyAndDecodeToken(req.get('X-token')!);
+    try {
+        // Reset health and gold for all users in the specified class
+        const result = await User.updateMany({ classId }, { $set: { health: 100, gold: 100 } });
 
-  if (!userData) {
-    return res.status(401).json({ error: 'Unauthorized' });
-  }
-
-  const { classId } = req.body;
-
-  try {
-    // Reset the health for all users in the class
-    const userClass = await Class.findById(classId);
-
-    if (!userClass) {
-      return res.status(404).json({ message: 'Class not found' });
+        if (result && result.modifiedCount > 0) {
+            res.status(200).json({ message: "Round reset successfully for all users" });
+        } else {
+            res.status(404).json({ message: "No users found in the specified class" });
+        }
+    } catch (error) {
+        console.error("Failed to reset round for all users:", error);
+        res.status(500).json({ message: "Failed to reset round for all users", error: error.message });
     }
-
-    userClass.scores.forEach((score: { health: number }) => {
-      score.health = 100;
-    });
-
-    // Update gold for the class
-    await GoldPerClass.updateMany({ classId }, { gold: 100 });
-
-    await userClass.save();
-
-    return res.status(200).json({ message: 'Round reset successfully' });
-  } catch (error: unknown) {
-    console.error('Error resetting round:', error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
 }
