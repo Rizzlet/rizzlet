@@ -3,19 +3,18 @@ import { User } from "./user.js";
 export async function calculateStreak(userID: string): Promise<number> {
   const user = await User.findById(userID);
 
-  const lastAnsweredTimestamp = user?.lastAnsweredTimestamp;
-  if (!lastAnsweredTimestamp) return 0;
+  if (!user) {
+    return 0;
+  }
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const lastLoginDate = new Date(lastAnsweredTimestamp);
-  lastLoginDate.setHours(0, 0, 0, 0);
-
   // Check if the user has a streakStartTimestamp
   if (!user.streakStartTimestamp) {
-    // If not, set the streakStartTimestamp to today
+    // If not, set the streakStartTimestamp to today make count 1.
     user.streakStartTimestamp = today;
+    user.streakCount = 1;
     await user.save();
     return 1; // Starting a new streak
   }
