@@ -91,9 +91,9 @@ async function fetchQuestionsAndAnswers(classId: string | undefined) {
         );
       }
     } else {
-      unmappedQuestionSet = questionResponse.data
-        .sort(() => Math.random() - Math.random())
-        .slice(0, NUMBER_OF_QUESTIONS);
+      unmappedQuestionSet = questionResponse.data;
+      shuffleArray(unmappedQuestionSet);
+      unmappedQuestionSet = unmappedQuestionSet.slice(0, NUMBER_OF_QUESTIONS);
     }
 
     const questions: Question[] = unmappedQuestionSet.map((question) => {
@@ -242,100 +242,6 @@ export default function GamePage(props: GamePageProps) {
     fetchData();
   }, [setUsersInClass, authData.authUserId, classId]);
 
-  useEffect(() => {
-    async function fetchUserByClass() {
-      try {
-        const response = await axios.get<any>(
-          `${process.env.REACT_APP_BACKEND_URL}/api/class/${classId}/user`,
-          { headers: { "X-token": localStorage.getItem("token") } }
-        );
-
-        const peopleFormat = response.data.slice(0, 3).map((user: any) => ({
-          id: user._id,
-          name: `${user.firstName} ${user.lastName}`,
-          profileColor: user.profileColor,
-          health: user.health,
-        }));
-
-        setUsersInClass(peopleFormat);
-      } catch (error) {
-        console.log("fetch error: ", error);
-      }
-    }
-
-    fetchQuestionsAndAnswers(classId).then((questions) => {
-      setQuestionSet(questions);
-    });
-    fetchUserByClass();
-  }, [classId]);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await axios.get<PersonGroupRecord[]>(
-          `${process.env.REACT_APP_BACKEND_URL}/api/game/${classId}/group`,
-          { headers: { "X-token": localStorage.getItem("token") } }
-        );
-
-        setUserHealth(response.data.find((u) => u.id === authData.authUserId)!.health);
-        const peopleFormat = response.data.filter((u) => u.id !== authData.authUserId);
-
-        setUsersInClass(peopleFormat);
-
-        fetchQuestionsAndAnswers(classId).then((questions) => {
-          setQuestionSet(questions);
-        });
-      } catch (error) {
-        console.error("fetch error: ", error);
-      }
-    }
-
-    fetchData();
-  }, [setUsersInClass, authData.authUserId, classId]);
-
-  const resetRound = useCallback(async () => {
-    setUserHealth(DEFAULT_HEALTH);
-    setGoldAmount(DEFAULT_GOLD);
-  
-    setCurrentQuestionIdx(0);
-    setCorrectQuestions(0);
-    setInventory([]);
-    setActiveItemBonus(0);
-    setActiveItemName(null);
-  
-    setRoundStartTime(Date.now());
-  
-    try {
-      await axios.post(
-        new URL(
-        "/api/resetRound",
-        process.env.REACT_APP_BACKEND_URL!
-        ).href,
-        {
-          userId: authData.authUserId,
-          classId: classId,
-          health: DEFAULT_HEALTH,
-          gold: DEFAULT_GOLD,
-        },
-        { headers: { "X-token": localStorage.getItem("token") } }
-      );
-    } catch (error) {
-      console.error("Failed to reset round on the server:", error);
-    }
-  },[authData.authUserId, classId]);
-  
-
-  useEffect(() => {
-    const currentTime = Date.now();
-    const timeUntilNextRound = ROUND_DURATION_MS - (currentTime - roundStartTime);
-  
-    const timer = setTimeout(() => {
-      resetRound();
-    }, timeUntilNextRound);
-  
-    return () => clearTimeout(timer);
-  }, [roundStartTime, resetRound]);  
-
   //update the score of the attacker based on damage
   async function updateAttackerScore(damage: Number, attacker: string) {
     try {
@@ -365,6 +271,26 @@ export default function GamePage(props: GamePageProps) {
       .padStart(2, "0");
     const centiseconds = (totalCentiseconds % 100).toString().padStart(2, "0");
     return `${minutes}:${seconds}:${centiseconds}`;
+  };
+
+  const receiveGold = async () => {
+    try {
+          // Deduct the cost of the item from gold
+          const goldResponse = await axios.put(
+            `${process.env.REACT_APP_BACKEND_URL}/api/gold/update`,
+            {
+              userId: authData.authUserId,
+              classId: classId,
+              amount: -5, // since the orginal function uses a -, we use -5 so that it is +5 gold
+            },
+            { headers: { "X-token": localStorage.getItem("token") } }
+          );
+
+          setGoldAmount(goldResponse.data.gold); // Update the state with the new gold amount
+
+    } catch (error) {
+      console.error("Failed to update health on the server:", error);
+    }
   };
 
   const buyItem = async (item: Item) => {
@@ -531,6 +457,7 @@ export default function GamePage(props: GamePageProps) {
               setTimeInCentiseconds(0);
               setIsAttacking(false);
               setSelectedPerson(null);
+              receiveGold();
               updateAttackerScore(
                 calculateDamage(
                   correctQuestions,
@@ -738,4 +665,13 @@ function calculateBaseDamage(numberCorrect: number) {
 
 function calculateMultiplier(timeCentiseconds: number) {
   return (15 - timeCentiseconds / 100) / 5;
+}
+
+function shuffleArray<T>(array: T[]) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
 }

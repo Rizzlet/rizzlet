@@ -12,7 +12,10 @@ import {
 import { fetchClassesHandler } from "./api/classSearch.js";
 import { updateUserClassesHandler } from "./api/classSearch.js";
 
-import { googleAuthHandler } from "./api/auth/google.js";
+import {
+  googleAuthHandler,
+  googleRefreshAuthHandler,
+} from "./api/auth/google.js";
 import { logoutHandler } from "./api/auth/logout.js";
 import { requireAuth } from "./api/auth/sharedAuth.js";
 import { submitQuestionRatingHandler } from "./api/questionRating.js";
@@ -46,8 +49,10 @@ import {
 import { getGoldPerClass, updateGold } from "./api/goldController.js";
 import { resetRoundHandler } from "./api/resetRound.js";
 
+
 export function addRoutes(app: Application) {
   app.post("/api/auth/google", googleAuthHandler);
+  app.post("/api/auth/google/refresh", googleRefreshAuthHandler);
   app.post("/api/auth/logout", logoutHandler);
   app.post("/api/question", requireAuth, submitQuestionHandler);
   app.get("/api/question", fetchAllQuestionsHandler);
@@ -88,8 +93,10 @@ export function addRoutes(app: Application) {
   app.post("/api/inventory", addToInventory);
   app.get("/api/inventory/:userId/:classId", getInventory);
   app.delete("/api/inventory/:id", removeFromInventory);
+
   app.get("/api/gold/:userId/:classId", getGoldPerClass);
   app.put("/api/gold/update", updateGold);
+
   app.post(
     "/api/user/updateAttackerScore",
     requireAuth,
