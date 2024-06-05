@@ -604,7 +604,7 @@ export default function GamePage(props: GamePageProps) {
 
           {isAttacking && (
             <div className="flex flex-col items-center pt-10">
-              <div className="text-2xl">
+              <div className="text-2xl mt-20">
                 <div className="mb-10">
                   Time Elapsed: {formatTime(timeInCentiseconds)} (x
                   {calculateMultiplier(timeInCentiseconds).toFixed(1)}{" "}
