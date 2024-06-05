@@ -19,7 +19,6 @@ import ProfilePage from "./pages/ProfilePage";
 import "./index.css";
 import LeaderBoard from "./pages/LeaderBoardPage";
 import NoClasses from "./pages/AnswerQuestionNoClasses";
-import HealthBarPage from "./components/game/HealthBarPage";
 import GamePage from "./components/game/gamePage";
 import SubmitRating from "./components/SubmitRating";
 
@@ -105,10 +104,6 @@ const router = createBrowserRouter(
     {
       path: "/login",
       element: <Login />,
-    },
-    {
-      path: "/healthBar",
-      element: <HealthBarPage />,
     },
     {
       path: "/gamePage/:classId",

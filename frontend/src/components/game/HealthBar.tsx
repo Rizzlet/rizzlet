@@ -36,4 +36,3 @@ const HealthBar: React.FC<HealthBarProps> = ({ health }) => {
 };
 
 export default HealthBar;
-

@@ -28,7 +28,7 @@ const HomePage: React.FC = () => {
             <Link
               className="inline-flex h-9 items-center justify-center rounded-md border border-gray-200 bg-white px-4 text-sm font-medium shadow-sm 
             transition-colors hover:bg-gray-100 hover:text-gray-900 "
-              to="/login"
+              to="/myclasses"
             >
               Get Started!
             </Link>
