@@ -17,6 +17,13 @@ interface Person {
   health: number;
 }
 
+interface Person {
+  id: string;
+  firstName: string;
+  lastName: string;
+  health: number;
+}
+
 interface PeoplePickerProps<
   T extends { id: string; firstName: string; lastName: string; health: number },
 > {
@@ -68,6 +75,7 @@ export default function Select<
   }, [people]);
 
   console.log("health", userHealth);
+
   console.log("people: ", people);
 
   //make sure the data is properly rendered (fixes undefined)
@@ -107,7 +115,9 @@ export default function Select<
   };
 
   return (
+
     <div className="grid grid-rows-[175px_minmax(175px,_1fr)_200px] col-span-1 grid-flow-col gap-4 font-silkscreen">
+
       {/* rendering the "enemy" using index 0, 1, 2*/}
       <div>{people[0] && renderEnemy(people[0])}</div>
       <div className="grid grid-cols-2 col-span-1">
