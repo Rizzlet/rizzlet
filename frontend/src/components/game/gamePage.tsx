@@ -327,7 +327,6 @@ export default function GamePage(props: GamePageProps) {
               itemId: fullItemDetails,
             };
             setInventory((currentInventory) => [...currentInventory, newItem]);
-            alert("Item added to inventory!");
           } else {
             console.error("Item details not found in allItems.");
           }
@@ -344,9 +343,13 @@ export default function GamePage(props: GamePageProps) {
   };
 
   const handleItemClick = (inventoryItem: Inventory) => {
-    console.log("Selected Inventory Item:", inventoryItem);
-    setSelectedInventoryItem(inventoryItem);
-    setShowConfirmModal(true);
+    if (userHealth && userHealth > 0) {
+      console.log("Selected Inventory Item:", inventoryItem);
+      setSelectedInventoryItem(inventoryItem);
+      setShowConfirmModal(true);
+    } else {
+      alert("You cannot use items upon death.");
+    }
   };
 
   const handleUseItem = (inventoryItem: Inventory) => {
@@ -359,7 +362,7 @@ export default function GamePage(props: GamePageProps) {
       //Health items
       const currentHealth = userHealth || 0;
       const addHealth = itemEffect.value;
-      const totalHealth = Math.min(addHealth + currentHealth, 56); //100 is the max health but backend doesnt reflect that'
+      const totalHealth = Math.min(addHealth + currentHealth, 100); //100 is the max health but backend doesnt reflect that'
       setUserHealth(totalHealth); // Update health in the state
       updateHealthOnBackend(addHealth);
     } else if (itemEffect.type === "damage") {

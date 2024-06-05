@@ -71,11 +71,11 @@ export function InputAnswer({
   answerList: MultipleChoiceAnswer[];
 }) {
   return (
-    <div className="px-5">
+    <div className="p-5">
       {/* message */}
       <label
         htmlFor={`answer${answerPosition}`}
-        className="mb-2 block text-2xl font-medium text-gray-900 dark:text-black"
+        className="mb-2 block text-2xl p-2 font-medium text-gray-900 dark:text-black"
       >
         {`Answer ${answerPosition + 1}`}
       </label>
@@ -125,7 +125,7 @@ export function Buttons() {
       <div className="absolute right-0 mt-20 gap-20 px-20 ">
         <button
           type="submit"
-          className="mb-2 me-2 rounded-lg bg-gray-300 px-8 py-2.5 text-sm font-medium text-black hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-600 dark:bg-gray-300 dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+          className="mb-2 me-2 rounded-lg bg-gray-300 px-8 py-2.5 text-sm font-medium text-black dark:hover:bg-gray-400"
         >
           Submit
         </button>

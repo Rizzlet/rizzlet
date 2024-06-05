@@ -72,43 +72,43 @@ const ClassDashboard: React.FC = () => {
         <div className="border-r border-gray-200 bg-gray-100/40">
           <div className="flex h-[60px] items-center border-b px-6"></div>
           <div className="flex-1 overflow-auto py-2">
-            <nav className="grid items-start px-4 text-sm font-medium">
+            <nav className="grid items-start px-4 text-sm font-medium space-y-3">
               <button
-                className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
+                className="flex items-center gap-3 rounded-lg bg-gray-200 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
                 onClick={(e) => handleLinkClick("game")}
               >
                 <PlayIcon className="h-4 w-4"></PlayIcon>
                 Game
               </button>
               <button
-                className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
+                className="flex items-center gap-3 rounded-lg bg-gray-200 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
                 onClick={(e) => handleLinkClick("leaderboard")}
               >
                 <ArrowTrendingUpIcon className="h-4 w-4"></ArrowTrendingUpIcon>
                 Leaderboard
               </button>
               <button
-                className="flex items-start gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900 transition-all hover:text-gray-900"
+                className="flex items-start gap-3 rounded-lg bg-gray-200 px-3 py-2 text-gray-900 transition-all hover:text-gray-900"
                 onClick={(e) => handleLinkClick("flashcards")}
               >
                 <RectangleStackIcon className="h-4 w-4"></RectangleStackIcon>
                 Flashcards
               </button>
               <button
-                className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
+                className="flex items-center gap-3 rounded-lg bg-gray-200 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
                 onClick={(e) => handleLinkClick("questions")}
               >
                 <ChatBubbleLeftIcon className="h-4 w-4"></ChatBubbleLeftIcon>
                 Questions
               </button>
               <button
-                className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
+                className="flex items-center gap-3 rounded-lg bg-gray-200 px-3 py-2 text-gray-900  transition-all hover:text-gray-900"
                 onClick={(e) => handleLinkClick("submit")}
               >
                 <QuestionMarkCircleIcon className="h-4 w-4"></QuestionMarkCircleIcon>
                 Submit Questions
               </button>
-              <button className="flex items-center gap-3 rounded-lg bg-gray-100 px-3 py-2 text-gray-900  transition-all hover:text-gray-900" onClick={(e) => handleLinkClick("achievements")}
+              <button className="flex items-center gap-3 rounded-lg bg-gray-200 px-3 py-2 text-gray-900  transition-all hover:text-gray-900" onClick={(e) => handleLinkClick("achievements")}
               >
                 <StarIcon className="h-4 w-4"></StarIcon>
                 Achievements
